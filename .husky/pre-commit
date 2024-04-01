@@ -1,0 +1,3 @@
+echo '🔥 pre-commit hook running...'
+yarn lint
+yarn typecheck
