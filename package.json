@@ -34,7 +34,8 @@
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "husky",
     "release": "release-it",
-    "gen:ios:fabric": "node example/node_modules/react-native/scripts/generate-codegen-artifacts.js --path example/ --outputPath RCTNaverMapViewViewProtocol/generated/"
+    "codegen:android": "cd example/android && ./gradlew generateCodegenArtifactsFromSchema",
+    "codegen:ios": "node example/node_modules/react-native/scripts/generate-codegen-artifacts.js --path example/ --outputPath RCTNaverMapViewViewProtocol/generated/"
   },
   "keywords": [
     "react-native",
