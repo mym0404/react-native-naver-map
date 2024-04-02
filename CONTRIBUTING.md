@@ -44,6 +44,7 @@ yarn example android
 To run the example app on iOS:
 
 ```sh
+yarn pod:bridge or yarn pod:newarch
 yarn example ios
 ```
 
@@ -139,6 +140,10 @@ The `package.json` file contains various scripts for common tasks:
 - `yarn example start`: start the Metro server for the example app.
 - `yarn example android`: run the example app on Android.
 - `yarn example ios`: run the example app on iOS.
+- `yarn codegen:{android,ios}`: generate codegen output for development typing (this should be clean for running example app, prevetning redelcaration compile error)
+- `yarn studio`: open android studio
+- `yarn studio:example`: open android studio for example project
+- `yarn xcode`: open xcode for example project
 
 ### Sending a pull request
 

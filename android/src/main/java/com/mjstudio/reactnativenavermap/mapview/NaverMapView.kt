@@ -1,8 +1,6 @@
 package com.mjstudio.reactnativenavermap.mapview
 
 import android.annotation.SuppressLint
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import androidx.fragment.app.FragmentContainerView
 import com.facebook.react.uimanager.ThemedReactContext
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
@@ -13,15 +11,23 @@ class NaverMapView(private val reactContext: ThemedReactContext, private val map
     MapView(reactContext, mapOptions) {
 
     private var map: NaverMap? = null
+    private var isAttached = false
 
     init {
+        getMapAsync {
+            if (isAttached) {
+                map = it
+            }
+        }
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        isAttached = true
+    }
 
-        val lp = LayoutParams(MATCH_PARENT, MATCH_PARENT)
-        val view = FragmentContainerView(context)
-        addView(view)
+    override fun onDetachedFromWindow() {
+        isAttached = false
+        super.onDetachedFromWindow()
     }
 }

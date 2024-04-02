@@ -5,21 +5,8 @@ import { NaverMapView } from '@mj-studio/react-native-naver-map';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <NaverMapView color="#32a852" style={styles.box} />
+    <View style={{ flex: 1 }}>
+      <NaverMapView style={StyleSheet.absoluteFill} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-});

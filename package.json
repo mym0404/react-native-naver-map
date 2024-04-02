@@ -38,7 +38,9 @@
     "codegen:ios": "node example/node_modules/react-native/scripts/generate-codegen-artifacts.js --path example/ --outputPath RCTNaverMapViewViewProtocol/generated/",
     "studio": "studio $(pwd)/android",
     "studio:example": "studio $(pwd)/example/android",
-    "xcode": "open $(pwd)/example/ios/NaverMapExample.xcworkspace"
+    "xcode": "open $(pwd)/example/ios/NaverMapExample.xcworkspace",
+    "pod:bridge": "cd ios && bundle install && bundle exec pod install",
+    "pod:newarch": "cde ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install"
   },
   "keywords": [
     "react-native",
@@ -135,7 +137,8 @@
           "trailingComma": "es5",
           "useTabs": false
         }
-      ]
+      ],
+      "react-native/no-inline-styles": "off"
     }
   },
   "eslintIgnore": [
