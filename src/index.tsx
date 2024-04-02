@@ -1,2 +1,2 @@
-export { default as NaverMapView } from './NaverMapViewNativeComponent';
-export * from './NaverMapViewNativeComponent';
+export { default as NaverMapView } from './RNCNaverMapViewNativeComponent';
+export * from './RNCNaverMapViewNativeComponent';

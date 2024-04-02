@@ -12,7 +12,8 @@ export type NaverMapAuthFailedEvent = Readonly<{
 
 interface NativeProps extends ViewProps {
   nightMode?: boolean;
+  onInitialized?: DirectEventHandler<Readonly<{}>>;
   onAuthFailed?: DirectEventHandler<NaverMapAuthFailedEvent>;
 }
 
-export default codegenNativeComponent<NativeProps>('NaverMapView');
+export default codegenNativeComponent<NativeProps>('RNCNaverMapView');

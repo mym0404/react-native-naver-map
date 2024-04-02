@@ -4,36 +4,41 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Choreographer
 import android.view.Choreographer.FrameCallback
+import android.view.View
 import android.widget.FrameLayout
 import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.uimanager.ThemedReactContext
+import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMapOptions
 
 @SuppressLint("ViewConstructor")
-class NaverMapComposeView(val reactContext: ThemedReactContext, private val mapOptions: NaverMapOptions) :
+class RNCNaverMapViewWrapper(val reactContext: ThemedReactContext, private val mapOptions: NaverMapOptions) :
     FrameLayout(reactContext), LifecycleEventListener {
-    private var mapView: NaverMapView? = null
+    private var mapView: RNCNaverMapView? = null
     private var savedState: Bundle? = Bundle()
 
     init {
-        mapView = NaverMapView(reactContext, mapOptions)
+        mapView = RNCNaverMapView(reactContext, mapOptions)
         addView(mapView)
     }
 
-    fun setNightMode(value: Boolean) {
-
-    }
+    fun setNightMode(value: Boolean) {}
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        mapView?.onStart()
+        mapView?.run {
+            onCreate(savedState)
+            onStart()
+        }
         setupLayoutHack()
     }
 
     override fun onDetachedFromWindow() {
-        mapView?.onSaveInstanceState(savedState ?: run {
-            Bundle().also { this@NaverMapComposeView.savedState = it }
-        })
+        mapView?.run {
+            onSaveInstanceState(savedState ?: run {
+                Bundle().also { this@RNCNaverMapViewWrapper.savedState = it }
+            })
+        }
         super.onDetachedFromWindow()
     }
 
@@ -78,7 +83,19 @@ class NaverMapComposeView(val reactContext: ThemedReactContext, private val mapO
         mapView?.onPause()
     }
 
-    override fun onHostDestroy() {
-        mapView?.onDestroy()
+    override fun onHostDestroy() {}
+
+    companion object {
+        /**
+         * A helper to get react tag id by given MapView
+         */
+        @JvmStatic
+        fun getReactTagFromWebView(mapView: MapView): Int { // It is expected that the mapView is enclosed by [RNCNaverMapViewWrapper] as the first child.
+            // Therefore, it must have a parent, and the parent ID is the reactTag.
+            // In exceptional cases, such as receiving MapView messaging after the view has been unmounted,
+            // the WebView will not have a parent.
+            // In this case, we simply return -1 to indicate that it was not found.
+            return (mapView.parent as? View)?.id ?: -1
+        }
     }
 }

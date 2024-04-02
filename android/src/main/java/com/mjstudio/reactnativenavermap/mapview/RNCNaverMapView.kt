@@ -7,7 +7,7 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.NaverMapOptions
 
 @SuppressLint("ViewConstructor")
-class NaverMapView(private val reactContext: ThemedReactContext, private val mapOptions: NaverMapOptions) :
+class RNCNaverMapView(private val reactContext: ThemedReactContext, private val mapOptions: NaverMapOptions) :
     MapView(reactContext, mapOptions) {
 
     private var map: NaverMap? = null
