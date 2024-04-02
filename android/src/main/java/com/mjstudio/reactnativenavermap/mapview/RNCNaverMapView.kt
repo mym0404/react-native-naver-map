@@ -3,10 +3,13 @@ package com.mjstudio.reactnativenavermap.mapview
 import android.annotation.SuppressLint
 import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.RNCNaverMapViewEvent.Initialized
-import com.mjstudio.reactnativenavermap.event.emitEvent
+import com.mjstudio.reactnativenavermap.util.emitEvent
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
+import com.naver.maps.map.NaverMap.MapType
 import com.naver.maps.map.NaverMapOptions
+import com.naver.maps.map.NaverMapSdk
+import com.naver.maps.map.style.layers.Layer
 
 @SuppressLint("ViewConstructor")
 class RNCNaverMapView(private val reactContext: ThemedReactContext, private val mapOptions: NaverMapOptions) :
@@ -37,4 +40,11 @@ class RNCNaverMapView(private val reactContext: ThemedReactContext, private val 
         super.onDetachedFromWindow()
     }
 
+    fun setMapType(value: MapType) {
+        map?.mapType = value
+    }
+
+    fun enableLayerGroup(value: String, isEnabled: Boolean) {
+        map?.setLayerGroupEnabled(value, isEnabled)
+    }
 }

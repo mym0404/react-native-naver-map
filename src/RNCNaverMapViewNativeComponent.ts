@@ -3,6 +3,7 @@ import type { ViewProps } from 'react-native';
 import type {
   DirectEventHandler,
   Int32,
+  WithDefault,
 } from 'react-native/Libraries/Types/CodegenTypes';
 
 export type NaverMapAuthFailedEvent = Readonly<{
@@ -12,21 +13,38 @@ export type NaverMapAuthFailedEvent = Readonly<{
 
 interface NaverMapViewProps extends ViewProps {
   // Additional
-  onAuthFailed?: DirectEventHandler<NaverMapAuthFailedEvent>;
+  // onAuthFailed?: DirectEventHandler<NaverMapAuthFailedEvent>;
 
   // Implemented
 
   onInitialized?: DirectEventHandler<Readonly<{}>>;
 
   /*Not Implemented Yet*/
+  mapType?: WithDefault<
+    | 'Basic'
+    | 'Navi'
+    | 'Satellite'
+    | 'Hybrid'
+    | 'Terrain'
+    | 'NaviHybrid'
+    | 'None',
+    'Basic'
+  >;
 
-  // center?: Readonly<
-  //   Coord & {
-  //     zoom?: number;
-  //     tilt?: number;
-  //     bearing?: number;
-  //   }
-  // >;
+  layerGroups?: WithDefault<
+    ReadonlyArray<
+      'BUILDING' | 'TRAFFIC' | 'TRANSIT' | 'BICYCLE' | 'MOUNTAIN' | 'CADASTRAL'
+    >,
+    'BUILDING'
+  >;
+
+  // center?: Readonly<{
+  //   latitude: Double;
+  //   longitude: Double;
+  //   zoom?: Double;
+  //   tilt?: Double;
+  //   bearing?: Double;
+  // }>;
   // tilt?: number;
   // bearing?: number;
   // mapPadding?: Rect;
@@ -50,7 +68,6 @@ interface NaverMapViewProps extends ViewProps {
   // compass?: boolean;
   // scaleBar?: boolean;
   // zoomControl?: boolean;
-  // mapType?: MapType;
   // buildingHeight?: number;
   // minZoomLevel?: number;
   // maxZoomLevel?: number;

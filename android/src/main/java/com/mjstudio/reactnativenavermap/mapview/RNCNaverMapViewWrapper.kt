@@ -14,7 +14,8 @@ import com.naver.maps.map.NaverMapOptions
 @SuppressLint("ViewConstructor")
 class RNCNaverMapViewWrapper(val reactContext: ThemedReactContext, private val mapOptions: NaverMapOptions) :
     FrameLayout(reactContext), LifecycleEventListener {
-    private var mapView: RNCNaverMapView? = null
+    var mapView: RNCNaverMapView? = null
+        private set
     private var savedState: Bundle? = Bundle()
 
     init {

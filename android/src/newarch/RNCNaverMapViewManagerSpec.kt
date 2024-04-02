@@ -1,12 +1,12 @@
 package com.mjstudio.reactnativenavermap
 
-import android.view.View
-import com.facebook.react.uimanager.SimpleViewManager
+import android.view.ViewGroup
+import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.ViewManagerDelegate
 import com.facebook.react.viewmanagers.RNCNaverMapViewManagerDelegate
 import com.facebook.react.viewmanagers.RNCNaverMapViewManagerInterface
 
-abstract class RNCNaverMapViewManagerSpec<T : View> : SimpleViewManager<T>(), RNCNaverMapViewManagerInterface<T> {
+abstract class RNCNaverMapViewManagerSpec<T : ViewGroup> : ViewGroupManager<T>(), RNCNaverMapViewManagerInterface<T> {
     private val mDelegate: ViewManagerDelegate<T>
 
     init {
