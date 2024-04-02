@@ -1,16 +1,22 @@
 import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
-import type { ViewProps } from 'react-native';
+import type { ViewProps, HostComponent } from 'react-native';
 import type {
   DirectEventHandler,
   Int32,
   WithDefault,
-  Float,
   Double,
 } from 'react-native/Libraries/Types/CodegenTypes';
+import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
+import React from 'react';
 
 export type NaverMapAuthFailedEvent = Readonly<{
   errorCode: Int32;
   description: string;
+}>;
+
+type Coord = Readonly<{
+  latitude: Double;
+  longitude: Double;
 }>;
 
 type Rect = Readonly<{
@@ -18,6 +24,13 @@ type Rect = Readonly<{
   right: Double;
   bottom: Double;
   left: Double;
+}>;
+
+type PartialRect = Readonly<{
+  top?: Double;
+  right?: Double;
+  bottom?: Double;
+  left?: Double;
 }>;
 
 interface NaverMapViewProps extends ViewProps {
@@ -28,6 +41,13 @@ interface NaverMapViewProps extends ViewProps {
 
   onInitialized?: DirectEventHandler<Readonly<{}>>;
   onOptionChanged?: DirectEventHandler<Readonly<{}>>;
+  onCameraChanged?: DirectEventHandler<
+    Readonly<{
+      latitude: string;
+      longitude: string;
+      zoom: Double;
+    }>
+  >;
 
   mapType?: WithDefault<
     | 'Basic'
@@ -50,10 +70,10 @@ interface NaverMapViewProps extends ViewProps {
   isIndoorEnabled?: boolean;
   isNightModeEnabled?: boolean;
   isLiteModeEnabled?: boolean;
-  lightness?: WithDefault<Float, 0>;
-  buildingHeight?: WithDefault<Float, 1>;
-  symbolScale?: WithDefault<Float, 1>;
-  symbolPerspectiveRatio?: WithDefault<Float, 1>;
+  lightness?: WithDefault<Double, 0>;
+  buildingHeight?: WithDefault<Double, 1>;
+  symbolScale?: WithDefault<Double, 1>;
+  symbolPerspectiveRatio?: WithDefault<Double, 1>;
 
   center?: Readonly<{
     latitude: Double;
@@ -63,7 +83,7 @@ interface NaverMapViewProps extends ViewProps {
     bearing?: Double;
   }>;
 
-  mapPadding?: Rect;
+  mapPadding?: PartialRect;
 
   /*Not Implemented Yet*/
   // tilt?: number;
@@ -102,4 +122,22 @@ interface NaverMapViewProps extends ViewProps {
   // useTextureView?: boolean;
 }
 
+type ComponentType = HostComponent<NaverMapViewProps>;
+
+interface NaverMapNativeCommands {
+  animateToCoordinate: (
+    ref: React.ElementRef<ComponentType>,
+    latitude: Double,
+    longitude: Double
+  ) => void;
+  animateToBound: (
+    ref: React.ElementRef<ComponentType>,
+    encodedJsonString: string
+  ) => void;
+}
+
 export default codegenNativeComponent<NaverMapViewProps>('RNCNaverMapView');
+export const NaverMapCommands: NaverMapNativeCommands =
+  codegenNativeCommands<NaverMapNativeCommands>({
+    supportedCommands: ['animateToCoordinate', 'animateToBound'],
+  });

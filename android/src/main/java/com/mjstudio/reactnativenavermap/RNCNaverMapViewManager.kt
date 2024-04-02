@@ -1,6 +1,5 @@
 package com.mjstudio.reactnativenavermap
 
-import androidx.core.math.MathUtils.clamp
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -14,6 +13,7 @@ import com.mjstudio.reactnativenavermap.mapview.RNCNaverMapViewWrapper
 import com.mjstudio.reactnativenavermap.util.RectUtil
 import com.mjstudio.reactnativenavermap.util.getDoubleOrNull
 import com.mjstudio.reactnativenavermap.util.getLatLng
+import com.naver.maps.geometry.MathUtils.clamp
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.NaverMap.MapType.Basic
@@ -24,6 +24,7 @@ import com.naver.maps.map.NaverMap.MapType.None
 import com.naver.maps.map.NaverMap.MapType.Satellite
 import com.naver.maps.map.NaverMap.MapType.Terrain
 import com.naver.maps.map.NaverMapOptions
+import debugE
 
 @ReactModule(name = RNCNaverMapViewManager.NAME)
 class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper>() {
@@ -45,8 +46,14 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
 
     override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> =
         (super.getExportedCustomDirectEventTypeConstants() ?: mutableMapOf()).apply {
-            put(NaverMapInitializeEvent.EVENT_NAME, mapOf("registrationName" to NaverMapInitializeEvent.EVENT_NAME))
-            put(NaverMapOptionChangeEvent.EVENT_NAME, mapOf("registrationName" to NaverMapOptionChangeEvent.EVENT_NAME))
+            put(
+                NaverMapInitializeEvent.EVENT_NAME,
+                mapOf("registrationName" to NaverMapInitializeEvent.EVENT_NAME)
+            )
+            put(
+                NaverMapOptionChangeEvent.EVENT_NAME,
+                mapOf("registrationName" to NaverMapOptionChangeEvent.EVENT_NAME)
+            )
         }
 
     private fun RNCNaverMapViewWrapper?.withMapView(callback: (mapView: RNCNaverMapView) -> Unit) {
@@ -76,21 +83,22 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     }
 
     @ReactProp(name = "layerGroups")
-    override fun setLayerGroups(view: RNCNaverMapViewWrapper?, value: ReadableArray?) = view.withMap { map ->
-        (value ?: Arguments.createArray().apply { pushString("BUILDING") }).also { arr ->
-            arrayOf(
-                "BUILDING", "TRAFFIC", "TRANSIT", "BICYCLE", "MOUNTAIN", "CADASTRAL",
-            ).forEach {
-                var isEnabled = false
-                for (i in 0 until arr.size()) {
-                    if (arr.getString(i) == it) {
-                        isEnabled = true
+    override fun setLayerGroups(view: RNCNaverMapViewWrapper?, value: ReadableArray?) =
+        view.withMap { map ->
+            (value ?: Arguments.createArray().apply { pushString("BUILDING") }).also { arr ->
+                arrayOf(
+                    "BUILDING", "TRAFFIC", "TRANSIT", "BICYCLE", "MOUNTAIN", "CADASTRAL",
+                ).forEach {
+                    var isEnabled = false
+                    for (i in 0 until arr.size()) {
+                        if (arr.getString(i) == it) {
+                            isEnabled = true
+                        }
                     }
+                    map.setLayerGroupEnabled("LAYER_GROUP_$it", isEnabled)
                 }
-                map.setLayerGroupEnabled("LAYER_GROUP_$it", isEnabled)
             }
         }
-    }
 
     @ReactProp(name = "isIndoorEnabled", defaultBoolean = true)
     override fun setIsIndoorEnabled(view: RNCNaverMapViewWrapper?, value: Boolean) = view.withMap {
@@ -98,65 +106,87 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     }
 
     @ReactProp(name = "isNightModeEnabled", defaultBoolean = false)
-    override fun setIsNightModeEnabled(view: RNCNaverMapViewWrapper?, value: Boolean) = view.withMap {
-        it.isNightModeEnabled = value
-    }
+    override fun setIsNightModeEnabled(view: RNCNaverMapViewWrapper?, value: Boolean) =
+        view.withMap {
+            it.isNightModeEnabled = value
+        }
 
     @ReactProp(name = "isLiteModeEnabled", defaultBoolean = false)
-    override fun setIsLiteModeEnabled(view: RNCNaverMapViewWrapper?, value: Boolean) = view.withMap {
-        it.isLiteModeEnabled = value
+    override fun setIsLiteModeEnabled(view: RNCNaverMapViewWrapper?, value: Boolean) =
+        view.withMap {
+            it.isLiteModeEnabled = value
+        }
+
+    @ReactProp(name = "lightness", defaultDouble = 0.0)
+    override fun setLightness(view: RNCNaverMapViewWrapper?, value: Double) = view.withMap {
+        it.lightness = clamp(value, -1.0, 1.0).toFloat()
     }
 
-    @ReactProp(name = "lightness", defaultFloat = 0f)
-    override fun setLightness(view: RNCNaverMapViewWrapper?, value: Float) = view.withMap {
-        it.lightness = clamp(value, -1f, 1f)
+    @ReactProp(name = "buildingHeight", defaultDouble = 1.0)
+    override fun setBuildingHeight(view: RNCNaverMapViewWrapper?, value: Double) = view.withMap {
+        it.buildingHeight = clamp(value, 0.0, 1.0).toFloat()
     }
 
-    @ReactProp(name = "buildingHeight", defaultFloat = 1f)
-    override fun setBuildingHeight(view: RNCNaverMapViewWrapper?, value: Float) = view.withMap {
-        it.buildingHeight = clamp(value, 0f, 1f)
+    @ReactProp(name = "symbolScale", defaultDouble = 1.0)
+    override fun setSymbolScale(view: RNCNaverMapViewWrapper?, value: Double) = view.withMap {
+        it.symbolScale = clamp(value, 0.0, 2.0).toFloat()
     }
 
-    @ReactProp(name = "symbolScale", defaultFloat = 1f)
-    override fun setSymbolScale(view: RNCNaverMapViewWrapper?, value: Float) = view.withMap {
-        it.symbolScale = clamp(value, 0f, 2f)
-    }
-
-    @ReactProp(name = "symbolPerspectiveRatio", defaultFloat = 1f)
-    override fun setSymbolPerspectiveRatio(view: RNCNaverMapViewWrapper?, value: Float) = view.withMap {
-        it.symbolPerspectiveRatio = clamp(value, 0f, 1f)
-    }
+    @ReactProp(name = "symbolPerspectiveRatio", defaultDouble = 1.0)
+    override fun setSymbolPerspectiveRatio(view: RNCNaverMapViewWrapper?, value: Double) =
+        view.withMap {
+            it.symbolPerspectiveRatio = clamp(value, 0.0, 1.0).toFloat()
+        }
 
     @ReactProp(name = "center")
     override fun setCenter(view: RNCNaverMapViewWrapper?, value: ReadableMap?) = view.withMap {
         value.getLatLng()?.also { latlng ->
-            val zoom = value.getDoubleOrNull("zoom") ?: 16.0
-            val tilt = value.getDoubleOrNull("tilt")
-            val bearing = value.getDoubleOrNull("bearing")
+            val zoom = value.getDoubleOrNull("zoom") ?: it.cameraPosition.zoom
+            val tilt = value.getDoubleOrNull("tilt") ?: it.cameraPosition.tilt
+            val bearing = value.getDoubleOrNull("bearing") ?: it.cameraPosition.bearing
 
-            it.cameraPosition = if (tilt != null && bearing != null) CameraPosition(
+            it.cameraPosition = CameraPosition(
                 latlng,
                 zoom,
                 tilt,
                 bearing,
-            ) else if ((tilt == null) != (bearing == null)) CameraPosition(
-                latlng,
-                zoom,
-                tilt ?: 20.0,
-                bearing ?: 180.0
-            ) else CameraPosition(latlng, zoom)
+            )
         }
     }
 
     @ReactProp(name = "mapPadding")
-    override fun setMapPadding(view: RNCNaverMapViewWrapper?, value: ReadableMap?) = view.withMapView {
-        RectUtil.getRect(value, it.resources.displayMetrics.density)?.run {
-            it.withMap { map ->
-                map.setContentPadding(left, top, right, bottom)
+    override fun setMapPadding(view: RNCNaverMapViewWrapper?, value: ReadableMap?) =
+        view.withMapView {
+            RectUtil.getRect(value, it.resources.displayMetrics.density, defaultValue = 0.0)?.run {
+                it.withMap { map ->
+                    debugE(this)
+                    map.setContentPadding(left, top, right, bottom)
+                }
             }
         }
+
+    // endregion
+
+    // region COMMANDS
+//    override fun receiveCommand(
+//        root: RNCNaverMapViewWrapper,
+//        commandId: String?,
+//        args: ReadableArray?
+//    ) {
+//        super.receiveCommand(root, commandId, args)
+//    }
+
+    override fun animateToCoordinate(
+        view: RNCNaverMapViewWrapper?,
+        latitude: Double,
+        longitude: Double
+    ) {
+        TODO("Not yet implemented")
     }
 
+    override fun animateToBound(view: RNCNaverMapViewWrapper?, encodedJsonString: String?) {
+        TODO("Not yet implemented")
+    }
     // endregion
 
     companion object {

@@ -16,6 +16,10 @@ export default function App() {
         onOptionChanged={() => {
           console.log('Option Changed!');
         }}
+        center={{
+          latitude: 37.50663442764957,
+          longitude: 127.04102406190495,
+        }}
       />
     </View>
   );

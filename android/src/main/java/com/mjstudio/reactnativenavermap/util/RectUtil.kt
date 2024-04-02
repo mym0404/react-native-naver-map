@@ -2,26 +2,19 @@ package com.mjstudio.reactnativenavermap.util
 
 import android.graphics.Rect
 import com.facebook.react.bridge.ReadableMap
+import kotlin.math.roundToInt
 
 object RectUtil {
-    fun getRect(padding: ReadableMap?, density: Float): Rect? {
+    fun getRect(padding: ReadableMap?, density: Float, defaultValue: Double = 0.0): Rect? {
         var left = 0
         var top = 0
         var right = 0
         var bottom = 0
         if (padding != null) {
-            if (padding.hasKey("left")) {
-                left = Math.round(padding.getDouble("left").toFloat() * density)
-            }
-            if (padding.hasKey("top")) {
-                top = Math.round(padding.getDouble("top").toFloat() * density)
-            }
-            if (padding.hasKey("right")) {
-                right = Math.round(padding.getDouble("right").toFloat() * density)
-            }
-            if (padding.hasKey("bottom")) {
-                bottom = Math.round(padding.getDouble("bottom").toFloat() * density)
-            }
+            top = ((padding.getDoubleOrNull("top") ?: defaultValue) * density).roundToInt()
+            right = ((padding.getDoubleOrNull("right") ?: defaultValue) * density).roundToInt()
+            bottom = ((padding.getDoubleOrNull("bottom") ?: defaultValue) * density).roundToInt()
+            left = ((padding.getDoubleOrNull("left") ?: defaultValue) * density).roundToInt()
             return Rect(left, top, right, bottom)
         }
         return null
