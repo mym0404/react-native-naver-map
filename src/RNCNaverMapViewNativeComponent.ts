@@ -19,6 +19,7 @@ interface NaverMapViewProps extends ViewProps {
   // Implemented
 
   onInitialized?: DirectEventHandler<Readonly<{}>>;
+  onOptionChanged?: DirectEventHandler<Readonly<{}>>;
 
   mapType?: WithDefault<
     | 'Basic'

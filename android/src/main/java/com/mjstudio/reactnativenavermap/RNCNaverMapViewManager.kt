@@ -6,7 +6,8 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
-import com.mjstudio.reactnativenavermap.event.RNCNaverMapViewEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.mapview.RNCNaverMapView
 import com.mjstudio.reactnativenavermap.mapview.RNCNaverMapViewWrapper
 import com.naver.maps.map.NaverMap
@@ -39,10 +40,21 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
 
     override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> =
         (super.getExportedCustomDirectEventTypeConstants() ?: mutableMapOf()).apply {
-            RNCNaverMapViewEvent.values().forEach {
-                put(it.eventName, mapOf("registrationName" to it.eventName))
-            }
+            put(NaverMapInitializeEvent.EVENT_NAME, mapOf("registrationName" to NaverMapInitializeEvent.EVENT_NAME))
+            put(NaverMapOptionChangeEvent.EVENT_NAME, mapOf("registrationName" to NaverMapOptionChangeEvent.EVENT_NAME))
         }
+
+    private fun RNCNaverMapViewWrapper?.withMapView(callback: RNCNaverMapView.() -> Unit) {
+        this?.mapView?.run(callback)
+    }
+
+    private fun RNCNaverMapViewWrapper?.withMap(callback: (map: NaverMap) -> Unit) {
+        this?.mapView?.withMap(callback)
+    }
+
+    override fun needsCustomLayoutForChildren(): Boolean = true
+
+    // region PROPS
 
     @ReactProp(name = "mapType")
     override fun setMapType(view: RNCNaverMapViewWrapper?, value: String?) = view.withMap {
@@ -110,13 +122,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
         it.symbolPerspectiveRatio = clamp(value, 0f, 1f)
     }
 
-    private fun RNCNaverMapViewWrapper?.withMapView(callback: RNCNaverMapView.() -> Unit) {
-        this?.mapView?.run(callback)
-    }
-
-    private fun RNCNaverMapViewWrapper?.withMap(callback: (map: NaverMap) -> Unit) {
-        this?.mapView?.withMap(callback)
-    }
+    // endregion
 
     companion object {
         const val NAME = "RNCNaverMapView"

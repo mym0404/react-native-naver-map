@@ -91,7 +91,7 @@ class RNCNaverMapViewWrapper(val reactContext: ThemedReactContext, private val m
          * A helper to get react tag id by given MapView
          */
         @JvmStatic
-        fun getReactTagFromWebView(mapView: MapView): Int { // It is expected that the mapView is enclosed by [RNCNaverMapViewWrapper] as the first child.
+        fun getReactTagFromMapView(mapView: MapView): Int { // It is expected that the mapView is enclosed by [RNCNaverMapViewWrapper] as the first child.
             // Therefore, it must have a parent, and the parent ID is the reactTag.
             // In exceptional cases, such as receiving MapView messaging after the view has been unmounted,
             // the WebView will not have a parent.

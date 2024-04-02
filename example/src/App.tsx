@@ -12,7 +12,10 @@ export default function App() {
           console.log('initialized!');
         }}
         mapType={'Terrain'}
-        buildingHeight={0.2}
+        buildingHeight={0.5}
+        onOptionChanged={() => {
+          console.log('Option Changed!');
+        }}
       />
     </View>
   );

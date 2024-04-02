@@ -2,7 +2,8 @@ package com.mjstudio.reactnativenavermap.mapview
 
 import android.annotation.SuppressLint
 import com.facebook.react.uimanager.ThemedReactContext
-import com.mjstudio.reactnativenavermap.event.RNCNaverMapViewEvent.Initialized
+import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.util.emitEvent
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
@@ -16,13 +17,20 @@ class RNCNaverMapView(private val reactContext: ThemedReactContext, private val 
     private var isAttached = false
 
     private val reactTag: Int
-        get() = RNCNaverMapViewWrapper.getReactTagFromWebView(this)
+        get() = RNCNaverMapViewWrapper.getReactTagFromMapView(this)
 
     init {
         getMapAsync {
-            if (isAttached) {
-                map = it
-                reactContext.emitEvent(Initialized, reactTag)
+            map = it
+            reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
+                NaverMapInitializeEvent(surfaceId, reactTag)
+            }
+
+
+            it.addOnOptionChangeListener {
+                reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
+                    NaverMapOptionChangeEvent(surfaceId, reactTag)
+                }
             }
         }
     }

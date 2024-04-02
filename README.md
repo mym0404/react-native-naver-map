@@ -7,6 +7,15 @@
 
 리액트 네이티브 [Naver Map](https://www.ncloud.com/product/applicationService/maps) 컴포넌트입니다.
 
+## 왜 이 라이브러리를 써야하나요?
+
+1. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 **최신 기능들을 모두 지원**합니다. Seamless한 Props와 Command들로 Naver Map을 조작할 수 있습니다.
+2. **Fabric**과 Old Architecture모두 지원합니다.
+3. Event Coalescing를 통해 Native -> JS 로의 이벤트 중 쓸모없는 이벤트들을 걸러내 성능이 최적화가 됩니다.
+
+
+## 목적
+
 이 프로젝트는 다음과 같은 목적을 가집니다.
 
 1. 더 이상 관리되지 않는 [기존 라이브러리](https://github.com/QuadFlask/react-native-naver-map) 대체
