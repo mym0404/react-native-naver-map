@@ -1,2 +1,10 @@
 export { default as NaverMapView } from './RNCNaverMapViewNativeComponent';
 export * from './RNCNaverMapViewNativeComponent';
+export * from './types/Coord';
+export * from './types/Rect';
+export * from './types/Region';
+export * from './types/MapType';
+export * from './types/TrackingMode';
+export * from './types/LayerGroup';
+export * from './types/Gravity';
+export * from './types/Align';

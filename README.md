@@ -10,6 +10,9 @@
 이 프로젝트는 다음과 같은 목적을 가집니다.
 
 1. 더 이상 관리되지 않는 [기존 라이브러리](https://github.com/QuadFlask/react-native-naver-map) 대체
+
+기존 라이브러리의 모든 기능을 가져간 채로 API의 변경도 되도록이면 마이그레이션을 위해 지양하려고 합니다.
+
 2. New Architecture Renderer Fabric 지원
 
 >[!NOTE]
@@ -35,6 +38,16 @@
 [//]: # (```sh)
 [//]: # (npm install @mj-studio/react-native-naver-map)
 [//]: # (```)
+
+## Milestone
+
+- [x] Project Started (23.04.02)
+- [ ] Android - Setup, Rendering, Camera, Move <- 🔥(here)
+- [ ] iOS - Setup, Rendering, Camera, Move
+- [ ] Android - Implement Markers, Features
+- [ ] iOS - Implement Markers, Features
+- [ ] Docs - Docusaurus docs
+- [ ] Release
 
 
 ## Contributing

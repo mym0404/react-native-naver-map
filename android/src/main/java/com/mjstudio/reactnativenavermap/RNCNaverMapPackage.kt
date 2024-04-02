@@ -8,7 +8,7 @@ import com.facebook.react.uimanager.ViewManager
 class NaverMapViewPackage : ReactPackage {
     override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
         val viewManagers: MutableList<ViewManager<*, *>> = ArrayList()
-        viewManagers.add(RNCRNCNaverMapViewManager())
+        viewManagers.add(RNCNaverMapViewManager())
         return viewManagers
     }
 
