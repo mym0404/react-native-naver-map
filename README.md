@@ -3,7 +3,7 @@
 >[!WARNING]
 >This project is ongoing. See the supporting table for progress.
 >
->I want to release `1.0` until May, 2025
+>I want to release `1.0` until May, 2024
 
 ---
 
