@@ -61,7 +61,7 @@
 
 ## Milestone
 
-- [x] Project Started (23.04.02)
+- [x] Project Started (23.04.01)
 - [ ] Android - General Props, Commands, Rendering, Camera, Move <- 🔥(here)
 - [ ] iOS - General Props, Comamnds, Rendering, Camera, Move
 - [ ] Android - Implement Basic Overlays
