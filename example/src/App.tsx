@@ -1,26 +1,103 @@
 import * as React from 'react';
+import { useRef, useState } from 'react';
 
-import { StyleSheet, View } from 'react-native';
-import { NaverMapView } from '@mj-studio/react-native-naver-map';
+import { View, Button, Switch, Text } from 'react-native';
+import {
+  NaverMapView,
+  Commands,
+  type MapType,
+  MapTypes,
+} from '@mj-studio/react-native-naver-map';
+import Slider from '@react-native-community/slider';
 
 export default function App() {
+  const ref = useRef<any>(null);
+
+  const [nightMode, setNightMode] = useState(false);
+  const [indoor, setIndoor] = useState(false);
+  const [mapType, setMapType] = useState<MapType>(MapTypes[0]!);
+  const [symbolScale, setSymbolScale] = useState(1);
+
   return (
     <View style={{ flex: 1 }}>
       <NaverMapView
-        style={StyleSheet.absoluteFill}
+        ref={ref}
+        style={{ flex: 1 }}
+        mapType={mapType}
+        isIndoorEnabled={indoor}
         onInitialized={() => {
           console.log('initialized!');
         }}
-        mapType={'Terrain'}
-        buildingHeight={0.5}
         onOptionChanged={() => {
           console.log('Option Changed!');
         }}
+        symbolScale={symbolScale}
         center={{
           latitude: 37.50663442764957,
           longitude: 127.04102406190495,
         }}
+        isNightModeEnabled={nightMode}
       />
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          alignItems: 'stretch',
+          paddingVertical: 24,
+          paddingHorizontal: 20,
+          gap: 12,
+        }}
+      >
+        <Button
+          title={'MapType'}
+          onPress={() =>
+            setMapType(
+              MapTypes[
+                (MapTypes.findIndex((v) => v === mapType) + 1) % MapTypes.length
+              ]!
+            )
+          }
+        />
+        <Button title={'Indoor'} onPress={() => setIndoor((v) => !v)} />
+        <Button
+          title={'Seoul Station'}
+          onPress={() => {
+            Commands.animateCameraTo(
+              ref.current!,
+              37.5559,
+              126.9723,
+              3000,
+              0,
+              0.5,
+              0.5
+            );
+          }}
+        />
+        <Button
+          title={'Move (10, 10) dp or pt'}
+          onPress={() => {
+            Commands.animateCameraBy(ref.current!, 10, 10, 500, 0, 0.5, 0.5);
+          }}
+        />
+
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text>Night Mode</Text>
+          <Switch value={nightMode} onValueChange={setNightMode} />
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text>Symbol</Text>
+          <Slider
+            style={{ width: 100, height: 32 }}
+            minimumValue={0}
+            maximumValue={1}
+            minimumTrackTintColor={'#222222'}
+            maximumTrackTintColor={'#000000'}
+            onValueChange={setSymbolScale}
+            value={symbolScale}
+          />
+          <Switch value={nightMode} onValueChange={setNightMode} />
+        </View>
+      </View>
     </View>
   );
 }

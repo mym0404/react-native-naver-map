@@ -9,22 +9,22 @@ import type {
 import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 import React from 'react';
 
-export type NaverMapAuthFailedEvent = Readonly<{
-  errorCode: Int32;
-  description: string;
-}>;
+// export type NaverMapAuthFailedEvent = Readonly<{
+//   errorCode: Int32;
+//   description: string;
+// }>;
 
-type Coord = Readonly<{
-  latitude: Double;
-  longitude: Double;
-}>;
-
-type Rect = Readonly<{
-  top: Double;
-  right: Double;
-  bottom: Double;
-  left: Double;
-}>;
+// type Coord = Readonly<{
+//   latitude: Double;
+//   longitude: Double;
+// }>;
+//
+// type Rect = Readonly<{
+//   top: Double;
+//   right: Double;
+//   bottom: Double;
+//   left: Double;
+// }>;
 
 type PartialRect = Readonly<{
   top?: Double;
@@ -85,6 +85,9 @@ interface NaverMapViewProps extends ViewProps {
 
   mapPadding?: PartialRect;
 
+  minZoom?: WithDefault<Double, -1>;
+  maxZoom?: WithDefault<Double, -1>;
+
   /*Not Implemented Yet*/
   // tilt?: number;
   // bearing?: number;
@@ -125,19 +128,75 @@ interface NaverMapViewProps extends ViewProps {
 type ComponentType = HostComponent<NaverMapViewProps>;
 
 interface NaverMapNativeCommands {
-  animateToCoordinate: (
+  screenToCoordinate: (
+    ref: React.ElementRef<ComponentType>,
+    x: Double,
+    y: Double
+  ) => Promise<
+    Readonly<{
+      isValid: boolean;
+      latitude: number;
+      longitude: number;
+    }>
+  >;
+  coordinateToScreen: (
     ref: React.ElementRef<ComponentType>,
     latitude: Double,
     longitude: Double
-  ) => void;
-  animateToBound: (
+  ) => Promise<
+    Readonly<{
+      isValid: boolean;
+      screenX: number;
+      screenY: number;
+    }>
+  >;
+  animateCameraTo: (
     ref: React.ElementRef<ComponentType>,
-    encodedJsonString: string
+    latitude: Double,
+    longitude: Double,
+    duration?: Int32,
+    easing?: Int32 /*'Easing' | 'None' | 'Linear' | 'Fly'*/,
+    pivotX?: Double,
+    pivotY?: Double
   ) => void;
+  animateCameraBy: (
+    ref: React.ElementRef<ComponentType>,
+    latitudeDelta: Double,
+    longitudeDelta: Double,
+    duration?: Int32,
+    easing?: Int32 /*'Easing' | 'None' | 'Linear' | 'Fly'*/,
+    pivotX?: Double,
+    pivotY?: Double
+  ) => void;
+  animateZoom: (
+    ref: React.ElementRef<ComponentType>,
+    latitudeDelta: Double,
+    longitudeDelta: Double,
+    duration?: Int32,
+    easing?: Int32 /*'Easing' | 'None' | 'Linear' | 'Fly'*/,
+    pivotX?: Double,
+    pivotY?: Double
+  ) => void;
+  animateCameraFitBounds: (
+    ref: React.ElementRef<ComponentType>,
+    duration?: Int32,
+    easing?: Int32 /*'Easing' | 'None' | 'Linear' | 'Fly'*/,
+    pivotX?: Double,
+    pivotY?: Double
+  ) => void;
+  cancelAnimation: (ref: React.ElementRef<ComponentType>) => void;
 }
 
 export default codegenNativeComponent<NaverMapViewProps>('RNCNaverMapView');
-export const NaverMapCommands: NaverMapNativeCommands =
+export const Commands: NaverMapNativeCommands =
   codegenNativeCommands<NaverMapNativeCommands>({
-    supportedCommands: ['animateToCoordinate', 'animateToBound'],
+    supportedCommands: [
+      'screenToCoordinate',
+      'coordinateToScreen',
+      'animateCameraTo',
+      'animateCameraBy',
+      'animateZoom',
+      'animateCameraFitBounds',
+      'cancelAnimation',
+    ],
   });

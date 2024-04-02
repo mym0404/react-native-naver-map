@@ -2341,6 +2341,7 @@ __metadata:
     "@babel/core": "npm:^7.20.0"
     "@babel/preset-env": "npm:^7.20.0"
     "@babel/runtime": "npm:^7.20.0"
+    "@react-native-community/slider": "npm:^4.5.0"
     "@react-native/babel-preset": "npm:0.73.21"
     "@react-native/metro-config": "npm:0.73.5"
     "@react-native/typescript-config": "npm:0.73.1"
@@ -2797,6 +2798,13 @@ __metadata:
   bin:
     react-native: build/bin.js
   checksum: 10/771a966bc93bce9d86948f4b3051fc0464e4dbed28b8d343aff689c9b6885449a6445067d92be1af14c828e70deb9af3e8f69519e67d5b10520cc4e86db482ff
+  languageName: node
+  linkType: hard
+
+"@react-native-community/slider@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "@react-native-community/slider@npm:4.5.0"
+  checksum: 10/acf8abf9018735e8a0f52b07af0fe0577a9f693733bec42eebe410ebcac527db2be7d8b657bd2a4f4034a8e16d914306ed843e0e13884abe24ae87dbefa2ad6e
   languageName: node
   linkType: hard
 

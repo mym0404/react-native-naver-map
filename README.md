@@ -16,6 +16,7 @@
 ## 왜 이 라이브러리를 써야하나요?
 
 1. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 **최신 기능들을 모두 지원**합니다. Seamless한 Props와 Command들로 Naver Map을 조작할 수 있습니다.
+  - 기존의 라이브러리에 없었던 화면/지도내 위치간 좌표변환 및 여러 추가된 기능들을 탑재합니다.
 2. **Fabric**과 Old Architecture모두 지원합니다.
 3. Event Coalescing를 통해 Native -> JS 로의 이벤트 중 쓸모없는 이벤트들을 걸러내 성능이 최적화가 됩니다.
 
