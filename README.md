@@ -1,4 +1,4 @@
-- [English Documentation(WIP)](/doc/en.md)
+- [English Documentation(not yet written)](/doc/en.md)
 
 >[!WARNING]
 >This project is ongoing. See the supporting table for progress.
