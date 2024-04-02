@@ -17,17 +17,22 @@
 
 ## Supporting Table
 
-|        | iOS                    | Android                | Web        |
-|--------|------------------------|------------------------|------------|
-| Bridge | Working In Progress ⚒️ | Working In Progress ⚒️ | Planned 📦 |
-| Fabric | Planned 📦             | Planned 📦             | Planned 📦 |
+|        | iOS        | Android                | Web        |
+|--------|------------|------------------------|------------|
+| Bridge | Planned 📦 | Working In Progress ⚒️ | Planned 📦 |
+| Fabric | Planned 📦 | Working In Progress ⚒️ | Planned 📦 |
 
+>[!TIP]
+>Bridge와 Fabric 아키텍쳐 모두 따로따로 지원을 준비해야 하는 것은 아닙니다.
+>추상화 레이어로 분리되어 있고 실제 내부 구현이 완료되면 플랫폼마다 Bridge/Fabric모두 출시가 될 것입니다.
+> 
+>작업 우선순위는 Android -> iOS -> Web 입니다.
 
-## Installation
+[//]: # (## Installation)
 
-```sh
-npm install @mj-studio/react-native-naver-map
-```
+[//]: # (```sh)
+[//]: # (npm install @mj-studio/react-native-naver-map)
+[//]: # (```)
 
 
 ## Contributing
