@@ -13,12 +13,15 @@ class NaverMapViewManager : NaverMapViewManagerSpec<NaverMapComposeView>() {
     }
 
     override fun createViewInstance(context: ThemedReactContext): NaverMapComposeView {
-        return NaverMapComposeView(context, NaverMapOptions())
+        return NaverMapComposeView(context, NaverMapOptions()).also {
+            context.addLifecycleEventListener(it)
+        }
     }
 
     override fun onDropViewInstance(view: NaverMapComposeView) {
         super.onDropViewInstance(view)
         view.onDropViewInstance()
+        view.reactContext.removeLifecycleEventListener(view)
     }
 
     override fun setNightMode(view: NaverMapComposeView?, value: Boolean) {

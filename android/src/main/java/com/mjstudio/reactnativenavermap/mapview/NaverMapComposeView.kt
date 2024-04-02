@@ -5,17 +5,18 @@ import android.os.Bundle
 import android.view.Choreographer
 import android.view.Choreographer.FrameCallback
 import android.widget.FrameLayout
+import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.uimanager.ThemedReactContext
 import com.naver.maps.map.NaverMapOptions
 
 @SuppressLint("ViewConstructor")
-class NaverMapComposeView(private val context: ThemedReactContext, private val mapOptions: NaverMapOptions) :
-    FrameLayout(context) {
+class NaverMapComposeView(val reactContext: ThemedReactContext, private val mapOptions: NaverMapOptions) :
+    FrameLayout(reactContext), LifecycleEventListener {
     private var mapView: NaverMapView? = null
     private var savedState: Bundle? = Bundle()
 
     init {
-        mapView = NaverMapView(context, mapOptions)
+        mapView = NaverMapView(reactContext, mapOptions)
         addView(mapView)
     }
 
@@ -67,5 +68,17 @@ class NaverMapComposeView(private val context: ThemedReactContext, private val m
             )
             child.layout(0, 0, child.measuredWidth, child.measuredHeight)
         }
+    }
+
+    override fun onHostResume() {
+        mapView?.onResume()
+    }
+
+    override fun onHostPause() {
+        mapView?.onPause()
+    }
+
+    override fun onHostDestroy() {
+        mapView?.onDestroy()
     }
 }
