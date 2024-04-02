@@ -4,6 +4,7 @@ import type {
   DirectEventHandler,
   Int32,
   WithDefault,
+  Float,
 } from 'react-native/Libraries/Types/CodegenTypes';
 
 export type NaverMapAuthFailedEvent = Readonly<{
@@ -19,7 +20,6 @@ interface NaverMapViewProps extends ViewProps {
 
   onInitialized?: DirectEventHandler<Readonly<{}>>;
 
-  /*Not Implemented Yet*/
   mapType?: WithDefault<
     | 'Basic'
     | 'Navi'
@@ -38,6 +38,15 @@ interface NaverMapViewProps extends ViewProps {
     'BUILDING'
   >;
 
+  isIndoorEnabled?: boolean;
+  isNightModeEnabled?: boolean;
+  isLiteModeEnabled?: boolean;
+  lightness?: WithDefault<Float, 0>;
+  buildingHeight?: WithDefault<Float, 1>;
+  symbolScale?: WithDefault<Float, 1>;
+  symbolPerspectiveRatio?: WithDefault<Float, 1>;
+
+  /*Not Implemented Yet*/
   // center?: Readonly<{
   //   latitude: Double;
   //   longitude: Double;
@@ -68,16 +77,16 @@ interface NaverMapViewProps extends ViewProps {
   // compass?: boolean;
   // scaleBar?: boolean;
   // zoomControl?: boolean;
-  // buildingHeight?: number;
+
   // minZoomLevel?: number;
   // maxZoomLevel?: number;
-  // nightMode?: boolean;
+
   // scrollGesturesEnabled?: boolean;
   // zoomGesturesEnabled?: boolean;
   // tiltGesturesEnabled?: boolean;
   // rotateGesturesEnabled?: boolean;
   // stopGesturesEnabled?: boolean;
-  // liteModeEnabled?: boolean;
+
   // useTextureView?: boolean;
 }
 

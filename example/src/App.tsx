@@ -11,6 +11,8 @@ export default function App() {
         onInitialized={() => {
           console.log('initialized!');
         }}
+        mapType={'Terrain'}
+        buildingHeight={0.2}
       />
     </View>
   );
