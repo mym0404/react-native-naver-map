@@ -5,11 +5,19 @@ import type {
   Int32,
   WithDefault,
   Float,
+  Double,
 } from 'react-native/Libraries/Types/CodegenTypes';
 
 export type NaverMapAuthFailedEvent = Readonly<{
   errorCode: Int32;
   description: string;
+}>;
+
+type Rect = Readonly<{
+  top: Double;
+  right: Double;
+  bottom: Double;
+  left: Double;
 }>;
 
 interface NaverMapViewProps extends ViewProps {
@@ -47,14 +55,17 @@ interface NaverMapViewProps extends ViewProps {
   symbolScale?: WithDefault<Float, 1>;
   symbolPerspectiveRatio?: WithDefault<Float, 1>;
 
+  center?: Readonly<{
+    latitude: Double;
+    longitude: Double;
+    zoom?: Double;
+    tilt?: Double;
+    bearing?: Double;
+  }>;
+
+  mapPadding?: Rect;
+
   /*Not Implemented Yet*/
-  // center?: Readonly<{
-  //   latitude: Double;
-  //   longitude: Double;
-  //   zoom?: Double;
-  //   tilt?: Double;
-  //   bearing?: Double;
-  // }>;
   // tilt?: number;
   // bearing?: number;
   // mapPadding?: Rect;

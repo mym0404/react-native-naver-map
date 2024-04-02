@@ -3,6 +3,7 @@ package com.mjstudio.reactnativenavermap
 import androidx.core.math.MathUtils.clamp
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.ReadableArray
+import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
@@ -10,6 +11,10 @@ import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.mapview.RNCNaverMapView
 import com.mjstudio.reactnativenavermap.mapview.RNCNaverMapViewWrapper
+import com.mjstudio.reactnativenavermap.util.RectUtil
+import com.mjstudio.reactnativenavermap.util.getDoubleOrNull
+import com.mjstudio.reactnativenavermap.util.getLatLng
+import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.NaverMap.MapType.Basic
 import com.naver.maps.map.NaverMap.MapType.Hybrid
@@ -44,7 +49,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
             put(NaverMapOptionChangeEvent.EVENT_NAME, mapOf("registrationName" to NaverMapOptionChangeEvent.EVENT_NAME))
         }
 
-    private fun RNCNaverMapViewWrapper?.withMapView(callback: RNCNaverMapView.() -> Unit) {
+    private fun RNCNaverMapViewWrapper?.withMapView(callback: (mapView: RNCNaverMapView) -> Unit) {
         this?.mapView?.run(callback)
     }
 
@@ -120,6 +125,36 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     @ReactProp(name = "symbolPerspectiveRatio", defaultFloat = 1f)
     override fun setSymbolPerspectiveRatio(view: RNCNaverMapViewWrapper?, value: Float) = view.withMap {
         it.symbolPerspectiveRatio = clamp(value, 0f, 1f)
+    }
+
+    @ReactProp(name = "center")
+    override fun setCenter(view: RNCNaverMapViewWrapper?, value: ReadableMap?) = view.withMap {
+        value.getLatLng()?.also { latlng ->
+            val zoom = value.getDoubleOrNull("zoom") ?: 16.0
+            val tilt = value.getDoubleOrNull("tilt")
+            val bearing = value.getDoubleOrNull("bearing")
+
+            it.cameraPosition = if (tilt != null && bearing != null) CameraPosition(
+                latlng,
+                zoom,
+                tilt,
+                bearing,
+            ) else if ((tilt == null) != (bearing == null)) CameraPosition(
+                latlng,
+                zoom,
+                tilt ?: 20.0,
+                bearing ?: 180.0
+            ) else CameraPosition(latlng, zoom)
+        }
+    }
+
+    @ReactProp(name = "mapPadding")
+    override fun setMapPadding(view: RNCNaverMapViewWrapper?, value: ReadableMap?) = view.withMapView {
+        RectUtil.getRect(value, it.resources.displayMetrics.density)?.run {
+            it.withMap { map ->
+                map.setContentPadding(left, top, right, bottom)
+            }
+        }
     }
 
     // endregion
