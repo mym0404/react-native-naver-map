@@ -13,6 +13,11 @@
 
 [![NPM - alpha](https://img.shields.io/badge/NPM-alpha-3af2f2)](https://) [![Android SDK - 3.18.0](https://img.shields.io/badge/Android_SDK-3.18.0-2ea44f)](https://) [![iOS SDK - 3.16.2](https://img.shields.io/badge/iOS_SDK-3.16.2-3522ff)](https://)
 
+![preview](https://raw.githubusercontent.com/mym0404/image-archive/master/202404030152069.gif)
+
+>[!NOTE]
+>작업은 순조롭게 진행중입니다. 출시할 날이 기대됩니다. - 23.04.03 Preview
+
 ## 왜 이 라이브러리를 써야하나요?
 
 1. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 **최신 기능들을 모두 지원**합니다. Seamless한 Props와 Command들로 Naver Map을 조작할 수 있습니다.
