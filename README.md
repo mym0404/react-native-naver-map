@@ -57,10 +57,12 @@
 ## Milestone
 
 - [x] Project Started (23.04.02)
-- [ ] Android - Setup, Rendering, Camera, Move <- 🔥(here)
-- [ ] iOS - Setup, Rendering, Camera, Move
-- [ ] Android - Implement Markers, Features
-- [ ] iOS - Implement Markers, Features
+- [ ] Android - General Props, Commands, Rendering, Camera, Move <- 🔥(here)
+- [ ] iOS - General Props, Comamnds, Rendering, Camera, Move
+- [ ] Android - Implement Basic Overlays
+- [ ] iOS - Implement Basic Overlays
+- [ ] Android - Implement Advanced Overlays
+- [ ] iOS - Implement Advanced Overlays
 - [ ] Docs - Docusaurus docs
 - [ ] Release
 
