@@ -14,7 +14,6 @@ CGFloat clamp(CGFloat value, CGFloat min, CGFloat max) {
     return MIN(MAX(value, min), max);
 }
 
-
 @implementation RNCNaverMapViewImpl
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -23,13 +22,13 @@ CGFloat clamp(CGFloat value, CGFloat min, CGFloat max) {
         double delayInSeconds = 0.1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         // run after _eventEmitter available(new arch), direct event block set(old arch)
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
             self.onInitialized(@{});
         });
     }
+
     return self;
 }
-
 
 - (void)setMapType:(NMFMapType)mapType
 {

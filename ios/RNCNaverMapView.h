@@ -9,7 +9,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- Extern Module only for New Architecture inherit `RCTViewComponentView`
+   Extern Module only for New Architecture inherit `RCTViewComponentView`
  */
 @interface RNCNaverMapView : RCTViewComponentView
 @end

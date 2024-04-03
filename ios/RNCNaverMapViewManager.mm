@@ -1,10 +1,10 @@
 #import <Foundation/Foundation.h>
-#import <React/RCTViewManager.h>
 #import <React/RCTUIManager.h>
+#import <React/RCTViewManager.h>
 #import "RCTBridge.h"
-#import "Utils.h"
 #import "RNCNaverMapView.h"
 #import "RNCNaverMapViewImpl.h"
+#import "Utils.h"
 
 @interface RNCNaverMapViewManager : RCTViewManager
 @end
@@ -17,8 +17,10 @@ RCT_EXPORT_MODULE(RNCNaverMapView)
 - (UIView *)view
 {
     RNCNaverMapViewImpl *ret = [[RNCNaverMapViewImpl alloc] init];
+
     return ret;
 }
+
 #endif
 
 RCT_EXPORT_VIEW_PROPERTY(mapType, NMFMapType)
