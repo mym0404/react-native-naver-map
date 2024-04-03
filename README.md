@@ -42,10 +42,10 @@
 
 ## Supporting Table
 
-|        | iOS        | Android                | Web        |
-|--------|------------|------------------------|------------|
-| Bridge | Planned 📦 | Working In Progress ⚒️ | Planned 📦 |
-| Fabric | Planned 📦 | Working In Progress ⚒️ | Planned 📦 |
+|        | iOS                    | Android                | Web        |
+|--------|------------------------|------------------------|------------|
+| Bridge | Working In Progress ⚒️ | Working In Progress ⚒️ | Planned 📦 |
+| Fabric | Working In Progress ⚒️ | Working In Progress ⚒️ | Planned 📦 |
 
 >[!TIP]
 >Bridge와 Fabric 아키텍쳐 모두 따로따로 지원을 준비해야 하는 것은 아닙니다.
@@ -62,14 +62,11 @@
 ## Milestone
 
 - [x] Project Started (23.04.01)
-- [ ] Android - General Props, Commands, Rendering, Camera, Move <- 🔥(here)
-- [ ] iOS - General Props, Comamnds, Rendering, Camera, Move
-- [ ] Android - Implement Basic Overlays
-- [ ] iOS - Implement Basic Overlays
-- [ ] Android - Implement Advanced Overlays
-- [ ] iOS - Implement Advanced Overlays
-- [ ] Docs - Docusaurus docs
+- [ ] Android/iOS - General Props, Commands, Rendering, Camera, Move <- 🔥(here)
+- [ ] Android/iOS - Implement Basic Overlays
+- [ ] Android/iOS - Implement Advanced Overlays
 - [ ] Release
+- [ ] Docs - Docusaurus docs
 
 
 ## Contributing
