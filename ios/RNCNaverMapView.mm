@@ -53,9 +53,30 @@ _view.name = newViewProps.name;             \
 if (oldViewProps.name != newViewProps.name) {                   \
 _view.name = RCTNSStringFromString(newViewProps.name);      \
 }
+
+  if (oldViewProps.mapType != newViewProps.mapType) {
+    if (newViewProps.mapType == RNCNaverMapViewMapType::Basic) {
+      _view.mapType = NMFMapTypeBasic;
+    } else if (newViewProps.mapType == RNCNaverMapViewMapType::Navi){
+      _view.mapType = NMFMapTypeNavi;
+    } else if (newViewProps.mapType == RNCNaverMapViewMapType::Satellite){
+      _view.mapType = NMFMapTypeSatellite;
+    } else if (newViewProps.mapType == RNCNaverMapViewMapType::Hybrid){
+      _view.mapType = NMFMapTypeHybrid;
+    } else if (newViewProps.mapType == RNCNaverMapViewMapType::Terrain){
+      _view.mapType = NMFMapTypeTerrain;
+    } else if (newViewProps.mapType == RNCNaverMapViewMapType::NaviHybrid){
+      _view.mapType = NMFMapTypeNaviHybrid;
+    } else if (newViewProps.mapType == RNCNaverMapViewMapType::None){
+      _view.mapType = NMFMapTypeNone;
+    }
+  }
   
-  if(oldViewProps.isIndoorEnabled != newViewProps.isIndoorEnabled){
-    
+  REMAP_PROP(isIndoorEnabled)
+  REMAP_PROP(isNightModeEnabled)
+
+  if (oldViewProps.lightness != newViewProps.lightness) {
+    _view.lightness = [NSNumber numberWithDouble:newViewProps.lightness];
   }
   
   //    if (oldViewProps.color != newViewProps.color) {
