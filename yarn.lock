@@ -2348,6 +2348,7 @@ __metadata:
     babel-plugin-module-resolver: "npm:^5.0.0"
     react: "npm:18.2.0"
     react-native: "npm:0.73.6"
+    react-native-permissions: "npm:^4.1.5"
   languageName: unknown
   linkType: soft
 
@@ -10849,6 +10850,20 @@ __metadata:
   bin:
     bob: bin/bob
   checksum: 10/20f28c400906627acd7e4b8d2bd20ea68b0e8c8a7ce7ed7ca6f0f4785358307153b4ac347a1169cc0d1485202b1d056a1703756cb642259ea949f2476789c542
+  languageName: node
+  linkType: hard
+
+"react-native-permissions@npm:^4.1.5":
+  version: 4.1.5
+  resolution: "react-native-permissions@npm:4.1.5"
+  peerDependencies:
+    react: ">=18.1.0"
+    react-native: ">=0.70.0"
+    react-native-windows: ">=0.70.0"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: 10/2b1eaa879e4b0c3455488c3dfa1d8b203bdbf2cd550b8ee5691d26e03c086d33f9bc495a70f8e1e85d0c16131374e11d12f7927168179e339f158eea9fb04830
   languageName: node
   linkType: hard
 

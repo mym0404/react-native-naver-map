@@ -9,7 +9,7 @@ import React, {
   useRef,
 } from 'react';
 import type { MapType } from './types/MapType';
-import type { ViewProps, NativeSyntheticEvent } from 'react-native';
+import { type ViewProps, type NativeSyntheticEvent } from 'react-native';
 import {
   type CameraAnimationEasing,
   cameraEasingToNumber,
@@ -17,6 +17,7 @@ import {
 import type { Camera } from './types/Camera';
 import type { Region } from './types/Region';
 import type { Coord } from './types/Coord';
+import type { Rect } from './types/Rect';
 
 export * from './RNCNaverMapViewNativeComponent';
 export * from './types/Coord';
@@ -88,6 +89,13 @@ export type NaverMapViewProps = ViewProps & {
    * 기본값은 1입니다.
    */
   symbolPerspectiveRatio?: number;
+  mapPadding?: Partial<Rect>;
+  isShowCompass?: boolean;
+  isShowScaleBar?: boolean;
+  isShowZoomControls?: boolean;
+  isShowIndoorLevelPicker?: boolean;
+  isShowLocationButton?: boolean;
+
   /**
    * 지도 객체가 초기화가 완료된 뒤에 호출됩니다.
    */
@@ -170,6 +178,12 @@ const NaverMapView = forwardRef(
       onCameraChanged,
       onInitialized,
       onOptionChanged,
+      mapPadding,
+      isShowCompass = true,
+      isShowIndoorLevelPicker = true,
+      isShowLocationButton = true,
+      isShowScaleBar = true,
+      isShowZoomControls = true,
 
       ...rest
     }: NaverMapViewProps,
@@ -283,9 +297,16 @@ const NaverMapView = forwardRef(
         onInitialized={onInitialized}
         onCameraChanged={onCameraChanged}
         onOptionChanged={onOptionChanged}
+        mapPadding={mapPadding}
+        isShowCompass={isShowCompass}
+        isShowIndoorLevelPicker={isShowIndoorLevelPicker}
+        isShowLocationButton={isShowLocationButton}
+        isShowScaleBar={isShowScaleBar}
+        isShowZoomControls={isShowZoomControls}
         {...rest}
       />
     );
   }
 );
+
 export default NaverMapView;

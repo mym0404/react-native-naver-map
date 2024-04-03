@@ -97,10 +97,15 @@ interface NaverMapViewProps extends ViewProps {
   minZoom?: Double;
   maxZoom?: Double;
 
+  isShowCompass?: boolean;
+  isShowScaleBar?: boolean;
+  isShowZoomControls?: boolean;
+  isShowIndoorLevelPicker?: boolean;
+  isShowLocationButton?: boolean;
+
   /*Not Implemented Yet*/
   // tilt?: number;
   // bearing?: number;
-  // mapPadding?: Rect;
   // logoMargin?: Rect;
   // logoGravity?: Gravity;
   // onCameraChange?: (event: {

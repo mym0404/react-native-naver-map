@@ -42,6 +42,9 @@ using namespace facebook::react;
         >
 
 @property (nonatomic, assign) NMFMapType mapType;
+@property (nonatomic, copy) NSDictionary *camera;
+@property (nonatomic, copy) NSDictionary *region;
+@property (nonatomic, copy) NSDictionary *mapPadding;
 @property (nonatomic, assign) BOOL isIndoorEnabled;
 @property (nonatomic, assign) BOOL isNightModeEnabled;
 @property (nonatomic, assign) BOOL isLiteModeEnabled;
@@ -49,9 +52,11 @@ using namespace facebook::react;
 @property (nonatomic, assign) NSNumber *buildingHeight;
 @property (nonatomic, assign) NSNumber *symbolScale;
 @property (nonatomic, assign) NSNumber *symbolPerspectiveRatio;
-@property (nonatomic, copy) NSDictionary *camera;
-@property (nonatomic, copy) NSDictionary *region;
-@property (nonatomic, copy) NSDictionary *mapPadding;
+@property (nonatomic, assign) BOOL isShowCompass;
+@property (nonatomic, assign) BOOL isShowIndoorLevelPicker;
+@property (nonatomic, assign) BOOL isShowLocationButton;
+@property (nonatomic, assign) BOOL isShowScaleBar;
+@property (nonatomic, assign) BOOL isShowZoomControls;
 
 @property (nonatomic, copy) RCTDirectEventBlock onInitialized;
 @property (nonatomic, copy) RCTDirectEventBlock onOptionChanged;

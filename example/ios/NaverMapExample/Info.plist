@@ -50,5 +50,7 @@
 	<false/>
   <key>NMFClientId</key>
   <string>$(NAVER_CLIENT_ID)</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>사용자의 위치를 받습니다.</string>
 </dict>
 </plist>

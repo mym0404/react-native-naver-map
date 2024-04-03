@@ -102,6 +102,11 @@ using namespace facebook::react;
     REMAP_DOUBLE(buildingHeight)
     REMAP_DOUBLE(symbolScale)
     REMAP_DOUBLE(symbolPerspectiveRatio)
+    REMAP_PROP(isShowCompass)
+    REMAP_PROP(isShowIndoorLevelPicker)
+    REMAP_PROP(isShowLocationButton)
+    REMAP_PROP(isShowScaleBar)
+    REMAP_PROP(isShowZoomControls)
 
     auto c1 = oldViewProps.camera, c2 = newViewProps.camera;
 

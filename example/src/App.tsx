@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 import { View, Button, Switch, Text } from 'react-native';
 import NaverMapView, {
@@ -8,6 +8,7 @@ import NaverMapView, {
   type NaverMapViewRef,
 } from '@mj-studio/react-native-naver-map';
 import Slider from '@react-native-community/slider';
+import { request, PERMISSIONS } from 'react-native-permissions';
 
 export default function App() {
   const ref = useRef<NaverMapViewRef>(null);
@@ -17,6 +18,15 @@ export default function App() {
   const [mapType, setMapType] = useState<MapType>(MapTypes[0]!);
   const [symbolScale, setSymbolScale] = useState(1);
   const [lightness, setLightness] = useState(0);
+  const [compass, setCompass] = useState(true);
+  const [scaleBar, setScaleBar] = useState(true);
+  const [zoomControls, setZoomControls] = useState(true);
+  const [indoorLevelPicker, setIndoorLevelPicker] = useState(true);
+  const [myLocation, setMyLocation] = useState(true);
+
+  useEffect(() => {
+    request(PERMISSIONS.IOS.LOCATION_ALWAYS);
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
@@ -40,6 +50,11 @@ export default function App() {
         symbolScale={symbolScale}
         lightness={lightness}
         isNightModeEnabled={nightMode}
+        isShowCompass={compass}
+        isShowIndoorLevelPicker={indoorLevelPicker}
+        isShowScaleBar={scaleBar}
+        isShowZoomControls={zoomControls}
+        isShowLocationButton={myLocation}
       />
       <View
         style={{
@@ -52,7 +67,7 @@ export default function App() {
         }}
       >
         <Button
-          title={'MapType'}
+          title={`Type(${mapType})`}
           onPress={() =>
             setMapType(
               MapTypes[
@@ -61,9 +76,8 @@ export default function App() {
             )
           }
         />
-        <Button title={'Indoor'} onPress={() => setIndoor((v) => !v)} />
         <Button
-          title={'Seoul Station'}
+          title={'Move to'}
           onPress={() => {
             ref.current?.animateCameraWithTwoCoords({
               coord1: {
@@ -80,45 +94,96 @@ export default function App() {
           }}
         />
         <Button
-          title={'Move (10, 10) dp or pt'}
+          title={'Move by'}
           onPress={() => {
             ref.current?.animateCameraBy({
-              x: 10,
-              y: 10,
+              x: 100,
+              y: 100,
               duration: 3000,
             });
           }}
         />
 
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text>Night Mode</Text>
-          <Switch value={nightMode} onValueChange={setNightMode} />
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text>Symbol</Text>
-          <Slider
-            style={{ width: 100, height: 32 }}
-            minimumValue={0}
-            maximumValue={1}
-            minimumTrackTintColor={'#222222'}
-            maximumTrackTintColor={'#000000'}
-            onValueChange={setSymbolScale}
-            value={symbolScale}
-          />
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text>Lightness</Text>
-          <Slider
-            style={{ width: 100, height: 32 }}
-            minimumValue={-1}
-            maximumValue={1}
-            minimumTrackTintColor={'#222222'}
-            maximumTrackTintColor={'#000000'}
-            onValueChange={setLightness}
-            value={lightness}
-          />
-        </View>
+        <Toggle value={nightMode} onChange={setNightMode} text={'Night'} />
+        <Toggle value={indoor} onChange={setIndoor} text={'Indoor'} />
+        <Toggle value={compass} onChange={setCompass} text={'Compass'} />
+        <Toggle value={scaleBar} onChange={setScaleBar} text={'Scale Bar'} />
+        <Toggle
+          value={myLocation}
+          onChange={setMyLocation}
+          text={'Location Button'}
+        />
+        <Toggle
+          value={zoomControls}
+          onChange={setZoomControls}
+          text={'Zoom Controls'}
+        />
+        <Toggle
+          value={indoorLevelPicker}
+          onChange={setIndoorLevelPicker}
+          text={'Indoor Level'}
+        />
+        <Range
+          min={0}
+          max={1}
+          value={symbolScale}
+          onChange={setSymbolScale}
+          text={'Symbol Scale'}
+        />
+        <Range
+          min={-1}
+          max={1}
+          value={lightness}
+          onChange={setLightness}
+          text={'Lightness'}
+        />
       </View>
     </View>
   );
 }
+
+const Toggle = ({
+  onChange,
+  text,
+  value,
+}: {
+  value: boolean;
+  onChange: (value: boolean) => void;
+  text: string;
+}) => {
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+      <Text>{text}</Text>
+      <Switch value={value} onValueChange={onChange} />
+    </View>
+  );
+};
+
+const Range = ({
+  onChange,
+  text,
+  value,
+  max,
+  min,
+}: {
+  value: number;
+  onChange: (value: number) => void;
+  text: string;
+  min?: number;
+  max?: number;
+}) => {
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+      <Text>{text}</Text>
+      <Slider
+        style={{ width: 100, height: 32 }}
+        minimumValue={min}
+        maximumValue={max}
+        minimumTrackTintColor={'#222222'}
+        maximumTrackTintColor={'#000000'}
+        onValueChange={onChange}
+        value={value}
+      />
+    </View>
+  );
+};

@@ -1,17 +1,21 @@
 #import <Foundation/Foundation.h>
+#import <react/renderer/components/RNCNaverMapViewSpec/Props.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTViewManager.h>
 #import "RCTBridge.h"
 #import "RCTConvert+NMFMapView.h"
 #import "RNCNaverMapView.h"
 #import "RNCNaverMapViewImpl.h"
-#import <react/renderer/components/RNCNaverMapViewSpec/Props.h>
 #import "Utils.h"
 
 @interface RNCNaverMapViewManager : RCTViewManager
 @end
 
 @implementation RNCNaverMapViewManager
+
++ (BOOL)requiresMainQueueSetup {
+    return YES;
+}
 
 RCT_EXPORT_MODULE(RNCNaverMapView)
 
@@ -37,6 +41,11 @@ RCT_EXPORT_VIEW_PROPERTY(buildingHeight, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(symbolScale, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(symbolPerspectiveRatio, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(mapPadding, NSDictionary)
+RCT_EXPORT_VIEW_PROPERTY(isShowCompass, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(isShowIndoorLevelPicker, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(isShowLocationButton, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(isShowScaleBar, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(isShowZoomControls, BOOL)
 
 
 // event
@@ -63,12 +72,12 @@ RCT_EXPORT_VIEW_PROPERTY(onOptionChanged, RCTDirectEventBlock)
     }
 #define QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(name, in_param, out_param)                                                                     \
     RCT_EXPORT_METHOD(name:(nonnull NSNumber *)reactTag in_param) {                                                                           \
-NSLog(@"fuck1");[self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, BASE_VIEW_PER_OS() *> *viewRegistry) { \
+        [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, BASE_VIEW_PER_OS() *> *viewRegistry) { \
             RNCNaverMapViewImpl *view = (RNCNaverMapViewImpl *)viewRegistry[reactTag];                                                        \
             if (![view isKindOfClass:[RNCNaverMapViewImpl class]]) {                                                                          \
                 RCTLogError(@"Invalid view returned from registry, expecting RNCNaverMapView, got: %@", view);                                \
             } else {                                                                                                                          \
-                NSLog(@"fuck"); [view name:out_param];                                                                                        \
+                [view name:out_param];                                                                                                        \
             }                                                                                                                                 \
         }];                                                                                                                                   \
     }
@@ -94,6 +103,20 @@ QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(animateCameraBy,
                                        ,
                                        x y:y duration:duration
                                        easing:easing pivotX:pivotX pivotY:pivotY
+                                       )
+QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(animateRegionTo,
+                                       latitude:(double)latitude
+                                       longitude:(double)longitude
+                                       latitudeDelta:(double)latitudeDelta
+                                       longitudeDelta:(double)longitudeDelta
+                                       duration:(NSInteger)duration
+                                       easing:(NSInteger)easing
+                                       pivotX:(double)pivotX
+                                       pivotY:(double)pivotY
+                                       ,
+                                       latitude longitude:longitude latitudeDelta:latitudeDelta
+                                       longitudeDelta:longitudeDelta
+                                       duration:duration easing:easing pivotX:pivotX pivotY:pivotY
                                        )
 
 @end

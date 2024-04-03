@@ -142,6 +142,36 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
         );
 }
 
+- (void)setIsShowCompass:(BOOL)isShowCompass
+{
+    _isShowCompass = isShowCompass;
+    self.showCompass = isShowCompass;
+}
+
+- (void)setIsShowScaleBar:(BOOL)isShowScaleBar
+{
+    _isShowScaleBar = isShowScaleBar;
+    self.showScaleBar = isShowScaleBar;
+}
+
+- (void)setIsShowZoomControls:(BOOL)isShowZoomControls
+{
+    _isShowZoomControls = isShowZoomControls;
+    self.showZoomControls = isShowZoomControls;
+}
+
+- (void)setIsShowIndoorLevelPicker:(BOOL)isShowIndoorLevelPicker
+{
+    _isShowIndoorLevelPicker = isShowIndoorLevelPicker;
+    self.showIndoorLevelPicker = isShowIndoorLevelPicker;
+}
+
+- (void)setIsShowLocationButton:(BOOL)isShowLocationButton
+{
+    _isShowLocationButton = isShowLocationButton;
+    self.showLocationButton = isShowLocationButton;
+}
+
 // MARK: - EVENT
 
 - (void)mapViewOptionChanged:(NMFMapView *)mapView
