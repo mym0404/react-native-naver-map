@@ -17,6 +17,7 @@ export default function App() {
   const [indoor, setIndoor] = useState(false);
   const [mapType, setMapType] = useState<MapType>(MapTypes[0]!);
   const [symbolScale, setSymbolScale] = useState(1);
+  const [lightness, setLightness] = useState(0);
 
   return (
     <View style={{ flex: 1 }}>
@@ -37,6 +38,7 @@ export default function App() {
           longitude: 127.04102406190495,
         }}
         isNightModeEnabled={nightMode}
+        lightness={lightness}
       />
       <View
         style={{
@@ -95,7 +97,18 @@ export default function App() {
             onValueChange={setSymbolScale}
             value={symbolScale}
           />
-          <Switch value={nightMode} onValueChange={setNightMode} />
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text>Lightness</Text>
+          <Slider
+            style={{ width: 100, height: 32 }}
+            minimumValue={-1}
+            maximumValue={1}
+            minimumTrackTintColor={'#222222'}
+            maximumTrackTintColor={'#000000'}
+            onValueChange={setLightness}
+            value={lightness}
+          />
         </View>
       </View>
     </View>

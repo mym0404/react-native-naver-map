@@ -17,80 +17,80 @@ using namespace facebook::react;
 @end
 
 @implementation RNCNaverMapView {
-  RNCNaverMapViewImpl * _view;
+    RNCNaverMapViewImpl * _view;
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
-  return concreteComponentDescriptorProvider<RNCNaverMapViewComponentDescriptor>();
+    return concreteComponentDescriptorProvider<RNCNaverMapViewComponentDescriptor>();
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-  if (self = [super initWithFrame:frame]) {
-    static const auto defaultProps = std::make_shared<const RNCNaverMapViewProps>();
-    _props = defaultProps;
+    if (self = [super initWithFrame:frame]) {
+        static const auto defaultProps = std::make_shared<const RNCNaverMapViewProps>();
+        _props = defaultProps;
+        
+        _view = [[RNCNaverMapViewImpl alloc] init];
+        
+        self.contentView = _view;
+    }
     
-    _view = [[RNCNaverMapViewImpl alloc] init];
-    
-    self.contentView = _view;
-  }
-  
-  return self;
+    return self;
 }
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-  const auto &oldViewProps = *std::static_pointer_cast<RNCNaverMapViewProps const>(_props);
-  const auto &newViewProps = *std::static_pointer_cast<RNCNaverMapViewProps const>(props);
-  
+    const auto &oldViewProps = *std::static_pointer_cast<RNCNaverMapViewProps const>(_props);
+    const auto &newViewProps = *std::static_pointer_cast<RNCNaverMapViewProps const>(props);
+    
 #define REMAP_PROP(name)                    \
 if (oldViewProps.name != newViewProps.name) {   \
 _view.name = newViewProps.name;             \
 }
-  
-#define REMAP_STRING_PROP(name)                             \
+    
+#define REMAP_STRING(name)                             \
 if (oldViewProps.name != newViewProps.name) {                   \
 _view.name = RCTNSStringFromString(newViewProps.name);      \
 }
-
-  if (oldViewProps.mapType != newViewProps.mapType) {
-    if (newViewProps.mapType == RNCNaverMapViewMapType::Basic) {
-      _view.mapType = NMFMapTypeBasic;
-    } else if (newViewProps.mapType == RNCNaverMapViewMapType::Navi){
-      _view.mapType = NMFMapTypeNavi;
-    } else if (newViewProps.mapType == RNCNaverMapViewMapType::Satellite){
-      _view.mapType = NMFMapTypeSatellite;
-    } else if (newViewProps.mapType == RNCNaverMapViewMapType::Hybrid){
-      _view.mapType = NMFMapTypeHybrid;
-    } else if (newViewProps.mapType == RNCNaverMapViewMapType::Terrain){
-      _view.mapType = NMFMapTypeTerrain;
-    } else if (newViewProps.mapType == RNCNaverMapViewMapType::NaviHybrid){
-      _view.mapType = NMFMapTypeNaviHybrid;
-    } else if (newViewProps.mapType == RNCNaverMapViewMapType::None){
-      _view.mapType = NMFMapTypeNone;
+    
+#define REMAP_DOUBLE(name)                             \
+if (oldViewProps.name != newViewProps.name) {                   \
+_view.name = [NSNumber numberWithDouble:newViewProps.name];      \
+}
+    
+    if (oldViewProps.mapType != newViewProps.mapType) {
+        if (newViewProps.mapType == RNCNaverMapViewMapType::Basic) {
+            _view.mapType = NMFMapTypeBasic;
+        } else if (newViewProps.mapType == RNCNaverMapViewMapType::Navi){
+            _view.mapType = NMFMapTypeNavi;
+        } else if (newViewProps.mapType == RNCNaverMapViewMapType::Satellite){
+            _view.mapType = NMFMapTypeSatellite;
+        } else if (newViewProps.mapType == RNCNaverMapViewMapType::Hybrid){
+            _view.mapType = NMFMapTypeHybrid;
+        } else if (newViewProps.mapType == RNCNaverMapViewMapType::Terrain){
+            _view.mapType = NMFMapTypeTerrain;
+        } else if (newViewProps.mapType == RNCNaverMapViewMapType::NaviHybrid){
+            _view.mapType = NMFMapTypeNaviHybrid;
+        } else if (newViewProps.mapType == RNCNaverMapViewMapType::None){
+            _view.mapType = NMFMapTypeNone;
+        }
     }
-  }
-  
-  REMAP_PROP(isIndoorEnabled)
-  REMAP_PROP(isNightModeEnabled)
-
-  if (oldViewProps.lightness != newViewProps.lightness) {
-    _view.lightness = [NSNumber numberWithDouble:newViewProps.lightness];
-  }
-  
-  //    if (oldViewProps.color != newViewProps.color) {
-  //        NSString * colorToConvert = [[NSString alloc] initWithUTF8String: newViewProps.color.c_str()];
-  //        [_view setBackgroundColor: [Utils hexStringToColor:colorToConvert]];
-  //    }
-  
-  
-  [super updateProps:props oldProps:oldProps];
+    
+    REMAP_PROP(isIndoorEnabled)
+    REMAP_PROP(isNightModeEnabled)
+    REMAP_PROP(isLiteModeEnabled)
+    REMAP_DOUBLE(lightness)
+    REMAP_DOUBLE(buildingHeight)
+    REMAP_DOUBLE(symbolScale)
+    REMAP_DOUBLE(symbolPerspectiveRatio)
+    
+    [super updateProps:props oldProps:oldProps];
 }
 
 Class<RCTComponentViewProtocol> RNCNaverMapViewCls(void)
 {
-  return RNCNaverMapView.class;
+    return RNCNaverMapView.class;
 }
 
 @end

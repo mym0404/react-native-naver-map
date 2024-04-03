@@ -16,13 +16,19 @@ RCT_EXPORT_MODULE(RNCNaverMapView)
 #ifndef RCT_NEW_ARCH_ENABLED
 - (UIView *)view
 {
-  return [[RNCNaverMapViewImpl alloc] init];
+    return [[RNCNaverMapViewImpl alloc] init];
 }
 #endif
 
 RCT_EXPORT_VIEW_PROPERTY(mapType, NMFMapType)
 RCT_EXPORT_VIEW_PROPERTY(isIndoorEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(isNightModeEnabled, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(isLiteModeEnabled, BOOL)
+
+
 RCT_EXPORT_VIEW_PROPERTY(lightness, NSNumber)
+RCT_EXPORT_VIEW_PROPERTY(buildingHeight, NSNumber)
+RCT_EXPORT_VIEW_PROPERTY(symbolScale, NSNumber)
+RCT_EXPORT_VIEW_PROPERTY(symbolPerspectiveRatio, NSNumber)
 
 @end
