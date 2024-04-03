@@ -78,11 +78,19 @@ body:
       label: Relevant log output
       description: Please copy and paste any relevant log output, if any.
       render: shell
+  - type: input
+    id: sample
+    attributes:
+      label: Reproducible Sample Repository
+      description: Repository url of reproducible sample
+      placeholder: ex. https://github.com/user/repo
+    validations:
+      required: true
   - type: checkboxes
     id: terms
     attributes:
       label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](../../CODE_OF_CONDUCT.md)
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/mj-studio-library/react-native-naver-map/blob/main/CODE_OF_CONDUCT.md)
       options:
         - label: I agree to follow this project's Code of Conduct
           required: true
