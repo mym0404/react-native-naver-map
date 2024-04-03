@@ -35,12 +35,12 @@
     "prepare": "husky",
     "release": "release-it",
     "codegen:android": "cd example/android && ./gradlew generateCodegenArtifactsFromSchema",
-    "codegen:ios": "node example/node_modules/react-native/scripts/generate-codegen-artifacts.js --path example/ --outputPath RCTNaverMapViewViewProtocol/generated/",
+    "codegen:ios": "node example/node_modules/react-native/scripts/generate-codegen-artifacts.js --path example/ --outputPath example/ios",
     "studio": "studio $(pwd)/android",
     "studio:example": "studio $(pwd)/example/android",
     "xcode": "open $(pwd)/example/ios/NaverMapExample.xcworkspace",
-    "pod:bridge": "cd ios && bundle install && bundle exec pod install",
-    "pod:newarch": "cde ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install"
+    "pod:old": "cd example/ios && bundle install && bundle exec pod install",
+    "pod:new": "cd example/ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install"
   },
   "keywords": [
     "react-native",

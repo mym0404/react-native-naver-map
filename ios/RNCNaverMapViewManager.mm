@@ -3,10 +3,10 @@
 #import "RCTBridge.h"
 #import "Utils.h"
 
-@interface NaverMapViewManager : RCTViewManager
+@interface RNCNaverMapViewManager : RCTViewManager
 @end
 
-@implementation NaverMapViewManager
+@implementation RNCNaverMapViewManager
 
 RCT_EXPORT_MODULE(NaverMapView)
 

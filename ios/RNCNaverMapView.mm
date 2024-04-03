@@ -1,5 +1,5 @@
 #ifdef RCT_NEW_ARCH_ENABLED
-#import "NaverMapView.h"
+#import "RNCNaverMapView.h"
 
 #import <react/renderer/components/RNNaverMapViewSpec/ComponentDescriptors.h>
 #import <react/renderer/components/RNNaverMapViewSpec/EventEmitters.h>
@@ -11,11 +11,11 @@
 
 using namespace facebook::react;
 
-@interface NaverMapView () <RCTNaverMapViewViewProtocol>
+@interface RNCNaverMapView () <RCTNaverMapViewViewProtocol>
 
 @end
 
-@implementation NaverMapView {
+@implementation RNCNaverMapView {
     UIView * _view;
 }
 
@@ -53,7 +53,7 @@ using namespace facebook::react;
 
 Class<RCTComponentViewProtocol> NaverMapViewCls(void)
 {
-    return NaverMapView.class;
+    return RNCNaverMapView.class;
 }
 
 @end

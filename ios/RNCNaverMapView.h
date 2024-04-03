@@ -8,7 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NaverMapView : RCTViewComponentView
+@interface RNCNaverMapView : RCTViewComponentView
 @end
 
 NS_ASSUME_NONNULL_END
