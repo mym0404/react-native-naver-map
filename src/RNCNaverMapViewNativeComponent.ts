@@ -69,6 +69,21 @@ interface NaverMapViewProps extends ViewProps {
   //   CADASTRAL?: boolean;
   // }>;
 
+  camera?: Readonly<{
+    latitude?: Double;
+    longitude?: Double;
+    zoom?: Double;
+    tilt?: Double;
+    bearing?: Double;
+  }>;
+
+  region?: Readonly<{
+    latitude: Double;
+    longitude: Double;
+    latitudeDelta: Double;
+    longitudeDelta: Double;
+  }>;
+
   isIndoorEnabled?: boolean;
   isNightModeEnabled?: boolean;
   isLiteModeEnabled?: boolean;
@@ -76,14 +91,6 @@ interface NaverMapViewProps extends ViewProps {
   buildingHeight?: Double;
   symbolScale?: Double;
   symbolPerspectiveRatio?: Double;
-
-  center?: Readonly<{
-    latitude: Double;
-    longitude: Double;
-    zoom?: Double;
-    tilt?: Double;
-    bearing?: Double;
-  }>;
 
   mapPadding?: PartialRect;
 
@@ -163,24 +170,19 @@ interface NaverMapNativeCommands {
   ) => void;
   animateCameraBy: (
     ref: React.ElementRef<ComponentType>,
-    latitudeDelta: Double,
-    longitudeDelta: Double,
+    x: Double,
+    y: Double,
     duration?: Int32,
     easing?: Int32 /*'Easing' | 'None' | 'Linear' | 'Fly'*/,
     pivotX?: Double,
     pivotY?: Double
   ) => void;
-  animateZoom: (
+  animateRegionTo: (
     ref: React.ElementRef<ComponentType>,
+    latitude: Double,
+    longitude: Double,
     latitudeDelta: Double,
     longitudeDelta: Double,
-    duration?: Int32,
-    easing?: Int32 /*'Easing' | 'None' | 'Linear' | 'Fly'*/,
-    pivotX?: Double,
-    pivotY?: Double
-  ) => void;
-  animateCameraFitBounds: (
-    ref: React.ElementRef<ComponentType>,
     duration?: Int32,
     easing?: Int32 /*'Easing' | 'None' | 'Linear' | 'Fly'*/,
     pivotX?: Double,
@@ -197,8 +199,7 @@ export const Commands: NaverMapNativeCommands =
       'coordinateToScreen',
       'animateCameraTo',
       'animateCameraBy',
-      'animateZoom',
-      'animateCameraFitBounds',
       'cancelAnimation',
+      'animateRegionTo',
     ],
   });

@@ -10,6 +10,25 @@
 #import "RNCNaverMapViewImpl.h"
 #import "Utils.h"
 
+NMFCameraUpdateAnimation getEasingAnimation(int easing) {
+    if (easing == 1) {
+        return NMFCameraUpdateAnimationNone;
+    }
+
+    if (easing == 2) {
+        return NMFCameraUpdateAnimationLinear;
+    }
+
+    if (easing == 3) {
+        return NMFCameraUpdateAnimationFly;
+    }
+
+    return NMFCameraUpdateAnimationEaseIn;
+}
+
+//@interface RNCNaverMapViewImpl () <RCTRNCNaverMapViewViewProtocol>
+//
+//@end
 
 @implementation RNCNaverMapViewImpl
 
@@ -31,6 +50,8 @@
 
     return self;
 }
+
+// MARK: - SETTER
 
 - (void)setMapType:(NMFMapType)mapType
 {
@@ -80,27 +101,99 @@
     self.mapView.symbolPerspectiveRatio = [symbolPerspectiveRatio floatValue];
 }
 
-- (void)setCenterPosition:(NSDictionary *)centerPosition
+- (void)setCamera:(NSDictionary *)camera
 {
-    double latitude = getDoubleOrZero(centerPosition[@"latitude"]);
-    double longitude = getDoubleOrZero(centerPosition[@"longitude"]);
-    double zoom = getDoubleOrZero(centerPosition[@"zoom"]);
-    double tilt = getDoubleOrZero(centerPosition[@"tilt"]);
-    double bearing = getDoubleOrZero(centerPosition[@"bearing"]);
+    _camera = camera;
 
-    auto p = NMGLatLngMake(latitude, longitude);
-    auto cameraPosition = [NMFCameraPosition cameraPosition:p
-                                                       zoom:zoom
-                                                       tilt:tilt
-                                                    heading:bearing];
-    auto update = [NMFCameraUpdate cameraUpdateWithPosition:cameraPosition];
+    NMFCameraPosition *prev = self.mapView.cameraPosition;
+    double latitude = getDoubleOrDefault(camera[@"latitude"], prev.target.lat);
+    double longitude = getDoubleOrDefault(camera[@"longitude"], prev.target.lng);
+    double zoom = getDoubleOrDefault(camera[@"zoom"], prev.zoom);
+    double tilt = getDoubleOrDefault(camera[@"tilt"], prev.tilt);
+    double heading = getDoubleOrDefault(camera[@"bearing"], prev.heading);
+
+    NMGLatLng *p = NMGLatLngMake(latitude, longitude);
+    NMFCameraPosition *cameraPosition = [NMFCameraPosition cameraPosition:p
+                                                                     zoom:zoom
+                                                                     tilt:tilt
+                                                                  heading:heading];
+    NMFCameraUpdate *update = [NMFCameraUpdate cameraUpdateWithPosition:cameraPosition];
 
     [self.mapView moveCamera:update];
 }
 
+- (void)setRegion:(NSDictionary *)region
+{
+    _region = region;
+
+    NMGLatLngBounds *bounds = [RCTConvert NMGLatLngBounds:region];
+    NMFCameraUpdate *update = [NMFCameraUpdate cameraUpdateWithFitBounds:bounds];
+
+    [self.mapView moveCamera:update];
+}
+
+// MARK: - EVENT
+
 - (void)mapViewOptionChanged:(NMFMapView *)mapView
 {
     self.onOptionChanged(@{});
+}
+
+// MARK: - COMMAND
+
+- (void)animateCameraTo:(double)latitude
+              longitude:(double)longitude
+               duration:(NSInteger)duration
+                 easing:(NSInteger)easing
+                 pivotX:(double)pivotX
+                 pivotY:(double)pivotY
+{
+    NMFCameraUpdate *update =
+        [NMFCameraUpdate cameraUpdateWithScrollTo:NMGLatLngMake(latitude, longitude)];
+
+    update.animation = getEasingAnimation(easing);
+    update.animationDuration = (NSTimeInterval)((double)duration) / 1000;
+    update.pivot = CGPointMake(pivotX, pivotY);
+    [self.mapView moveCamera:update];
+}
+
+- (void)animateCameraBy:(double)x
+                      y:(double)y
+               duration:(NSInteger)duration
+                 easing:(NSInteger)easing
+                 pivotX:(double)pivotX
+                 pivotY:(double)pivotY
+{
+    NMFCameraUpdate *update =
+        [NMFCameraUpdate cameraUpdateWithScrollBy:CGPointMake(x, y)];
+
+    update.animation = getEasingAnimation(easing);
+    update.animationDuration = (NSTimeInterval)((double)duration) / 1000;
+    update.pivot = CGPointMake(pivotX, pivotY);
+    [self.mapView moveCamera:update];
+}
+
+- (void)animateRegionTo:(double)latitude
+              longitude:(double)longitude
+          latitudeDelta:(double)latitudeDelta
+         longitudeDelta:(double)longitudeDelta
+               duration:(NSInteger)duration
+                 easing:(NSInteger)easing
+                 pivotX:(double)pivotX
+                 pivotY:(double)pivotY
+{
+    NMGLatLngBounds *bounds = [RCTConvert NMGLatLngBounds:@{
+                                   @"latitude": @(latitude),
+                                   @"longitude": @(longitude),
+                                   @"latitudeDelta": @(latitudeDelta),
+                                   @"longitudeDelta": @(longitudeDelta),
+    }];
+    NMFCameraUpdate *update = [NMFCameraUpdate cameraUpdateWithFitBounds:bounds];
+    update.animation = getEasingAnimation(easing);
+    update.animationDuration = (NSTimeInterval)((double)duration) / 1000;
+    update.pivot = CGPointMake(pivotX, pivotY);
+
+    [self.mapView moveCamera:update];
 }
 
 @end

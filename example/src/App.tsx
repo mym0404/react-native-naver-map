@@ -3,14 +3,14 @@ import { useRef, useState } from 'react';
 
 import { View, Button, Switch, Text } from 'react-native';
 import NaverMapView, {
-  Commands,
   type MapType,
   MapTypes,
+  type NaverMapViewRef,
 } from '@mj-studio/react-native-naver-map';
 import Slider from '@react-native-community/slider';
 
 export default function App() {
-  const ref = useRef<any>(null);
+  const ref = useRef<NaverMapViewRef>(null);
 
   const [nightMode, setNightMode] = useState(false);
   const [indoor, setIndoor] = useState(false);
@@ -23,6 +23,12 @@ export default function App() {
       <NaverMapView
         ref={ref}
         style={{ flex: 1 }}
+        region={{
+          latitude: 37.5559,
+          longitude: 126.9723,
+          latitudeDelta: 0.5,
+          longitudeDelta: 0.5,
+        }}
         mapType={mapType}
         isIndoorEnabled={indoor}
         onInitialized={() => {
@@ -34,11 +40,6 @@ export default function App() {
         symbolScale={symbolScale}
         lightness={lightness}
         isNightModeEnabled={nightMode}
-        center={{
-          latitude: 39,
-          longitude: 129,
-          zoom: 1,
-        }}
       />
       <View
         style={{
@@ -64,21 +65,28 @@ export default function App() {
         <Button
           title={'Seoul Station'}
           onPress={() => {
-            Commands.animateCameraTo(
-              ref.current!,
-              37.5559,
-              126.9723,
-              3000,
-              0,
-              0.5,
-              0.5
-            );
+            ref.current?.animateCameraWithTwoCoords({
+              coord1: {
+                latitude: 37.5597029241636,
+                longitude: 126.9645011,
+              },
+              coord2: {
+                latitude: 37.5523727,
+                longitude: 126.9821136855,
+              },
+              duration: 3000,
+              easing: 'Fly',
+            });
           }}
         />
         <Button
           title={'Move (10, 10) dp or pt'}
           onPress={() => {
-            Commands.animateCameraBy(ref.current!, 10, 10, 500, 0, 0.5, 0.5);
+            ref.current?.animateCameraBy({
+              x: 10,
+              y: 10,
+              duration: 3000,
+            });
           }}
         />
 

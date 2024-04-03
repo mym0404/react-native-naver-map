@@ -103,11 +103,11 @@ using namespace facebook::react;
     REMAP_DOUBLE(symbolScale)
     REMAP_DOUBLE(symbolPerspectiveRatio)
 
-    auto c1 = oldViewProps.center, c2 = newViewProps.center;
+    auto c1 = oldViewProps.camera, c2 = newViewProps.camera;
 
     if (c1.latitude != c2.latitude || c1.longitude != c2.longitude ||
         c1.tilt != c2.tilt || c1.bearing != c2.bearing || c1.zoom != c2.zoom) {
-        _view.centerPosition = @{
+        _view.camera = @{
                 @"latitude": @(c2.latitude),
                 @"longitude": @(c2.longitude),
                 @"zoom": @(c2.zoom),
@@ -116,7 +116,62 @@ using namespace facebook::react;
         };
     }
 
+    auto r1 = oldViewProps.region, r2 = newViewProps.region;
+
+    if (r1.latitude != r2.latitude || r1.longitude != r2.longitude
+        || r1.latitudeDelta != r2.latitudeDelta ||
+        r1.longitudeDelta != r2.longitudeDelta) {
+        _view.region = @{
+                @"latitude": @(r1.latitude),
+                @"longitude": @(r1.longitude),
+                @"latitudeDelta": @(r1.latitudeDelta),
+                @"longitudeDelta": @(r1.longitudeDelta),
+        };
+    }
+
     [super updateProps:props oldProps:oldProps];
+}
+
+- (void)animateCameraTo:(double)latitude
+              longitude:(double)longitude
+               duration:(NSInteger)duration
+                 easing:(NSInteger)easing
+                 pivotX:(double)pivotX
+                 pivotY:(double)pivotY
+{
+    [_view animateCameraTo:latitude
+                 longitude:longitude
+                  duration:duration
+                    easing:easing
+                    pivotX:pivotX
+                    pivotY:pivotY];
+}
+
+- (void)animateCameraBy:(double)x y:(double)y duration:(NSInteger)duration easing:(NSInteger)easing pivotX:(double)pivotX pivotY:(double)pivotY
+{
+    [_view animateCameraBy:x
+                         y:y
+                  duration:duration
+                    easing:easing
+                    pivotX:pivotX
+                    pivotY:pivotY];
+}
+
+- (void)animateRegionTo:(double)latitude longitude:(double)longitude latitudeDelta:(double)latitudeDelta longitudeDelta:(double)longitudeDelta duration:(NSInteger)duration easing:(NSInteger)easing pivotX:(double)pivotX pivotY:(double)pivotY
+{
+    [_view animateRegionTo:latitude
+                 longitude:longitude
+             latitudeDelta:latitudeDelta
+            longitudeDelta:longitudeDelta
+                  duration:duration
+                    easing:easing
+                    pivotX:pivotX
+                    pivotY:pivotY];
+}
+
+- (void)handleCommand:(const NSString *)commandName args:(const NSArray *)args
+{
+    RCTRNCNaverMapViewHandleCommand(self, commandName, args);
 }
 
 Class<RCTComponentViewProtocol> RNCNaverMapViewCls(void) {

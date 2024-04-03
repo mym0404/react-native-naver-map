@@ -4,11 +4,6 @@
 
 @implementation Utils
 
-+ (void)debugE:(NSString *)message
-{
-    NSLog(@"[RNCNaverMap] %@", message);
-}
-
 + hexStringToColor:(NSString *)stringToConvert {
     NSString *noHashString = [stringToConvert stringByReplacingOccurrencesOfString:@"#" withString:@""];
     NSScanner *stringScanner = [NSScanner scannerWithString:noHashString];

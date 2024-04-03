@@ -1,6 +1,6 @@
-import type { Coord } from '@mj-studio/react-native-naver-map';
-
-export type Region = Coord & {
+export type Region = {
+  latitude: number;
+  longitude: number;
   latitudeDelta: number;
   longitudeDelta: number;
 };

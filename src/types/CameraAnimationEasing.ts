@@ -1,5 +1,7 @@
 export type CameraAnimationEasing = 'Easing' | 'None' | 'Linear' | 'Fly';
-export function cameraEasingToNumber(value: CameraAnimationEasing): number {
+export function cameraEasingToNumber(
+  value: CameraAnimationEasing = 'Easing'
+): number {
   switch (value) {
     case 'None':
       return 1;

@@ -5,6 +5,9 @@
 //  Created by mj on 4/3/24.
 //
 
+#ifndef RNCNaverMapViewImpl_h
+#define RNCNaverMapViewImpl_h
+
 #import <Foundation/Foundation.h>
 #import <NMapsGeometry/NMGLatLng.h>
 #import <NMapsGeometry/NMGLatLngBounds.h>
@@ -17,7 +20,10 @@
 #import <NMapsMap/NMFNaverMapView.h>
 #import <NMapsMap/NMFOverlay.h>
 #import <react/renderer/components/RNCNaverMapViewSpec/Props.h>
+#import <react/renderer/components/RNCNaverMapViewSpec/RCTComponentViewHelpers.h>
+#import <React/RCTConvert.h>
 #import <React/RCTView.h>
+#import "RCTConvert+NMFMapView.h"
 
 using namespace facebook::react;
 
@@ -31,7 +37,8 @@ using namespace facebook::react;
 @interface RNCNaverMapViewImpl : NMFNaverMapView <
         NMFMapViewTouchDelegate,
         NMFMapViewCameraDelegate,
-        NMFMapViewOptionDelegate
+        NMFMapViewOptionDelegate,
+        RCTRNCNaverMapViewViewProtocol
         >
 
 @property (nonatomic, assign) NMFMapType mapType;
@@ -42,9 +49,12 @@ using namespace facebook::react;
 @property (nonatomic, assign) NSNumber *buildingHeight;
 @property (nonatomic, assign) NSNumber *symbolScale;
 @property (nonatomic, assign) NSNumber *symbolPerspectiveRatio;
-@property (nonatomic, copy) NSDictionary *centerPosition;
+@property (nonatomic, copy) NSDictionary *camera;
+@property (nonatomic, copy) NSDictionary *region;
 
 @property (nonatomic, copy) RCTDirectEventBlock onInitialized;
 @property (nonatomic, copy) RCTDirectEventBlock onOptionChanged;
 
 @end
+
+#endif /* ifndef RNCNaverMapViewImpl_h */

@@ -1,11 +1,22 @@
-import { default as NativeNaverMapView } from './RNCNaverMapViewNativeComponent';
+import {
+  default as NativeNaverMapView,
+  Commands,
+} from './RNCNaverMapViewNativeComponent';
 import React, {
   forwardRef,
   type ForwardedRef,
   useImperativeHandle,
+  useRef,
 } from 'react';
 import type { MapType } from './types/MapType';
 import type { ViewProps, NativeSyntheticEvent } from 'react-native';
+import {
+  type CameraAnimationEasing,
+  cameraEasingToNumber,
+} from './types/CameraAnimationEasing';
+import type { Camera } from './types/Camera';
+import type { Region } from './types/Region';
+import type { Coord } from './types/Coord';
 
 export * from './RNCNaverMapViewNativeComponent';
 export * from './types/Coord';
@@ -16,6 +27,8 @@ export * from './types/TrackingMode';
 export * from './types/LayerGroup';
 export * from './types/Gravity';
 export * from './types/Align';
+export * from './types/Camera';
+export * from './types/CameraAnimationEasing';
 
 export type NaverMapViewProps = ViewProps & {
   /**
@@ -23,13 +36,16 @@ export type NaverMapViewProps = ViewProps & {
    * 지도의 유형을 변경하면 가장 바닥에 나타나는 배경 지도의 스타일이 변경됩니다.
    */
   mapType?: MapType;
-  center?: {
-    latitude: number;
-    longitude: number;
-    zoom?: number;
-    tilt?: number;
-    bearing?: number;
-  };
+  /**
+   * 카메라의 위치를 조절합니다. `region`이 존재한다면 작동하지 않습니다.
+   *
+   * [Reference](https://navermaps.github.io/ios-map-sdk/guide-ko/3-1.html)
+   */
+  camera?: Partial<Camera>;
+  /**
+   * 해당 영역이 완전히 보이는 좌표와 최대 줌 레벨로 카메라가 이동합니다.
+   */
+  region?: Region;
   /**
    * indoorMapEnabled 속성을 사용하면 실내지도를 활성화할 수 있습니다.
    * 실내지도가 활성화되면 줌 레벨이 일정 수준 이상이고 실내지도가 있는 영역에 지도의 중심이 위치할 경우 자동으로 해당 영역에 대한 실내지도가 나타납니다.
@@ -94,17 +110,53 @@ export type NaverMapViewProps = ViewProps & {
   ) => void;
 };
 
-export type NaverMapViewRef = {};
+type CameraMoveBaseParams = {
+  duration?: number;
+  easing?: CameraAnimationEasing;
+  pivot?: {
+    x: number;
+    y: number;
+  };
+};
+export type NaverMapViewRef = {
+  animateCameraTo: (
+    params: {
+      latitude: number;
+      longitude: number;
+    } & CameraMoveBaseParams
+  ) => void;
+  animateCameraBy: (
+    params: {
+      x: number;
+      y: number;
+    } & CameraMoveBaseParams
+  ) => void;
+  animateCameraToCenterWithDelta: (
+    params: {
+      latitude: number;
+      longitude: number;
+      latitudeDelta: number;
+      longitudeDelta: number;
+    } & CameraMoveBaseParams
+  ) => void;
+  animateCameraWithTwoCoords: (
+    params: {
+      coord1: Coord;
+      coord2: Coord;
+    } & CameraMoveBaseParams
+  ) => void;
+};
 
 function clamp(v: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, v));
 }
-const INVALID_NUMBER = -123123123;
-
+// const INVALID_NUMBER = -123123123;
+const DEFAULT_ANIM_DURATION = 700;
 const NaverMapView = forwardRef(
   (
     {
-      center,
+      camera,
+      region,
       mapType = 'Basic',
 
       isIndoorEnabled = false,
@@ -123,21 +175,104 @@ const NaverMapView = forwardRef(
     }: NaverMapViewProps,
     ref: ForwardedRef<NaverMapViewRef>
   ) => {
-    useImperativeHandle(ref, () => ({}), []);
+    const innerRef = useRef<any>(null);
+    useImperativeHandle(
+      ref,
+      () => ({
+        animateCameraTo: ({ duration, easing, latitude, longitude, pivot }) => {
+          if (innerRef.current) {
+            Commands.animateCameraTo(
+              innerRef.current,
+              latitude,
+              longitude,
+              duration ?? DEFAULT_ANIM_DURATION,
+              cameraEasingToNumber(easing),
+              pivot?.x ?? 0.5,
+              pivot?.y ?? 0.5
+            );
+          }
+        },
+        animateCameraBy: ({ duration, easing, x, y, pivot }) => {
+          if (innerRef.current) {
+            Commands.animateCameraBy(
+              innerRef.current,
+              x,
+              y,
+              duration ?? DEFAULT_ANIM_DURATION,
+              cameraEasingToNumber(easing),
+              pivot?.x ?? 0.5,
+              pivot?.y ?? 0.5
+            );
+          }
+        },
+        animateCameraToCenterWithDelta: ({
+          easing,
+          longitude,
+          latitude,
+          duration,
+          latitudeDelta,
+          longitudeDelta,
+          pivot,
+        }) => {
+          if (innerRef.current) {
+            Commands.animateRegionTo(
+              innerRef.current,
+              latitude,
+              longitude,
+              latitudeDelta,
+              longitudeDelta,
+              duration ?? DEFAULT_ANIM_DURATION,
+              cameraEasingToNumber(easing),
+              pivot?.x ?? 0.5,
+              pivot?.y ?? 0.5
+            );
+          }
+        },
+        animateCameraWithTwoCoords: ({
+          duration,
+          easing,
+          coord1,
+          coord2,
+          pivot,
+        }) => {
+          if (innerRef.current) {
+            const centerLatitude = (coord1.latitude + coord2.latitude) / 2;
+            const centerLongitude = (coord1.longitude + coord2.longitude) / 2;
+            const latitudeDiff = Math.abs(coord1.latitude - coord2.latitude);
+            const longitudeDiff = Math.abs(coord1.longitude - coord2.longitude);
+
+            Commands.animateRegionTo(
+              innerRef.current,
+              centerLatitude,
+              centerLongitude,
+              latitudeDiff * 2,
+              longitudeDiff * 2,
+              duration ?? DEFAULT_ANIM_DURATION,
+              cameraEasingToNumber(easing),
+              pivot?.x ?? 0.5,
+              pivot?.y ?? 0.5
+            );
+          }
+        },
+      }),
+      []
+    );
     return (
       <NativeNaverMapView
+        ref={innerRef}
         mapType={mapType}
-        center={
-          center
+        camera={
+          camera && !region
             ? {
-                latitude: center.latitude,
-                longitude: center.longitude,
-                zoom: center.zoom ?? INVALID_NUMBER,
-                tilt: center.tilt ?? INVALID_NUMBER,
-                bearing: center.bearing ?? INVALID_NUMBER,
+                latitude: camera.latitude,
+                longitude: camera.longitude,
+                zoom: camera.zoom,
+                tilt: camera.tilt,
+                bearing: camera.bearing,
               }
             : undefined
         }
+        region={region}
         isIndoorEnabled={isIndoorEnabled}
         isNightModeEnabled={isNightModeEnabled}
         isLiteModeEnabled={isLiteModeEnabled}
