@@ -14,6 +14,7 @@
 
 @interface RCTConvert (NMFMapView)
 
++ (NMFMapType)NMFMapType:(id)json;
 + (NMFCameraUpdate *)NMFCameraUpdate:(id)json;
 + (NMFCameraUpdate *)NMFCameraUpdateWith:(id)json;
 + (NMGLatLng *)NMGLatLng:(id)json;

@@ -2,8 +2,7 @@ import * as React from 'react';
 import { useRef, useState } from 'react';
 
 import { View, Button, Switch, Text } from 'react-native';
-import {
-  NaverMapView,
+import NaverMapView, {
   Commands,
   type MapType,
   MapTypes,
@@ -33,12 +32,13 @@ export default function App() {
           console.log('Option Changed!');
         }}
         symbolScale={symbolScale}
-        center={{
-          latitude: 37.50663442764957,
-          longitude: 127.04102406190495,
-        }}
-        isNightModeEnabled={nightMode}
         lightness={lightness}
+        isNightModeEnabled={nightMode}
+        center={{
+          latitude: 39,
+          longitude: 129,
+          zoom: 1,
+        }}
       />
       <View
         style={{

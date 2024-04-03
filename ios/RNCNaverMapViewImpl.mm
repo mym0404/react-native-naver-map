@@ -6,13 +6,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FnUtil.h"
 #import "RNCNaverMapViewImpl.h"
 #import "Utils.h"
 
-
-CGFloat clamp(CGFloat value, CGFloat min, CGFloat max) {
-    return MIN(MAX(value, min), max);
-}
 
 @implementation RNCNaverMapViewImpl
 
@@ -21,6 +18,11 @@ CGFloat clamp(CGFloat value, CGFloat min, CGFloat max) {
     if (self = [super initWithFrame:frame]) {
         double delayInSeconds = 0.1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+
+//        [self.mapView addCameraDelegate:self];
+//        [self.mapView setTouchDelegate:self];
+        [self.mapView addOptionDelegate:self];
+
         // run after _eventEmitter available(new arch), direct event block set(old arch)
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
             self.onInitialized(@{});
@@ -57,25 +59,48 @@ CGFloat clamp(CGFloat value, CGFloat min, CGFloat max) {
 - (void)setLightness:(NSNumber *)lightness
 {
     _lightness = lightness;
-    self.mapView.lightness = clamp([lightness floatValue], 0, 1);
+    self.mapView.lightness = [lightness floatValue];
 }
 
 - (void)setBuildingHeight:(NSNumber *)buildingHeight
 {
     _buildingHeight = buildingHeight;
-    self.mapView.buildingHeight = clamp([buildingHeight floatValue], 0, 1);
+    self.mapView.buildingHeight = [buildingHeight floatValue];
 }
 
 - (void)setSymbolScale:(NSNumber *)symbolScale
 {
     _symbolScale = symbolScale;
-    self.mapView.symbolScale = clamp([symbolScale floatValue], 0, 2);
+    self.mapView.symbolScale = [symbolScale floatValue];
 }
 
 - (void)setSymbolPerspectiveRatio:(NSNumber *)symbolPerspectiveRatio
 {
     _symbolPerspectiveRatio = symbolPerspectiveRatio;
-    self.mapView.symbolPerspectiveRatio = clamp([symbolPerspectiveRatio floatValue], 0, 1);
+    self.mapView.symbolPerspectiveRatio = [symbolPerspectiveRatio floatValue];
+}
+
+- (void)setCenterPosition:(NSDictionary *)centerPosition
+{
+    double latitude = getDoubleOrZero(centerPosition[@"latitude"]);
+    double longitude = getDoubleOrZero(centerPosition[@"longitude"]);
+    double zoom = getDoubleOrZero(centerPosition[@"zoom"]);
+    double tilt = getDoubleOrZero(centerPosition[@"tilt"]);
+    double bearing = getDoubleOrZero(centerPosition[@"bearing"]);
+
+    auto p = NMGLatLngMake(latitude, longitude);
+    auto cameraPosition = [NMFCameraPosition cameraPosition:p
+                                                       zoom:zoom
+                                                       tilt:tilt
+                                                    heading:bearing];
+    auto update = [NMFCameraUpdate cameraUpdateWithPosition:cameraPosition];
+
+    [self.mapView moveCamera:update];
+}
+
+- (void)mapViewOptionChanged:(NMFMapView *)mapView
+{
+    self.onOptionChanged(@{});
 }
 
 @end

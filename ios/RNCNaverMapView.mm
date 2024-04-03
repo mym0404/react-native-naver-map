@@ -103,7 +103,20 @@ using namespace facebook::react;
     REMAP_DOUBLE(symbolScale)
     REMAP_DOUBLE(symbolPerspectiveRatio)
 
-    [super updateProps:props oldProps: oldProps];
+    auto c1 = oldViewProps.center, c2 = newViewProps.center;
+
+    if (c1.latitude != c2.latitude || c1.longitude != c2.longitude ||
+        c1.tilt != c2.tilt || c1.bearing != c2.bearing || c1.zoom != c2.zoom) {
+        _view.centerPosition = @{
+                @"latitude": @(c2.latitude),
+                @"longitude": @(c2.longitude),
+                @"zoom": @(c2.zoom),
+                @"tilt": @(c2.tilt),
+                @"bearing": @(c2.bearing),
+        };
+    }
+
+    [super updateProps:props oldProps:oldProps];
 }
 
 Class<RCTComponentViewProtocol> RNCNaverMapViewCls(void) {

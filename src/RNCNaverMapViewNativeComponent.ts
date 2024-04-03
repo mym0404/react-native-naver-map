@@ -43,8 +43,8 @@ interface NaverMapViewProps extends ViewProps {
   onOptionChanged?: DirectEventHandler<Readonly<{}>>;
   onCameraChanged?: DirectEventHandler<
     Readonly<{
-      latitude: string;
-      longitude: string;
+      latitude: Double;
+      longitude: Double;
       zoom: Double;
     }>
   >;
@@ -60,20 +60,22 @@ interface NaverMapViewProps extends ViewProps {
     'Basic'
   >;
 
-  layerGroups?: WithDefault<
-    ReadonlyArray<
-      'BUILDING' | 'TRAFFIC' | 'TRANSIT' | 'BICYCLE' | 'MOUNTAIN' | 'CADASTRAL'
-    >,
-    'BUILDING'
-  >;
+  // layerGroups?: Readonly<{
+  //   BUILDING?: boolean;
+  //   TRAFFIC?: boolean;
+  //   TRANSIT?: boolean;
+  //   BICYCLE?: boolean;
+  //   MOUNTAIN?: boolean;
+  //   CADASTRAL?: boolean;
+  // }>;
 
   isIndoorEnabled?: boolean;
   isNightModeEnabled?: boolean;
   isLiteModeEnabled?: boolean;
-  lightness?: WithDefault<Double, 0>;
-  buildingHeight?: WithDefault<Double, 1>;
-  symbolScale?: WithDefault<Double, 1>;
-  symbolPerspectiveRatio?: WithDefault<Double, 1>;
+  lightness?: Double;
+  buildingHeight?: Double;
+  symbolScale?: Double;
+  symbolPerspectiveRatio?: Double;
 
   center?: Readonly<{
     latitude: Double;
@@ -85,8 +87,8 @@ interface NaverMapViewProps extends ViewProps {
 
   mapPadding?: PartialRect;
 
-  minZoom?: WithDefault<Double, -1>;
-  maxZoom?: WithDefault<Double, -1>;
+  minZoom?: Double;
+  maxZoom?: Double;
 
   /*Not Implemented Yet*/
   // tilt?: number;
