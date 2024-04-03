@@ -8,6 +8,7 @@
 
 #import "RCTFabricComponentsPlugins.h"
 #import "Utils.h"
+#import "RNCNaverMapViewImpl.h"
 
 using namespace facebook::react;
 
@@ -16,12 +17,12 @@ using namespace facebook::react;
 @end
 
 @implementation RNCNaverMapView {
-    UIView * _view;
+  RNCNaverMapViewImpl * _view;
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
-    return concreteComponentDescriptorProvider<RNCNaverMapViewComponentDescriptor>();
+  return concreteComponentDescriptorProvider<RNCNaverMapViewComponentDescriptor>();
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -29,31 +30,46 @@ using namespace facebook::react;
   if (self = [super initWithFrame:frame]) {
     static const auto defaultProps = std::make_shared<const RNCNaverMapViewProps>();
     _props = defaultProps;
-
-    _view = [[UIView alloc] init];
-
+    
+    _view = [[RNCNaverMapViewImpl alloc] init];
+    
     self.contentView = _view;
   }
-
+  
   return self;
 }
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    const auto &oldViewProps = *std::static_pointer_cast<RNCNaverMapViewProps const>(_props);
-    const auto &newViewProps = *std::static_pointer_cast<RNCNaverMapViewProps const>(props);
+  const auto &oldViewProps = *std::static_pointer_cast<RNCNaverMapViewProps const>(_props);
+  const auto &newViewProps = *std::static_pointer_cast<RNCNaverMapViewProps const>(props);
   
-//    if (oldViewProps.color != newViewProps.color) {
-//        NSString * colorToConvert = [[NSString alloc] initWithUTF8String: newViewProps.color.c_str()];
-//        [_view setBackgroundColor: [Utils hexStringToColor:colorToConvert]];
-//    }
-
-    [super updateProps:props oldProps:oldProps];
+#define REMAP_PROP(name)                    \
+if (oldViewProps.name != newViewProps.name) {   \
+_view.name = newViewProps.name;             \
+}
+  
+#define REMAP_STRING_PROP(name)                             \
+if (oldViewProps.name != newViewProps.name) {                   \
+_view.name = RCTNSStringFromString(newViewProps.name);      \
+}
+  
+  if(oldViewProps.isIndoorEnabled != newViewProps.isIndoorEnabled){
+    
+  }
+  
+  //    if (oldViewProps.color != newViewProps.color) {
+  //        NSString * colorToConvert = [[NSString alloc] initWithUTF8String: newViewProps.color.c_str()];
+  //        [_view setBackgroundColor: [Utils hexStringToColor:colorToConvert]];
+  //    }
+  
+  
+  [super updateProps:props oldProps:oldProps];
 }
 
 Class<RCTComponentViewProtocol> RNCNaverMapViewCls(void)
 {
-    return RNCNaverMapView.class;
+  return RNCNaverMapView.class;
 }
 
 @end
