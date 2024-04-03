@@ -15,13 +15,48 @@ body:
         - label: I have searched the existing issues
           required: true
   - type: input
-    id: version
+    id: package-version
     attributes:
-      label: Version
-      description: What version of our software are you running?
-      placeholder: ex. 5.0.0
+      label: Version of @mj-studio/react-native-naver-map
+      description: What version of @mj-studio/react-native-naver-map are you running?
+      placeholder: ex. 1.0.0
     validations:
-      required: false
+      required: true
+  - type: input
+    id: rn-version
+    attributes:
+      label: Version of react-native
+      description: What version of react-native are you running?
+      placeholder: ex. 0.73.6
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: What os are you seeing the problem on?
+      multiple: true
+      options:
+        - Android
+        - iOS
+        - Web
+    validations:
+      required: true
+  - type: dropdown
+    id: device-type
+    attributes:
+      label: What device types are you seeing the problem on?
+      multiple: true
+      options:
+        - Simulator
+        - Physcial Device
+    validations:
+      required: true
+  - type: input
+    id: device-version
+    attributes:
+      label: Version of device(android API, iOS OS version, etc...)
+      description: What version of Device Version are you running?
+      placeholder: ex. Android 34, iOS 17.4
   - type: textarea
     id: what-happened
     attributes:
@@ -32,7 +67,7 @@ body:
     validations:
       required: true
   - type: textarea
-    id: pubspec
+    id: package-json
     attributes:
       label: Relevant a package.json.
       description: Please copy and pates your package.json.
