@@ -17,6 +17,20 @@ CGFloat clamp(CGFloat value, CGFloat min, CGFloat max) {
 
 @implementation RNCNaverMapViewImpl
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame]) {
+        double delayInSeconds = 0.1;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        // run after _eventEmitter available(new arch), direct event block set(old arch)
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            self.onInitialized(@{});
+        });
+    }
+    return self;
+}
+
+
 - (void)setMapType:(NMFMapType)mapType
 {
     _mapType = mapType;
@@ -55,7 +69,6 @@ CGFloat clamp(CGFloat value, CGFloat min, CGFloat max) {
 
 - (void)setSymbolScale:(NSNumber *)symbolScale
 {
-    [Utils debugE:[symbolScale stringValue]];
     _symbolScale = symbolScale;
     self.mapView.symbolScale = clamp([symbolScale floatValue], 0, 2);
 }

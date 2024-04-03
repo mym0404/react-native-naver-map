@@ -5,6 +5,8 @@
 //  Created by mj on 4/3/24.
 //
 
+#import <Foundation/Foundation.h>
+#import <React/RCTView.h>
 #import <NMapsMap/NMFMapView.h>
 #import <NMapsMap/NMFNaverMapView.h>
 #import <NMapsMap/NMFMapViewTouchDelegate.h>
@@ -28,5 +30,8 @@
 @property (nonatomic, assign) NSNumber *buildingHeight;
 @property (nonatomic, assign) NSNumber *symbolScale;
 @property (nonatomic, assign) NSNumber *symbolPerspectiveRatio;
+
+@property (nonatomic, copy) RCTDirectEventBlock onInitialized;
+@property (nonatomic, copy) RCTDirectEventBlock onOptionChanged;
 
 @end

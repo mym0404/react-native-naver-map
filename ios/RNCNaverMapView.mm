@@ -33,6 +33,20 @@ using namespace facebook::react;
         
         _view = [[RNCNaverMapViewImpl alloc] init];
         
+        _view.onInitialized =  [self](NSDictionary* dict) {
+            if (_eventEmitter == nil) { return; }
+            
+            auto emitter = std::static_pointer_cast<RNCNaverMapViewEventEmitter const>(_eventEmitter);
+            emitter->onInitialized({});
+        };
+        
+        _view.onOptionChanged =  [self](NSDictionary* dict) {
+            if (_eventEmitter == nil) { return; }
+            
+            auto emitter = std::static_pointer_cast<RNCNaverMapViewEventEmitter const>(_eventEmitter);
+            emitter->onOptionChanged({});
+        };
+        
         self.contentView = _view;
     }
     
