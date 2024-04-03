@@ -48,5 +48,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+  <key>NMFClientId</key>
+  <string>$(NAVER_CLIENT_ID)</string>
 </dict>
 </plist>

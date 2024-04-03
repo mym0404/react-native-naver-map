@@ -8,16 +8,12 @@
 
 @implementation RNCNaverMapViewManager
 
-RCT_EXPORT_MODULE(NaverMapView)
+RCT_EXPORT_MODULE(RNCNaverMapView)
 
 - (UIView *)view
 {
   return [[UIView alloc] init];
 }
 
-RCT_CUSTOM_VIEW_PROPERTY(color, NSString, UIView)
-{
-  [view setBackgroundColor: [Utils hexStringToColor:json]];
-}
 
 @end
