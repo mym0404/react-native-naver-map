@@ -132,6 +132,16 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
     [self.mapView moveCamera:update];
 }
 
+- (void)setMapPadding:(NSDictionary *)mapPadding
+{
+    self.mapView.contentInset = UIEdgeInsetsMake(
+        [mapPadding[@"top"] doubleValue],
+        [mapPadding[@"left"] doubleValue],
+        [mapPadding[@"bottom"] doubleValue],
+        [mapPadding[@"right"] doubleValue]
+        );
+}
+
 // MARK: - EVENT
 
 - (void)mapViewOptionChanged:(NMFMapView *)mapView
@@ -189,6 +199,7 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
                                    @"longitudeDelta": @(longitudeDelta),
     }];
     NMFCameraUpdate *update = [NMFCameraUpdate cameraUpdateWithFitBounds:bounds];
+
     update.animation = getEasingAnimation(easing);
     update.animationDuration = (NSTimeInterval)((double)duration) / 1000;
     update.pivot = CGPointMake(pivotX, pivotY);

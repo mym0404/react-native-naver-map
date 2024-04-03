@@ -27,6 +27,8 @@ RCT_EXPORT_MODULE(RNCNaverMapView)
 #endif
 
 RCT_EXPORT_VIEW_PROPERTY(mapType, NMFMapType)
+RCT_EXPORT_VIEW_PROPERTY(camera, NSDictionary)
+RCT_EXPORT_VIEW_PROPERTY(region, RNCNaverMapViewRegionStruct)
 RCT_EXPORT_VIEW_PROPERTY(isIndoorEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(isNightModeEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(isLiteModeEnabled, BOOL)
@@ -34,8 +36,7 @@ RCT_EXPORT_VIEW_PROPERTY(lightness, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(buildingHeight, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(symbolScale, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(symbolPerspectiveRatio, NSNumber)
-RCT_EXPORT_VIEW_PROPERTY(camera, NSDictionary)
-RCT_EXPORT_VIEW_PROPERTY(region, RNCNaverMapViewRegionStruct)
+RCT_EXPORT_VIEW_PROPERTY(mapPadding, NSDictionary)
 
 
 // event

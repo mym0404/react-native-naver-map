@@ -51,6 +51,7 @@ using namespace facebook::react;
 @property (nonatomic, assign) NSNumber *symbolPerspectiveRatio;
 @property (nonatomic, copy) NSDictionary *camera;
 @property (nonatomic, copy) NSDictionary *region;
+@property (nonatomic, copy) NSDictionary *mapPadding;
 
 @property (nonatomic, copy) RCTDirectEventBlock onInitialized;
 @property (nonatomic, copy) RCTDirectEventBlock onOptionChanged;
