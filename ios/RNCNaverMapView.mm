@@ -131,17 +131,31 @@ using namespace facebook::react;
         };
     }
 
+    _view.initialCamera = @{
+            @"latitude": @(next.initialCamera.latitude),
+            @"longitude": @(next.initialCamera.longitude),
+            @"zoom": @(next.initialCamera.zoom),
+            @"tilt": @(next.initialCamera.tilt),
+            @"bearing": @(next.initialCamera.bearing)
+    };
+
     auto r1 = prev.region, r2 = next.region;
 
-    if (r1.latitude != r2.latitude || r1.longitude != r2.longitude
-        || r1.latitudeDelta != r2.latitudeDelta ||
+    if (r1.latitude != r2.latitude ||
+        r1.longitude != r2.longitude ||
+        r1.latitudeDelta != r2.latitudeDelta ||
         r1.longitudeDelta != r2.longitudeDelta) {
         _view.region = RNCNaverMapRegionMake(
             r2.latitude,
             r2.longitude,
             r2.latitudeDelta,
-            r2.longitude);
+            r2.longitudeDelta);
     }
+
+    _view.initialRegion = RNCNaverMapRegionMake(next.initialRegion.latitude,
+                                                next.initialRegion.longitude,
+                                                next.initialRegion.latitudeDelta,
+                                                next.initialRegion.longitudeDelta);
 
     if (prev.logoAlign != next.logoAlign) {
         if (next.logoAlign == RNCNaverMapViewLogoAlign::TopLeft) {

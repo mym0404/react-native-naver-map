@@ -33,13 +33,13 @@ export default function App() {
       <NaverMapView
         ref={ref}
         style={{ flex: 1 }}
-        region={{
-          latitude: 37.5559,
-          longitude: 126.9723,
-          latitudeDelta: 0.5,
-          longitudeDelta: 0.5,
-        }}
         mapType={mapType}
+        region={{
+          latitude: 33.20530773,
+          longitude: 126.14656715029,
+          latitudeDelta: 0.38,
+          longitudeDelta: 0.8,
+        }}
         isIndoorEnabled={indoor}
         onInitialized={() => {
           console.log('initialized!');

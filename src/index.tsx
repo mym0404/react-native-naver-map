@@ -238,7 +238,12 @@ export type NaverMapViewRef = {
 function clamp(v: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, v));
 }
-// const INVALID_NUMBER = -123123123;
+
+/**
+ * ios: codegen generate struct number fields with default value zero.
+ *      in some cases, we should check it is invalid value instead of checking is zero.
+ */
+const NULL_NUMBER = -123123123;
 const DEFAULT_ANIM_DURATION = 700;
 const DEFAULT_EASING: CameraAnimationEasing = 'EaseOut';
 const NaverMapView = forwardRef(
@@ -367,10 +372,27 @@ const NaverMapView = forwardRef(
         ref={innerRef}
         mapType={mapType}
         camera={camera}
-        initialCamera={!camera ? initialCamera : undefined}
-        region={!camera ? region : undefined}
+        initialCamera={
+          !camera && initialCamera
+            ? initialCamera
+            : {
+                latitude: NULL_NUMBER,
+                longitude: NULL_NUMBER,
+                zoom: NULL_NUMBER,
+                tilt: NULL_NUMBER,
+                bearing: NULL_NUMBER,
+              }
+        }
+        region={!camera && !initialCamera ? region : undefined}
         initialRegion={
-          !region && !camera && !initialCamera ? initialRegion : undefined
+          !region && !camera && !initialCamera && initialRegion
+            ? initialRegion
+            : {
+                latitude: NULL_NUMBER,
+                longitude: NULL_NUMBER,
+                latitudeDelta: NULL_NUMBER,
+                longitudeDelta: NULL_NUMBER,
+              }
         }
         isIndoorEnabled={isIndoorEnabled}
         isNightModeEnabled={isNightModeEnabled}

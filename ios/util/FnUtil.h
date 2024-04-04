@@ -34,6 +34,10 @@ BOOL isValidNumber(NSNumber *value) {
     return true;
 }
 
+BOOL isValidNumber(double value) {
+    return isValidNumber([NSNumber numberWithDouble:value]);
+}
+
 NSNumber * getNumberOrNil(NSNumber *value) {
     if (!isValidNumber(value)) {
         return nil;

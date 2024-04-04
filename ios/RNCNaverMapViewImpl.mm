@@ -55,6 +55,11 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
     return self;
 }
 
+// MARK: - PROPERTY
+
+BOOL _initialRegionSet;
+BOOL _initialCameraSet;
+
 // MARK: - SETTER
 
 - (void)setMapType:(NMFMapType)mapType
@@ -126,6 +131,17 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
     [self.mapView moveCamera:update];
 }
 
+- (void)setInitialCamera:(NSDictionary *)initialCamera
+{
+    if (!_initialCameraSet) {
+        _initialCameraSet = YES;
+
+        if (isValidNumber(initialCamera[@"latitude"])) {
+            [self setCamera:initialCamera];
+        }
+    }
+}
+
 - (void)setRegion:(RNCNaverMapRegion *)region
 {
     _region = region;
@@ -134,6 +150,17 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
                                cameraUpdateWithFitBounds:[region convertToNMGLatLngBounds]];
 
     [self.mapView moveCamera:update];
+}
+
+- (void)setInitialRegion:(RNCNaverMapRegion *)initialRegion
+{
+    if (!_initialRegionSet) {
+        _initialRegionSet = YES;
+
+        if (isValidNumber(initialRegion.latitude)) {
+            [self setRegion:initialRegion];
+        }
+    }
 }
 
 - (void)setMapPadding:(RNCNaverMapRect *)mapPadding
@@ -205,7 +232,6 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
 {
     self.onOptionChanged(@{});
 }
-
 
 // MARK: - COMMAND
 
