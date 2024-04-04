@@ -23,6 +23,10 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
         return NMFCameraUpdateAnimationFly;
     }
 
+    if (easing == 4) {
+        return NMFCameraUpdateAnimationEaseOut;
+    }
+
     return NMFCameraUpdateAnimationEaseIn;
 }
 
@@ -77,28 +81,28 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
     self.mapView.liteModeEnabled = isLiteModeEnabled;
 }
 
-- (void)setLightness:(NSNumber *)lightness
+- (void)setLightness:(double)lightness
 {
     _lightness = lightness;
-    self.mapView.lightness = [lightness floatValue];
+    self.mapView.lightness = lightness;
 }
 
-- (void)setBuildingHeight:(NSNumber *)buildingHeight
+- (void)setBuildingHeight:(double)buildingHeight
 {
     _buildingHeight = buildingHeight;
-    self.mapView.buildingHeight = [buildingHeight floatValue];
+    self.mapView.buildingHeight = buildingHeight;
 }
 
-- (void)setSymbolScale:(NSNumber *)symbolScale
+- (void)setSymbolScale:(double)symbolScale
 {
     _symbolScale = symbolScale;
-    self.mapView.symbolScale = [symbolScale floatValue];
+    self.mapView.symbolScale = symbolScale;
 }
 
-- (void)setSymbolPerspectiveRatio:(NSNumber *)symbolPerspectiveRatio
+- (void)setSymbolPerspectiveRatio:(double)symbolPerspectiveRatio
 {
     _symbolPerspectiveRatio = symbolPerspectiveRatio;
-    self.mapView.symbolPerspectiveRatio = [symbolPerspectiveRatio floatValue];
+    self.mapView.symbolPerspectiveRatio = symbolPerspectiveRatio;
 }
 
 - (void)setCamera:(NSDictionary *)camera
@@ -170,6 +174,18 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
 {
     _isShowLocationButton = isShowLocationButton;
     self.showLocationButton = isShowLocationButton;
+}
+
+- (void)setMinZoom:(double)minZoom
+{
+    _minZoom = minZoom;
+    self.mapView.minZoomLevel = minZoom;
+}
+
+- (void)setMaxZoom:(double)maxZoom
+{
+    _maxZoom = maxZoom;
+    self.mapView.maxZoomLevel = maxZoom;
 }
 
 // MARK: - EVENT

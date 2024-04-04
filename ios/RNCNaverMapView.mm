@@ -107,6 +107,8 @@ using namespace facebook::react;
     REMAP_PROP(isShowLocationButton)
     REMAP_PROP(isShowScaleBar)
     REMAP_PROP(isShowZoomControls)
+    REMAP_DOUBLE(minZoom)
+    REMAP_DOUBLE(maxZoom)
 
     auto c1 = oldViewProps.camera, c2 = newViewProps.camera;
 

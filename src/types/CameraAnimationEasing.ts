@@ -1,6 +1,11 @@
-export type CameraAnimationEasing = 'Easing' | 'None' | 'Linear' | 'Fly';
+export type CameraAnimationEasing =
+  | 'EaseIn'
+  | 'EaseOut'
+  | 'None'
+  | 'Linear'
+  | 'Fly';
 export function cameraEasingToNumber(
-  value: CameraAnimationEasing = 'Easing'
+  value: CameraAnimationEasing = 'EaseIn'
 ): number {
   switch (value) {
     case 'None':
@@ -9,8 +14,10 @@ export function cameraEasingToNumber(
       return 2;
     case 'Fly':
       return 3;
+    case 'EaseOut':
+      return 4;
     default:
-    case 'Easing':
+    case 'EaseIn':
       return 0;
   }
 }

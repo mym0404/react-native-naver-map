@@ -79,22 +79,46 @@ export default function App() {
         <Button
           title={'Move to'}
           onPress={() => {
-            ref.current?.animateCameraWithTwoCoords({
-              coord1: {
-                latitude: 37.5597029241636,
-                longitude: 126.9645011,
-              },
-              coord2: {
-                latitude: 37.5523727,
-                longitude: 126.9821136855,
-              },
-              duration: 3000,
-              easing: 'Fly',
+            ref.current?.animateCameraTo({
+              duration: 1000,
+              latitude: 33.3932536781,
+              longitude: 126.55746544,
             });
           }}
         />
         <Button
           title={'Move by'}
+          onPress={() => {
+            ref.current?.animateCameraBy({
+              x: 100,
+              y: 100,
+              duration: 3000,
+            });
+          }}
+        />
+        <Button
+          title={'Move Two Coord'}
+          onPress={() => {
+            ref.current?.animateCameraWithTwoCoords({
+              coord1: {
+                latitude: 33.56082727271,
+                longitude: 126.170697865,
+              },
+              coord2: {
+                latitude: 33.2439870024,
+                longitude: 126.9221848004,
+              },
+              duration: 1000,
+              easing: 'Linear',
+              pivot: {
+                x: 0.5,
+                y: 0.5,
+              },
+            });
+          }}
+        />
+        <Button
+          title={'Move Region'}
           onPress={() => {
             ref.current?.animateCameraBy({
               x: 100,

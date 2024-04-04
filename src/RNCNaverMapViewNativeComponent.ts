@@ -169,7 +169,7 @@ interface NaverMapNativeCommands {
     latitude: Double,
     longitude: Double,
     duration?: Int32,
-    easing?: Int32 /*'Easing' | 'None' | 'Linear' | 'Fly'*/,
+    easing?: Int32 /*'EaseIn' | 'None' | 'Linear' | 'Fly' | 'EaseOut'*/,
     pivotX?: Double,
     pivotY?: Double
   ) => void;

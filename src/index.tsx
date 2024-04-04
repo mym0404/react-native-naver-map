@@ -45,6 +45,11 @@ export type NaverMapViewProps = ViewProps & {
   camera?: Partial<Camera>;
   /**
    * 해당 영역이 완전히 보이는 좌표와 최대 줌 레벨로 카메라가 이동합니다.
+   * `latitude`, `longtidue`는 지도의 중심을 의미하며 `latitudeDelta`, `longitudeDelta`는 각 위도 경도로 얼마만큼의
+   * 크기를 가질 것인지 결정합니다.
+   *
+   * 예를 들어, `latitudeDelta`가 0.1이라면 위도가 지도의 보이는 곳의 끝과 끝에서 0.1이 차이난다는 것을 의미합니다.
+   * 하지만 `longitudeDelta`가 특정 값보다 커서 최대 줌 레벨이 더 작아진다면 0.1보다 더 차이나게 될 수도 있고 반대도 같습니다.
    */
   region?: Region;
   /**
@@ -95,6 +100,8 @@ export type NaverMapViewProps = ViewProps & {
   isShowZoomControls?: boolean;
   isShowIndoorLevelPicker?: boolean;
   isShowLocationButton?: boolean;
+  minZoom?: number;
+  maxZoom?: number;
 
   /**
    * 지도 객체가 초기화가 완료된 뒤에 호출됩니다.
@@ -147,6 +154,12 @@ export type NaverMapViewRef = {
       longitudeDelta: number;
     } & CameraMoveBaseParams
   ) => void;
+  /**
+   * 두 좌표가 모두 보이는 최대 줌 레벨로 이동합니다.
+   *
+   * 카메라의 중심은 두 좌표의 중심이며 `pivot`으로 조절할 수 있습니다.
+   * `pivot`은 기본 0.5(중앙)이며 0 ~ 1 값으로 설정할 수 있습니다.
+   */
   animateCameraWithTwoCoords: (
     params: {
       coord1: Coord;
@@ -259,8 +272,8 @@ const NaverMapView = forwardRef(
               innerRef.current,
               centerLatitude,
               centerLongitude,
-              latitudeDiff * 2,
-              longitudeDiff * 2,
+              latitudeDiff,
+              longitudeDiff,
               duration ?? DEFAULT_ANIM_DURATION,
               cameraEasingToNumber(easing),
               pivot?.x ?? 0.5,
