@@ -56,6 +56,7 @@ export default function App() {
         isShowZoomControls={zoomControls}
         isShowLocationButton={myLocation}
         isExtentBoundedInKorea
+        logoAlign={'TopRight'}
       />
       <View
         style={{

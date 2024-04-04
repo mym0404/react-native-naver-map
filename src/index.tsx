@@ -18,6 +18,7 @@ import type { Camera } from './types/Camera';
 import type { Region } from './types/Region';
 import type { Coord } from './types/Coord';
 import type { Rect } from './types/Rect';
+import type { LogoAlign } from './types/LogoAlign';
 
 export * from './spec/RNCNaverMapViewNativeComponent';
 export * from './types/Coord';
@@ -28,6 +29,7 @@ export * from './types/TrackingMode';
 export * from './types/LayerGroup';
 export * from './types/Gravity';
 export * from './types/Align';
+export * from './types/LogoAlign';
 export * from './types/Camera';
 export * from './types/CameraAnimationEasing';
 
@@ -165,6 +167,16 @@ export type NaverMapViewProps = ViewProps & {
    */
   isExtentBoundedInKorea?: boolean;
 
+  logoAlign?: LogoAlign;
+  logoMargin?: Partial<Rect>;
+
+  /**
+   * 탭 활성화 여부를 지정할 수 있습니다.
+   * 로고 탭을 비활성화한 앱은 반드시 앱 내에 네이버 지도 SDK의
+   * 법적 공지(-showLegalNotice) 및 오픈소스 라이선스(-showOpenSourceLicense)뷰를 보여주는 메뉴를 만들어야 합니다.
+   */
+  // isLogoInteractionEnabled?: boolean;
+
   /**
    * 지도 객체가 초기화가 완료된 뒤에 호출됩니다.
    */
@@ -259,6 +271,8 @@ const NaverMapView = forwardRef(
       maxZoom,
       extent,
       isExtentBoundedInKorea,
+      logoAlign,
+      logoMargin,
 
       ...rest
     }: NaverMapViewProps,
@@ -388,6 +402,8 @@ const NaverMapView = forwardRef(
                 }
               : undefined
         }
+        logoAlign={logoAlign}
+        logoMargin={logoMargin}
         {...rest}
       />
     );

@@ -26,6 +26,7 @@ type Region = {
   latitudeDelta: Double;
   longitudeDelta: Double;
 };
+type LogoAlign = 'TopLeft' | 'TopRight' | 'BottomLeft' | 'BottomRight';
 
 ////////////////////
 
@@ -113,6 +114,10 @@ interface NaverMapViewProps extends ViewProps {
   isShowZoomControls?: boolean;
   isShowIndoorLevelPicker?: boolean;
   isShowLocationButton?: boolean;
+
+  logoAlign?: WithDefault<LogoAlign, 'BottomLeft'>;
+  logoMargin?: PartialRect;
+  // isLogoInteractionEnabled?: boolean;
 
   extent?: Readonly<Region>;
 

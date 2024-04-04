@@ -171,6 +171,16 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
     self.showLocationButton = isShowLocationButton;
 }
 
+- (void)setLogoMargin:(RNCNaverMapRect *)logoMargin
+{
+    self.mapView.logoMargin = [logoMargin convertToUIEdgeInsets];
+}
+
+- (void)setLogoAlign:(NMFLogoAlign)logoAlign
+{
+    self.mapView.logoAlign = logoAlign;
+}
+
 - (void)setMinZoom:(double)minZoom
 {
     _minZoom = minZoom;

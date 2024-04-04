@@ -57,6 +57,8 @@ using namespace facebook::react;
 @property (nonatomic, assign) BOOL isShowLocationButton;
 @property (nonatomic, assign) BOOL isShowScaleBar;
 @property (nonatomic, assign) BOOL isShowZoomControls;
+@property (nonatomic, copy) RNCNaverMapRect* logoMargin;
+@property (nonatomic, assign) NMFLogoAlign logoAlign;
 @property (nonatomic, assign) double minZoom;
 @property (nonatomic, assign) double maxZoom;
 @property (nonatomic, copy) RNCNaverMapRegion *extent;

@@ -18,6 +18,7 @@
 
 + (NMFMapType)NMFMapType:(id)json;
 + (NMFAlignType *)NMFAlignType:(id)json;
++ (NMFLogoAlign)NMFLogoAlign:(id)json;
 + (RNCNaverMapRegion *)RNCNaverMapRegion:(id)json;
 + (RNCNaverMapRect *)RNCNaverMapRect:(id)json;
 

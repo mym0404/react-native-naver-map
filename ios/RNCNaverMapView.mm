@@ -59,33 +59,44 @@ using namespace facebook::react;
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    const auto &oldViewProps = *std::static_pointer_cast<RNCNaverMapViewProps const>(_props);
-    const auto &newViewProps = *std::static_pointer_cast<RNCNaverMapViewProps const>(props);
+    const auto &prev = *std::static_pointer_cast<RNCNaverMapViewProps const>(_props);
+    const auto &next = *std::static_pointer_cast<RNCNaverMapViewProps const>(props);
 
-#define REMAP_PROP(name)                          \
-    if (oldViewProps.name != newViewProps.name) { \
-        _view.name = newViewProps.name;           \
+#define REMAP_PROP(name)          \
+    if (prev.name != next.name) { \
+        _view.name = next.name;   \
     }
 
-#define REMAP_STRING(name)                                     \
-    if (oldViewProps.name != newViewProps.name) {              \
-        _view.name = RCTNSStringFromString(newViewProps.name); \
+#define REMAP_STRING(name)                             \
+    if (prev.name != next.name) {                      \
+        _view.name = RCTNSStringFromString(next.name); \
     }
 
-    if (oldViewProps.mapType != newViewProps.mapType) {
-        if (newViewProps.mapType == RNCNaverMapViewMapType::Basic) {
+#define REMAP_RECT(name)                                   \
+    if (prev.name.top != next.name.top ||                  \
+        prev.name.right != next.name.right ||              \
+        prev.name.bottom != next.name.bottom ||            \
+        prev.name.left != next.name.left) {                \
+        _view.name = RNCNaverMapRectMake(next.name.top,    \
+                                         next.name.right,  \
+                                         next.name.bottom, \
+                                         next.name.left);  \
+    }
+
+    if (prev.mapType != next.mapType) {
+        if (next.mapType == RNCNaverMapViewMapType::Basic) {
             _view.mapType = NMFMapTypeBasic;
-        } else if (newViewProps.mapType == RNCNaverMapViewMapType::Navi) {
+        } else if (next.mapType == RNCNaverMapViewMapType::Navi) {
             _view.mapType = NMFMapTypeNavi;
-        } else if (newViewProps.mapType == RNCNaverMapViewMapType::Satellite) {
+        } else if (next.mapType == RNCNaverMapViewMapType::Satellite) {
             _view.mapType = NMFMapTypeSatellite;
-        } else if (newViewProps.mapType == RNCNaverMapViewMapType::Hybrid) {
+        } else if (next.mapType == RNCNaverMapViewMapType::Hybrid) {
             _view.mapType = NMFMapTypeHybrid;
-        } else if (newViewProps.mapType == RNCNaverMapViewMapType::Terrain) {
+        } else if (next.mapType == RNCNaverMapViewMapType::Terrain) {
             _view.mapType = NMFMapTypeTerrain;
-        } else if (newViewProps.mapType == RNCNaverMapViewMapType::NaviHybrid) {
+        } else if (next.mapType == RNCNaverMapViewMapType::NaviHybrid) {
             _view.mapType = NMFMapTypeNaviHybrid;
-        } else if (newViewProps.mapType == RNCNaverMapViewMapType::None) {
+        } else if (next.mapType == RNCNaverMapViewMapType::None) {
             _view.mapType = NMFMapTypeNone;
         }
     }
@@ -104,8 +115,10 @@ using namespace facebook::react;
     REMAP_PROP(isShowZoomControls)
     REMAP_PROP(minZoom)
     REMAP_PROP(maxZoom)
+    REMAP_RECT(mapPadding)
+    REMAP_RECT(logoMargin)
 
-    auto c1 = oldViewProps.camera, c2 = newViewProps.camera;
+    auto c1 = prev.camera, c2 = next.camera;
 
     if (c1.latitude != c2.latitude || c1.longitude != c2.longitude ||
         c1.tilt != c2.tilt || c1.bearing != c2.bearing || c1.zoom != c2.zoom) {
@@ -118,7 +131,7 @@ using namespace facebook::react;
         };
     }
 
-    auto r1 = oldViewProps.region, r2 = newViewProps.region;
+    auto r1 = prev.region, r2 = next.region;
 
     if (r1.latitude != r2.latitude || r1.longitude != r2.longitude
         || r1.latitudeDelta != r2.latitudeDelta ||
@@ -130,10 +143,16 @@ using namespace facebook::react;
             r2.longitude);
     }
 
-    auto p1 = oldViewProps.mapPadding, p2 = newViewProps.mapPadding;
-
-    if (p1.top != p2.top || p1.right != p2.right || p1.bottom != p2.bottom || p1.left != p2.left) {
-        _view.mapPadding = RNCNaverMapRectMake(p2.top, p2.right, p2.bottom, p2.left);
+    if (prev.logoAlign != next.logoAlign) {
+        if (next.logoAlign == RNCNaverMapViewLogoAlign::TopLeft) {
+            _view.logoAlign = NMFLogoAlignLeftTop;
+        } else if (next.logoAlign == RNCNaverMapViewLogoAlign::TopRight) {
+            _view.logoAlign = NMFLogoAlignRightTop;
+        } else if (next.logoAlign == RNCNaverMapViewLogoAlign::BottomLeft) {
+            _view.logoAlign = NMFLogoAlignLeftBottom;
+        } else if (next.logoAlign == RNCNaverMapViewLogoAlign::BottomRight) {
+            _view.logoAlign = NMFLogoAlignRightBottom;
+        }
     }
 
     [super updateProps:props oldProps:oldProps];

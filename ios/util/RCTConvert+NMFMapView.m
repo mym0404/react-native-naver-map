@@ -64,6 +64,25 @@ RCT_ENUM_CONVERTER(NMFMapType, (@{
     return NMFAlignType.bottom;
 }
 
++ (NMFLogoAlign)NMFLogoAlign:(id)json
+{
+    json = [self NSString:json];
+    
+    if([json isEqualToString:@"TopLeft"]) {
+        return NMFLogoAlignLeftTop;
+    }
+    
+    if([json isEqualToString:@"TopRight"]) {
+        return NMFLogoAlignRightTop;
+    }
+    
+    if([json isEqualToString:@"BottomRight"]) {
+        return NMFLogoAlignRightBottom;
+    }
+
+    return NMFLogoAlignLeftBottom;
+}
+
 + (RNCNaverMapRegion *)RNCNaverMapRegion:(id)json
 {
     json = [self NSDictionary:json];
