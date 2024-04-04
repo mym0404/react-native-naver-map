@@ -55,6 +55,7 @@ export default function App() {
         isShowScaleBar={scaleBar}
         isShowZoomControls={zoomControls}
         isShowLocationButton={myLocation}
+        isExtentBoundedInKorea
       />
       <View
         style={{
@@ -80,7 +81,6 @@ export default function App() {
           title={'Move to'}
           onPress={() => {
             ref.current?.animateCameraTo({
-              duration: 1000,
               latitude: 33.3932536781,
               longitude: 126.55746544,
             });
@@ -92,7 +92,6 @@ export default function App() {
             ref.current?.animateCameraBy({
               x: 100,
               y: 100,
-              duration: 3000,
             });
           }}
         />
@@ -107,12 +106,6 @@ export default function App() {
               coord2: {
                 latitude: 33.2439870024,
                 longitude: 126.9221848004,
-              },
-              duration: 1000,
-              easing: 'Linear',
-              pivot: {
-                x: 0.5,
-                y: 0.5,
               },
             });
           }}

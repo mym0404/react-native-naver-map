@@ -133,12 +133,7 @@ using namespace facebook::react;
     auto p1 = oldViewProps.mapPadding, p2 = newViewProps.mapPadding;
 
     if (p1.top != p2.top || p1.right != p2.right || p1.bottom != p2.bottom || p1.left != p2.left) {
-        _view.mapPadding = @{
-                @"top": @(p2.top),
-                @"right": @(p2.right),
-                @"bottom": @(p2.bottom),
-                @"left": @(p2.left),
-        };
+        _view.mapPadding = RNCNaverMapRectMake(p2.top, p2.right, p2.bottom, p2.left);
     }
 
     [super updateProps:props oldProps:oldProps];

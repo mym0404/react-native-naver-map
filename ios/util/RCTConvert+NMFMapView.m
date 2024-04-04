@@ -74,4 +74,14 @@ RCT_ENUM_CONVERTER(NMFMapType, (@{
         [self double:json[@"longitudeDelta"]]);
 }
 
++ (RNCNaverMapRect *)RNCNaverMapRect:(id)json
+{
+    json = [self NSDictionary:json];
+    return RNCNaverMapRectMake(
+                               [self double: json[@"top"]],
+                               [self double: json[@"right"]],
+                               [self double: json[@"bottom"]],
+                               [self double: json[@"left"]]);
+}
+
 @end

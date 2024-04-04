@@ -136,18 +136,9 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
     [self.mapView moveCamera:update];
 }
 
-- (void)setExtent:(RNCNaverMapRegion *)extent
+- (void)setMapPadding:(RNCNaverMapRect *)mapPadding
 {
-}
-
-- (void)setMapPadding:(NSDictionary *)mapPadding
-{
-    self.mapView.contentInset = UIEdgeInsetsMake(
-        [mapPadding[@"top"] doubleValue],
-        [mapPadding[@"left"] doubleValue],
-        [mapPadding[@"bottom"] doubleValue],
-        [mapPadding[@"right"] doubleValue]
-        );
+    self.mapView.contentInset = [mapPadding convertToUIEdgeInsets];
 }
 
 - (void)setIsShowCompass:(BOOL)isShowCompass
@@ -192,12 +183,19 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
     self.mapView.maxZoomLevel = maxZoom;
 }
 
+- (void)setExtent:(RNCNaverMapRegion *)extent
+{
+    _extent = extent;
+    self.mapView.extent = [extent convertToNMGLatLngBounds];
+}
+
 // MARK: - EVENT
 
 - (void)mapViewOptionChanged:(NMFMapView *)mapView
 {
     self.onOptionChanged(@{});
 }
+
 
 // MARK: - COMMAND
 

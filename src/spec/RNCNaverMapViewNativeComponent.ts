@@ -13,6 +13,13 @@ import React from 'react';
  * [comments](https://github.com/reactwg/react-native-new-architecture/discussions/91#discussioncomment-4282452)
  */
 
+type Camera = {
+  latitude?: Double;
+  longitude?: Double;
+  zoom?: Double;
+  tilt?: Double;
+  bearing?: Double;
+};
 type Region = {
   latitude: Double;
   longitude: Double;
@@ -82,14 +89,10 @@ interface NaverMapViewProps extends ViewProps {
   //   CADASTRAL?: boolean;
   // }>;
 
-  camera?: Readonly<{
-    latitude?: Double;
-    longitude?: Double;
-    zoom?: Double;
-    tilt?: Double;
-    bearing?: Double;
-  }>;
+  initialCamera?: Readonly<Camera>;
+  camera?: Readonly<Camera>;
 
+  initialRegion?: Readonly<Region>;
   region?: Readonly<Region>;
 
   isIndoorEnabled?: boolean;

@@ -18,7 +18,7 @@
 >[!NOTE]
 >작업은 순조롭게 진행중입니다. 출시할 날이 기대됩니다. - 23.04.03
 > 
->Props가 너무많아 - 23.04.04
+>Props가 너무많다. - 23.04.04
 
 ## 왜 이 라이브러리를 써야하나요?
 
@@ -33,7 +33,11 @@
 
 1. 더 이상 관리되지 않는 [기존 라이브러리](https://github.com/QuadFlask/react-native-naver-map) 대체
 
-기존 라이브러리의 모든 기능을 가져간 채로 API의 변경도 되도록이면 마이그레이션을 위해 지양하려고 합니다.
+기존 라이브러리의 모든 기능을 가져간 채로 API의 변경도 마이그레이션을 위해 되도록이면 지양하려고 했으나
+개선이 필요한 부분들은 필요하다고 생각되면 바꿉니다. 예를 들어, 기존 라이브러리에서 `region`이
+잘못 계산되고 있던 버그 등입니다.
+
+Usage는 [`react-native-map`의 Usage](https://github.com/react-native-maps/react-native-maps/blob/master/docs/mapview.md)를 되도록 따릅니다.
 
 2. New Architecture Renderer Fabric 지원
 

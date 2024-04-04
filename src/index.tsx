@@ -38,13 +38,24 @@ export type NaverMapViewProps = ViewProps & {
    */
   mapType?: MapType;
   /**
-   * 카메라의 위치를 조절합니다. `region`이 존재한다면 작동하지 않습니다.
+   * 카메라의 위치를 조절합니다. `region`이 존재해도 `camera`가 설정되면 동작하지 않습니다.
    *
    * [Reference](https://navermaps.github.io/ios-map-sdk/guide-ko/3-1.html)
    */
   camera?: Partial<Camera>;
   /**
+   * 맵이 생성된 후 첫 카메라 설정입니다.
+   *
+   * `camera`를 사용하지 않을 때만 사용해야합니다.
+   *
+   * 컴포넌트가 mount되고 변경해도 동작하지 않습니다.
+   *
+   */
+  initialCamera?: Partial<Camera>;
+  /**
    * 해당 영역이 완전히 보이는 좌표와 최대 줌 레벨로 카메라가 이동합니다.
+   *
+   * `camera`가 존재한다면 동작하지 않습니다.
    *
    * `latitude`, `longtidue`는 지도의 south-west(위도, 경도가 낮은 부분)를 의미합니다.
    *
@@ -55,6 +66,14 @@ export type NaverMapViewProps = ViewProps & {
    * 하지만 `longitudeDelta`가 특정 값보다 커서 최대 줌 레벨이 더 작아진다면 0.1보다 더 차이나게 될 수도 있고 반대도 같습니다.
    */
   region?: Region;
+  /**
+   * 맵이 생성된 후 첫 위치 설정입니다.
+   *
+   * `region`를 사용하지 않을 때만 사용해야합니다.
+   *
+   * 컴포넌트가 mount되고 변경해도 동작하지 않습니다.
+   */
+  initialRegion?: Region;
   /**
    * indoorMapEnabled 속성을 사용하면 실내지도를 활성화할 수 있습니다.
    * 실내지도가 활성화되면 줌 레벨이 일정 수준 이상이고 실내지도가 있는 영역에 지도의 중심이 위치할 경우 자동으로 해당 영역에 대한 실내지도가 나타납니다.
@@ -97,15 +116,54 @@ export type NaverMapViewProps = ViewProps & {
    * 기본값은 1입니다.
    */
   symbolPerspectiveRatio?: number;
+  /**
+   *
+   */
   mapPadding?: Partial<Rect>;
+  /**
+   * 나침반: 카메라의 회전 및 틸트 상태를 표현합니다.
+   * 탭하면 카메라의 헤딩과 틸트가 0으로 초기화됩니다.
+   * 헤딩과 틸트가 0이 되면 자동으로 사라집니다.
+   */
   isShowCompass?: boolean;
+  /**
+   * 축척 바: 지도의 축척을 표현합니다. 지도를 조작하는 기능은 없습니다.
+   */
   isShowScaleBar?: boolean;
+  /**
+   * 줌 버튼: 탭하면 지도의 줌 레벨을 1씩 증가 또는 감소합니다.
+   */
   isShowZoomControls?: boolean;
+  /**
+   * 실내지도 층 피커: 노출 중인 실내지도 구역의 층 정보를 표현합니다
+   * 층을 선택하면 해당 층의 실내지도가 노출됩니다.
+   * 실내지도가 보이는 상황에만 나타납니다.
+   */
   isShowIndoorLevelPicker?: boolean;
+  /**
+   * 현위치 버튼: 위치 추적 모드를 표현합니다. 탭하면 모드가 변경됩니다.
+   */
   isShowLocationButton?: boolean;
+  /**
+   * 카메라의 최소 줌 레벨입니다.
+   */
   minZoom?: number;
+  /**
+   * 카메라의 최대 줌 레벨입니다.
+   */
   maxZoom?: number;
+  /**
+   * extent 속성을 지정하면 카메라의 대상 지점을 영역 내로 제한할 수 있습니다.
+   * 카메라가 제한 영역을 벗어나도록 API를 호출하더라도 대상 지점이 영역 내로 조정됩니다.
+   *
+   * 카메라 영역을 제한할 때 최소 줌 레벨도 함께 제한하는 것이 좋습니다.
+   * 그렇지 않으면 지도가 축소되었을 때 제한 영역이 너무 작게 나타날 수 있습니다.
+   */
   extent?: Region;
+  /**
+   * 한반도로 `extent`를 제한합니다. `extent`가 존재한다면 동작하지 않습니다.
+   */
+  isExtentBoundedInKorea?: boolean;
 
   /**
    * 지도 객체가 초기화가 완료된 뒤에 호출됩니다.
@@ -170,11 +228,14 @@ function clamp(v: number, min: number, max: number): number {
 }
 // const INVALID_NUMBER = -123123123;
 const DEFAULT_ANIM_DURATION = 700;
+const DEFAULT_EASING: CameraAnimationEasing = 'EaseOut';
 const NaverMapView = forwardRef(
   (
     {
       camera,
+      initialCamera,
       region,
+      initialRegion,
       mapType = 'Basic',
 
       isIndoorEnabled = false,
@@ -197,6 +258,7 @@ const NaverMapView = forwardRef(
       minZoom,
       maxZoom,
       extent,
+      isExtentBoundedInKorea,
 
       ...rest
     }: NaverMapViewProps,
@@ -213,7 +275,7 @@ const NaverMapView = forwardRef(
               latitude,
               longitude,
               duration ?? DEFAULT_ANIM_DURATION,
-              cameraEasingToNumber(easing),
+              cameraEasingToNumber(easing ?? DEFAULT_EASING),
               pivot?.x ?? 0.5,
               pivot?.y ?? 0.5
             );
@@ -226,7 +288,7 @@ const NaverMapView = forwardRef(
               x,
               y,
               duration ?? DEFAULT_ANIM_DURATION,
-              cameraEasingToNumber(easing),
+              cameraEasingToNumber(easing ?? DEFAULT_EASING),
               pivot?.x ?? 0.5,
               pivot?.y ?? 0.5
             );
@@ -249,7 +311,7 @@ const NaverMapView = forwardRef(
               latitudeDelta,
               longitudeDelta,
               duration ?? DEFAULT_ANIM_DURATION,
-              cameraEasingToNumber(easing),
+              cameraEasingToNumber(easing ?? DEFAULT_EASING),
               pivot?.x ?? 0.5,
               pivot?.y ?? 0.5
             );
@@ -263,19 +325,21 @@ const NaverMapView = forwardRef(
           pivot,
         }) => {
           if (innerRef.current) {
-            const centerLatitude = (coord1.latitude + coord2.latitude) / 2;
-            const centerLongitude = (coord1.longitude + coord2.longitude) / 2;
-            const latitudeDiff = Math.abs(coord1.latitude - coord2.latitude);
-            const longitudeDiff = Math.abs(coord1.longitude - coord2.longitude);
+            const latitude = Math.min(coord1.latitude, coord2.latitude);
+            const longitude = Math.min(coord1.longitude, coord2.longitude);
+            const latitudeDelta = Math.abs(coord1.latitude - coord2.latitude);
+            const longitudeDelta = Math.abs(
+              coord1.longitude - coord2.longitude
+            );
 
             Commands.animateRegionTo(
               innerRef.current,
-              centerLatitude,
-              centerLongitude,
-              latitudeDiff,
-              longitudeDiff,
+              latitude,
+              longitude,
+              latitudeDelta,
+              longitudeDelta,
               duration ?? DEFAULT_ANIM_DURATION,
-              cameraEasingToNumber(easing),
+              cameraEasingToNumber(easing ?? DEFAULT_EASING),
               pivot?.x ?? 0.5,
               pivot?.y ?? 0.5
             );
@@ -288,18 +352,12 @@ const NaverMapView = forwardRef(
       <NativeNaverMapView
         ref={innerRef}
         mapType={mapType}
-        camera={
-          camera && !region
-            ? {
-                latitude: camera.latitude,
-                longitude: camera.longitude,
-                zoom: camera.zoom,
-                tilt: camera.tilt,
-                bearing: camera.bearing,
-              }
-            : undefined
+        camera={camera}
+        initialCamera={!camera ? initialCamera : undefined}
+        region={!camera ? region : undefined}
+        initialRegion={
+          !region && !camera && !initialCamera ? initialRegion : undefined
         }
-        region={region}
         isIndoorEnabled={isIndoorEnabled}
         isNightModeEnabled={isNightModeEnabled}
         isLiteModeEnabled={isLiteModeEnabled}
@@ -318,7 +376,18 @@ const NaverMapView = forwardRef(
         isShowZoomControls={isShowZoomControls}
         minZoom={minZoom}
         maxZoom={maxZoom}
-        extent={extent}
+        extent={
+          extent
+            ? extent
+            : isExtentBoundedInKorea
+              ? {
+                  latitude: 31.43,
+                  longitude: 122.37,
+                  latitudeDelta: 44.35 - 31.43,
+                  longitudeDelta: 132 - 122.37,
+                }
+              : undefined
+        }
         {...rest}
       />
     );

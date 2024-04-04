@@ -44,7 +44,7 @@ using namespace facebook::react;
 @property (nonatomic, assign) NMFMapType mapType;
 @property (nonatomic, copy) NSDictionary *camera;
 @property (nonatomic, copy) RNCNaverMapRegion *region;
-@property (nonatomic, copy) NSDictionary *mapPadding;
+@property (nonatomic, copy) RNCNaverMapRect *mapPadding;
 @property (nonatomic, assign) BOOL isIndoorEnabled;
 @property (nonatomic, assign) BOOL isNightModeEnabled;
 @property (nonatomic, assign) BOOL isLiteModeEnabled;
