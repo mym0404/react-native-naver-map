@@ -67,6 +67,7 @@ using namespace facebook::react;
 
 @property (nonatomic, copy) RCTDirectEventBlock onInitialized;
 @property (nonatomic, copy) RCTDirectEventBlock onOptionChanged;
+@property (nonatomic, copy) RCTDirectEventBlock onCameraChanged;
 
 @end
 

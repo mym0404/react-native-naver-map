@@ -54,7 +54,7 @@ type PartialRect = Readonly<{
   left?: Double;
 }>;
 
-interface NaverMapViewProps extends ViewProps {
+interface NaverMapViewNativeProps extends ViewProps {
   // Additional
   // onAuthFailed?: DirectEventHandler<NaverMapAuthFailedEvent>;
 
@@ -67,6 +67,9 @@ interface NaverMapViewProps extends ViewProps {
       latitude: Double;
       longitude: Double;
       zoom: Double;
+      tilt: Double;
+      bearing: Double;
+      reason: Int32 /* CameraChangeReason */;
     }>
   >;
 
@@ -157,7 +160,7 @@ interface NaverMapViewProps extends ViewProps {
   // useTextureView?: boolean;
 }
 
-type ComponentType = HostComponent<NaverMapViewProps>;
+type ComponentType = HostComponent<NaverMapViewNativeProps>;
 
 interface NaverMapNativeCommands {
   screenToCoordinate: (
@@ -214,7 +217,9 @@ interface NaverMapNativeCommands {
   cancelAnimation: (ref: React.ElementRef<ComponentType>) => void;
 }
 
-export default codegenNativeComponent<NaverMapViewProps>('RNCNaverMapView');
+export default codegenNativeComponent<NaverMapViewNativeProps>(
+  'RNCNaverMapView'
+);
 export const Commands: NaverMapNativeCommands =
   codegenNativeCommands<NaverMapNativeCommands>({
     supportedCommands: [

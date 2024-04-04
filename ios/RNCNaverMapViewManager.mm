@@ -58,6 +58,7 @@ RCT_EXPORT_VIEW_PROPERTY(extent, RNCNaverMapRegion)
 // event
 RCT_EXPORT_VIEW_PROPERTY(onInitialized, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onOptionChanged, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onCameraChanged, RCTDirectEventBlock)
 
 
 // command

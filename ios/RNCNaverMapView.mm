@@ -51,6 +51,23 @@ using namespace facebook::react;
             emitter->onOptionChanged({});
         };
 
+        _view.onCameraChanged = [self](NSDictionary * dict) {
+            if (_eventEmitter == nil) {
+                return;
+            }
+
+            auto emitter = std::static_pointer_cast<RNCNaverMapViewEventEmitter const>(_eventEmitter);
+            emitter->onCameraChanged({
+                .latitude = [dict[@"latitude"] doubleValue],
+                .longitude = [dict[@"longitude"] doubleValue],
+                .zoom = [dict[@"zoom"] doubleValue],
+                .tilt = [dict[@"tilt"] doubleValue],
+                .bearing = [dict[@"bearing"] doubleValue],
+                .reason = [dict[@"reason"] intValue]
+            });
+        };
+
+
         self.contentView = _view;
     }
 

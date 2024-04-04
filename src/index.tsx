@@ -19,6 +19,11 @@ import type { Region } from './types/Region';
 import type { Coord } from './types/Coord';
 import type { Rect } from './types/Rect';
 import type { LogoAlign } from './types/LogoAlign';
+import {
+  type CameraChangeReason,
+  cameraChangeReasonFromNumber,
+} from './types/CameraChangeReason';
+import { useStableCallback } from './util/useStableCallback';
 
 export * from './spec/RNCNaverMapViewNativeComponent';
 export * from './types/Coord';
@@ -32,6 +37,7 @@ export * from './types/Align';
 export * from './types/LogoAlign';
 export * from './types/Camera';
 export * from './types/CameraAnimationEasing';
+export * from './types/CameraChangeReason';
 
 export type NaverMapViewProps = ViewProps & {
   /**
@@ -190,12 +196,18 @@ export type NaverMapViewProps = ViewProps & {
    * 이런 경우에 옵션 변경 이벤트를 사용할 수 있습니다.
    */
   onOptionChanged?: () => void;
+  /**
+   * 어떤 이유에 의해서건 카메라가 움직이면 카메라 변경 이벤트가 발생합니다.
+   *
+   * reason은 이벤트를 발생시킨 카메라 이동의 원인입니다.
+   * reason을 이용해 카메라 이동의 원인을 지정할 수 있으며, 이벤트 리스너 내에서 이 값을 이용해 어떤 원인에 의해 발생한 이벤트인지 판단할 수 있습니다.
+   *
+   * {@link CameraChangeReason}
+   */
   onCameraChanged?: (
-    params: NativeSyntheticEvent<{
-      latitude: number;
-      longitude: number;
-      zoom: number;
-    }>
+    params: Camera & {
+      reason: CameraChangeReason;
+    }
   ) => void;
 };
 
@@ -263,9 +275,6 @@ const NaverMapView = forwardRef(
       symbolScale = 1,
       symbolPerspectiveRatio = 1,
 
-      onCameraChanged,
-      onInitialized,
-      onOptionChanged,
       mapPadding,
       isShowCompass = true,
       isShowIndoorLevelPicker = true,
@@ -279,11 +288,31 @@ const NaverMapView = forwardRef(
       logoAlign,
       logoMargin,
 
+      onCameraChanged: onCameraChangedProp,
+      onInitialized,
+      onOptionChanged,
+
       ...rest
     }: NaverMapViewProps,
     ref: ForwardedRef<NaverMapViewRef>
   ) => {
     const innerRef = useRef<any>(null);
+
+    const onCameraChanged = useStableCallback(
+      ({
+        nativeEvent: { bearing, latitude, longitude, reason, tilt, zoom },
+      }: NativeSyntheticEvent<Camera & { reason: number }>) => {
+        onCameraChangedProp?.({
+          zoom,
+          tilt,
+          reason: cameraChangeReasonFromNumber(reason),
+          latitude,
+          longitude,
+          bearing,
+        });
+      }
+    );
+
     useImperativeHandle(
       ref,
       () => ({
@@ -402,7 +431,7 @@ const NaverMapView = forwardRef(
         symbolScale={clamp(symbolScale, 0, 2)}
         symbolPerspectiveRatio={clamp(symbolPerspectiveRatio, 0, 1)}
         onInitialized={onInitialized}
-        onCameraChanged={onCameraChanged}
+        onCameraChanged={onCameraChangedProp ? onCameraChanged : undefined}
         onOptionChanged={onOptionChanged}
         mapPadding={mapPadding}
         isShowCompass={isShowCompass}

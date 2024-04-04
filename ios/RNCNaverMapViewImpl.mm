@@ -42,7 +42,7 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
         double delayInSeconds = 0.1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
 
-//        [self.mapView addCameraDelegate:self];
+        [self.mapView addCameraDelegate:self];
 //        [self.mapView setTouchDelegate:self];
         [self.mapView addOptionDelegate:self];
 
@@ -231,6 +231,24 @@ BOOL _initialCameraSet;
 - (void)mapViewOptionChanged:(NMFMapView *)mapView
 {
     self.onOptionChanged(@{});
+}
+
+- (void)mapView:(NMFMapView *)mapView cameraIsChangingByReason:(NSInteger)reason
+{
+    NMFCameraPosition *pos = mapView.cameraPosition;
+
+    self.onCameraChanged(@{
+        @"latitude": @(pos.target.lat),
+        @"longitude": @(pos.target.lng),
+        @"zoom": @(pos.zoom),
+        @"tilt": @(pos.tilt),
+        @"bearing": @(pos.heading),
+        @"reason": @(reason == NMFMapChangedByDeveloper ? 0 :
+                     reason == NMFMapChangedByGesture ? 1 :
+                     reason == NMFMapChangedByControl ? 2 :
+                     reason == NMFMapChangedByLocation ? 3 :
+                     0)
+        });
 }
 
 // MARK: - COMMAND

@@ -6,9 +6,23 @@ import NaverMapView, {
   type MapType,
   MapTypes,
   type NaverMapViewRef,
+  type Region,
+  type Camera,
 } from '@mj-studio/react-native-naver-map';
 import Slider from '@react-native-community/slider';
 import { request, PERMISSIONS } from 'react-native-permissions';
+
+const jejuRegion: Region = {
+  latitude: 33.20530773,
+  longitude: 126.14656715029,
+  latitudeDelta: 0.38,
+  longitudeDelta: 0.8,
+};
+const jejuCamera: Partial<Camera> = {
+  latitude: jejuRegion.latitude + jejuRegion.latitudeDelta / 2,
+  longitude: jejuRegion.longitude + jejuRegion.longitudeDelta / 2,
+  zoom: 8.5,
+};
 
 export default function App() {
   const ref = useRef<NaverMapViewRef>(null);
@@ -34,19 +48,11 @@ export default function App() {
         ref={ref}
         style={{ flex: 1 }}
         mapType={mapType}
-        region={{
-          latitude: 33.20530773,
-          longitude: 126.14656715029,
-          latitudeDelta: 0.38,
-          longitudeDelta: 0.8,
-        }}
+        // camera={jejuCamera}
+        initialCamera={jejuCamera}
+        // region={jejuRegion}
+        // initialRegion={jejuRegion}
         isIndoorEnabled={indoor}
-        onInitialized={() => {
-          console.log('initialized!');
-        }}
-        onOptionChanged={() => {
-          console.log('Option Changed!');
-        }}
         symbolScale={symbolScale}
         lightness={lightness}
         isNightModeEnabled={nightMode}
@@ -57,6 +63,15 @@ export default function App() {
         isShowLocationButton={myLocation}
         isExtentBoundedInKorea
         logoAlign={'TopRight'}
+        onInitialized={() => {
+          console.log('initialized!');
+        }}
+        onOptionChanged={() => {
+          console.log('Option Changed!');
+        }}
+        onCameraChanged={(args) => {
+          console.log(`Camera Changed: ${JSON.stringify(args, null, 2)}`);
+        }}
       />
       <View
         style={{
