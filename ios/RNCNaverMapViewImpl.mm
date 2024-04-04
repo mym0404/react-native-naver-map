@@ -126,14 +126,18 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
     [self.mapView moveCamera:update];
 }
 
-- (void)setRegion:(NSDictionary *)region
+- (void)setRegion:(RNCNaverMapRegion *)region
 {
     _region = region;
 
-    NMGLatLngBounds *bounds = [RCTConvert NMGLatLngBounds:region];
-    NMFCameraUpdate *update = [NMFCameraUpdate cameraUpdateWithFitBounds:bounds];
+    NMFCameraUpdate *update = [NMFCameraUpdate
+                               cameraUpdateWithFitBounds:[region convertToNMGLatLngBounds]];
 
     [self.mapView moveCamera:update];
+}
+
+- (void)setExtent:(RNCNaverMapRegion *)extent
+{
 }
 
 - (void)setMapPadding:(NSDictionary *)mapPadding
@@ -238,13 +242,9 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
                  pivotX:(double)pivotX
                  pivotY:(double)pivotY
 {
-    NMGLatLngBounds *bounds = [RCTConvert NMGLatLngBounds:@{
-                                   @"latitude": @(latitude),
-                                   @"longitude": @(longitude),
-                                   @"latitudeDelta": @(latitudeDelta),
-                                   @"longitudeDelta": @(longitudeDelta),
-    }];
-    NMFCameraUpdate *update = [NMFCameraUpdate cameraUpdateWithFitBounds:bounds];
+    RNCNaverMapRegion *region = RNCNaverMapRegionMake(latitude, longitude, latitudeDelta, longitudeDelta);
+    NMFCameraUpdate *update = [NMFCameraUpdate
+                               cameraUpdateWithFitBounds:[region convertToNMGLatLngBounds]];
 
     update.animation = getEasingAnimation(easing);
     update.animationDuration = (NSTimeInterval)((double)duration) / 1000;

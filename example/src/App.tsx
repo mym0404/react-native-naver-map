@@ -120,10 +120,11 @@ export default function App() {
         <Button
           title={'Move Region'}
           onPress={() => {
-            ref.current?.animateCameraBy({
-              x: 100,
-              y: 100,
-              duration: 3000,
+            ref.current?.animateRegionTo({
+              latitude: 33.20530773,
+              longitude: 126.14656715029,
+              latitudeDelta: 0.38,
+              longitudeDelta: 0.8,
             });
           }}
         />

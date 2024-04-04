@@ -168,7 +168,7 @@
   },
   "codegenConfig": {
     "name": "RNCNaverMapViewSpec",
-    "type": "components",
+    "type": "all",
     "jsSrcsDir": "src"
   }
 }

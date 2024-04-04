@@ -1,7 +1,7 @@
 import {
   default as NativeNaverMapView,
   Commands,
-} from './RNCNaverMapViewNativeComponent';
+} from './spec/RNCNaverMapViewNativeComponent';
 import React, {
   forwardRef,
   type ForwardedRef,
@@ -19,7 +19,7 @@ import type { Region } from './types/Region';
 import type { Coord } from './types/Coord';
 import type { Rect } from './types/Rect';
 
-export * from './RNCNaverMapViewNativeComponent';
+export * from './spec/RNCNaverMapViewNativeComponent';
 export * from './types/Coord';
 export * from './types/Rect';
 export * from './types/Region';
@@ -45,8 +45,11 @@ export type NaverMapViewProps = ViewProps & {
   camera?: Partial<Camera>;
   /**
    * 해당 영역이 완전히 보이는 좌표와 최대 줌 레벨로 카메라가 이동합니다.
-   * `latitude`, `longtidue`는 지도의 중심을 의미하며 `latitudeDelta`, `longitudeDelta`는 각 위도 경도로 얼마만큼의
-   * 크기를 가질 것인지 결정합니다.
+   *
+   * `latitude`, `longtidue`는 지도의 south-west(위도, 경도가 낮은 부분)를 의미합니다.
+   *
+   * `latitudeDelta`, `longitudeDelta`는 각 위도 경도로 얼마만큼의 범위를 가질 것인지를 의미합니다.
+   *  항상 양수입니다.
    *
    * 예를 들어, `latitudeDelta`가 0.1이라면 위도가 지도의 보이는 곳의 끝과 끝에서 0.1이 차이난다는 것을 의미합니다.
    * 하지만 `longitudeDelta`가 특정 값보다 커서 최대 줌 레벨이 더 작아진다면 0.1보다 더 차이나게 될 수도 있고 반대도 같습니다.
@@ -102,6 +105,7 @@ export type NaverMapViewProps = ViewProps & {
   isShowLocationButton?: boolean;
   minZoom?: number;
   maxZoom?: number;
+  extent?: Region;
 
   /**
    * 지도 객체가 초기화가 완료된 뒤에 호출됩니다.
@@ -146,14 +150,7 @@ export type NaverMapViewRef = {
       y: number;
     } & CameraMoveBaseParams
   ) => void;
-  animateCameraToCenterWithDelta: (
-    params: {
-      latitude: number;
-      longitude: number;
-      latitudeDelta: number;
-      longitudeDelta: number;
-    } & CameraMoveBaseParams
-  ) => void;
+  animateRegionTo: (params: Region & CameraMoveBaseParams) => void;
   /**
    * 두 좌표가 모두 보이는 최대 줌 레벨로 이동합니다.
    *
@@ -197,6 +194,9 @@ const NaverMapView = forwardRef(
       isShowLocationButton = true,
       isShowScaleBar = true,
       isShowZoomControls = true,
+      minZoom,
+      maxZoom,
+      extent,
 
       ...rest
     }: NaverMapViewProps,
@@ -232,7 +232,7 @@ const NaverMapView = forwardRef(
             );
           }
         },
-        animateCameraToCenterWithDelta: ({
+        animateRegionTo: ({
           easing,
           longitude,
           latitude,
@@ -316,6 +316,9 @@ const NaverMapView = forwardRef(
         isShowLocationButton={isShowLocationButton}
         isShowScaleBar={isShowScaleBar}
         isShowZoomControls={isShowZoomControls}
+        minZoom={minZoom}
+        maxZoom={maxZoom}
+        extent={extent}
         {...rest}
       />
     );

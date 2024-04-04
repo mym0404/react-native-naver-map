@@ -43,7 +43,7 @@ using namespace facebook::react;
 
 @property (nonatomic, assign) NMFMapType mapType;
 @property (nonatomic, copy) NSDictionary *camera;
-@property (nonatomic, copy) NSDictionary *region;
+@property (nonatomic, copy) RNCNaverMapRegion *region;
 @property (nonatomic, copy) NSDictionary *mapPadding;
 @property (nonatomic, assign) BOOL isIndoorEnabled;
 @property (nonatomic, assign) BOOL isNightModeEnabled;
@@ -59,6 +59,7 @@ using namespace facebook::react;
 @property (nonatomic, assign) BOOL isShowZoomControls;
 @property (nonatomic, assign) double minZoom;
 @property (nonatomic, assign) double maxZoom;
+@property (nonatomic, copy) RNCNaverMapRegion *extent;
 
 @property (nonatomic, copy) RCTDirectEventBlock onInitialized;
 @property (nonatomic, copy) RCTDirectEventBlock onOptionChanged;

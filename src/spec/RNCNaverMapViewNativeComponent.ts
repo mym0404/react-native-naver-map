@@ -9,6 +9,19 @@ import type {
 import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 import React from 'react';
 
+/* Type should be redeclared because of codegen ts parser doesn't allow imported type
+ * [comments](https://github.com/reactwg/react-native-new-architecture/discussions/91#discussioncomment-4282452)
+ */
+
+type Region = {
+  latitude: Double;
+  longitude: Double;
+  latitudeDelta: Double;
+  longitudeDelta: Double;
+};
+
+////////////////////
+
 // export type NaverMapAuthFailedEvent = Readonly<{
 //   errorCode: Int32;
 //   description: string;
@@ -77,12 +90,7 @@ interface NaverMapViewProps extends ViewProps {
     bearing?: Double;
   }>;
 
-  region?: Readonly<{
-    latitude: Double;
-    longitude: Double;
-    latitudeDelta: Double;
-    longitudeDelta: Double;
-  }>;
+  region?: Readonly<Region>;
 
   isIndoorEnabled?: boolean;
   isNightModeEnabled?: boolean;
@@ -102,6 +110,8 @@ interface NaverMapViewProps extends ViewProps {
   isShowZoomControls?: boolean;
   isShowIndoorLevelPicker?: boolean;
   isShowLocationButton?: boolean;
+
+  extent?: Readonly<Region>;
 
   /*Not Implemented Yet*/
   // tilt?: number;

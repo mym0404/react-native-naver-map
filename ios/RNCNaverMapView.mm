@@ -72,11 +72,6 @@ using namespace facebook::react;
         _view.name = RCTNSStringFromString(newViewProps.name); \
     }
 
-#define REMAP_DOUBLE(name)                                          \
-    if (oldViewProps.name != newViewProps.name) {                   \
-        _view.name = [NSNumber numberWithDouble:newViewProps.name]; \
-    }
-
     if (oldViewProps.mapType != newViewProps.mapType) {
         if (newViewProps.mapType == RNCNaverMapViewMapType::Basic) {
             _view.mapType = NMFMapTypeBasic;
@@ -98,17 +93,17 @@ using namespace facebook::react;
     REMAP_PROP(isIndoorEnabled)
     REMAP_PROP(isNightModeEnabled)
     REMAP_PROP(isLiteModeEnabled)
-    REMAP_DOUBLE(lightness)
-    REMAP_DOUBLE(buildingHeight)
-    REMAP_DOUBLE(symbolScale)
-    REMAP_DOUBLE(symbolPerspectiveRatio)
+    REMAP_PROP(lightness)
+    REMAP_PROP(buildingHeight)
+    REMAP_PROP(symbolScale)
+    REMAP_PROP(symbolPerspectiveRatio)
     REMAP_PROP(isShowCompass)
     REMAP_PROP(isShowIndoorLevelPicker)
     REMAP_PROP(isShowLocationButton)
     REMAP_PROP(isShowScaleBar)
     REMAP_PROP(isShowZoomControls)
-    REMAP_DOUBLE(minZoom)
-    REMAP_DOUBLE(maxZoom)
+    REMAP_PROP(minZoom)
+    REMAP_PROP(maxZoom)
 
     auto c1 = oldViewProps.camera, c2 = newViewProps.camera;
 
@@ -128,12 +123,11 @@ using namespace facebook::react;
     if (r1.latitude != r2.latitude || r1.longitude != r2.longitude
         || r1.latitudeDelta != r2.latitudeDelta ||
         r1.longitudeDelta != r2.longitudeDelta) {
-        _view.region = @{
-                @"latitude": @(r1.latitude),
-                @"longitude": @(r1.longitude),
-                @"latitudeDelta": @(r1.latitudeDelta),
-                @"longitudeDelta": @(r1.longitudeDelta),
-        };
+        _view.region = RNCNaverMapRegionMake(
+            r2.latitude,
+            r2.longitude,
+            r2.latitudeDelta,
+            r2.longitude);
     }
 
     auto p1 = oldViewProps.mapPadding, p2 = newViewProps.mapPadding;

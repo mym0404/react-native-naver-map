@@ -11,11 +11,12 @@
 #import <NMapsMap/NMFCameraUpdate.h>
 #import <NMapsMap/NMFMapView.h>
 #import <NMapsMap/NMFOverlay.h>
+#import "RNCNaverMapRegion.h"
 
 @interface RCTConvert (NMFMapView)
 
 + (NMFMapType)NMFMapType:(id)json;
-+ (NMGLatLngBounds *)NMGLatLngBounds:(id)json;
 + (NMFAlignType *)NMFAlignType:(id)json;
++ (RNCNaverMapRegion *)RNCNaverMapRegion:(id)json;
 
 @end

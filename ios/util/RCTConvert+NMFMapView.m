@@ -21,17 +21,6 @@ RCT_ENUM_CONVERTER(NMFMapType, (@{
     @"None": @(NMFMapTypeNone),
     }), NMFMapTypeBasic, integerValue)
 
-+ (NMGLatLngBounds *)NMGLatLngBounds:(id)json
-{
-    json = [self NSDictionary:json];
-    double lat = [self double:json[@"latitude"]];
-    double latDelta = [self double:json[@"latitudeDelta"]];
-    double lng = [self double:json[@"longitude"]];
-    double lngDelta = [self double:json[@"longitudeDelta"]];
-    return NMGLatLngBoundsMake(lat - latDelta / 2, lng - lngDelta / 2, // southwest
-                               lat + latDelta / 2, lng + lngDelta / 2); // northeast
-}
-
 + (NMFAlignType *)NMFAlignType:(id)json
 {
     json = [self NSNumber:json];
@@ -73,6 +62,16 @@ RCT_ENUM_CONVERTER(NMFMapType, (@{
     }
 
     return NMFAlignType.bottom;
+}
+
++ (RNCNaverMapRegion *)RNCNaverMapRegion:(id)json
+{
+    json = [self NSDictionary:json];
+    return RNCNaverMapRegionMake(
+        [self double:json[@"latitude"]],
+        [self double:json[@"longitude"]],
+        [self double:json[@"latitudeDelta"]],
+        [self double:json[@"longitudeDelta"]]);
 }
 
 @end
