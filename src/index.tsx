@@ -184,6 +184,32 @@ export type NaverMapViewProps = ViewProps & {
   // isLogoInteractionEnabled?: boolean;
 
   /**
+   * 스크롤: 한 개 또는 두 개 이상의 손가락으로 지도를 드래그하면 카메라가 손가락을 따라 이동합니다.
+   */
+  isScrollGesturesEnabled?: boolean;
+
+  /**
+   * 줌: 지도를 더블 탭하면 줌 레벨이 한 단계 확대됩니다. 두 손가락 탭하면 한 단계 축소됩니다.
+   * 핀치와 스트레치 또는 한 손가락 줌 제스처로도 지도의 줌 레벨을 변경할 수 있습니다.
+   */
+  isZoomGesturesEnabled?: boolean;
+
+  /**
+   * 틸트: 두 개의 손가락으로 지도를 위아래로 드래그하면 기울임 각도가 바뀝니다.
+   */
+  isTiltGesturesEnabled?: boolean;
+
+  /**
+   * 회전: 두 개의 손가락으로 지도를 돌리면 베어링 각도가 바뀝니다.
+   */
+  isRotateGesturesEnabled?: boolean;
+
+  /**
+   * 스톱: 카메라 애니메이션이 진행 중일 때 지도를 탭하면 애니메이션이 취소되고 카메라가 현재 위치에 멈춥니다.
+   */
+  isStopGesturesEnabled?: boolean;
+
+  /**
    * 지도 객체가 초기화가 완료된 뒤에 호출됩니다.
    */
   onInitialized?: () => void;
@@ -291,6 +317,11 @@ const NaverMapView = forwardRef(
       onCameraChanged: onCameraChangedProp,
       onInitialized,
       onOptionChanged,
+      isScrollGesturesEnabled = true,
+      isZoomGesturesEnabled = true,
+      isTiltGesturesEnabled = true,
+      isRotateGesturesEnabled = true,
+      isStopGesturesEnabled = true,
 
       ...rest
     }: NaverMapViewProps,
@@ -455,6 +486,11 @@ const NaverMapView = forwardRef(
         }
         logoAlign={logoAlign}
         logoMargin={logoMargin}
+        isScrollGesturesEnabled={isScrollGesturesEnabled}
+        isZoomGesturesEnabled={isZoomGesturesEnabled}
+        isTiltGesturesEnabled={isTiltGesturesEnabled}
+        isRotateGesturesEnabled={isRotateGesturesEnabled}
+        isStopGesturesEnabled={isStopGesturesEnabled}
         {...rest}
       />
     );

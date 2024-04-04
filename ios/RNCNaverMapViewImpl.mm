@@ -62,53 +62,37 @@ BOOL _initialCameraSet;
 
 // MARK: - SETTER
 
-- (void)setMapType:(NMFMapType)mapType
-{
-    _mapType = mapType;
-    self.mapView.mapType = mapType;
-}
-
-- (void)setIsIndoorEnabled:(BOOL)isIndoorEnabled
-{
-    _isIndoorEnabled = isIndoorEnabled;
-    self.mapView.indoorMapEnabled = isIndoorEnabled;
-}
-
-- (void)setIsNightModeEnabled:(BOOL)isNightModeEnabled
-{
-    _isNightModeEnabled = isNightModeEnabled;
-    self.mapView.nightModeEnabled = isNightModeEnabled;
-}
-
-- (void)setIsLiteModeEnabled:(BOOL)isLiteModeEnabled
-{
-    _isLiteModeEnabled = isLiteModeEnabled;
-    self.mapView.liteModeEnabled = isLiteModeEnabled;
-}
-
-- (void)setLightness:(double)lightness
-{
-    _lightness = lightness;
-    self.mapView.lightness = lightness;
-}
-
-- (void)setBuildingHeight:(double)buildingHeight
-{
-    _buildingHeight = buildingHeight;
-    self.mapView.buildingHeight = buildingHeight;
-}
-
-- (void)setSymbolScale:(double)symbolScale
-{
-    _symbolScale = symbolScale;
-    self.mapView.symbolScale = symbolScale;
-}
-
-- (void)setSymbolPerspectiveRatio:(double)symbolPerspectiveRatio
-{
-    _symbolPerspectiveRatio = symbolPerspectiveRatio;
-    self.mapView.symbolPerspectiveRatio = symbolPerspectiveRatio;
-}
+#define RNMAP_QUICK_SETTER(cap, name, type) \
+    - (void)set ## cap:(type)name {         \
+        _ ## name = name;                   \
+        self.mapView.name = name;           \
+    }
+#define RNMAP_REMAP_QUICK_SETTER(cap, name, view_prop, type) \
+    - (void)set ## cap:(type)name {                          \
+        _ ## name = name;                                    \
+        self.view_prop = name;                               \
+    }
+RNMAP_QUICK_SETTER(MapType, mapType, NMFMapType)
+RNMAP_REMAP_QUICK_SETTER(IsIndoorEnabled, isIndoorEnabled, mapView.indoorMapEnabled, BOOL)
+RNMAP_REMAP_QUICK_SETTER(IsNightModeEnabled, isNightModeEnabled, mapView.nightModeEnabled, BOOL)
+RNMAP_REMAP_QUICK_SETTER(IsLiteModeEnabled, isLiteModeEnabled, mapView.liteModeEnabled, BOOL)
+RNMAP_QUICK_SETTER(Lightness, lightness, double)
+RNMAP_QUICK_SETTER(BuildingHeight, buildingHeight, double)
+RNMAP_QUICK_SETTER(SymbolScale, symbolScale, double)
+RNMAP_QUICK_SETTER(SymbolPerspectiveRatio, symbolPerspectiveRatio, double)
+RNMAP_REMAP_QUICK_SETTER(IsShowCompass, isShowCompass, showCompass, BOOL)
+RNMAP_REMAP_QUICK_SETTER(IsShowScaleBar, isShowScaleBar, showScaleBar, BOOL)
+RNMAP_REMAP_QUICK_SETTER(IsShowZoomControls, isShowZoomControls, showZoomControls, BOOL)
+RNMAP_REMAP_QUICK_SETTER(IsShowIndoorLevelPicker, isShowIndoorLevelPicker, showIndoorLevelPicker, BOOL)
+RNMAP_REMAP_QUICK_SETTER(IsShowLocationButton, isShowLocationButton, showLocationButton, BOOL)
+RNMAP_QUICK_SETTER(LogoAlign, logoAlign, NMFLogoAlign)
+RNMAP_REMAP_QUICK_SETTER(MinZoom, minZoom, mapView.minZoomLevel, double)
+RNMAP_REMAP_QUICK_SETTER(MaxZoom, maxZoom, mapView.maxZoomLevel, double)
+RNMAP_REMAP_QUICK_SETTER(IsScrollGesturesEnabled, isScrollGesturesEnabled, mapView.scrollGestureEnabled, BOOL)
+RNMAP_REMAP_QUICK_SETTER(IsZoomGesturesEnabled, isZoomGesturesEnabled, mapView.zoomGestureEnabled, BOOL)
+RNMAP_REMAP_QUICK_SETTER(IsTiltGesturesEnabled, isTiltGesturesEnabled, mapView.tiltGestureEnabled, BOOL)
+RNMAP_REMAP_QUICK_SETTER(IsRotateGesturesEnabled, isRotateGesturesEnabled, mapView.rotateGestureEnabled, BOOL)
+RNMAP_REMAP_QUICK_SETTER(IsStopGesturesEnabled, isStopGesturesEnabled, mapView.stopGestureEnabled, BOOL)
 
 - (void)setCamera:(NSDictionary *)camera
 {
@@ -168,56 +152,9 @@ BOOL _initialCameraSet;
     self.mapView.contentInset = [mapPadding convertToUIEdgeInsets];
 }
 
-- (void)setIsShowCompass:(BOOL)isShowCompass
-{
-    _isShowCompass = isShowCompass;
-    self.showCompass = isShowCompass;
-}
-
-- (void)setIsShowScaleBar:(BOOL)isShowScaleBar
-{
-    _isShowScaleBar = isShowScaleBar;
-    self.showScaleBar = isShowScaleBar;
-}
-
-- (void)setIsShowZoomControls:(BOOL)isShowZoomControls
-{
-    _isShowZoomControls = isShowZoomControls;
-    self.showZoomControls = isShowZoomControls;
-}
-
-- (void)setIsShowIndoorLevelPicker:(BOOL)isShowIndoorLevelPicker
-{
-    _isShowIndoorLevelPicker = isShowIndoorLevelPicker;
-    self.showIndoorLevelPicker = isShowIndoorLevelPicker;
-}
-
-- (void)setIsShowLocationButton:(BOOL)isShowLocationButton
-{
-    _isShowLocationButton = isShowLocationButton;
-    self.showLocationButton = isShowLocationButton;
-}
-
 - (void)setLogoMargin:(RNCNaverMapRect *)logoMargin
 {
     self.mapView.logoMargin = [logoMargin convertToUIEdgeInsets];
-}
-
-- (void)setLogoAlign:(NMFLogoAlign)logoAlign
-{
-    self.mapView.logoAlign = logoAlign;
-}
-
-- (void)setMinZoom:(double)minZoom
-{
-    _minZoom = minZoom;
-    self.mapView.minZoomLevel = minZoom;
-}
-
-- (void)setMaxZoom:(double)maxZoom
-{
-    _maxZoom = maxZoom;
-    self.mapView.maxZoomLevel = maxZoom;
 }
 
 - (void)setExtent:(RNCNaverMapRegion *)extent

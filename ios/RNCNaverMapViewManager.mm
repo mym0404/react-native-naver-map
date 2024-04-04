@@ -53,6 +53,11 @@ RCT_EXPORT_VIEW_PROPERTY(logoAlign, NMFLogoAlign)
 RCT_EXPORT_VIEW_PROPERTY(minZoom, double)
 RCT_EXPORT_VIEW_PROPERTY(maxZoom, double)
 RCT_EXPORT_VIEW_PROPERTY(extent, RNCNaverMapRegion)
+RCT_EXPORT_VIEW_PROPERTY(isScrollGesturesEnabled, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(isZoomGesturesEnabled, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(isTiltGesturesEnabled, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(isRotateGesturesEnabled, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(isStopGesturesEnabled, BOOL)
 
 
 // event

@@ -124,18 +124,15 @@ interface NaverMapViewNativeProps extends ViewProps {
 
   extent?: Readonly<Region>;
 
+  isScrollGesturesEnabled?: boolean;
+  isZoomGesturesEnabled?: boolean;
+  isTiltGesturesEnabled?: boolean;
+  isRotateGesturesEnabled?: boolean;
+  isStopGesturesEnabled?: boolean;
+
   /*Not Implemented Yet*/
   // tilt?: number;
   // bearing?: number;
-  // logoMargin?: Rect;
-  // logoGravity?: Gravity;
-  // onCameraChange?: (event: {
-  //   latitude: number;
-  //   longitude: number;
-  //   zoom: number;
-  //   contentsRegion: [Coord, Coord, Coord, Coord, Coord];
-  //   coveringRegion: [Coord, Coord, Coord, Coord, Coord];
-  // }) => void;
   // onMapClick?: (event: {
   //   x: number;
   //   y: number;
@@ -143,19 +140,6 @@ interface NaverMapViewNativeProps extends ViewProps {
   //   longitude: number;
   // }) => void;
   // onTouch?: () => void;
-  // showsMyLocationButton?: boolean;
-  // compass?: boolean;
-  // scaleBar?: boolean;
-  // zoomControl?: boolean;
-
-  // minZoomLevel?: number;
-  // maxZoomLevel?: number;
-
-  // scrollGesturesEnabled?: boolean;
-  // zoomGesturesEnabled?: boolean;
-  // tiltGesturesEnabled?: boolean;
-  // rotateGesturesEnabled?: boolean;
-  // stopGesturesEnabled?: boolean;
 
   // useTextureView?: boolean;
 }

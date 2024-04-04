@@ -79,17 +79,17 @@ using namespace facebook::react;
     const auto &prev = *std::static_pointer_cast<RNCNaverMapViewProps const>(_props);
     const auto &next = *std::static_pointer_cast<RNCNaverMapViewProps const>(props);
 
-#define REMAP_PROP(name)          \
+#define NMAP_REMAP_PROP(name)          \
     if (prev.name != next.name) { \
         _view.name = next.name;   \
     }
 
-#define REMAP_STRING(name)                             \
+#define NMAP_REMAP_STRING(name)                             \
     if (prev.name != next.name) {                      \
         _view.name = RCTNSStringFromString(next.name); \
     }
 
-#define REMAP_RECT(name)                                   \
+#define NMAP_REMAP_RECT(name)                                   \
     if (prev.name.top != next.name.top ||                  \
         prev.name.right != next.name.right ||              \
         prev.name.bottom != next.name.bottom ||            \
@@ -118,22 +118,28 @@ using namespace facebook::react;
         }
     }
 
-    REMAP_PROP(isIndoorEnabled)
-    REMAP_PROP(isNightModeEnabled)
-    REMAP_PROP(isLiteModeEnabled)
-    REMAP_PROP(lightness)
-    REMAP_PROP(buildingHeight)
-    REMAP_PROP(symbolScale)
-    REMAP_PROP(symbolPerspectiveRatio)
-    REMAP_PROP(isShowCompass)
-    REMAP_PROP(isShowIndoorLevelPicker)
-    REMAP_PROP(isShowLocationButton)
-    REMAP_PROP(isShowScaleBar)
-    REMAP_PROP(isShowZoomControls)
-    REMAP_PROP(minZoom)
-    REMAP_PROP(maxZoom)
-    REMAP_RECT(mapPadding)
-    REMAP_RECT(logoMargin)
+    NMAP_REMAP_PROP(isIndoorEnabled)
+    NMAP_REMAP_PROP(isNightModeEnabled)
+    NMAP_REMAP_PROP(isLiteModeEnabled)
+    NMAP_REMAP_PROP(lightness)
+    NMAP_REMAP_PROP(buildingHeight)
+    NMAP_REMAP_PROP(symbolScale)
+    NMAP_REMAP_PROP(symbolPerspectiveRatio)
+    NMAP_REMAP_PROP(isShowCompass)
+    NMAP_REMAP_PROP(isShowIndoorLevelPicker)
+    NMAP_REMAP_PROP(isShowLocationButton)
+    NMAP_REMAP_PROP(isShowScaleBar)
+    NMAP_REMAP_PROP(isShowZoomControls)
+    NMAP_REMAP_PROP(minZoom)
+    NMAP_REMAP_PROP(maxZoom)
+    NMAP_REMAP_RECT(mapPadding)
+    NMAP_REMAP_RECT(logoMargin)
+    
+    NMAP_REMAP_PROP(isScrollGesturesEnabled)
+    NMAP_REMAP_PROP(isZoomGesturesEnabled)
+    NMAP_REMAP_PROP(isTiltGesturesEnabled)
+    NMAP_REMAP_PROP(isRotateGesturesEnabled)
+    NMAP_REMAP_PROP(isStopGesturesEnabled)
 
     auto c1 = prev.camera, c2 = next.camera;
 

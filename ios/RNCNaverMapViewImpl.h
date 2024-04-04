@@ -64,6 +64,11 @@ using namespace facebook::react;
 @property (nonatomic, assign) double minZoom;
 @property (nonatomic, assign) double maxZoom;
 @property (nonatomic, copy) RNCNaverMapRegion *extent;
+@property (nonatomic, assign) BOOL isScrollGesturesEnabled;
+@property (nonatomic, assign) BOOL isZoomGesturesEnabled;
+@property (nonatomic, assign) BOOL isTiltGesturesEnabled;
+@property (nonatomic, assign) BOOL isRotateGesturesEnabled;
+@property (nonatomic, assign) BOOL isStopGesturesEnabled;
 
 @property (nonatomic, copy) RCTDirectEventBlock onInitialized;
 @property (nonatomic, copy) RCTDirectEventBlock onOptionChanged;
