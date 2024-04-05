@@ -64,6 +64,7 @@ RCT_EXPORT_VIEW_PROPERTY(isStopGesturesEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(onInitialized, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onOptionChanged, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onCameraChanged, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onTapMap, RCTDirectEventBlock)
 
 
 // command

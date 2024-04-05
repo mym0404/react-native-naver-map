@@ -67,6 +67,21 @@ using namespace facebook::react;
             });
         };
 
+        _view.onTapMap = [self](NSDictionary * dict) {
+            if (_eventEmitter == nil) {
+                return;
+            }
+
+            auto emitter = std::static_pointer_cast<RNCNaverMapViewEventEmitter const>(_eventEmitter);
+            emitter->onTapMap({
+                .latitude = [dict[@"latitude"] doubleValue],
+                .longitude = [dict[@"longitude"] doubleValue],
+                .x = [dict[@"x"] doubleValue],
+                .y = [dict[@"y"] doubleValue],
+            });
+        };
+
+
         self.contentView = _view;
     }
 
@@ -189,8 +204,6 @@ using namespace facebook::react;
             _view.logoAlign = NMFLogoAlignRightBottom;
         }
     }
-    
-    NSLog(@"%@", [NSNull null] ? @"YES" : @"NO");
 
     [super updateProps:props oldProps:oldProps];
 }

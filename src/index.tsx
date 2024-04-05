@@ -235,6 +235,8 @@ export type NaverMapViewProps = ViewProps & {
       reason: CameraChangeReason;
     }
   ) => void;
+
+  onTapMap?: (params: Coord & { x: number; y: number }) => void;
 };
 
 type CameraMoveBaseParams = {
@@ -315,6 +317,7 @@ const NaverMapView = forwardRef(
       logoMargin,
 
       onCameraChanged: onCameraChangedProp,
+      onTapMap: onTapMapProp,
       onInitialized,
       onOptionChanged,
       isScrollGesturesEnabled = true,
@@ -340,6 +343,19 @@ const NaverMapView = forwardRef(
           latitude,
           longitude,
           bearing,
+        });
+      }
+    );
+
+    const onTapMap = useStableCallback(
+      ({
+        nativeEvent: { longitude, latitude, x, y },
+      }: NativeSyntheticEvent<Coord & { x: number; y: number }>) => {
+        onTapMapProp?.({
+          longitude,
+          latitude,
+          x,
+          y,
         });
       }
     );
@@ -463,6 +479,7 @@ const NaverMapView = forwardRef(
         symbolPerspectiveRatio={clamp(symbolPerspectiveRatio, 0, 1)}
         onInitialized={onInitialized}
         onCameraChanged={onCameraChangedProp ? onCameraChanged : undefined}
+        onTapMap={onTapMapProp ? onTapMap : undefined}
         onOptionChanged={onOptionChanged}
         mapPadding={mapPadding}
         isShowCompass={isShowCompass}

@@ -2334,6 +2334,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mj-studio/js-util@npm:^1.0.34":
+  version: 1.0.34
+  resolution: "@mj-studio/js-util@npm:1.0.34"
+  checksum: 10/d1b1394f5e5797615fd952f5f56255109242e3e2f0d78a61bd668d643eea8285042cfc9f7c4a76cdf9f501ce3c128219c12cd5aea07ad9ed34d24371d63e4927
+  languageName: node
+  linkType: hard
+
 "@mj-studio/react-native-naver-map-example@workspace:example":
   version: 0.0.0-use.local
   resolution: "@mj-studio/react-native-naver-map-example@workspace:example"
@@ -2341,6 +2348,7 @@ __metadata:
     "@babel/core": "npm:^7.20.0"
     "@babel/preset-env": "npm:^7.20.0"
     "@babel/runtime": "npm:^7.20.0"
+    "@mj-studio/js-util": "npm:^1.0.34"
     "@react-native-community/slider": "npm:^4.5.0"
     "@react-native/babel-preset": "npm:0.73.21"
     "@react-native/metro-config": "npm:0.73.5"

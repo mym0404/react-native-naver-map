@@ -43,7 +43,7 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
 
         [self.mapView addCameraDelegate:self];
-//        [self.mapView setTouchDelegate:self];
+        [self.mapView setTouchDelegate:self];
         [self.mapView addOptionDelegate:self];
 
         // run after _eventEmitter available(new arch), direct event block set(old arch)
@@ -183,8 +183,17 @@ RNMAP_REMAP_QUICK_SETTER(IsStopGesturesEnabled, isStopGesturesEnabled, mapView.s
         @"reason": @(reason == NMFMapChangedByDeveloper ? 0 :
                      reason == NMFMapChangedByGesture ? 1 :
                      reason == NMFMapChangedByControl ? 2 :
-                     reason == NMFMapChangedByLocation ? 3 :
-                     0)
+                     reason == NMFMapChangedByLocation ? 3 : 0),
+        });
+}
+
+- (void)mapView:(NMFMapView *)mapView didTapMap:(NMGLatLng *)latlng point:(CGPoint)point
+{
+    self.onTapMap(@{
+        @"latitude": @(latlng.lat),
+        @"longitude": @(latlng.lng),
+        @"x": @(point.x),
+        @"y": @(point.y),
         });
 }
 

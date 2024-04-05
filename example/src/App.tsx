@@ -11,6 +11,7 @@ import NaverMapView, {
 } from '@mj-studio/react-native-naver-map';
 import Slider from '@react-native-community/slider';
 import { request, PERMISSIONS } from 'react-native-permissions';
+import { formatJson } from '@mj-studio/js-util';
 
 const jejuRegion: Region = {
   latitude: 33.20530773,
@@ -63,15 +64,12 @@ export default function App() {
         isShowLocationButton={myLocation}
         isExtentBoundedInKorea
         logoAlign={'TopRight'}
-        onInitialized={() => {
-          console.log('initialized!');
-        }}
-        onOptionChanged={() => {
-          console.log('Option Changed!');
-        }}
-        onCameraChanged={(args) => {
-          console.log(`Camera Changed: ${JSON.stringify(args, null, 2)}`);
-        }}
+        onInitialized={() => console.log('initialized!')}
+        onOptionChanged={() => console.log('Option Changed!')}
+        onCameraChanged={(args) =>
+          console.log(`Camera Changed: ${formatJson(args)}`)
+        }
+        onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
       />
       <View
         style={{

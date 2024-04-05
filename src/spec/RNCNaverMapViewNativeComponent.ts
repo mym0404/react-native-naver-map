@@ -60,19 +60,6 @@ interface NaverMapViewNativeProps extends ViewProps {
 
   // Implemented
 
-  onInitialized?: DirectEventHandler<Readonly<{}>>;
-  onOptionChanged?: DirectEventHandler<Readonly<{}>>;
-  onCameraChanged?: DirectEventHandler<
-    Readonly<{
-      latitude: Double;
-      longitude: Double;
-      zoom: Double;
-      tilt: Double;
-      bearing: Double;
-      reason: Int32 /* CameraChangeReason */;
-    }>
-  >;
-
   mapType?: WithDefault<
     | 'Basic'
     | 'Navi'
@@ -130,9 +117,6 @@ interface NaverMapViewNativeProps extends ViewProps {
   isRotateGesturesEnabled?: boolean;
   isStopGesturesEnabled?: boolean;
 
-  /*Not Implemented Yet*/
-  // tilt?: number;
-  // bearing?: number;
   // onMapClick?: (event: {
   //   x: number;
   //   y: number;
@@ -142,6 +126,27 @@ interface NaverMapViewNativeProps extends ViewProps {
   // onTouch?: () => void;
 
   // useTextureView?: boolean;
+
+  onInitialized?: DirectEventHandler<Readonly<{}>>;
+  onOptionChanged?: DirectEventHandler<Readonly<{}>>;
+  onCameraChanged?: DirectEventHandler<
+    Readonly<{
+      latitude: Double;
+      longitude: Double;
+      zoom: Double;
+      tilt: Double;
+      bearing: Double;
+      reason: Int32 /* CameraChangeReason */;
+    }>
+  >;
+  onTapMap?: DirectEventHandler<
+    Readonly<{
+      latitude: Double;
+      longitude: Double;
+      x: Double;
+      y: Double;
+    }>
+  >;
 }
 
 type ComponentType = HostComponent<NaverMapViewNativeProps>;
