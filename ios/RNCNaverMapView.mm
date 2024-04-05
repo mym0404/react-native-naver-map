@@ -67,7 +67,6 @@ using namespace facebook::react;
             });
         };
 
-
         self.contentView = _view;
     }
 
@@ -79,17 +78,17 @@ using namespace facebook::react;
     const auto &prev = *std::static_pointer_cast<RNCNaverMapViewProps const>(_props);
     const auto &next = *std::static_pointer_cast<RNCNaverMapViewProps const>(props);
 
-#define NMAP_REMAP_PROP(name)          \
+#define NMAP_REMAP_PROP(name)     \
     if (prev.name != next.name) { \
         _view.name = next.name;   \
     }
 
-#define NMAP_REMAP_STRING(name)                             \
+#define NMAP_REMAP_STRING(name)                        \
     if (prev.name != next.name) {                      \
         _view.name = RCTNSStringFromString(next.name); \
     }
 
-#define NMAP_REMAP_RECT(name)                                   \
+#define NMAP_REMAP_RECT(name)                              \
     if (prev.name.top != next.name.top ||                  \
         prev.name.right != next.name.right ||              \
         prev.name.bottom != next.name.bottom ||            \
@@ -134,7 +133,6 @@ using namespace facebook::react;
     NMAP_REMAP_PROP(maxZoom)
     NMAP_REMAP_RECT(mapPadding)
     NMAP_REMAP_RECT(logoMargin)
-    
     NMAP_REMAP_PROP(isScrollGesturesEnabled)
     NMAP_REMAP_PROP(isZoomGesturesEnabled)
     NMAP_REMAP_PROP(isTiltGesturesEnabled)
@@ -191,6 +189,8 @@ using namespace facebook::react;
             _view.logoAlign = NMFLogoAlignRightBottom;
         }
     }
+    
+    NSLog(@"%@", [NSNull null] ? @"YES" : @"NO");
 
     [super updateProps:props oldProps:oldProps];
 }
