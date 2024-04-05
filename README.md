@@ -40,7 +40,7 @@ Usage는 [`react-native-map`의 Usage](https://github.com/react-native-maps/reac
 >[!NOTE]
 >Fabric을 지원한다고 Old Architecture를 지원하지 않는 것이 아닌 두 Architecture모두에서 작동하는 컴포넌트를 제작합니다.
 
-[이전 라이브러리](https://github.com/QuadFlask/react-native-naver-map)의 코드를 참고하며 동일한 버그를 반복하지 않도록 주의하며 작업이 진행되며 Usage를 비슷하게 만들고 있습니다.
+[이전 라이브러리](https://github.com/QuadFlask/react-native-naver-map)의 코드를 참고하며 동일한 버그를 반복하지 않도록 주의하며 작업이 진행됩니다.
 
 ## Supporting Table
 
@@ -64,7 +64,9 @@ Usage는 [`react-native-map`의 Usage](https://github.com/react-native-maps/reac
 ## Milestone
 
 - [x] Project Started (23.04.01)
-- [ ] Android/iOS - General Props, Commands, Rendering, Camera, Move <- 🔥(here)
+- [x] Android/iOS - Project Setup & Component Structure (23.04.03)
+- [x] Android/iOS - General Props & Commands (23.04.05)
+- [ ] Android/iOS - Camera, Region, Commands, Events <- 🔥(here)
 - [ ] Android/iOS - Implement Basic Overlays
 - [ ] Android/iOS - Implement Advanced Overlays
 - [ ] Release
