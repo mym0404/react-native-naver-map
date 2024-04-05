@@ -15,10 +15,6 @@
 
 ![preview](https://raw.githubusercontent.com/mym0404/image-archive/master/202404030152069.gif) ![preview-ios](https://raw.githubusercontent.com/mym0404/image-archive/master/202404040321283.gif)
 
->[!NOTE]
->작업은 순조롭게 진행중입니다. 출시할 날이 기대됩니다. - 23.04.03
-> 
->Props가 너무많다. - 23.04.04
 
 ## 왜 이 라이브러리를 써야하나요?
 
