@@ -33,7 +33,7 @@
     "t": "yarn lint && yarn typecheck",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "husky",
-    "release": "export $(grep -v '^#' .env | xargs) && release-it --increment=patch --ci",
+    "release": "./script/release.sh",
     "codegen:android": "cd example/android && ./gradlew generateCodegenArtifactsFromSchema",
     "codegen:ios": "node example/node_modules/react-native/scripts/generate-codegen-artifacts.js --path example/ --outputPath example/ios",
     "codegen": "yarn codegen:android && yarn codegen:ios",
