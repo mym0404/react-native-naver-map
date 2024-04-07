@@ -38,11 +38,6 @@ type PartialRect = Readonly<{
 }>;
 
 interface NaverMapViewNativeProps extends ViewProps {
-  // Additional
-  // onAuthFailed?: DirectEventHandler<NaverMapAuthFailedEvent>;
-
-  // Implemented
-
   mapType?: WithDefault<
     | 'Basic'
     | 'Navi'

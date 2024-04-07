@@ -165,6 +165,7 @@ allprojects {
 | onOptionChanged | ✅   | ✅       |     |
 | onCameraChanged | ✅   | ✅       |     |
 | onTapMap        | ✅   | ✅       |     |
+| onAuthFailed    | ❌   | ❌       |     |
 
 #### Commands
 
