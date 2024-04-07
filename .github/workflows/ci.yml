@@ -23,6 +23,9 @@ jobs:
       - name: Typecheck files
         run: yarn typecheck
 
+      - name: Codegen
+        run: yarn codegen
+
       - name: Build test
         run: yarn prepare
 

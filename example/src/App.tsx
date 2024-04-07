@@ -52,8 +52,8 @@ export default function App() {
         style={{ flex: 1 }}
         mapType={mapType}
         // camera={jejuCamera}
-        initialCamera={jejuCamera}
-        // region={jejuRegion}
+        // initialCamera={jejuCamera}
+        region={jejuRegion}
         // initialRegion={jejuRegion}
         isIndoorEnabled={indoor}
         symbolScale={symbolScale}
@@ -68,9 +68,9 @@ export default function App() {
         logoAlign={'TopRight'}
         // onInitialized={() => console.log('initialized!')}
         // onOptionChanged={() => console.log('Option Changed!')}
-        // onCameraChanged={(args) =>
-        //   console.log(`Camera Changed: ${formatJson(args)}`)
-        // }
+        onCameraChanged={(args) =>
+          console.log(`Camera Changed: ${formatJson(args)}`)
+        }
         onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
       >
         <NaverMapMarker

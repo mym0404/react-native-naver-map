@@ -12,7 +12,10 @@ import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMapOptions
 
 @SuppressLint("ViewConstructor")
-class RNCNaverMapViewWrapper(val reactContext: ThemedReactContext, private val mapOptions: NaverMapOptions) :
+class RNCNaverMapViewWrapper(
+    val reactContext: ThemedReactContext,
+    private val mapOptions: NaverMapOptions
+) :
     FrameLayout(reactContext), LifecycleEventListener {
     var mapView: RNCNaverMapView? = null
         private set
@@ -22,8 +25,6 @@ class RNCNaverMapViewWrapper(val reactContext: ThemedReactContext, private val m
         mapView = RNCNaverMapView(reactContext, mapOptions)
         addView(mapView)
     }
-
-    fun setNightMode(value: Boolean) {}
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -60,7 +61,8 @@ class RNCNaverMapViewWrapper(val reactContext: ThemedReactContext, private val m
             override fun doFrame(frameTimeNanos: Long) {
                 manuallyLayoutChildren()
                 getViewTreeObserver().dispatchOnGlobalLayout()
-                if (isAttachedToWindow) Choreographer.getInstance().postFrameCallbackDelayed(this, 500)
+                if (isAttachedToWindow) Choreographer.getInstance()
+                    .postFrameCallbackDelayed(this, 500)
             }
         })
     }
