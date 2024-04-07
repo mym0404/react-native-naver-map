@@ -104,7 +104,9 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
   // similarly, when the children are being removed we have to do the appropriate
   // underlying mapview action here.
   if ([subview isKindOfClass:[RNCNaverMapMarker class]]) {
-    static_cast<RNCNaverMapMarker*>(subview).inner.mapView = nil;
+    auto marker = static_cast<RNCNaverMapMarker*>(subview).inner;
+    marker.mapView = nil;
+    marker.touchHandler = nil;
   }
   //  else if ([subview isKindOfClass:[RNNaverMapPolylineOverlay class]]) {
   //    RNNaverMapPolylineOverlay* overlay = (RNNaverMapPolylineOverlay*)subview;
