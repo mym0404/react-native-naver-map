@@ -119,6 +119,18 @@ Remember to add tests for your change if possible. Run the unit tests by:
 yarn test
 ```
 
+### Formatting for native codes
+
+There is no linter for native code yet. But please format code for readability.
+
+#### Kotlin
+
+Use kotlin standard formatting.
+
+#### Objective-C
+
+Use `.clang-format` of project root.
+
 ### Commit message convention
 
 We follow the [conventional commits specification](https://www.conventionalcommits.org/en) for our commit messages:
