@@ -24,7 +24,7 @@ export type NaverMapMarkerOverlayProps = BaseOverlayProps & {
   isHideCollidedCaptions?: boolean;
   isForceShowIcon?: boolean;
   tintColor?: ColorValue;
-  image?: ImageSourcePropType & (MarkerImages & {});
+  image?: ImageSourcePropType | (MarkerImages & {});
 } & PropsWithChildren<{}>;
 
 export const NaverMapMarkerOverlay = ({

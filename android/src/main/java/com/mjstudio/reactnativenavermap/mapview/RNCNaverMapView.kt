@@ -10,6 +10,7 @@ import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
 import com.mjstudio.reactnativenavermap.overlay.RNCNaverMapOverlay
+import com.mjstudio.reactnativenavermap.overlay.marker.RNCNaverMapMarker
 import com.mjstudio.reactnativenavermap.util.emitEvent
 import com.naver.maps.map.CameraUpdate.REASON_CONTROL
 import com.naver.maps.map.CameraUpdate.REASON_GESTURE
@@ -112,15 +113,26 @@ class RNCNaverMapView(
     }
 
     fun addOverlay(child: View, index: Int) = withMap { map ->
-        if (child is RNCNaverMapOverlay<*> && attacherGroup != null) {
-            child.addToMap(map)
-            overlays.add(index, child)
-            val visibility: Int = child.visibility
-            child.visibility = INVISIBLE
-            (child.parent as? ViewGroup)?.removeView(child)
-            // Add to the parent group
-            attacherGroup!!.addView(child)
-            child.visibility = visibility
+        when (child) {
+            is RNCNaverMapMarker -> {
+                child.addToMap(map)
+                overlays.add(index, child)
+                val visibility: Int = child.visibility
+                child.visibility = INVISIBLE
+                (child.parent as? ViewGroup)?.removeView(child)
+                // Add to the parent group
+                attacherGroup!!.addView(child)
+                child.visibility = visibility
+            }
+
+            is RNCNaverMapOverlay<*> -> {
+                child.addToMap(map)
+                overlays.add(index, child)
+            }
+
+            else -> {
+                addView(child, index);
+            }
         }
     }
 
@@ -139,8 +151,19 @@ class RNCNaverMapView(
 
 
     fun removeOverlay(index: Int) = withMap { map ->
-        val overlay = overlays.removeAt(index)
-        overlay.removeFromMap(map)
-        attacherGroup?.removeView(overlay)
+        when (val child = overlays.removeAt(index)) {
+            is RNCNaverMapMarker -> {
+                child.removeFromMap(map)
+                attacherGroup?.removeView(child)
+            }
+
+            is RNCNaverMapOverlay<*> -> {
+                child.removeFromMap(map)
+            }
+
+            else -> {
+                removeView(child)
+            }
+        }
     }
 }

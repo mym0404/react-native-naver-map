@@ -86,7 +86,7 @@ export default function App() {
           latitude={33.1165607356}
           longitude={126.26599018}
           onTap={() => console.log(1)}
-          image={'highDensityCluster'}
+          image={{ uri: 'https://picsum.photos/120/120' }}
         />
         <NaverMapCircleOverlay
           latitude={33.17827398}

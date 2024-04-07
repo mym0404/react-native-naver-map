@@ -225,7 +225,7 @@ allprojects {
 | image(default symbols)   | ✅   | ✅       |     |
 | image(local image)       | 📦  | ✅       |     |
 | image(network image)     | 📦  | ✅       |     |
-| image(custom view)       | ❓   | ❓       |     |
+| image(custom view)       | ❓   | ✅       |     |
 | caption                  | 📦  | 📦      |     |
 | subcaption               | 📦  | 📦      |     |
 
