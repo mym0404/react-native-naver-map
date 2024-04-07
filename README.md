@@ -91,6 +91,23 @@ allprojects {
 <plist>
 ```
 
+## Components
+
+- ✅ Fully Supported
+- ⚠️ Developing, lack of features yet
+- 📦 Planned
+
+|                                             | iOS | Android | Web |
+|---------------------------------------------|-----|---------|-----|
+| NaverMapView                                | ✅   | ✅       |     |
+| NaverMapMarkerOverlay                       | ⚠️  | ⚠️      |     |
+| Info Window(ToolTip for overlays)           | 📦  | 📦      |     |
+| NaverMapPolylineOverlay                     | 📦  | 📦      |     |
+| NaverMapPolygonOverlay                      | 📦  | 📦      |     |
+| NaverMapLocationOverlay(+ location feature) | 📦  | 📦      |     |
+| NaverMapGroundOverlay                       | 📦  | 📦      |     |
+| NaverMapPathOverlay                         | 📦  | 📦      |     |
+
 ## Props & Commands
 
 - ✅ Done
@@ -102,39 +119,43 @@ allprojects {
 
 #### Props
 
-|                          | iOS | Android | Web |
-|--------------------------|-----|---------|-----|
-| mapType                  | ✅   | ✅       |     |
-| layerGroups              | ✅   | ✅       |     |
-| camera                   | ✅   | ✅       |     |
-| initialCamera            | ✅   | ✅       |     |
-| region                   | ✅   | ✅       |     |
-| initialRegion            | ✅   | ✅       |     |
-| isIndoorEnabled          | ✅   | ✅       |     |
-| isNightModeEnabled       | ✅   | ✅       |     |
-| isLiteModeEnabled        | ✅   | ✅       |     |
-| lightness                | ✅   | ✅       |     |
-| buildingHeight           | ✅   | ✅       |     |
-| symbolScale              | ✅   | ✅       |     |
-| symbolPerspectiveRatio   | ✅   | ✅       |     |
-| mapPadding               | ✅   | ✅       |     |
-| isShowCompass            | ✅   | ✅       |     |
-| isShowScaleBar           | ✅   | ✅       |     |
-| isShowZoomControls       | ✅   | ✅       |     |
-| isShowIndoorLevelPicker  | ✅   | ✅       |     |
-| isShowLocationButton     | ✅   | ✅       |     |
-| minZoom                  | ✅   | ✅       |     |
-| maxZoom                  | ✅   | ✅       |     |
-| extent                   | ✅   | ✅       |     |
-| isExtentBoundedInKorea   | ✅   | ✅       |     |
-| logoAlign                | ✅   | ✅       |     |
-| logoMargin               | ✅   | ✅       |     |
-| isLogoInteractionEnabled | ❌   | ❌       |     |
-| isScrollGesturesEnabled  | ✅   | ✅       |     |
-| isZoomGesturesEnabled    | ✅   | ✅       |     |
-| isTiltGesturesEnabled    | ✅   | ✅       |     |
-| isRotateGesturesEnabled  | ✅   | ✅       |     |
-| isStopGesturesEnabled    | ✅   | ✅       |     |
+|                           | iOS | Android | Web |
+|---------------------------|-----|---------|-----|
+| mapType                   | ✅   | ✅       |     |
+| layerGroups               | ✅   | ✅       |     |
+| camera                    | ✅   | ✅       |     |
+| initialCamera             | ✅   | ✅       |     |
+| region                    | ✅   | ✅       |     |
+| initialRegion             | ✅   | ✅       |     |
+| isIndoorEnabled           | ✅   | ✅       |     |
+| isNightModeEnabled        | ✅   | ✅       |     |
+| isLiteModeEnabled         | ✅   | ✅       |     |
+| lightness                 | ✅   | ✅       |     |
+| buildingHeight            | ✅   | ✅       |     |
+| symbolScale               | ✅   | ✅       |     |
+| symbolPerspectiveRatio    | ✅   | ✅       |     |
+| mapPadding                | ✅   | ✅       |     |
+| isShowCompass             | ✅   | ✅       |     |
+| isShowScaleBar            | ✅   | ✅       |     |
+| isShowZoomControls        | ✅   | ✅       |     |
+| isShowIndoorLevelPicker   | ✅   | ✅       |     |
+| minZoom                   | ✅   | ✅       |     |
+| maxZoom                   | ✅   | ✅       |     |
+| extent                    | ✅   | ✅       |     |
+| isExtentBoundedInKorea    | ✅   | ✅       |     |
+| logoAlign                 | ✅   | ✅       |     |
+| logoMargin                | ✅   | ✅       |     |
+| isLogoInteractionEnabled  | ❌   | ❌       |     |
+| isScrollGesturesEnabled   | ✅   | ✅       |     |
+| isZoomGesturesEnabled     | ✅   | ✅       |     |
+| isTiltGesturesEnabled     | ✅   | ✅       |     |
+| isRotateGesturesEnabled   | ✅   | ✅       |     |
+| isStopGesturesEnabled     | ✅   | ✅       |     |
+| isShowLocationButton      | ✅   | ✅       |     |
+| requestLocationPermission | 📦  | 📦      |     |
+| locationPermissionType    | 📦  | 📦      |     |
+| locationService           | 📦  | 📦      |     |
+| markerClustering          | 📦  | 📦      |     |
 
 #### Events
 
