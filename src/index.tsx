@@ -11,6 +11,10 @@ export {
   NaverMapCircleOverlay,
   type NaverMapCircleOverlayProps,
 } from './component/NaverMapCircleOverlay';
+export {
+  NaverMapPolygonOverlay,
+  type NaverMapPolygonOverlayProps,
+} from './component/NaverMapPolygonOverlay';
 
 export * from './spec/RNCNaverMapViewNativeComponent';
 export * from './types/Coord';

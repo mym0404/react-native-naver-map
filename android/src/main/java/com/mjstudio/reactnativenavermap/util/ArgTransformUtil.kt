@@ -1,6 +1,5 @@
 package com.mjstudio.reactnativenavermap.util
 
-import android.graphics.Color
 import android.graphics.PointF
 import com.facebook.react.bridge.ReadableMap
 import com.naver.maps.geometry.LatLng
@@ -11,6 +10,15 @@ fun ReadableMap?.getLatLng(): LatLng? {
     val longitude = this?.getDoubleOrNull("longitude")
     if (isValidNumber(latitude) && isValidNumber(longitude)) {
         return LatLng(latitude!!, longitude!!)
+    }
+    return null
+}
+
+fun Map<String, *>.getLatLng(): LatLng? {
+    val latitude = getValue("latitude")
+    val longitude = getValue("longitude")
+    if (isValidNumber(latitude) && isValidNumber(longitude)) {
+        return LatLng((latitude as Number).toDouble(), (longitude as Number).toDouble())
     }
     return null
 }
@@ -68,7 +76,7 @@ fun isValidNumber(value: Int?): Boolean {
     return isValidNumber(value.toDouble())
 }
 
-fun getColorFromInt(int: Int?): Int? {
-    if (int == null) return null
-    return Color.argb(Color.alpha(int), Color.red(int), Color.green(int), Color.blue(int))
+fun isValidNumber(value: Any?): Boolean {
+    if (value == null || value !is Number) return false
+    return isValidNumber(value.toDouble())
 }

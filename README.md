@@ -202,7 +202,7 @@ allprojects {
 |-------|-----|---------|-----|
 | onTap | ✅   | ✅       |     |
 
-### `NaverMapMarker`
+### `NaverMapMarkerOverlay`
 
 #### Props
 
@@ -226,6 +226,29 @@ allprojects {
 | image(custom view)       | ❓   | ❓       |     |
 | caption                  | 📦  | 📦      |     |
 | subcaption               | 📦  | 📦      |     |
+
+### `NaverMapCircleOverlay`
+
+#### Props
+
+|              | iOS | Android | Web |
+|--------------|-----|---------|-----|
+| radius       | 📦  | ✅       |     |
+| color        | 📦  | ✅       |     |
+| outlineWidth | 📦  | ✅       |     |
+| outlineColor | 📦  | ✅       |     |
+
+### `NaverMapPolygonOverlay`
+
+#### Props
+
+|              | iOS | Android | Web |
+|--------------|-----|---------|-----|
+| coords       | 📦  | ✅       |     |
+| holes        | 📦  | ✅       |     |
+| color        | 📦  | ✅       |     |
+| outlineWidth | 📦  | ✅       |     |
+| outlineColor | 📦  | ✅       |     |
 
 ## Supporting Table - Architecture
 

@@ -7,6 +7,7 @@ import com.facebook.react.uimanager.ViewManager
 import com.mjstudio.reactnativenavermap.mapview.RNCNaverMapViewManager
 import com.mjstudio.reactnativenavermap.overlay.circle.RNCNaverMapCircleManager
 import com.mjstudio.reactnativenavermap.overlay.marker.RNCNaverMapMarkerManager
+import com.mjstudio.reactnativenavermap.overlay.polygon.RNCNaverMapPolygonManager
 
 class NaverMapViewPackage : ReactPackage {
     override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
@@ -14,6 +15,7 @@ class NaverMapViewPackage : ReactPackage {
             add(RNCNaverMapViewManager())
             add(RNCNaverMapMarkerManager())
             add(RNCNaverMapCircleManager())
+            add(RNCNaverMapPolygonManager())
         }
     }
 
