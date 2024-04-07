@@ -1,18 +1,19 @@
 package com.mjstudio.reactnativenavermap.overlay.marker
 
 import android.graphics.Color
-import android.view.View
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapMarkerManagerSpec
+import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
 import com.mjstudio.reactnativenavermap.util.getLatLng
 import com.mjstudio.reactnativenavermap.util.getPoint
 import com.mjstudio.reactnativenavermap.util.isValidNumber
+import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Marker.SIZE_AUTO
 import com.naver.maps.map.util.MarkerIcons
-import kotlin.math.roundToInt
 
 
 class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>() {
@@ -31,10 +32,8 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
 
     override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> =
         (super.getExportedCustomDirectEventTypeConstants() ?: mutableMapOf()).apply {
+            registerDirectEvent(this, NaverMapOverlayTapEvent.EVENT_NAME)
         }
-
-    private fun View?.px(dp: Double) =
-        ((this?.resources?.displayMetrics?.density ?: 1f) * dp).roundToInt()
 
     private fun RNCNaverMapMarker?.withOverlay(fn: (Marker) -> Unit) {
         this?.overlay?.run(fn)
@@ -81,12 +80,12 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
 
     @ReactProp(name = "width")
     override fun setWidth(view: RNCNaverMapMarker?, value: Double) = view.withOverlay {
-        it.width = if (isValidNumber(value)) view.px(value) else SIZE_AUTO
+        it.width = if (isValidNumber(value)) PixelUtil.toPixelFromDIP(value).toInt() else SIZE_AUTO
     }
 
     @ReactProp(name = "height")
     override fun setHeight(view: RNCNaverMapMarker?, value: Double) = view.withOverlay {
-        it.height = if (isValidNumber(value)) view.px(value) else SIZE_AUTO
+        it.height = if (isValidNumber(value)) PixelUtil.toPixelFromDIP(value).toInt() else SIZE_AUTO
     }
 
     @ReactProp(name = "anchor")

@@ -3,7 +3,14 @@ export {
   type NaverMapViewProps,
   type NaverMapViewRef,
 } from './component/NaverMapView';
-export { NaverMapMarker } from './component/NaverMapMarker';
+export {
+  NaverMapMarkerOverlay,
+  type NaverMapMarkerOverlayProps,
+} from './component/NaverMapMarkerOverlay';
+export {
+  NaverMapCircleOverlay,
+  type NaverMapCircleOverlayProps,
+} from './component/NaverMapCircleOverlay';
 
 export * from './spec/RNCNaverMapViewNativeComponent';
 export * from './types/Coord';

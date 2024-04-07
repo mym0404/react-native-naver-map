@@ -5,7 +5,7 @@ import type { PointProp, ColorValue } from 'react-native';
 import { Const } from '../util/Const';
 import type { MarkerImages } from '../types/MarkerImages';
 
-export type NaverMapMarkerProps = BaseOverlayProps & {
+export type NaverMapMarkerOverlayProps = BaseOverlayProps & {
   width?: number;
   height?: number;
   anchor?: PointProp;
@@ -21,10 +21,10 @@ export type NaverMapMarkerProps = BaseOverlayProps & {
   image?: MarkerImages;
 };
 
-export const NaverMapMarker = ({
+export const NaverMapMarkerOverlay = ({
   latitude,
   longitude,
-  zIndex = Const.DEFAULT_MARKER_ZINDEX,
+  zIndex = Const.Z_MARKER,
   isHidden = false,
   minZoom = 0,
   maxZoom = 1000,
@@ -47,7 +47,7 @@ export const NaverMapMarker = ({
   tintColor,
   image,
   onTap,
-}: NaverMapMarkerProps) => {
+}: NaverMapMarkerOverlayProps) => {
   return (
     <NativeNaverMapMarker
       position={{
@@ -73,7 +73,7 @@ export const NaverMapMarker = ({
       isIconPerspectiveEnabled={isIconPerspectiveEnabled}
       tintColor={tintColor}
       image={image}
-      onTap={onTap}
+      onTapOverlay={onTap}
     />
   );
 };

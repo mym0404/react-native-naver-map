@@ -8,7 +8,7 @@ import {
   NaverMapView,
   type NaverMapViewRef,
   type Region,
-  NaverMapMarker,
+  NaverMapCircleOverlay,
 } from '@mj-studio/react-native-naver-map';
 import Slider from '@react-native-community/slider';
 import { request, PERMISSIONS } from 'react-native-permissions';
@@ -52,11 +52,11 @@ export default function App() {
         mapType={mapType}
         layerGroups={{
           BUILDING: true,
-          BICYCLE: true,
-          CADASTRAL: true,
-          MOUNTAIN: true,
-          TRAFFIC: true,
-          TRANSIT: true,
+          BICYCLE: false,
+          CADASTRAL: false,
+          MOUNTAIN: false,
+          TRAFFIC: false,
+          TRANSIT: false,
         }}
         // camera={jejuCamera}
         // initialCamera={jejuCamera}
@@ -75,16 +75,22 @@ export default function App() {
         logoAlign={'TopRight'}
         // onInitialized={() => console.log('initialized!')}
         // onOptionChanged={() => console.log('Option Changed!')}
-        onCameraChanged={(args) =>
-          console.log(`Camera Changed: ${formatJson(args)}`)
-        }
+        // onCameraChanged={(args) =>
+        //   console.log(`Camera Changed: ${formatJson(args)}`)
+        // }
         onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
       >
-        <NaverMapMarker
-          latitude={33.1165607356}
-          longitude={126.26599018}
-          onTap={() => console.log(1)}
-          image={'red'}
+        {/*<NaverMapMarkerOverlay*/}
+        {/*  latitude={33.1165607356}*/}
+        {/*  longitude={126.26599018}*/}
+        {/*  onTap={() => console.log(1)}*/}
+        {/*  image={'black'}*/}
+        {/*/>*/}
+        <NaverMapCircleOverlay
+          latitude={33.17827398}
+          longitude={126.349895729}
+          radius={1000}
+          onTap={() => console.log('hi')}
         />
       </NaverMapView>
 

@@ -6,6 +6,7 @@ import android.view.View
 import com.airbnb.android.react.maps.SizeReportingShadowNode
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.LayoutShadowNode
+import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapViewManagerSpec
@@ -19,6 +20,7 @@ import com.mjstudio.reactnativenavermap.util.getDoubleOrNull
 import com.mjstudio.reactnativenavermap.util.getLatLng
 import com.mjstudio.reactnativenavermap.util.getLatLngBoundsOrNull
 import com.mjstudio.reactnativenavermap.util.isValidNumber
+import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraPosition
@@ -38,7 +40,6 @@ import com.naver.maps.map.NaverMap.MapType.None
 import com.naver.maps.map.NaverMap.MapType.Satellite
 import com.naver.maps.map.NaverMap.MapType.Terrain
 import com.naver.maps.map.NaverMapOptions
-import kotlin.math.roundToInt
 
 
 class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper>() {
@@ -62,22 +63,10 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
 
     override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> =
         (super.getExportedCustomDirectEventTypeConstants() ?: mutableMapOf()).apply {
-            put(
-                NaverMapInitializeEvent.EVENT_NAME,
-                mapOf("registrationName" to NaverMapInitializeEvent.EVENT_NAME)
-            )
-            put(
-                NaverMapOptionChangeEvent.EVENT_NAME,
-                mapOf("registrationName" to NaverMapOptionChangeEvent.EVENT_NAME)
-            )
-            put(
-                NaverMapCameraChangeEvent.EVENT_NAME,
-                mapOf("registrationName" to NaverMapCameraChangeEvent.EVENT_NAME)
-            )
-            put(
-                NaverMapTapEvent.EVENT_NAME,
-                mapOf("registrationName" to NaverMapTapEvent.EVENT_NAME)
-            )
+            registerDirectEvent(this, NaverMapInitializeEvent.EVENT_NAME)
+            registerDirectEvent(this, NaverMapOptionChangeEvent.EVENT_NAME)
+            registerDirectEvent(this, NaverMapCameraChangeEvent.EVENT_NAME)
+            registerDirectEvent(this, NaverMapTapEvent.EVENT_NAME)
         }
 
     private fun RNCNaverMapViewWrapper?.withMapView(callback: (mapView: RNCNaverMapView) -> Unit) {
@@ -87,9 +76,6 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     private fun RNCNaverMapViewWrapper?.withMap(callback: (map: NaverMap) -> Unit) {
         this?.mapView?.withMap(callback)
     }
-
-    private fun View?.px(dp: Double) =
-        ((this?.resources?.displayMetrics?.density ?: 1f) * dp).roundToInt()
 
     override fun needsCustomLayoutForChildren(): Boolean = true
 
@@ -396,8 +382,8 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     ) = view.withMap {
         CameraUpdate.scrollBy(
             PointF(
-                view.px(latitudeDelta).toFloat(),
-                view.px(longitudeDelta).toFloat()
+                PixelUtil.toPixelFromDIP(latitudeDelta),
+                PixelUtil.toPixelFromDIP(longitudeDelta),
             )
         )
             .animate(CameraAnimationUtil.numberToCameraAnimationEasing(easing), duration.toLong())

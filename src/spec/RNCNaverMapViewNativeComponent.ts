@@ -37,7 +37,7 @@ type PartialRect = Readonly<{
   left?: Double;
 }>;
 
-interface NaverMapViewNativeProps extends ViewProps {
+interface Props extends ViewProps {
   mapType?: WithDefault<
     | 'Basic'
     | 'Navi'
@@ -112,7 +112,7 @@ interface NaverMapViewNativeProps extends ViewProps {
   >;
 }
 
-type ComponentType = HostComponent<NaverMapViewNativeProps>;
+type ComponentType = HostComponent<Props>;
 
 interface NaverMapNativeCommands {
   screenToCoordinate: (
@@ -169,9 +169,7 @@ interface NaverMapNativeCommands {
   cancelAnimation: (ref: React.ElementRef<ComponentType>) => void;
 }
 
-export default codegenNativeComponent<NaverMapViewNativeProps>(
-  'RNCNaverMapView'
-);
+export default codegenNativeComponent<Props>('RNCNaverMapView');
 export const Commands: NaverMapNativeCommands =
   codegenNativeCommands<NaverMapNativeCommands>({
     supportedCommands: [

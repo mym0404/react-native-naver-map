@@ -1,5 +1,6 @@
 package com.mjstudio.reactnativenavermap.util
 
+import android.graphics.Color
 import android.graphics.PointF
 import com.facebook.react.bridge.ReadableMap
 import com.naver.maps.geometry.LatLng
@@ -65,4 +66,9 @@ fun isValidNumber(value: Double?): Boolean {
 fun isValidNumber(value: Int?): Boolean {
     if (value == null) return false
     return isValidNumber(value.toDouble())
+}
+
+fun getColorFromInt(int: Int?): Int? {
+    if (int == null) return null
+    return Color.argb(Color.alpha(int), Color.red(int), Color.green(int), Color.blue(int))
 }
