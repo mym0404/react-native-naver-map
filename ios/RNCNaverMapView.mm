@@ -1,15 +1,6 @@
 #ifdef RCT_NEW_ARCH_ENABLED
 #import "RNCNaverMapView.h"
 
-#import <react/renderer/components/RNCNaverMapViewSpec/ComponentDescriptors.h>
-#import <react/renderer/components/RNCNaverMapViewSpec/EventEmitters.h>
-#import <react/renderer/components/RNCNaverMapViewSpec/Props.h>
-#import <react/renderer/components/RNCNaverMapViewSpec/RCTComponentViewHelpers.h>
-
-#import "RCTFabricComponentsPlugins.h"
-#import "RNCNaverMapViewImpl.h"
-#import "Utils.h"
-
 using namespace facebook::react;
 
 @interface RNCNaverMapView () <RCTRNCNaverMapViewViewProtocol>
@@ -17,195 +8,174 @@ using namespace facebook::react;
 @end
 
 @implementation RNCNaverMapView {
-    RNCNaverMapViewImpl *_view;
+  RNCNaverMapViewImpl* _view;
 }
 
-+ (ComponentDescriptorProvider)componentDescriptorProvider
-{
-    return concreteComponentDescriptorProvider<RNCNaverMapViewComponentDescriptor>();
++ (ComponentDescriptorProvider)componentDescriptorProvider {
+  return concreteComponentDescriptorProvider<RNCNaverMapViewComponentDescriptor>();
 }
 
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    if (self = [super initWithFrame:frame]) {
-        static const auto defaultProps = std::make_shared<const RNCNaverMapViewProps>();
-        _props = defaultProps;
-
-        _view = [[RNCNaverMapViewImpl alloc] init];
-
-        _view.onInitialized =  [self](NSDictionary * dict) {
-            if (_eventEmitter == nil) {
-                return;
-            }
-
-            auto emitter = std::static_pointer_cast<RNCNaverMapViewEventEmitter const>(_eventEmitter);
-            emitter->onInitialized({});
-        };
-
-        _view.onOptionChanged =  [self](NSDictionary * dict) {
-            if (_eventEmitter == nil) {
-                return;
-            }
-
-            auto emitter = std::static_pointer_cast<RNCNaverMapViewEventEmitter const>(_eventEmitter);
-            emitter->onOptionChanged({});
-        };
-
-        _view.onCameraChanged = [self](NSDictionary * dict) {
-            if (_eventEmitter == nil) {
-                return;
-            }
-
-            auto emitter = std::static_pointer_cast<RNCNaverMapViewEventEmitter const>(_eventEmitter);
-            emitter->onCameraChanged({
-                .latitude = [dict[@"latitude"] doubleValue],
-                .longitude = [dict[@"longitude"] doubleValue],
-                .zoom = [dict[@"zoom"] doubleValue],
-                .tilt = [dict[@"tilt"] doubleValue],
-                .bearing = [dict[@"bearing"] doubleValue],
-                .reason = [dict[@"reason"] intValue]
-            });
-        };
-
-        _view.onTapMap = [self](NSDictionary * dict) {
-            if (_eventEmitter == nil) {
-                return;
-            }
-
-            auto emitter = std::static_pointer_cast<RNCNaverMapViewEventEmitter const>(_eventEmitter);
-            emitter->onTapMap({
-                .latitude = [dict[@"latitude"] doubleValue],
-                .longitude = [dict[@"longitude"] doubleValue],
-                .x = [dict[@"x"] doubleValue],
-                .y = [dict[@"y"] doubleValue],
-            });
-        };
-
-
-        self.contentView = _view;
-    }
-
-    return self;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-missing-super-calls"
+- (void)mountChildComponentView:(UIView<RCTComponentViewProtocol>*)childComponentView
+                          index:(NSInteger)index {
+    [_view insertReactSubview:childComponentView atIndex:index];
 }
+- (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol>*)childComponentView
+                            index:(NSInteger)index {
+    [_view removeReactSubview:childComponentView];
+}
+#pragma clang diagnostic pop
 
-- (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
-{
-    const auto &prev = *std::static_pointer_cast<RNCNaverMapViewProps const>(_props);
-    const auto &next = *std::static_pointer_cast<RNCNaverMapViewProps const>(props);
+- (instancetype)initWithFrame:(CGRect)frame {
+  if (self = [super initWithFrame:frame]) {
+    static const auto defaultProps = std::make_shared<const RNCNaverMapViewProps>();
+    _props = defaultProps;
 
-#define NMAP_REMAP_PROP(name)     \
-    if (prev.name != next.name) { \
-        _view.name = next.name;   \
-    }
+    _view = [[RNCNaverMapViewImpl alloc] init];
 
-#define NMAP_REMAP_STRING(name)                        \
-    if (prev.name != next.name) {                      \
-        _view.name = RCTNSStringFromString(next.name); \
-    }
+    _view.onInitialized = [self](NSDictionary* dict) {
+      if (_eventEmitter == nil) {
+        return;
+      }
 
-#define NMAP_REMAP_RECT(name)                              \
-    if (prev.name.top != next.name.top ||                  \
-        prev.name.right != next.name.right ||              \
-        prev.name.bottom != next.name.bottom ||            \
-        prev.name.left != next.name.left) {                \
-        _view.name = RNCNaverMapRectMake(next.name.top,    \
-                                         next.name.right,  \
-                                         next.name.bottom, \
-                                         next.name.left);  \
-    }
-
-    if (prev.mapType != next.mapType) {
-        if (next.mapType == RNCNaverMapViewMapType::Basic) {
-            _view.mapType = NMFMapTypeBasic;
-        } else if (next.mapType == RNCNaverMapViewMapType::Navi) {
-            _view.mapType = NMFMapTypeNavi;
-        } else if (next.mapType == RNCNaverMapViewMapType::Satellite) {
-            _view.mapType = NMFMapTypeSatellite;
-        } else if (next.mapType == RNCNaverMapViewMapType::Hybrid) {
-            _view.mapType = NMFMapTypeHybrid;
-        } else if (next.mapType == RNCNaverMapViewMapType::Terrain) {
-            _view.mapType = NMFMapTypeTerrain;
-        } else if (next.mapType == RNCNaverMapViewMapType::NaviHybrid) {
-            _view.mapType = NMFMapTypeNaviHybrid;
-        } else if (next.mapType == RNCNaverMapViewMapType::None) {
-            _view.mapType = NMFMapTypeNone;
-        }
-    }
-
-    NMAP_REMAP_PROP(isIndoorEnabled)
-    NMAP_REMAP_PROP(isNightModeEnabled)
-    NMAP_REMAP_PROP(isLiteModeEnabled)
-    NMAP_REMAP_PROP(lightness)
-    NMAP_REMAP_PROP(buildingHeight)
-    NMAP_REMAP_PROP(symbolScale)
-    NMAP_REMAP_PROP(symbolPerspectiveRatio)
-    NMAP_REMAP_PROP(isShowCompass)
-    NMAP_REMAP_PROP(isShowIndoorLevelPicker)
-    NMAP_REMAP_PROP(isShowLocationButton)
-    NMAP_REMAP_PROP(isShowScaleBar)
-    NMAP_REMAP_PROP(isShowZoomControls)
-    NMAP_REMAP_PROP(minZoom)
-    NMAP_REMAP_PROP(maxZoom)
-    NMAP_REMAP_RECT(mapPadding)
-    NMAP_REMAP_RECT(logoMargin)
-    NMAP_REMAP_PROP(isScrollGesturesEnabled)
-    NMAP_REMAP_PROP(isZoomGesturesEnabled)
-    NMAP_REMAP_PROP(isTiltGesturesEnabled)
-    NMAP_REMAP_PROP(isRotateGesturesEnabled)
-    NMAP_REMAP_PROP(isStopGesturesEnabled)
-
-    auto c1 = prev.camera, c2 = next.camera;
-
-    if (c1.latitude != c2.latitude || c1.longitude != c2.longitude ||
-        c1.tilt != c2.tilt || c1.bearing != c2.bearing || c1.zoom != c2.zoom) {
-        _view.camera = @{
-                @"latitude": @(c2.latitude),
-                @"longitude": @(c2.longitude),
-                @"zoom": @(c2.zoom),
-                @"tilt": @(c2.tilt),
-                @"bearing": @(c2.bearing),
-        };
-    }
-
-    _view.initialCamera = @{
-            @"latitude": @(next.initialCamera.latitude),
-            @"longitude": @(next.initialCamera.longitude),
-            @"zoom": @(next.initialCamera.zoom),
-            @"tilt": @(next.initialCamera.tilt),
-            @"bearing": @(next.initialCamera.bearing)
+      auto emitter = std::static_pointer_cast<RNCNaverMapViewEventEmitter const>(_eventEmitter);
+      emitter->onInitialized({});
     };
 
-    auto r1 = prev.region, r2 = next.region;
+    _view.onOptionChanged = [self](NSDictionary* dict) {
+      if (_eventEmitter == nil) {
+        return;
+      }
 
-    if (r1.latitude != r2.latitude ||
-        r1.longitude != r2.longitude ||
-        r1.latitudeDelta != r2.latitudeDelta ||
-        r1.longitudeDelta != r2.longitudeDelta) {
-        _view.region = RNCNaverMapRegionMake(
-            r2.latitude,
-            r2.longitude,
-            r2.latitudeDelta,
-            r2.longitudeDelta);
+      auto emitter = std::static_pointer_cast<RNCNaverMapViewEventEmitter const>(_eventEmitter);
+      emitter->onOptionChanged({});
+    };
+
+    _view.onCameraChanged = [self](NSDictionary* dict) {
+      if (_eventEmitter == nil) {
+        return;
+      }
+
+      auto emitter = std::static_pointer_cast<RNCNaverMapViewEventEmitter const>(_eventEmitter);
+      emitter->onCameraChanged({.latitude = [dict[@"latitude"] doubleValue],
+                                .longitude = [dict[@"longitude"] doubleValue],
+                                .zoom = [dict[@"zoom"] doubleValue],
+                                .tilt = [dict[@"tilt"] doubleValue],
+                                .bearing = [dict[@"bearing"] doubleValue],
+                                .reason = [dict[@"reason"] intValue]});
+    };
+
+    _view.onTapMap = [self](NSDictionary* dict) {
+      if (_eventEmitter == nil) {
+        return;
+      }
+
+      auto emitter = std::static_pointer_cast<RNCNaverMapViewEventEmitter const>(_eventEmitter);
+      emitter->onTapMap({
+          .latitude = [dict[@"latitude"] doubleValue],
+          .longitude = [dict[@"longitude"] doubleValue],
+          .x = [dict[@"x"] doubleValue],
+          .y = [dict[@"y"] doubleValue],
+      });
+    };
+
+    self.contentView = _view;
+  }
+
+  return self;
+}
+
+- (void)updateProps:(Props::Shared const&)props oldProps:(Props::Shared const&)oldProps {
+  const auto& prev = *std::static_pointer_cast<RNCNaverMapViewProps const>(_props);
+  const auto& next = *std::static_pointer_cast<RNCNaverMapViewProps const>(props);
+
+  if (prev.mapType != next.mapType) {
+    if (next.mapType == RNCNaverMapViewMapType::Basic) {
+      _view.mapType = NMFMapTypeBasic;
+    } else if (next.mapType == RNCNaverMapViewMapType::Navi) {
+      _view.mapType = NMFMapTypeNavi;
+    } else if (next.mapType == RNCNaverMapViewMapType::Satellite) {
+      _view.mapType = NMFMapTypeSatellite;
+    } else if (next.mapType == RNCNaverMapViewMapType::Hybrid) {
+      _view.mapType = NMFMapTypeHybrid;
+    } else if (next.mapType == RNCNaverMapViewMapType::Terrain) {
+      _view.mapType = NMFMapTypeTerrain;
+    } else if (next.mapType == RNCNaverMapViewMapType::NaviHybrid) {
+      _view.mapType = NMFMapTypeNaviHybrid;
+    } else if (next.mapType == RNCNaverMapViewMapType::None) {
+      _view.mapType = NMFMapTypeNone;
     }
+  }
 
-    _view.initialRegion = RNCNaverMapRegionMake(next.initialRegion.latitude,
-                                                next.initialRegion.longitude,
-                                                next.initialRegion.latitudeDelta,
-                                                next.initialRegion.longitudeDelta);
+  NMAP_REMAP_PROP(isIndoorEnabled)
+  NMAP_REMAP_PROP(isNightModeEnabled)
+  NMAP_REMAP_PROP(isLiteModeEnabled)
+  NMAP_REMAP_PROP(lightness)
+  NMAP_REMAP_PROP(buildingHeight)
+  NMAP_REMAP_PROP(symbolScale)
+  NMAP_REMAP_PROP(symbolPerspectiveRatio)
+  NMAP_REMAP_PROP(isShowCompass)
+  NMAP_REMAP_PROP(isShowIndoorLevelPicker)
+  NMAP_REMAP_PROP(isShowLocationButton)
+  NMAP_REMAP_PROP(isShowScaleBar)
+  NMAP_REMAP_PROP(isShowZoomControls)
+  NMAP_REMAP_PROP(minZoom)
+  NMAP_REMAP_PROP(maxZoom)
+  NMAP_REMAP_RECT_PROP(mapPadding)
+  NMAP_REMAP_RECT_PROP(logoMargin)
+  NMAP_REMAP_PROP(isScrollGesturesEnabled)
+  NMAP_REMAP_PROP(isZoomGesturesEnabled)
+  NMAP_REMAP_PROP(isTiltGesturesEnabled)
+  NMAP_REMAP_PROP(isRotateGesturesEnabled)
+  NMAP_REMAP_PROP(isStopGesturesEnabled)
 
-    if (prev.logoAlign != next.logoAlign) {
-        if (next.logoAlign == RNCNaverMapViewLogoAlign::TopLeft) {
-            _view.logoAlign = NMFLogoAlignLeftTop;
-        } else if (next.logoAlign == RNCNaverMapViewLogoAlign::TopRight) {
-            _view.logoAlign = NMFLogoAlignRightTop;
-        } else if (next.logoAlign == RNCNaverMapViewLogoAlign::BottomLeft) {
-            _view.logoAlign = NMFLogoAlignLeftBottom;
-        } else if (next.logoAlign == RNCNaverMapViewLogoAlign::BottomRight) {
-            _view.logoAlign = NMFLogoAlignRightBottom;
-        }
+  auto c1 = prev.camera, c2 = next.camera;
+
+  if (c1.latitude != c2.latitude || c1.longitude != c2.longitude || c1.tilt != c2.tilt ||
+      c1.bearing != c2.bearing || c1.zoom != c2.zoom) {
+    _view.camera = @{
+      @"latitude" : @(c2.latitude),
+      @"longitude" : @(c2.longitude),
+      @"zoom" : @(c2.zoom),
+      @"tilt" : @(c2.tilt),
+      @"bearing" : @(c2.bearing),
+    };
+  }
+
+  _view.initialCamera = @{
+    @"latitude" : @(next.initialCamera.latitude),
+    @"longitude" : @(next.initialCamera.longitude),
+    @"zoom" : @(next.initialCamera.zoom),
+    @"tilt" : @(next.initialCamera.tilt),
+    @"bearing" : @(next.initialCamera.bearing)
+  };
+
+  auto r1 = prev.region, r2 = next.region;
+
+  if (r1.latitude != r2.latitude || r1.longitude != r2.longitude ||
+      r1.latitudeDelta != r2.latitudeDelta || r1.longitudeDelta != r2.longitudeDelta) {
+    _view.region =
+        RNCNaverMapRegionMake(r2.latitude, r2.longitude, r2.latitudeDelta, r2.longitudeDelta);
+  }
+
+  _view.initialRegion =
+      RNCNaverMapRegionMake(next.initialRegion.latitude, next.initialRegion.longitude,
+                            next.initialRegion.latitudeDelta, next.initialRegion.longitudeDelta);
+
+  if (prev.logoAlign != next.logoAlign) {
+    if (next.logoAlign == RNCNaverMapViewLogoAlign::TopLeft) {
+      _view.logoAlign = NMFLogoAlignLeftTop;
+    } else if (next.logoAlign == RNCNaverMapViewLogoAlign::TopRight) {
+      _view.logoAlign = NMFLogoAlignRightTop;
+    } else if (next.logoAlign == RNCNaverMapViewLogoAlign::BottomLeft) {
+      _view.logoAlign = NMFLogoAlignLeftBottom;
+    } else if (next.logoAlign == RNCNaverMapViewLogoAlign::BottomRight) {
+      _view.logoAlign = NMFLogoAlignRightBottom;
     }
+  }
 
-    [super updateProps:props oldProps:oldProps];
+  [super updateProps:props oldProps:oldProps];
 }
 
 - (void)animateCameraTo:(double)latitude
@@ -213,45 +183,48 @@ using namespace facebook::react;
                duration:(NSInteger)duration
                  easing:(NSInteger)easing
                  pivotX:(double)pivotX
-                 pivotY:(double)pivotY
-{
-    [_view animateCameraTo:latitude
-                 longitude:longitude
-                  duration:duration
-                    easing:easing
-                    pivotX:pivotX
-                    pivotY:pivotY];
+                 pivotY:(double)pivotY {
+  [_view animateCameraTo:latitude
+               longitude:longitude
+                duration:duration
+                  easing:easing
+                  pivotX:pivotX
+                  pivotY:pivotY];
 }
 
-- (void)animateCameraBy:(double)x y:(double)y duration:(NSInteger)duration easing:(NSInteger)easing pivotX:(double)pivotX pivotY:(double)pivotY
-{
-    [_view animateCameraBy:x
-                         y:y
-                  duration:duration
-                    easing:easing
-                    pivotX:pivotX
-                    pivotY:pivotY];
+- (void)animateCameraBy:(double)x
+                      y:(double)y
+               duration:(NSInteger)duration
+                 easing:(NSInteger)easing
+                 pivotX:(double)pivotX
+                 pivotY:(double)pivotY {
+  [_view animateCameraBy:x y:y duration:duration easing:easing pivotX:pivotX pivotY:pivotY];
 }
 
-- (void)animateRegionTo:(double)latitude longitude:(double)longitude latitudeDelta:(double)latitudeDelta longitudeDelta:(double)longitudeDelta duration:(NSInteger)duration easing:(NSInteger)easing pivotX:(double)pivotX pivotY:(double)pivotY
-{
-    [_view animateRegionTo:latitude
-                 longitude:longitude
-             latitudeDelta:latitudeDelta
-            longitudeDelta:longitudeDelta
-                  duration:duration
-                    easing:easing
-                    pivotX:pivotX
-                    pivotY:pivotY];
+- (void)animateRegionTo:(double)latitude
+              longitude:(double)longitude
+          latitudeDelta:(double)latitudeDelta
+         longitudeDelta:(double)longitudeDelta
+               duration:(NSInteger)duration
+                 easing:(NSInteger)easing
+                 pivotX:(double)pivotX
+                 pivotY:(double)pivotY {
+  [_view animateRegionTo:latitude
+               longitude:longitude
+           latitudeDelta:latitudeDelta
+          longitudeDelta:longitudeDelta
+                duration:duration
+                  easing:easing
+                  pivotX:pivotX
+                  pivotY:pivotY];
 }
 
-- (void)handleCommand:(const NSString *)commandName args:(const NSArray *)args
-{
-    RCTRNCNaverMapViewHandleCommand(self, commandName, args);
+- (void)handleCommand:(const NSString*)commandName args:(const NSArray*)args {
+  RCTRNCNaverMapViewHandleCommand(self, commandName, args);
 }
 
 Class<RCTComponentViewProtocol> RNCNaverMapViewCls(void) {
-    return RNCNaverMapView.class;
+  return RNCNaverMapView.class;
 }
 
 @end

@@ -2,12 +2,14 @@ import * as React from 'react';
 import { useRef, useState, useEffect } from 'react';
 
 import { View, Button, Switch, Text } from 'react-native';
-import NaverMapView, {
+import {
   type MapType,
   MapTypes,
+  NaverMapView,
   type NaverMapViewRef,
   type Region,
   type Camera,
+  NaverMapMarker,
 } from '@mj-studio/react-native-naver-map';
 import Slider from '@react-native-community/slider';
 import { request, PERMISSIONS } from 'react-native-permissions';
@@ -64,13 +66,21 @@ export default function App() {
         isShowLocationButton={myLocation}
         isExtentBoundedInKorea
         logoAlign={'TopRight'}
-        onInitialized={() => console.log('initialized!')}
-        onOptionChanged={() => console.log('Option Changed!')}
-        onCameraChanged={(args) =>
-          console.log(`Camera Changed: ${formatJson(args)}`)
-        }
+        // onInitialized={() => console.log('initialized!')}
+        // onOptionChanged={() => console.log('Option Changed!')}
+        // onCameraChanged={(args) =>
+        //   console.log(`Camera Changed: ${formatJson(args)}`)
+        // }
         onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
-      />
+      >
+        <NaverMapMarker
+          latitude={33.1165607356}
+          longitude={126.26599018}
+          onTap={() => console.log(1)}
+          image={'red'}
+        />
+      </NaverMapView>
+
       <View
         style={{
           flexDirection: 'row',

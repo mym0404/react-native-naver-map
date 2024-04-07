@@ -1,5 +1,4 @@
 #import <Foundation/Foundation.h>
-#import <react/renderer/components/RNCNaverMapViewSpec/Props.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTViewManager.h>
 #import "RCTBridge.h"
@@ -14,18 +13,17 @@
 @implementation RNCNaverMapViewManager
 
 + (BOOL)requiresMainQueueSetup {
-    return YES;
+  return YES;
 }
 
 RCT_EXPORT_MODULE(RNCNaverMapView)
 
 #ifndef RCT_NEW_ARCH_ENABLED
 
-- (UIView *)view
-{
-    RNCNaverMapViewImpl *ret = [[RNCNaverMapViewImpl alloc] init];
+- (UIView*)view {
+  RNCNaverMapViewImpl* ret = [[RNCNaverMapViewImpl alloc] init];
 
-    return ret;
+  return ret;
 }
 
 #endif
@@ -59,13 +57,11 @@ RCT_EXPORT_VIEW_PROPERTY(isTiltGesturesEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(isRotateGesturesEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(isStopGesturesEnabled, BOOL)
 
-
 // event
 RCT_EXPORT_VIEW_PROPERTY(onInitialized, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onOptionChanged, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onCameraChanged, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onTapMap, RCTDirectEventBlock)
-
 
 // command
 #if !TARGET_OS_OSX
@@ -73,64 +69,74 @@ RCT_EXPORT_VIEW_PROPERTY(onTapMap, RCTDirectEventBlock)
 #else
 #define BASE_VIEW_PER_OS() NSView
 #endif
-#define QUICK_RCT_EXPORT_COMMAND_METHOD(name)                                                                                                 \
-    RCT_EXPORT_METHOD(name:(nonnull NSNumber *)reactTag) {                                                                                    \
-        [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, BASE_VIEW_PER_OS() *> *viewRegistry) { \
-            RNCNaverMapViewImpl *view = (RNCNaverMapViewImpl *)viewRegistry[reactTag];                                                        \
-            if (![view isKindOfClass:[RNCNaverMapViewImpl class]]) {                                                                          \
-                RCTLogError(@"Invalid view returned from registry, expecting RNCNaverMapView, got: %@", view);                                \
-            } else {                                                                                                                          \
-                [view name];                                                                                                                  \
-            }                                                                                                                                 \
-        }];                                                                                                                                   \
-    }
-#define QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(name, in_param, out_param)                                                                     \
-    RCT_EXPORT_METHOD(name:(nonnull NSNumber *)reactTag in_param) {                                                                           \
-        [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, BASE_VIEW_PER_OS() *> *viewRegistry) { \
-            RNCNaverMapViewImpl *view = (RNCNaverMapViewImpl *)viewRegistry[reactTag];                                                        \
-            if (![view isKindOfClass:[RNCNaverMapViewImpl class]]) {                                                                          \
-                RCTLogError(@"Invalid view returned from registry, expecting RNCNaverMapView, got: %@", view);                                \
-            } else {                                                                                                                          \
-                [view name:out_param];                                                                                                        \
-            }                                                                                                                                 \
-        }];                                                                                                                                   \
-    }
+#define QUICK_RCT_EXPORT_COMMAND_METHOD(name)                                                      \
+  RCT_EXPORT_METHOD(name : (nonnull NSNumber*)reactTag) {                                          \
+    [self.bridge.uiManager                                                                         \
+        addUIBlock:^(__unused RCTUIManager * uiManager,                                            \
+                     NSDictionary<NSNumber*, BASE_VIEW_PER_OS()*> * viewRegistry) {                \
+          RNCNaverMapViewImpl* view = (RNCNaverMapViewImpl*)viewRegistry[reactTag];                \
+          if (![view isKindOfClass:[RNCNaverMapViewImpl class]]) {                                 \
+            RCTLogError(                                                                           \
+                @"Invalid view returned from registry, expecting RNCNaverMapView, got: %@", view); \
+          } else {                                                                                 \
+            [view name];                                                                           \
+          }                                                                                        \
+        }];                                                                                        \
+  }
+#define QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(name, in_param, out_param)                          \
+  RCT_EXPORT_METHOD(name : (nonnull NSNumber*)reactTag in_param) {                                 \
+    [self.bridge.uiManager                                                                         \
+        addUIBlock:^(__unused RCTUIManager * uiManager,                                            \
+                     NSDictionary<NSNumber*, BASE_VIEW_PER_OS()*> * viewRegistry) {                \
+          RNCNaverMapViewImpl* view = (RNCNaverMapViewImpl*)viewRegistry[reactTag];                \
+          if (![view isKindOfClass:[RNCNaverMapViewImpl class]]) {                                 \
+            RCTLogError(                                                                           \
+                @"Invalid view returned from registry, expecting RNCNaverMapView, got: %@", view); \
+          } else {                                                                                 \
+            [view name:out_param];                                                                 \
+          }                                                                                        \
+        }];                                                                                        \
+  }
 
-QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(animateCameraTo,
-                                       latitude:(double)latitude
-                                       longitude:(double)longitude
-                                       duration:(NSInteger)duration
-                                       easing:(NSInteger)easing
-                                       pivotX:(double)pivotX
-                                       pivotY:(double)pivotY
-                                       ,
-                                       latitude longitude:longitude duration:duration
-                                       easing:easing pivotX:pivotX pivotY:pivotY
-                                       )
-QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(animateCameraBy,
-                                       x:(double)x
-                                       y:(double)y
-                                       duration:(NSInteger)duration
-                                       easing:(NSInteger)easing
-                                       pivotX:(double)pivotX
-                                       pivotY:(double)pivotY
-                                       ,
-                                       x y:y duration:duration
-                                       easing:easing pivotX:pivotX pivotY:pivotY
-                                       )
-QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(animateRegionTo,
-                                       latitude:(double)latitude
-                                       longitude:(double)longitude
-                                       latitudeDelta:(double)latitudeDelta
-                                       longitudeDelta:(double)longitudeDelta
-                                       duration:(NSInteger)duration
-                                       easing:(NSInteger)easing
-                                       pivotX:(double)pivotX
-                                       pivotY:(double)pivotY
-                                       ,
-                                       latitude longitude:longitude latitudeDelta:latitudeDelta
-                                       longitudeDelta:longitudeDelta
-                                       duration:duration easing:easing pivotX:pivotX pivotY:pivotY
-                                       )
+QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(animateCameraTo, latitude
+                                       : (double)latitude longitude
+                                       : (double)longitude duration
+                                       : (NSInteger)duration easing
+                                       : (NSInteger)easing pivotX
+                                       : (double)pivotX pivotY
+                                       : (double)pivotY, latitude longitude
+                                       : longitude duration
+                                       : duration easing
+                                       : easing pivotX
+                                       : pivotX pivotY
+                                       : pivotY)
+QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(animateCameraBy, x
+                                       : (double)x y
+                                       : (double)y duration
+                                       : (NSInteger)duration easing
+                                       : (NSInteger)easing pivotX
+                                       : (double)pivotX pivotY
+                                       : (double)pivotY, x y
+                                       : y duration
+                                       : duration easing
+                                       : easing pivotX
+                                       : pivotX pivotY
+                                       : pivotY)
+QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(animateRegionTo, latitude
+                                       : (double)latitude longitude
+                                       : (double)longitude latitudeDelta
+                                       : (double)latitudeDelta longitudeDelta
+                                       : (double)longitudeDelta duration
+                                       : (NSInteger)duration easing
+                                       : (NSInteger)easing pivotX
+                                       : (double)pivotX pivotY
+                                       : (double)pivotY, latitude longitude
+                                       : longitude latitudeDelta
+                                       : latitudeDelta longitudeDelta
+                                       : longitudeDelta duration
+                                       : duration easing
+                                       : easing pivotX
+                                       : pivotX pivotY
+                                       : pivotY)
 
 @end

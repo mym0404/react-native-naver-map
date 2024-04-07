@@ -30,23 +30,6 @@ type LogoAlign = 'TopLeft' | 'TopRight' | 'BottomLeft' | 'BottomRight';
 
 ////////////////////
 
-// export type NaverMapAuthFailedEvent = Readonly<{
-//   errorCode: Int32;
-//   description: string;
-// }>;
-
-// type Coord = Readonly<{
-//   latitude: Double;
-//   longitude: Double;
-// }>;
-//
-// type Rect = Readonly<{
-//   top: Double;
-//   right: Double;
-//   bottom: Double;
-//   left: Double;
-// }>;
-
 type PartialRect = Readonly<{
   top?: Double;
   right?: Double;
@@ -116,14 +99,6 @@ interface NaverMapViewNativeProps extends ViewProps {
   isTiltGesturesEnabled?: boolean;
   isRotateGesturesEnabled?: boolean;
   isStopGesturesEnabled?: boolean;
-
-  // onMapClick?: (event: {
-  //   x: number;
-  //   y: number;
-  //   latitude: number;
-  //   longitude: number;
-  // }) => void;
-  // onTouch?: () => void;
 
   // useTextureView?: boolean;
 

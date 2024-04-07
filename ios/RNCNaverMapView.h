@@ -4,7 +4,16 @@
 #define NaverMapViewNativeComponent_h
 
 #import <React/RCTViewComponentView.h>
+#import <React/UIView+ComponentViewProtocol.h>
 #import <UIKit/UIKit.h>
+#import <react/renderer/components/RNCNaverMapSpec/ComponentDescriptors.h>
+#import <react/renderer/components/RNCNaverMapSpec/EventEmitters.h>
+#import <react/renderer/components/RNCNaverMapSpec/Props.h>
+#import <react/renderer/components/RNCNaverMapSpec/RCTComponentViewHelpers.h>
+
+#import "RCTFabricComponentsPlugins.h"
+#import "RNCNaverMapViewImpl.h"
+#import "Utils.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
