@@ -103,8 +103,8 @@ allprojects {
 | NaverMapMarkerOverlay                       | ⚠️  | ⚠️      |     |
 | Info Window(ToolTip for overlays)           | 📦  | 📦      |     |
 | NaverMapCircleOverlay                       | 📦  | ✅       |     |
-| NaverMapPolylineOverlay                     | 📦  | 📦      |     |
-| NaverMapPolygonOverlay                      | 📦  | 📦      |     |
+| NaverMapPolylineOverlay                     | 📦  | ✅       |     |
+| NaverMapPolygonOverlay                      | 📦  | ✅       |     |
 | NaverMapLocationOverlay(+ location feature) | 📦  | 📦      |     |
 | NaverMapGroundOverlay                       | 📦  | 📦      |     |
 | NaverMapPathOverlay                         | 📦  | 📦      |     |
@@ -226,6 +226,19 @@ allprojects {
 | image(custom view)       | ❓   | ❓       |     |
 | caption                  | 📦  | 📦      |     |
 | subcaption               | 📦  | 📦      |     |
+
+### `NaverMapPolylineOverlay`
+
+#### Props
+
+|          | iOS | Android | Web |
+|----------|-----|---------|-----|
+| coords   | 📦  | ✅       |     |
+| width    | 📦  | ✅       |     |
+| color    | 📦  | ✅       |     |
+| pattern  | 📦  | ✅       |     |
+| capType  | 📦  | ✅       |     |
+| joinType | 📦  | ✅       |     |
 
 ### `NaverMapCircleOverlay`
 

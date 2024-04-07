@@ -15,6 +15,10 @@ export {
   NaverMapPolygonOverlay,
   type NaverMapPolygonOverlayProps,
 } from './component/NaverMapPolygonOverlay';
+export {
+  NaverMapPolylineOverlay,
+  type NaverMapPolylineOverlayProps,
+} from './component/NaverMapPolylineOverlay';
 
 export * from './spec/RNCNaverMapViewNativeComponent';
 export * from './types/Coord';
@@ -30,3 +34,5 @@ export * from './types/Camera';
 export * from './types/CameraAnimationEasing';
 export * from './types/CameraChangeReason';
 export * from './types/MarkerImages';
+export * from './types/CapType';
+export * from './types/JoinType';
