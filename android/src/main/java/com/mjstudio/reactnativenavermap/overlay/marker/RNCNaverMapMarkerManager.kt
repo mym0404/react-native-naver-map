@@ -3,7 +3,6 @@ package com.mjstudio.reactnativenavermap.overlay.marker
 import android.graphics.Color
 import android.view.View
 import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapMarkerManagerSpec
@@ -16,7 +15,6 @@ import com.naver.maps.map.util.MarkerIcons
 import kotlin.math.roundToInt
 
 
-@ReactModule(name = RNCNaverMapMarkerManager.NAME)
 class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>() {
     override fun getName(): String {
         return NAME

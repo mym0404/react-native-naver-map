@@ -3,8 +3,9 @@ package com.mjstudio.reactnativenavermap.mapview
 import android.graphics.PointF
 import android.view.Gravity
 import android.view.View
+import com.airbnb.android.react.maps.SizeReportingShadowNode
 import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.module.annotations.ReactModule
+import com.facebook.react.uimanager.LayoutShadowNode
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapViewManagerSpec
@@ -34,7 +35,6 @@ import com.naver.maps.map.NaverMapOptions
 import kotlin.math.roundToInt
 
 
-@ReactModule(name = RNCNaverMapViewManager.NAME)
 class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper>() {
     override fun getName(): String {
         return NAME
@@ -86,6 +86,32 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
         ((this?.resources?.displayMetrics?.density ?: 1f) * dp).roundToInt()
 
     override fun needsCustomLayoutForChildren(): Boolean = true
+
+    override fun addView(parent: RNCNaverMapViewWrapper?, child: View, index: Int) {
+        parent?.withMapView {
+            it.addOverlay(child, index)
+        }
+    }
+
+    override fun getChildCount(parent: RNCNaverMapViewWrapper): Int {
+        return parent.mapView?.overlays?.size ?: 0
+    }
+
+    override fun getChildAt(parent: RNCNaverMapViewWrapper?, index: Int): View? {
+        return parent?.mapView?.overlays?.get(index)
+    }
+
+    override fun removeViewAt(parent: RNCNaverMapViewWrapper?, index: Int) {
+        parent?.withMapView {
+            it.removeOverlay(index)
+        }
+    }
+
+    override fun createShadowNodeInstance(): LayoutShadowNode {
+        // A custom shadow node is needed in order to pass back the width/height of the map to the
+        // view manager so that it can start applying camera moves with bounds.
+        return SizeReportingShadowNode()
+    }
 
     // region PROPS
 

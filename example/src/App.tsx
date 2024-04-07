@@ -8,7 +8,6 @@ import {
   NaverMapView,
   type NaverMapViewRef,
   type Region,
-  type Camera,
   NaverMapMarker,
 } from '@mj-studio/react-native-naver-map';
 import Slider from '@react-native-community/slider';
@@ -21,11 +20,11 @@ const jejuRegion: Region = {
   latitudeDelta: 0.38,
   longitudeDelta: 0.8,
 };
-const jejuCamera: Partial<Camera> = {
-  latitude: jejuRegion.latitude + jejuRegion.latitudeDelta / 2,
-  longitude: jejuRegion.longitude + jejuRegion.longitudeDelta / 2,
-  zoom: 8.5,
-};
+// const jejuCamera: Partial<Camera> = {
+//   latitude: jejuRegion.latitude + jejuRegion.latitudeDelta / 2,
+//   longitude: jejuRegion.longitude + jejuRegion.longitudeDelta / 2,
+//   zoom: 8.5,
+// };
 
 export default function App() {
   const ref = useRef<NaverMapViewRef>(null);
@@ -52,9 +51,9 @@ export default function App() {
         style={{ flex: 1 }}
         mapType={mapType}
         // camera={jejuCamera}
-        initialCamera={jejuCamera}
+        // initialCamera={jejuCamera}
         // region={jejuRegion}
-        // initialRegion={jejuRegion}
+        initialRegion={jejuRegion}
         isIndoorEnabled={indoor}
         symbolScale={symbolScale}
         lightness={lightness}
