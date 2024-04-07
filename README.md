@@ -102,6 +102,7 @@ allprojects {
 | NaverMapView                                | ✅   | ✅       |     |
 | NaverMapMarkerOverlay                       | ⚠️  | ⚠️      |     |
 | Info Window(ToolTip for overlays)           | 📦  | 📦      |     |
+| NaverMapCircleOverlay                       | 📦  | ✅       |     |
 | NaverMapPolylineOverlay                     | 📦  | 📦      |     |
 | NaverMapPolygonOverlay                      | 📦  | 📦      |     |
 | NaverMapLocationOverlay(+ location feature) | 📦  | 📦      |     |
@@ -165,6 +166,7 @@ allprojects {
 | onOptionChanged | ✅   | ✅       |     |
 | onCameraChanged | ✅   | ✅       |     |
 | onTapMap        | ✅   | ✅       |     |
+| onTapSymbol     | 📦  | 📦      |     |
 | onAuthFailed    | ❌   | ❌       |     |
 
 #### Commands
@@ -179,20 +181,33 @@ allprojects {
 | screenToCoordinate         | 📦  | 📦      |     |
 | coordinateToScreen         | 📦  | 📦      |     |
 
+### Marker Common
+
+#### Props
+
+|                    | iOS | Android | Web |
+|--------------------|-----|---------|-----|
+| latitude           | ✅   | ✅       |     |
+| longitude          | ✅   | ✅       |     |
+| zIndex             | ✅   | ✅       |     |
+| isHidden           | ✅   | ✅       |     |
+| minZoom            | ✅   | ✅       |     |
+| maxZoom            | ✅   | ✅       |     |
+| isMinZoomInclusive | ✅   | ✅       |     |
+| isMaxZoomInclusive | ✅   | ✅       |     |
+
+#### Events
+
+|       | iOS | Android | Web |
+|-------|-----|---------|-----|
+| onTap | ✅   | ✅       |     |
+
 ### `NaverMapMarker`
 
 #### Props
 
 |                          | iOS | Android | Web |
 |--------------------------|-----|---------|-----|
-| latitude                 | ✅   | ✅       |     |
-| longitude                | ✅   | ✅       |     |
-| zIndex                   | ✅   | ✅       |     |
-| isHidden                 | ✅   | ✅       |     |
-| minZoom                  | ✅   | ✅       |     |
-| maxZoom                  | ✅   | ✅       |     |
-| isMinZoomInclusive       | ✅   | ✅       |     |
-| isMaxZoomInclusive       | ✅   | ✅       |     |
 | width                    | ✅   | ✅       |     |
 | height                   | ✅   | ✅       |     |
 | anchor                   | ✅   | ✅       |     |
@@ -210,12 +225,6 @@ allprojects {
 | image(network image)     | 📦  | 📦      |     |
 | caption                  | 📦  | 📦      |     |
 | subcaption               | 📦  | 📦      |     |
-
-#### Events
-
-|       | iOS | Android | Web |
-|-------|-----|---------|-----|
-| onTap | ✅   | ✅       |     |
 
 ## Supporting Table - Architecture
 
