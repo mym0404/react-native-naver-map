@@ -73,6 +73,19 @@ Usage는 [`react-native-map`의 Usage](https://github.com/react-native-maps/reac
 - [ ] Docs - Docusaurus docs
 
 
+## Usage
+
+### Install
+
+```shell
+yarn add @mj-studio/react-native-naver-map
+# for ios, you should install pods
+```
+
+### Android
+
+### iOS
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.

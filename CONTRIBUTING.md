@@ -35,35 +35,54 @@ To start the packager:
 yarn example start
 ```
 
+### Android
+
 To run the example app on Android:
+
+Set your Naver SDK Key at `example/nadroid/app/src/main/res/values/secret.xml`
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="naver_client_id">{{your_key}</string>
+</resources>
+```
 
 ```sh
 yarn example android
 ```
 
+### iOS
+
 To run the example app on iOS:
 
+Set your Naver SDK key at `example/ios/Secret.xcconfig`
+
+```
+NAVER_CLIENT_ID = {{your_key}
+```
+
 ```sh
-yarn pod:bridge or yarn pod:newarch
+yarn pod:{old, new}
 yarn example ios
 ```
 
-By default, the example is configured to build with the old architecture. To run the example with the new architecture, you can do the following:
+### Architecture Type Change
 
-1. For Android, run:
+To change the example with the architecture type, you can do the following:
 
-   ```sh
-   ORG_GRADLE_PROJECT_newArchEnabled=true yarn example android
-   ```
+1. For Android, change:
+
+`example/android/gradle.properties`
+
+```
+newArchEnabled=true or false
+```
 
 2. For iOS, run:
 
-   ```sh
-   cd example/ios
-   RCT_NEW_ARCH_ENABLED=1 pod install
-   cd -
-   yarn example ios
-   ```
+```sh
+yarn pod:new or yarn pod:old
+```
 
 If you are building for a different architecture than your previous build, make sure to remove the build folders first. You can run the following command to cleanup all build folders:
 
@@ -78,6 +97,8 @@ Running "NaverMapExample" with {"fabric":true,"initialProps":{"concurrentRoot":t
 ```
 
 Note the `"fabric":true` and `"concurrentRoot":true` properties.
+
+### Type Check & Lint
 
 Make sure your code passes TypeScript and ESLint. Run the following to verify:
 
