@@ -35,7 +35,7 @@ export const NaverMapPolygonOverlay = ({
   if (coords) {
     invariant(
       coords.length >= 3,
-      'coords length should be equal or greater than 3, is %s.',
+      '[NaverMapPolygonOverlay] coords length should be equal or greater than 3, is %s.',
       coords.length
     );
     if (coords.length < 3) return null;
@@ -44,7 +44,7 @@ export const NaverMapPolygonOverlay = ({
     for (const hole of holes) {
       invariant(
         hole.length >= 3,
-        'hole length should be equal or greater than 3, is %s.',
+        '[NaverMapPolygonOverlay] hole length should be equal or greater than 3, is %s.',
         hole.length
       );
       if (hole.length < 3) return null;

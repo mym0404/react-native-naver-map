@@ -40,7 +40,7 @@ export const NaverMapPolylineOverlay = ({
   if (coords) {
     invariant(
       coords.length >= 2,
-      'coords length should be equal or greater than 2, is %s.',
+      '[NaverMapPolylineOverlay] coords length should be equal or greater than 2, is %s.',
       coords.length
     );
     if (coords.length < 2) return null;

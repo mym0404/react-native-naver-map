@@ -107,7 +107,9 @@ allprojects {
 | NaverMapPolygonOverlay                      | 📦  | ✅       |     |
 | NaverMapLocationOverlay(+ location feature) | 📦  | 📦      |     |
 | NaverMapGroundOverlay                       | 📦  | 📦      |     |
-| NaverMapPathOverlay                         | 📦  | 📦      |     |
+| NaverMapPathOverlay                         | 📦  | ✅       |     |
+| NaverMapMultipartPathOverlay                | 📦  | 📦      |     |
+| NaverMapArrowPathOverlay                    | 📦  | 📦      |     |
 
 ## Props & Commands
 
@@ -239,6 +241,26 @@ allprojects {
 | pattern  | 📦  | ✅       |     |
 | capType  | 📦  | ✅       |     |
 | joinType | 📦  | ✅       |     |
+
+### `NaverMapPathOverlay`
+
+#### Props
+
+|                        | iOS | Android | Web |
+|------------------------|-----|---------|-----|
+| coords                 | 📦  | ✅       |     |
+| width                  | 📦  | ✅       |     |
+| outlineWidth           | 📦  | ✅       |     |
+| patternImage           | 📦  | 📦      |     |
+| patternInterval        | 📦  | ✅       |     |
+| progress               | 📦  | ✅       |     |
+| color                  | 📦  | ✅       |     |
+| passedColor            | 📦  | ✅       |     |
+| outlineColor           | 📦  | ✅       |     |
+| passedOutlineColor     | 📦  | ✅       |     |
+| isHideCollidedSymbols  | 📦  | ✅       |     |
+| isHideCollidedMarkers  | 📦  | ✅       |     |
+| isHideCollidedCaptions | 📦  | ✅       |     |
 
 ### `NaverMapCircleOverlay`
 
