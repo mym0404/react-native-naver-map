@@ -51,6 +51,16 @@ body:
         - Physcial Device
     validations:
       required: true
+  - type: dropdown
+    id: architecture
+    attributes:
+      label: What architecture types of react native are you seeing the problem on?
+      multiple: true
+      options:
+        - Old Architecture(Bridge)
+        - New Architecture(Fabric)
+    validations:
+      required: true
   - type: input
     id: device-version
     attributes:
