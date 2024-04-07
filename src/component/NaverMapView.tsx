@@ -41,7 +41,7 @@ export type NaverMapViewProps = ViewProps & {
    * 단, 지도 유형에 따라 표현 가능한 레이어 그룹이 정해져 있습니다.
    * 지도 유형이 특정 레이어 그룹을 지원하지 않으면 활성화하더라도 해당하는 요소가 노출되지 않습니다.
    *
-   * default값은 모두 활성화되어있는 상태입니다.
+   * default값은 BUILDING만 활성화되어있는 상태입니다.
    *
    * @see [references](https://navermaps.github.io/android-map-sdk/guide-ko/2-3.html)
    */
@@ -304,11 +304,11 @@ export const NaverMapView = forwardRef(
       mapType = 'Basic',
       layerGroups = {
         BUILDING: true,
-        TRAFFIC: true,
-        BICYCLE: true,
-        MOUNTAIN: true,
-        TRANSIT: true,
-        CADASTRAL: true,
+        BICYCLE: false,
+        CADASTRAL: false,
+        MOUNTAIN: false,
+        TRAFFIC: false,
+        TRANSIT: false,
       },
       isIndoorEnabled = false,
       isNightModeEnabled = false,
