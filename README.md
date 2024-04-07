@@ -66,8 +66,8 @@ Usage는 [`react-native-map`의 Usage](https://github.com/react-native-maps/reac
 - [x] Project Started (23.04.01)
 - [x] Android/iOS - Project Setup & Component Structure (23.04.03)
 - [x] Android/iOS - General Props & Commands (23.04.05)
-- [ ] Android/iOS - Camera, Region, Commands, Events <- 🔥(here)
-- [ ] Android/iOS - Implement Basic Overlays
+- [x] Android/iOS - Camera, Region, Commands, Events (23.04.07)
+- [ ] Android/iOS - Implement Basic Overlays  <- 🔥
 - [ ] Android/iOS - Implement Advanced Overlays
 - [ ] Release
 - [ ] Docs - Docusaurus docs

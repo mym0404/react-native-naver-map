@@ -52,8 +52,8 @@ export default function App() {
         style={{ flex: 1 }}
         mapType={mapType}
         // camera={jejuCamera}
-        // initialCamera={jejuCamera}
-        region={jejuRegion}
+        initialCamera={jejuCamera}
+        // region={jejuRegion}
         // initialRegion={jejuRegion}
         isIndoorEnabled={indoor}
         symbolScale={symbolScale}
