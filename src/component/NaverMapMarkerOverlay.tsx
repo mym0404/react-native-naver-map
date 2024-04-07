@@ -1,9 +1,14 @@
 import { default as NativeNaverMapMarker } from '../spec/RNCNaverMapMarkerNativeComponent';
-import React from 'react';
+import React, { type PropsWithChildren, Children } from 'react';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
-import type { PointProp, ColorValue } from 'react-native';
+import {
+  type PointProp,
+  type ColorValue,
+  type ImageSourcePropType,
+  Image,
+} from 'react-native';
 import { Const } from '../util/Const';
-import type { MarkerImages } from '../types/MarkerImages';
+import invariant from 'invariant';
 
 export type NaverMapMarkerOverlayProps = BaseOverlayProps & {
   width?: number;
@@ -18,8 +23,8 @@ export type NaverMapMarkerOverlayProps = BaseOverlayProps & {
   isHideCollidedCaptions?: boolean;
   isForceShowIcon?: boolean;
   tintColor?: ColorValue;
-  image?: MarkerImages;
-};
+  image?: ImageSourcePropType;
+} & PropsWithChildren<{}>;
 
 export const NaverMapMarkerOverlay = ({
   latitude,
@@ -47,7 +52,13 @@ export const NaverMapMarkerOverlay = ({
   tintColor,
   image,
   onTap,
+  children,
 }: NaverMapMarkerOverlayProps) => {
+  invariant(
+    Children.count(children) <= 1,
+    '[NaverMapMarkerOverlay] children count should be equal or less than 1, is %s',
+    Children.count(children)
+  );
   return (
     <NativeNaverMapMarker
       position={{
@@ -72,8 +83,18 @@ export const NaverMapMarkerOverlay = ({
       isHideCollidedSymbols={isHideCollidedSymbols}
       isIconPerspectiveEnabled={isIconPerspectiveEnabled}
       tintColor={tintColor}
-      image={image}
+      image={getImageUri(image)}
       onTapOverlay={onTap}
+      children={children}
     />
   );
 };
+
+function getImageUri(src?: ImageSourcePropType): string | undefined {
+  let imageUri;
+  if (src) {
+    let image = Image.resolveAssetSource(src) || { uri: null };
+    imageUri = image.uri;
+  }
+  return imageUri;
+}

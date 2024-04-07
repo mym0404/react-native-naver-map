@@ -9,6 +9,7 @@ import {
   type NaverMapViewRef,
   type Region,
   NaverMapCircleOverlay,
+  NaverMapMarkerOverlay,
 } from '@mj-studio/react-native-naver-map';
 import Slider from '@react-native-community/slider';
 import { request, PERMISSIONS } from 'react-native-permissions';
@@ -81,12 +82,16 @@ export default function App() {
         // }
         onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
       >
-        {/*<NaverMapMarkerOverlay*/}
-        {/*  latitude={33.1165607356}*/}
-        {/*  longitude={126.26599018}*/}
-        {/*  onTap={() => console.log(1)}*/}
-        {/*  image={'black'}*/}
-        {/*/>*/}
+        <NaverMapMarkerOverlay
+          latitude={33.1165607356}
+          longitude={126.26599018}
+          onTap={() => console.log(1)}
+          image={require('./logo180.png')}
+          width={32}
+          height={32}
+        >
+          <View style={{ backgroundColor: 'red', width: 50, height: 50 }} />
+        </NaverMapMarkerOverlay>
         <NaverMapCircleOverlay
           latitude={33.17827398}
           longitude={126.349895729}

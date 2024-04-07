@@ -1,6 +1,7 @@
 package com.mjstudio.reactnativenavermap.overlay.marker
 
 import android.graphics.Color
+import android.view.View
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.ThemedReactContext
@@ -13,7 +14,6 @@ import com.mjstudio.reactnativenavermap.util.isValidNumber
 import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Marker.SIZE_AUTO
-import com.naver.maps.map.util.MarkerIcons
 
 
 class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>() {
@@ -37,6 +37,17 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
 
     private fun RNCNaverMapMarker?.withOverlay(fn: (Marker) -> Unit) {
         this?.overlay?.run(fn)
+    }
+
+    override fun addView(parent: RNCNaverMapMarker?, child: View, index: Int) {
+        parent?.setCustomView(child, index)
+    }
+
+    override fun removeView(parent: RNCNaverMapMarker?, view: View) {
+    }
+
+    override fun removeViewAt(parent: RNCNaverMapMarker?, index: Int) {
+        parent?.removeCustomView(index)
     }
 
     @ReactProp(name = "position")
@@ -148,56 +159,8 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
     }
 
     @ReactProp(name = "image")
-    override fun setImage(view: RNCNaverMapMarker?, value: String?) = view.withOverlay {
-        when (value) {
-            "blue" -> {
-                it.icon = MarkerIcons.BLUE
-            }
-
-            "gray" -> {
-                it.icon = MarkerIcons.GRAY
-            }
-
-            "green" -> {
-                it.icon = MarkerIcons.GREEN
-            }
-
-            "lightblue" -> {
-                it.icon = MarkerIcons.LIGHTBLUE
-            }
-
-            "pink" -> {
-                it.icon = MarkerIcons.PINK
-            }
-
-            "red" -> {
-                it.icon = MarkerIcons.RED
-            }
-
-            "yellow" -> {
-                it.icon = MarkerIcons.YELLOW
-            }
-
-            "black" -> {
-                it.icon = MarkerIcons.BLACK
-            }
-
-            "lowDensityCluster" -> {
-                it.icon = MarkerIcons.CLUSTER_LOW_DENSITY
-            }
-
-            "mediumDensityCluster" -> {
-                it.icon = MarkerIcons.CLUSTER_MEDIUM_DENSITY
-            }
-
-            "highDensityCluster" -> {
-                it.icon = MarkerIcons.CLUSTER_HIGH_DENSITY
-            }
-
-            else -> {
-                it.icon = MarkerIcons.GREEN
-            }
-        }
+    override fun setImage(view: RNCNaverMapMarker?, value: String?) {
+        view?.setImage(value)
     }
 
 
