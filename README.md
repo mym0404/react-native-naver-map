@@ -200,9 +200,10 @@ allprojects {
 
 #### Events
 
-|       | iOS | Android | Web |
-|-------|-----|---------|-----|
-| onTap | ✅   | ✅       |     |
+|           | iOS | Android | Web |
+|-----------|-----|---------|-----|
+| onTap     | ✅   | ✅       |     |
+| onLongTap | ❌   | 📦      |     |
 
 ### `NaverMapMarkerOverlay`
 
@@ -225,7 +226,7 @@ allprojects {
 | image(default symbols)   | ✅   | ✅       |     |
 | image(local image)       | 📦  | ✅       |     |
 | image(network image)     | 📦  | ✅       |     |
-| image(custom view)       | ❓   | ✅       |     |
+| image(custom view)       | 📦  | ✅       |     |
 | caption                  | 📦  | 📦      |     |
 | subcaption               | 📦  | 📦      |     |
 
@@ -306,7 +307,7 @@ allprojects {
 - [x] Android/iOS - Camera, Region, Commands, Events (23.04.07)
 - [ ] Android/iOS - Implement Basic Overlays  <- 🔥
 - [ ] Android/iOS - Implement Advanced Overlays
-- [ ] Release
+- [x] Release
 - [ ] Docs - Docusaurus docs
 
 ## Contributing
