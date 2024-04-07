@@ -133,8 +133,8 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     override fun setInitialCamera(view: RNCNaverMapViewWrapper?, value: ReadableMap?) =
         view.withMapView {
             if (!it.isInitialCameraOrRegionSet) {
-                it.isInitialCameraOrRegionSet = true
                 if (isValidNumber(value?.getDoubleOrNull("latitude"))) {
+                    it.isInitialCameraOrRegionSet = true
                     setCamera(view, value)
                 }
             }
@@ -158,19 +158,22 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
 
 
     @ReactProp(name = "initialRegion")
-    override fun setInitialRegion(view: RNCNaverMapViewWrapper?, value: ReadableMap?) =
-        view.withMapView {
-            if (!it.isInitialCameraOrRegionSet) {
-                it.isInitialCameraOrRegionSet = true
-                if (isValidNumber(value?.getDoubleOrNull("latitude"))) {
+    override fun setInitialRegion(view: RNCNaverMapViewWrapper?, value: ReadableMap?) {
+        if (isValidNumber(value?.getDoubleOrNull("latitude"))) {
+            view.withMapView {
+                if (!it.isInitialCameraOrRegionSet) {
+                    it.isInitialCameraOrRegionSet = true
                     setRegion(view, value)
                 }
             }
         }
+    }
 
     @ReactProp(name = "region")
     override fun setRegion(view: RNCNaverMapViewWrapper?, value: ReadableMap?) = view.withMap {
+//        debugE(value)
         value.getLatLngBoundsOrNull()?.run {
+//            debugE(value)
             val update = CameraUpdate.fitBounds(this)
             it.moveCamera(update)
         }
