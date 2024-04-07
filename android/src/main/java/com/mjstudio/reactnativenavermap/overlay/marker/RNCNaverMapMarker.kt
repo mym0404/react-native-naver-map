@@ -162,7 +162,7 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
             val overlayImage = OverlayImages[uri]
             if (overlayImage != null) {
                 setOverlayImage(overlayImage)
-                return;
+                return
             }
 
 

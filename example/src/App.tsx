@@ -86,12 +86,8 @@ export default function App() {
           latitude={33.1165607356}
           longitude={126.26599018}
           onTap={() => console.log(1)}
-          image={require('./logo180.png')}
-          width={32}
-          height={32}
-        >
-          <View style={{ backgroundColor: 'red', width: 50, height: 50 }} />
-        </NaverMapMarkerOverlay>
+          image={'highDensityCluster'}
+        />
         <NaverMapCircleOverlay
           latitude={33.17827398}
           longitude={126.349895729}

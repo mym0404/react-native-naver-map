@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Const } from '../util/Const';
 import invariant from 'invariant';
+import { type MarkerImages, allMarkerImages } from '../types/MarkerImages';
 
 export type NaverMapMarkerOverlayProps = BaseOverlayProps & {
   width?: number;
@@ -23,7 +24,7 @@ export type NaverMapMarkerOverlayProps = BaseOverlayProps & {
   isHideCollidedCaptions?: boolean;
   isForceShowIcon?: boolean;
   tintColor?: ColorValue;
-  image?: ImageSourcePropType;
+  image?: ImageSourcePropType & (MarkerImages & {});
 } & PropsWithChildren<{}>;
 
 export const NaverMapMarkerOverlay = ({
@@ -90,9 +91,11 @@ export const NaverMapMarkerOverlay = ({
   );
 };
 
-function getImageUri(src?: ImageSourcePropType): string | undefined {
+function getImageUri(src?: ImageSourcePropType | string): string | undefined {
   let imageUri;
-  if (src) {
+  if (typeof src === 'string' && allMarkerImages.includes(src as any)) {
+    imageUri = src;
+  } else if (typeof src !== 'string' && src) {
     let image = Image.resolveAssetSource(src) || { uri: null };
     imageUri = image.uri;
   }
