@@ -287,6 +287,7 @@ export type NaverMapViewRef = {
       coord2: Coord;
     } & CameraMoveBaseParams
   ) => void;
+  cancelAnimation: () => void;
 };
 
 function clamp(v: number, min: number, max: number): number {
@@ -452,6 +453,11 @@ export const NaverMapView = forwardRef(
               pivot?.x ?? 0.5,
               pivot?.y ?? 0.5
             );
+          }
+        },
+        cancelAnimation: () => {
+          if (innerRef.current) {
+            Commands.cancelAnimation(innerRef.current);
           }
         },
       }),
