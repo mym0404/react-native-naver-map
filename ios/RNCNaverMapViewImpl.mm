@@ -166,6 +166,34 @@ NMAP_REMAP_QUICK_SETTER(IsRotateGesturesEnabled, isRotateGesturesEnabled,
 NMAP_REMAP_QUICK_SETTER(IsStopGesturesEnabled, isStopGesturesEnabled, mapView.stopGestureEnabled,
                         BOOL)
 
+- (void)setLayerGroups:(NSInteger)layerGroups {
+  BOOL building = layerGroups & (1 << 0);
+  BOOL traffic = layerGroups & (1 << 1);
+  BOOL transit = layerGroups & (1 << 2);
+  BOOL bicycle = layerGroups & (1 << 3);
+  BOOL mountain = layerGroups & (1 << 4);
+  BOOL cadastral = layerGroups & (1 << 5);
+
+  if ([self.mapView getLayerGroupEnabled:NMF_LAYER_GROUP_BUILDING] != building) {
+    [self.mapView setLayerGroup:NMF_LAYER_GROUP_BUILDING isEnabled:building];
+  }
+  if ([self.mapView getLayerGroupEnabled:NMF_LAYER_GROUP_TRAFFIC] != traffic) {
+    [self.mapView setLayerGroup:NMF_LAYER_GROUP_TRAFFIC isEnabled:traffic];
+  }
+  if ([self.mapView getLayerGroupEnabled:NMF_LAYER_GROUP_TRANSIT] != transit) {
+    [self.mapView setLayerGroup:NMF_LAYER_GROUP_TRANSIT isEnabled:transit];
+  }
+  if ([self.mapView getLayerGroupEnabled:NMF_LAYER_GROUP_BICYCLE] != bicycle) {
+    [self.mapView setLayerGroup:NMF_LAYER_GROUP_BICYCLE isEnabled:bicycle];
+  }
+  if ([self.mapView getLayerGroupEnabled:NMF_LAYER_GROUP_MOUNTAIN] != mountain) {
+    [self.mapView setLayerGroup:NMF_LAYER_GROUP_MOUNTAIN isEnabled:mountain];
+  }
+  if ([self.mapView getLayerGroupEnabled:NMF_LAYER_GROUP_CADASTRAL] != cadastral) {
+    [self.mapView setLayerGroup:NMF_LAYER_GROUP_CADASTRAL isEnabled:cadastral];
+  }
+}
+
 - (void)setCamera:(NSDictionary*)camera {
   _camera = camera;
 

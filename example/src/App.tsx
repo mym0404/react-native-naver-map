@@ -50,6 +50,14 @@ export default function App() {
         ref={ref}
         style={{ flex: 1 }}
         mapType={mapType}
+        layerGroups={{
+          BUILDING: true,
+          BICYCLE: true,
+          CADASTRAL: true,
+          MOUNTAIN: true,
+          TRAFFIC: true,
+          TRANSIT: true,
+        }}
         // camera={jejuCamera}
         // initialCamera={jejuCamera}
         // region={jejuRegion}

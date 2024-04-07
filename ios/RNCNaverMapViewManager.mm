@@ -29,6 +29,7 @@ RCT_EXPORT_MODULE(RNCNaverMapView)
 #endif
 
 RCT_EXPORT_VIEW_PROPERTY(mapType, NMFMapType)
+RCT_EXPORT_VIEW_PROPERTY(layerGroups, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(camera, NSDictionary)
 RCT_EXPORT_VIEW_PROPERTY(initialCamera, NSDictionary)
 RCT_EXPORT_VIEW_PROPERTY(region, RNCNaverMapRegion)

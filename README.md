@@ -13,7 +13,7 @@
 
 [![NPM - alpha](https://img.shields.io/badge/NPM-alpha-3af2f2)](https://) [![Android SDK - 3.18.0](https://img.shields.io/badge/Android_SDK-3.18.0-2ea44f)](https://) [![iOS SDK - 3.18.0](https://img.shields.io/badge/iOS_SDK-3.18.0-3522ff)](https://)
 
-![preview](https://raw.githubusercontent.com/mym0404/image-archive/master/202404030152069.gif) ![preview-ios](https://raw.githubusercontent.com/mym0404/image-archive/master/202404040321283.gif)
+![preview](https://raw.githubusercontent.com/mym0404/image-archive/master/202404072321046.webp)
 
 
 ## 왜 이 라이브러리를 써야하나요?

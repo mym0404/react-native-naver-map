@@ -48,6 +48,7 @@ using namespace facebook::react;
                        >
 
 @property(nonatomic, assign) NMFMapType mapType;
+@property(nonatomic, assign) NSInteger layerGroups;
 @property(nonatomic, copy) NSDictionary* camera;
 @property(nonatomic, copy) NSDictionary* initialCamera;
 @property(nonatomic, copy) RNCNaverMapRegion* region;

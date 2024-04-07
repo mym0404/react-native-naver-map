@@ -54,14 +54,7 @@ interface NaverMapViewNativeProps extends ViewProps {
     'Basic'
   >;
 
-  // layerGroups?: Readonly<{
-  //   BUILDING?: boolean;
-  //   TRAFFIC?: boolean;
-  //   TRANSIT?: boolean;
-  //   BICYCLE?: boolean;
-  //   MOUNTAIN?: boolean;
-  //   CADASTRAL?: boolean;
-  // }>;
+  layerGroups: Int32;
 
   initialCamera?: Readonly<Camera>;
   camera?: Readonly<Camera>;

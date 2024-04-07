@@ -108,6 +108,7 @@ using namespace facebook::react;
     }
   }
 
+  NMAP_REMAP_PROP(layerGroups)
   NMAP_REMAP_PROP(isIndoorEnabled)
   NMAP_REMAP_PROP(isNightModeEnabled)
   NMAP_REMAP_PROP(isLiteModeEnabled)

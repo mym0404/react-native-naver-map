@@ -24,6 +24,12 @@ import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.NaverMap
+import com.naver.maps.map.NaverMap.LAYER_GROUP_BICYCLE
+import com.naver.maps.map.NaverMap.LAYER_GROUP_BUILDING
+import com.naver.maps.map.NaverMap.LAYER_GROUP_CADASTRAL
+import com.naver.maps.map.NaverMap.LAYER_GROUP_MOUNTAIN
+import com.naver.maps.map.NaverMap.LAYER_GROUP_TRAFFIC
+import com.naver.maps.map.NaverMap.LAYER_GROUP_TRANSIT
 import com.naver.maps.map.NaverMap.MapType.Basic
 import com.naver.maps.map.NaverMap.MapType.Hybrid
 import com.naver.maps.map.NaverMap.MapType.Navi
@@ -126,6 +132,39 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
             "NaviHybrid" -> NaviHybrid
             "None" -> None
             else -> Basic
+        }
+    }
+
+    @ReactProp(name = "layerGroups")
+    override fun setLayerGroups(view: RNCNaverMapViewWrapper?, value: Int) = view.withMap {
+        val building = value and (1 shl 0) != 0
+        val traffic = value and (1 shl 1) != 0
+        val transit = value and (1 shl 2) != 0
+        val bicycle = value and (1 shl 3) != 0
+        val mountain = value and (1 shl 4) != 0
+        val cadastral = value and (1 shl 5) != 0
+
+        if (it.isLayerGroupEnabled(LAYER_GROUP_BUILDING) != building) {
+            it.setLayerGroupEnabled(LAYER_GROUP_BUILDING, building)
+        }
+
+        if (it.isLayerGroupEnabled(LAYER_GROUP_TRAFFIC) != traffic) {
+            it.setLayerGroupEnabled(LAYER_GROUP_TRAFFIC, traffic)
+        }
+
+        if (it.isLayerGroupEnabled(LAYER_GROUP_TRANSIT) != transit) {
+            it.setLayerGroupEnabled(LAYER_GROUP_TRANSIT, transit)
+        }
+
+        if (it.isLayerGroupEnabled(LAYER_GROUP_BICYCLE) != bicycle) {
+            it.setLayerGroupEnabled(LAYER_GROUP_BICYCLE, bicycle)
+        }
+        if (it.isLayerGroupEnabled(LAYER_GROUP_MOUNTAIN) != mountain) {
+            it.setLayerGroupEnabled(LAYER_GROUP_MOUNTAIN, mountain)
+        }
+
+        if (it.isLayerGroupEnabled(LAYER_GROUP_CADASTRAL) != cadastral) {
+            it.setLayerGroupEnabled(LAYER_GROUP_CADASTRAL, cadastral)
         }
     }
 

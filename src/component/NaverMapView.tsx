@@ -33,6 +33,32 @@ export type NaverMapViewProps = ViewProps & {
    * 지도의 유형을 변경하면 가장 바닥에 나타나는 배경 지도의 스타일이 변경됩니다.
    */
   mapType?: MapType;
+
+  /**
+   * 바닥 지도 위에 부가적인 정보를 나타내는 레이어 그룹을 노출할 수 있습니다.
+   *
+   * 레이어 그룹은 지도 유형과 달리 동시에 두 개 이상을 활성화할 수 있습니다.
+   * 단, 지도 유형에 따라 표현 가능한 레이어 그룹이 정해져 있습니다.
+   * 지도 유형이 특정 레이어 그룹을 지원하지 않으면 활성화하더라도 해당하는 요소가 노출되지 않습니다.
+   *
+   * default값은 모두 활성화되어있는 상태입니다.
+   *
+   * @see [references](https://navermaps.github.io/android-map-sdk/guide-ko/2-3.html)
+   */
+  layerGroups?: {
+    // 건물 그룹입니다. 활성화할 경우 건물 형상, 주소 심벌 등 건물과 관련된 요소가 노출됩니다. 기본적으로 활성화됩니다.
+    BUILDING: boolean;
+    // 실시간 교통정보 그룹입니다. 활성화할 경우 실시간 교통정보가 노출됩니다.
+    TRAFFIC: boolean;
+    // 대중교통 그룹입니다. 활성화할 경우 철도, 지하철 노선, 버스정류장 등 대중교통과 관련된 요소가 노출됩니다.
+    TRANSIT: boolean;
+    // 자전거 그룹입니다. 활성화할 경우 자전거 도로, 자전거 주차대 등 자전거와 관련된 요소가 노출됩니다.
+    BICYCLE: boolean;
+    // 등산로 그룹입니다. 활성화할 경우 등산로, 등고선 등 등산과 관련된 요소가 노출됩니다.
+    MOUNTAIN: boolean;
+    // 지적편집도 그룹입니다. 활성화할 경우 지적편집도가 노출됩니다.
+    CADASTRAL: boolean;
+  };
   /**
    * 카메라의 위치를 조절합니다. `region`이 존재해도 `camera`가 설정되면 동작하지 않습니다.
    *
@@ -275,7 +301,14 @@ export const NaverMapView = forwardRef(
       region,
       initialRegion,
       mapType = 'Basic',
-
+      layerGroups = {
+        BUILDING: true,
+        TRAFFIC: true,
+        BICYCLE: true,
+        MOUNTAIN: true,
+        TRANSIT: true,
+        CADASTRAL: true,
+      },
       isIndoorEnabled = false,
       isNightModeEnabled = false,
       isLiteModeEnabled = false,
@@ -428,6 +461,14 @@ export const NaverMapView = forwardRef(
       <NativeNaverMapView
         ref={innerRef}
         mapType={mapType}
+        layerGroups={
+          (layerGroups?.BUILDING ? 1 : 0) +
+          (layerGroups?.TRAFFIC ? 2 : 0) +
+          (layerGroups?.TRANSIT ? 4 : 0) +
+          (layerGroups?.BICYCLE ? 8 : 0) +
+          (layerGroups?.MOUNTAIN ? 16 : 0) +
+          (layerGroups?.CADASTRAL ? 32 : 0)
+        }
         camera={camera}
         initialCamera={
           !camera && initialCamera
