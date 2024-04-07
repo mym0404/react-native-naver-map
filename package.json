@@ -1,6 +1,6 @@
 {
   "name": "@mj-studio/react-native-naver-map",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Naver Map Component for React Native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
