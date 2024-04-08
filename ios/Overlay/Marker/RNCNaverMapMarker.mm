@@ -19,6 +19,7 @@ using namespace facebook::react;
   __weak UIImageView* _iconImageView;
   UIView* _iconView;
 }
+static NSMutableDictionary* _overlayImageHolder;
 
 // static NSMutableDictionary* _overlayImageHolder;
 
@@ -29,23 +30,25 @@ using namespace facebook::react;
 - (instancetype)init {
   if ((self = [super init])) {
     _inner = [NMFMarker new];
+    if (!_overlayImageHolder) {
+      _overlayImageHolder = [NSMutableDictionary new];
+    }
 
 #ifdef RCT_NEW_ARCH_ENABLED
-    self.onTap = [self](NSDictionary* dict) {
+    self.onTapOverlay = [self](NSDictionary* dict) {
       if (_eventEmitter == nil) {
         return;
       }
 
       auto emitter = std::static_pointer_cast<RNCNaverMapMarkerEventEmitter const>(_eventEmitter);
-      emitter->onTap({});
+      emitter->onTapOverlay({});
     };
 #endif
 
-    NSLog(@"%@", self.onTap);
     _inner.touchHandler = [self](NMFOverlay* overlay) -> BOOL {
       // In New Arch, this always returns YES at now. should be fixed.
-      if (self.onTap) {
-        self.onTap(@{});
+      if (self.onTapOverlay) {
+        self.onTapOverlay(@{});
         return YES;
       }
       return NO;
@@ -55,138 +58,155 @@ using namespace facebook::react;
   return self;
 }
 
-- (void)setPosition:(NMGLatLng*)position {
-  _position = position;
-  _inner.position = position;
+- (void)layoutSubviews {
+  float width = 0;
+  float height = 0;
+
+  for (UIView* v in [_iconView subviews]) {
+
+    float fw = v.frame.origin.x + v.frame.size.width;
+    float fh = v.frame.origin.y + v.frame.size.height;
+
+    width = MAX(fw, width);
+    height = MAX(fh, height);
+  }
+
+  [_iconView setFrame:CGRectMake(0, 0, width, height)];
 }
 
-- (void)setZIndexValue:(NSInteger)zIndexValue {
-  _zIndexValue = zIndexValue;
-  _inner.zIndex = zIndexValue;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-missing-super-calls"
+- (void)insertReactSubview:(UIView*)subview atIndex:(NSInteger)atIndex {
+  if (!_iconView) {
+    _iconView = [[UIView alloc] init];
+  }
+  [_iconView insertSubview:subview atIndex:atIndex];
+  //  self.inner.iconImage = [NMFOverlayImage overlayImageWithImage:]
+  //  auto dummySubview = [[RNCNaverDummyView alloc] initWithView:subview];
+  //  [super insertReactSubview:(UIView*)dummySubview atIndex:atIndex];
+  [self addSubview:_iconView];
 }
 
-- (void)setIsHidden:(BOOL)isHidden {
-  _isHidden = isHidden;
-  _inner.hidden = isHidden;
+- (void)removeReactSubview:(UIView*)subview {
+  ASSERT(_iconView == subview);
+  [_iconView removeFromSuperview];
 }
+#pragma clang diagnostic pop
 
-- (void)setMinZoom:(double)minZoom {
-  _minZoom = minZoom;
-  _inner.minZoom = minZoom;
-}
+NMAP_INNER_SETTER(P, p, osition, NMGLatLng*)
+NMAP_SETTER(Z, z, IndexValue, inner.zIndex, NSInteger)
+NMAP_SETTER(I, i, sHidden, inner.hidden, BOOL)
+NMAP_INNER_SETTER(M, m, inZoom, double)
+NMAP_INNER_SETTER(M, m, axZoom, double)
+NMAP_INNER_SETTER(I, i, sMinZoomInclusive, BOOL)
+NMAP_INNER_SETTER(I, i, sMaxZoomInclusive, BOOL)
 
-- (void)setMaxZoom:(double)maxZoom {
-  _maxZoom = maxZoom;
-  _inner.maxZoom = maxZoom;
-}
-
-- (void)setIsMinZoomInclusive:(BOOL)isMinZoomInclusive {
-  _isMinZoomInclusive = isMinZoomInclusive;
-  _inner.isMinZoomInclusive = isMinZoomInclusive;
-}
-
-- (void)setIsMaxZoomInclusive:(BOOL)isMaxZoomInclusive {
-  _isMaxZoomInclusive = isMaxZoomInclusive;
-  _inner.isMaxZoomInclusive = isMaxZoomInclusive;
+NMAP_INNER_SETTER(A, a, nchor, CGPoint)
+NMAP_INNER_SETTER(A, a, ngle, double)
+NMAP_SETTER(I, i, sFlatEnabled, inner.flat, BOOL)
+NMAP_SETTER(I, i, sIconPerspectiveEnabled, inner.iconPerspectiveEnabled, BOOL)
+NMAP_INNER_SETTER(A, a, lpha, double)
+NMAP_INNER_SETTER(I, i, sHideCollidedSymbols, BOOL)
+NMAP_INNER_SETTER(I, i, sHideCollidedMarkers, BOOL)
+NMAP_INNER_SETTER(I, i, sHideCollidedCaptions, BOOL)
+NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
+- (void)setTintColor:(NSInteger)tintColor {
+  _tintColor = tintColor;
+  _inner.iconTintColor = [Utils intToColor:tintColor];
 }
 
 - (void)setWidth:(double)width {
   _width = width;
-  if (isValidNumber(width)) {
-    _inner.width = width;
-  } else {
-    _inner.width = NMF_MARKER_SIZE_AUTO;
-  }
+  _inner.width = getDoubleOrDefault(width, NMF_MARKER_SIZE_AUTO);
 }
 
 - (void)setHeight:(double)height {
   _height = height;
-  if (isValidNumber(height)) {
-    _inner.height = height;
-  } else {
-    _inner.height = NMF_MARKER_SIZE_AUTO;
-  }
+  _inner.height = getDoubleOrDefault(height, NMF_MARKER_SIZE_AUTO);
 }
 
-- (void)setAnchor:(CGPoint)anchor {
-  _anchor = anchor;
-  _inner.anchor = anchor;
-}
-
-- (void)setAngle:(CGFloat)angle {
-  _angle = angle;
-  _inner.angle = angle;
-}
-
-- (void)setIsFlatEnabled:(BOOL)isFlatEnabled {
-  _isFlatEnabled = isFlatEnabled;
-  _inner.flat = isFlatEnabled;
-}
-
-- (void)setIsIconPerspectiveEnabled:(BOOL)isIconPerspectiveEnabled {
-  _isIconPerspectiveEnabled = isIconPerspectiveEnabled;
-  _inner.iconPerspectiveEnabled = isIconPerspectiveEnabled;
-}
-
-- (void)setAlpha:(CGFloat)alpha {
-  _alpha = alpha;
-  _inner.alpha = alpha;
-}
-
-- (void)setisHideCollidedSymbols:(BOOL)isHideCollidedSymbols {
-  _isHideCollidedSymbols = isHideCollidedSymbols;
-  _inner.isHideCollidedSymbols = isHideCollidedSymbols;
-}
-
-- (void)setIsHideCollidedMarkers:(BOOL)isHideCollidedMarkers {
-  _isHideCollidedMarkers = isHideCollidedMarkers;
-  _inner.isHideCollidedMarkers = isHideCollidedMarkers;
-}
-
-- (void)setIsHideCollidedCaptions:(BOOL)isHideCollidedCaptions {
-  _isHideCollidedCaptions = isHideCollidedCaptions;
-  _inner.isHideCollidedCaptions = isHideCollidedCaptions;
-}
-
-- (void)isForceShowIcon:(BOOL)isForceShowIcon {
-  _isForceShowIcon = isForceShowIcon;
-  _inner.isForceShowIcon = isForceShowIcon;
-}
-
-- (void)setTintColor:(UIColor*)tintColor {
-  // In new arch, the default value is WHITE. This should be fixed.
-  _tintColor = tintColor;
-  _inner.iconTintColor = tintColor;
-}
-
-- (void)setImage:(NSString*)image {
+- (void)setImage:(nonnull NSString*)image {
   _image = image;
 
+  if (_reloadImageCancellationBlock) {
+    _reloadImageCancellationBlock();
+    _reloadImageCancellationBlock = nil;
+  }
+
+  BOOL isSet = false;
   if ([image isEqualToString:@"blue"]) {
     _inner.iconImage = NMF_MARKER_IMAGE_BLUE;
+    isSet = true;
   } else if ([image isEqualToString:@"gray"]) {
     _inner.iconImage = NMF_MARKER_IMAGE_GRAY;
+    isSet = true;
   } else if ([image isEqualToString:@"green"]) {
     _inner.iconImage = NMF_MARKER_IMAGE_GREEN;
+    isSet = true;
   } else if ([image isEqualToString:@"lightblue"]) {
     _inner.iconImage = NMF_MARKER_IMAGE_LIGHTBLUE;
+    isSet = true;
   } else if ([image isEqualToString:@"pink"]) {
     _inner.iconImage = NMF_MARKER_IMAGE_PINK;
+    isSet = true;
   } else if ([image isEqualToString:@"red"]) {
     _inner.iconImage = NMF_MARKER_IMAGE_RED;
+    isSet = true;
   } else if ([image isEqualToString:@"yellow"]) {
     _inner.iconImage = NMF_MARKER_IMAGE_YELLOW;
+    isSet = true;
   } else if ([image isEqualToString:@"black"]) {
     _inner.iconImage = NMF_MARKER_IMAGE_BLACK;
+    isSet = true;
   } else if ([image isEqualToString:@"lowDensityCluster"]) {
     _inner.iconImage = NMF_MARKER_IMAGE_CLUSTER_LOW_DENSITY;
+    isSet = true;
   } else if ([image isEqualToString:@"mediumDensityCluster"]) {
     _inner.iconImage = NMF_MARKER_IMAGE_CLUSTER_MEDIUM_DENSITY;
+    isSet = true;
   } else if ([image isEqualToString:@"highDensityCluster"]) {
     _inner.iconImage = NMF_MARKER_IMAGE_CLUSTER_HIGH_DENSITY;
-  } else {
+    isSet = true;
+  } else if ([image isEqualToString:@"default"]) {
     _inner.iconImage = NMF_MARKER_IMAGE_DEFAULT;
+    isSet = true;
   }
+
+  if (isSet) {
+    return;
+  }
+
+  NMFOverlayImage* cache = [_overlayImageHolder valueForKey:image];
+  if (cache != nil) {
+    if (_iconImageView) {
+      [_iconImageView removeFromSuperview];
+    }
+    _inner.iconImage = cache;
+    return;
+  }
+
+  _reloadImageCancellationBlock = [[_bridge moduleForClass:[RCTImageLoader class]]
+      loadImageWithURLRequest:[RCTConvert NSURLRequest:image]
+                         size:self.bounds.size
+                        scale:RCTScreenScale()
+                      clipped:YES
+                   resizeMode:RCTResizeModeCenter
+                progressBlock:nil
+             partialLoadBlock:nil
+              completionBlock:[self](NSError* error, UIImage* image) {
+                if (error) {
+                  NSLog(@"%@", error);
+                  return;
+                }
+                dispatch_async(dispatch_get_main_queue(), [self, &image]() {
+                  if (_iconImageView) {
+                    [_iconImageView removeFromSuperview];
+                  }
+                  NMFOverlayImage* overlayImage = [NMFOverlayImage overlayImageWithImage:image];
+                  self.inner.iconImage = overlayImage;
+                  [_overlayImageHolder setObject:overlayImage forKey:self->_image];
+                });
+              }];
 }
 
 /*
@@ -324,6 +344,15 @@ using namespace facebook::react;
   return self;
 }
 
+- (void)mountChildComponentView:(UIView<RCTComponentViewProtocol>*)childComponentView
+                          index:(NSInteger)index {
+  [self insertReactSubview:childComponentView atIndex:index];
+}
+- (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol>*)childComponentView
+                            index:(NSInteger)index {
+  [self removeReactSubview:childComponentView];
+}
+
 - (void)updateProps:(Props::Shared const&)props oldProps:(Props::Shared const&)oldProps {
   const auto& prev = *std::static_pointer_cast<RNCNaverMapMarkerProps const>(_props);
   const auto& next = *std::static_pointer_cast<RNCNaverMapMarkerProps const>(props);
@@ -354,10 +383,7 @@ using namespace facebook::react;
   NMAP_REMAP_SELF_PROP(isHideCollidedMarkers);
   NMAP_REMAP_SELF_PROP(isHideCollidedCaptions);
   NMAP_REMAP_SELF_PROP(isForceShowIcon);
-
-  if (prev.tintColor != next.tintColor) {
-    self.tintColor = [Utils intToColor:*next.tintColor];
-  }
+  NMAP_REMAP_SELF_PROP(tintColor);
 
   if (prev.image != next.image) {
     self.image = [NSString stringWithUTF8String:next.image.c_str()];

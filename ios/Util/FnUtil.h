@@ -21,11 +21,11 @@ static inline BOOL isValidNumber(NSNumber* value) {
   return true;
 }
 
-static inline  BOOL isValidNumber(double value) {
+static inline BOOL isValidNumber(double value) {
   return isValidNumber([NSNumber numberWithDouble:value]);
 }
 
-static inline  NSNumber* getNumberOrNil(NSNumber* value) {
+static inline NSNumber* getNumberOrNil(NSNumber* value) {
   if (!isValidNumber(value)) {
     return nil;
   }
@@ -33,12 +33,20 @@ static inline  NSNumber* getNumberOrNil(NSNumber* value) {
   return value;
 }
 
-static inline  double getDoubleOrDefault(NSNumber* value, double def) {
+static inline double getDoubleOrDefault(NSNumber* value, double def) {
   if (!isValidNumber(value)) {
     return def;
   }
 
   return [value doubleValue];
+}
+
+static inline double getDoubleOrDefault(double value, double def) {
+  if (!isValidNumber(value)) {
+    return def;
+  }
+  
+  return value;
 }
 
 #endif /* ifndef FnUtil_h */

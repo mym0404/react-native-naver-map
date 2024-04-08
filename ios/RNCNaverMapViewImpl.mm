@@ -138,33 +138,27 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
 
 // MARK: - SETTER
 
-NMAP_QUICK_SETTER(MapType, mapType, NMFMapType)
-NMAP_REMAP_QUICK_SETTER(IsIndoorEnabled, isIndoorEnabled, mapView.indoorMapEnabled, BOOL)
-NMAP_REMAP_QUICK_SETTER(IsNightModeEnabled, isNightModeEnabled, mapView.nightModeEnabled, BOOL)
-NMAP_REMAP_QUICK_SETTER(IsLiteModeEnabled, isLiteModeEnabled, mapView.liteModeEnabled, BOOL)
-NMAP_QUICK_SETTER(Lightness, lightness, double)
-NMAP_QUICK_SETTER(BuildingHeight, buildingHeight, double)
-NMAP_QUICK_SETTER(SymbolScale, symbolScale, double)
-NMAP_QUICK_SETTER(SymbolPerspectiveRatio, symbolPerspectiveRatio, double)
-NMAP_REMAP_QUICK_SETTER(IsShowCompass, isShowCompass, showCompass, BOOL)
-NMAP_REMAP_QUICK_SETTER(IsShowScaleBar, isShowScaleBar, showScaleBar, BOOL)
-NMAP_REMAP_QUICK_SETTER(IsShowZoomControls, isShowZoomControls, showZoomControls, BOOL)
-NMAP_REMAP_QUICK_SETTER(IsShowIndoorLevelPicker, isShowIndoorLevelPicker, showIndoorLevelPicker,
-                        BOOL)
-NMAP_REMAP_QUICK_SETTER(IsShowLocationButton, isShowLocationButton, showLocationButton, BOOL)
-NMAP_QUICK_SETTER(LogoAlign, logoAlign, NMFLogoAlign)
-NMAP_REMAP_QUICK_SETTER(MinZoom, minZoom, mapView.minZoomLevel, double)
-NMAP_REMAP_QUICK_SETTER(MaxZoom, maxZoom, mapView.maxZoomLevel, double)
-NMAP_REMAP_QUICK_SETTER(IsScrollGesturesEnabled, isScrollGesturesEnabled,
-                        mapView.scrollGestureEnabled, BOOL)
-NMAP_REMAP_QUICK_SETTER(IsZoomGesturesEnabled, isZoomGesturesEnabled, mapView.zoomGestureEnabled,
-                        BOOL)
-NMAP_REMAP_QUICK_SETTER(IsTiltGesturesEnabled, isTiltGesturesEnabled, mapView.tiltGestureEnabled,
-                        BOOL)
-NMAP_REMAP_QUICK_SETTER(IsRotateGesturesEnabled, isRotateGesturesEnabled,
-                        mapView.rotateGestureEnabled, BOOL)
-NMAP_REMAP_QUICK_SETTER(IsStopGesturesEnabled, isStopGesturesEnabled, mapView.stopGestureEnabled,
-                        BOOL)
+NMAP_MAP_SETTER(M, m, apType, NMFMapType)
+NMAP_SETTER(I, i, sIndoorEnabled, mapView.indoorMapEnabled, BOOL)
+NMAP_SETTER(I, i, sNightModeEnabled, mapView.nightModeEnabled, BOOL)
+NMAP_SETTER(I, i, sLiteModeEnabled, mapView.liteModeEnabled, BOOL)
+NMAP_MAP_SETTER(L, l, ightness, double)
+NMAP_MAP_SETTER(B, b, uildingHeight, double)
+NMAP_MAP_SETTER(S, s, ymbolScale, double)
+NMAP_MAP_SETTER(S, s, ymbolPerspectiveRatio, double)
+NMAP_SETTER(I, i, sShowCompass, showCompass, BOOL)
+NMAP_SETTER(I, i, sShowScaleBar, showScaleBar, BOOL)
+NMAP_SETTER(I, i, sShowZoomControls, showZoomControls, BOOL)
+NMAP_SETTER(I, i, sShowIndoorLevelPicker, showIndoorLevelPicker, BOOL)
+NMAP_SETTER(I, i, sShowLocationButton, showLocationButton, BOOL)
+NMAP_MAP_SETTER(L, l, ogoAlign, NMFLogoAlign)
+NMAP_SETTER(M, m, inZoom, mapView.minZoomLevel, double)
+NMAP_SETTER(M, m, axZoom, mapView.maxZoomLevel, double)
+NMAP_SETTER(I, i, sScrollGesturesEnabled, mapView.scrollGestureEnabled, BOOL)
+NMAP_SETTER(I, i, sZoomGesturesEnabled, mapView.zoomGestureEnabled, BOOL)
+NMAP_SETTER(I, i, sTiltGesturesEnabled, mapView.tiltGestureEnabled, BOOL)
+NMAP_SETTER(I, i, sRotateGesturesEnabled, mapView.rotateGestureEnabled, BOOL)
+NMAP_SETTER(I, i, sStopGesturesEnabled, mapView.stopGestureEnabled, BOOL)
 
 - (void)setLayerGroups:(NSInteger)layerGroups {
   BOOL building = layerGroups & (1 << 0);

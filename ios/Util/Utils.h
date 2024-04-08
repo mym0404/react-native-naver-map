@@ -6,7 +6,7 @@
 
 @interface Utils : NSObject
 + (UIColor *)hexToColor:(NSString*)stringToConvert;
-+ (UIColor *)intToColor:(uint32_t)intToConvert;
++ (UIColor *)intToColor:(NSInteger)intToConvert;
 @end
 
 #endif /* Utils_h */

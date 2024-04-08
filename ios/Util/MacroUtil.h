@@ -8,16 +8,15 @@
 #ifndef MacroUtil_h
 #define MacroUtil_h
 
-#define NMAP_QUICK_SETTER(cap, name, type)                                                         \
-  -(void)set##cap : (type)name {                                                                   \
-    _##name = name;                                                                                \
-    self.mapView.name = name;                                                                      \
+#define NMAP_SETTER(upper, lower, rest, view_prop, type)                                           \
+  -(void)set##upper##rest : (type)lower##rest {                                                    \
+    _##lower##rest = lower##rest;                                                                  \
+    self.view_prop = lower##rest;                                                                  \
   }
-#define NMAP_REMAP_QUICK_SETTER(cap, name, view_prop, type)                                        \
-  -(void)set##cap : (type)name {                                                                   \
-    _##name = name;                                                                                \
-    self.view_prop = name;                                                                         \
-  }
+#define NMAP_INNER_SETTER(upper, lower, rest, type)                                                \
+  NMAP_SETTER(upper, lower, rest, inner.lower##rest, type)
+#define NMAP_MAP_SETTER(upper, lower, rest, type)                                                  \
+  NMAP_SETTER(upper, lower, rest, mapView.lower##rest, type)
 
 #define NMAP_REMAP_PROP(name)                                                                      \
   if (prev.name != next.name) {                                                                    \
@@ -26,7 +25,7 @@
 
 #define NMAP_REMAP_SELF_PROP(name)                                                                 \
   if (prev.name != next.name) {                                                                    \
-    self.name = next.name;                                                                        \
+    self.name = next.name;                                                                         \
   }
 
 #define NMAP_REMAP_STR_PROP(name)                                                                  \
