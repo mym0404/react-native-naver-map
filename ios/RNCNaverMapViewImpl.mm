@@ -83,21 +83,13 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
   } else if ([subview isKindOfClass:[RNCNaverMapPolygon class]]) {
     auto marker = static_cast<RNCNaverMapPolygon*>(subview).inner;
     marker.mapView = self.mapView;
-  }
-  //  else if ([subview isKindOfClass:[RNNaverMapPolylineOverlay class]]) {
-  //    RNNaverMapPolylineOverlay* overlay = (RNNaverMapPolylineOverlay*)subview;
-  //    overlay.realOverlay.mapView = self.mapView;
-  //  } else if ([subview isKindOfClass:[RNNaverMapPathOverlay class]]) {
-  //    RNNaverMapPathOverlay* overlay = (RNNaverMapPathOverlay*)subview;
-  //    overlay.realOverlay.mapView = self.mapView;
-  //  } else if ([subview isKindOfClass:[RNNaverMapCircleOverlay class]]) {
-  //    RNNaverMapCircleOverlay* overlay = (RNNaverMapCircleOverlay*)subview;
-  //    overlay.realOverlay.mapView = self.mapView;
-  //  } else if ([subview isKindOfClass:[RNNaverMapPolygonOverlay class]]) {
-  //    RNNaverMapPolygonOverlay* overlay = (RNNaverMapPolygonOverlay*)subview;
-  //    overlay.realOverlay.mapView = self.mapView;
-  //  }
-  else {
+  } else if ([subview isKindOfClass:[RNCNaverMapPolyline class]]) {
+    auto marker = static_cast<RNCNaverMapPolyline*>(subview).inner;
+    marker.mapView = self.mapView;
+  } else if ([subview isKindOfClass:[RNCNaverMapPath class]]) {
+    auto marker = static_cast<RNCNaverMapPath*>(subview).inner;
+    marker.mapView = self.mapView;
+  } else {
     NSArray<id<RCTComponent>>* childSubviews = [subview reactSubviews];
     for (int i = 0; i < childSubviews.count; i++) {
       [self insertReactSubview:(UIView*)childSubviews[i] atIndex:atIndex];
@@ -121,21 +113,15 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
     auto marker = static_cast<RNCNaverMapPolygon*>(subview).inner;
     marker.mapView = nil;
     marker.touchHandler = nil;
-  }
-  //  else if ([subview isKindOfClass:[RNNaverMapPolylineOverlay class]]) {
-  //    RNNaverMapPolylineOverlay* overlay = (RNNaverMapPolylineOverlay*)subview;
-  //    overlay.realOverlay.mapView = nil;
-  //  } else if ([subview isKindOfClass:[RNNaverMapPathOverlay class]]) {
-  //    RNNaverMapPathOverlay* overlay = (RNNaverMapPathOverlay*)subview;
-  //    overlay.realOverlay.mapView = nil;
-  //  } else if ([subview isKindOfClass:[RNNaverMapCircleOverlay class]]) {
-  //    RNNaverMapCircleOverlay* overlay = (RNNaverMapCircleOverlay*)subview;
-  //    overlay.realOverlay.mapView = nil;
-  //  } else if ([subview isKindOfClass:[RNNaverMapPolygonOverlay class]]) {
-  //    RNNaverMapPolygonOverlay* overlay = (RNNaverMapPolygonOverlay*)subview;
-  //    overlay.realOverlay.mapView = nil;
-  //  }
-  else {
+  } else if ([subview isKindOfClass:[RNCNaverMapPolyline class]]) {
+    auto marker = static_cast<RNCNaverMapPolyline*>(subview).inner;
+    marker.mapView = nil;
+    marker.touchHandler = nil;
+  } else if ([subview isKindOfClass:[RNCNaverMapPath class]]) {
+    auto marker = static_cast<RNCNaverMapPath*>(subview).inner;
+    marker.mapView = nil;
+    marker.touchHandler = nil;
+  } else {
     NSArray<id<RCTComponent>>* childSubviews = [subview reactSubviews];
     for (int i = 0; i < childSubviews.count; i++) {
       [self removeReactSubview:(UIView*)childSubviews[i]];

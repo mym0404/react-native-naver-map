@@ -23,5 +23,7 @@
 + (NMFLogoAlign)NMFLogoAlign:(id)json;
 + (RNCNaverMapRegion*)RNCNaverMapRegion:(id)json;
 + (RNCNaverMapRect*)RNCNaverMapRect:(id)json;
++ (NMFOverlayLineCap)NMFOverlayLineCap:(id)json;
++ (NMFOverlayLineJoin)NMFOverlayLineJoin:(id)json;
 
 @end

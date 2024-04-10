@@ -77,6 +77,7 @@ export const NaverMapPathOverlay = ({
       outlineColor={processColor(outlineColor) as number}
       patternInterval={patternInterval}
       outlineWidth={outlineWidth}
+      progress={progress}
       onTapOverlay={onTap}
     />
   );

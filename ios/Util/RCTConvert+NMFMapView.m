@@ -20,6 +20,20 @@ RCT_ENUM_CONVERTER(NMFMapType, (@{
                    }),
                    NMFMapTypeBasic, integerValue)
 
+RCT_ENUM_CONVERTER(NMFOverlayLineCap, (@{
+                     @"Square" : @(NMFOverlayLineCapSquare),
+                     @"Butt" : @(NMFOverlayLineCapButt),
+                     @"Round" : @(NMFOverlayLineCapRound)
+                   }),
+                   NMFOverlayLineCapRound, integerValue);
+
+RCT_ENUM_CONVERTER(NMFOverlayLineJoin, (@{
+                     @"Bevel" : @(NMFOverlayLineJoinBevel),
+                     @"Miter" : @(NMFOverlayLineJoinMiter),
+                     @"Round" : @(NMFOverlayLineJoinRound)
+                   }),
+                   NMFOverlayLineJoinRound, integerValue);
+
 + (NMGLatLng*)NMGLatLng:(id)json {
   json = [self NSDictionary:json];
   return NMGLatLngMake([json[@"latitude"] doubleValue], [json[@"longitude"] doubleValue]);

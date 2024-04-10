@@ -157,8 +157,8 @@ NMAP_INNER_SETTER(O, o, utlineWidth, double)
     auto holesArray = [NSMutableArray arrayWithCapacity:std::size(next.geometries.holes)];
     for (auto& hole : next.geometries.holes) {
       auto innerArr = [NSMutableArray arrayWithCapacity:std::size(hole)];
-      for (auto& coord : hole) {
-        [innerArr addObject:@{@"latitude" : @(coord.latitude), @"longitude" : @(coord.longitude)}];
+      for (const auto& [lat, lng] : hole) {
+        [innerArr addObject:@{@"latitude" : @(lat), @"longitude" : @(lng)}];
       }
       [holesArray addObject:innerArr];
     }
@@ -170,14 +170,6 @@ NMAP_INNER_SETTER(O, o, utlineWidth, double)
 }
 
 Class<RCTComponentViewProtocol> RNCNaverMapPolygonCls(void) {
-  return RNCNaverMapPolygon.class;
-}
-// todo remove
-Class<RCTComponentViewProtocol> RNCNaverMapPolylineCls(void) {
-  return RNCNaverMapPolygon.class;
-}
-// todo remove
-Class<RCTComponentViewProtocol> RNCNaverMapPathCls(void) {
   return RNCNaverMapPolygon.class;
 }
 

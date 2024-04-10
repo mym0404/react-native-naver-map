@@ -24,6 +24,8 @@
 #import "RNCNaverMapMarker.h"
 #import "RNCNaverMapCircle.h"
 #import "RNCNaverMapPolygon.h"
+#import "RNCNaverMapPolyline.h"
+#import "RNCNaverMapPath.h"
 #import <React/UIView+React.h>
 #import "MacroUtil.h"
 #import "FnUtil.h"

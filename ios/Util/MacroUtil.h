@@ -23,14 +23,19 @@
     _view.name = next.name;                                                                        \
   }
 
+#define NMAP_REMAP_STR_PROP(name)                                                                  \
+  if (prev.name != next.name) {                                                                    \
+    _view.name = RCTNSStringFromString(next.name);                                                 \
+  }
+
 #define NMAP_REMAP_SELF_PROP(name)                                                                 \
   if (prev.name != next.name) {                                                                    \
     self.name = next.name;                                                                         \
   }
 
-#define NMAP_REMAP_STR_PROP(name)                                                                  \
+#define NMAP_REMAP_SELF_STR_PROP(name)                                                             \
   if (prev.name != next.name) {                                                                    \
-    _view.name = RCTNSStringFromString(next.name);                                                 \
+    self.name = [NSString stringWithUTF8String:next.name.c_str()];                                 \
   }
 
 #define NMAP_REMAP_RECT_PROP(name)                                                                 \
