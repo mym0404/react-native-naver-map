@@ -60,6 +60,18 @@ export const NaverMapMarkerOverlay = ({
     '[NaverMapMarkerOverlay] children count should be equal or less than 1, is %s',
     Children.count(children)
   );
+  invariant(
+    Children.count(children) === 0 ? !!image : true,
+    '[NaverMapMarkerOverlay] pass `image` prop or `children` for the marker image'
+  );
+  invariant(
+    Children.count(children) > 0 ? !image : true,
+    '[NaverMapMarkerOverlay] passing `image` prop and `children` both for the marker image detected. only one of two should be passed.'
+  );
+  invariant(
+    image ? getImageUri(image) : true,
+    "[NaverMapMarkerOverlay] `image` uri is not found. If it is network image, then it should `{'uri': '...'}`. If it is local image, then it should be a ImageSourcePropType like `require('./myImage.png')`"
+  );
   return (
     <NativeNaverMapMarker
       position={{

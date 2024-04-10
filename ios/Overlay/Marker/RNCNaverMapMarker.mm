@@ -19,6 +19,8 @@ using namespace facebook::react;
 
 @implementation RNCNaverMapMarker {
   RCTImageLoaderCancellationBlock _reloadImageCancellationBlock;
+  BOOL _isImageSetFromSubview;
+  ;
 }
 static NSMutableDictionary* _overlayImageHolder;
 
@@ -42,6 +44,7 @@ static NSMutableDictionary* _overlayImageHolder;
 - (instancetype)init {
   if ((self = [super init])) {
     _inner = [NMFMarker new];
+    _isImageSetFromSubview = NO;
     if (!_overlayImageHolder) {
       _overlayImageHolder = [NSMutableDictionary new];
     }
@@ -73,11 +76,22 @@ static NSMutableDictionary* _overlayImageHolder;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-missing-super-calls"
 - (void)insertReactSubview:(UIView*)subview atIndex:(NSInteger)atIndex {
+  NSLog(@"insertReactSubview");
   _inner.iconImage = [NMFOverlayImage overlayImageWithImage:[self captureView:subview]];
+  _isImageSetFromSubview = YES;
 }
 
 - (void)removeReactSubview:(UIView*)subview {
-  self.image = _image;
+  NSLog(@"removeReactSubview");
+  _isImageSetFromSubview = NO;
+
+  if (_image) {
+    // after custom marker is removed, set image from prop.
+    self.image = _image;
+  } else {
+    // or set default marker
+    self.image = @"default";
+  }
 }
 
 - (UIImage*)captureView:(UIView*)view {
@@ -129,6 +143,12 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
 - (void)setImage:(nonnull NSString*)image {
   _image = image;
 
+  // If subview exists for custom marker, then skip image
+  if (_isImageSetFromSubview) {
+    return;
+  }
+
+  // Cancel pending request
   if (_reloadImageCancellationBlock) {
     _reloadImageCancellationBlock();
     _reloadImageCancellationBlock = nil;
@@ -193,14 +213,16 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
                 progressBlock:nil
              partialLoadBlock:nil
               completionBlock:[self](NSError* error, UIImage* image) {
-                if (error) {
-                  NSLog(@"ERROR: %@", error);
-                  return;
-                }
-                dispatch_async(dispatch_get_main_queue(), [self, image]() {
-                  NMFOverlayImage* overlayImage = [NMFOverlayImage overlayImageWithImage:image];
-                  self.inner.iconImage = overlayImage;
-                  [_overlayImageHolder setObject:overlayImage forKey:self->_image];
+                dispatch_async(dispatch_get_main_queue(), [self, error, image]() {
+                  if (error) {
+                    NSLog(@"ERROR: %@", error);
+                    // on error, set default
+                    _inner.iconImage = NMF_MARKER_IMAGE_DEFAULT;
+                  } else {
+                    NMFOverlayImage* overlayImage = [NMFOverlayImage overlayImageWithImage:image];
+                    self.inner.iconImage = overlayImage;
+                    [_overlayImageHolder setObject:overlayImage forKey:self->_image];
+                  }
                 });
               }];
 }

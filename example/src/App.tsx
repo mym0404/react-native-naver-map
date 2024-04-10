@@ -87,7 +87,6 @@ export default function App() {
           latitude={33.3565607356}
           longitude={126.48599018}
           onTap={() => console.log(1)}
-          image={require('./logo180.png')}
           width={100}
           height={100}
           zIndex={999}
