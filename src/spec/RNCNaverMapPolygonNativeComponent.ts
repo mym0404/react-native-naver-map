@@ -27,8 +27,10 @@ type Coord = {
 
 interface Props extends BaseOverlay, ViewProps {
   onTapOverlay?: DirectEventHandler<Readonly<{}>>;
-  coords: ReadonlyArray<Coord>;
-  holes?: ReadonlyArray<ReadonlyArray<Coord>>;
+  geometries: Readonly<{
+    coords: ReadonlyArray<Coord>;
+    holes: ReadonlyArray<ReadonlyArray<Coord>>;
+  }>;
   color?: Int32;
   outlineColor?: Int32;
   outlineWidth?: Double;

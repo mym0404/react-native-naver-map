@@ -77,6 +77,12 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
   if ([subview isKindOfClass:[RNCNaverMapMarker class]]) {
     auto marker = static_cast<RNCNaverMapMarker*>(subview).inner;
     marker.mapView = self.mapView;
+  } else if ([subview isKindOfClass:[RNCNaverMapCircle class]]) {
+    auto marker = static_cast<RNCNaverMapCircle*>(subview).inner;
+    marker.mapView = self.mapView;
+  } else if ([subview isKindOfClass:[RNCNaverMapPolygon class]]) {
+    auto marker = static_cast<RNCNaverMapPolygon*>(subview).inner;
+    marker.mapView = self.mapView;
   }
   //  else if ([subview isKindOfClass:[RNNaverMapPolylineOverlay class]]) {
   //    RNNaverMapPolylineOverlay* overlay = (RNNaverMapPolylineOverlay*)subview;
@@ -105,6 +111,14 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
   // underlying mapview action here.
   if ([subview isKindOfClass:[RNCNaverMapMarker class]]) {
     auto marker = static_cast<RNCNaverMapMarker*>(subview).inner;
+    marker.mapView = nil;
+    marker.touchHandler = nil;
+  } else if ([subview isKindOfClass:[RNCNaverMapCircle class]]) {
+    auto marker = static_cast<RNCNaverMapCircle*>(subview).inner;
+    marker.mapView = nil;
+    marker.touchHandler = nil;
+  } else if ([subview isKindOfClass:[RNCNaverMapPolygon class]]) {
+    auto marker = static_cast<RNCNaverMapPolygon*>(subview).inner;
     marker.mapView = nil;
     marker.touchHandler = nil;
   }

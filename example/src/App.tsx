@@ -14,7 +14,6 @@ import {
 import Slider from '@react-native-community/slider';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import { formatJson } from '@mj-studio/js-util';
-import { NaverMapPathOverlay } from '../../src/component/NaverMapPathOverlay';
 
 const jejuRegion: Region = {
   latitude: 33.20530773,
@@ -86,12 +85,15 @@ export default function App() {
           latitude={33.1165607356}
           longitude={126.26599018}
           onTap={() => console.log(1)}
-          image={{ uri: 'https://picsum.photos/120/120' }}
+          image={'red'}
         />
         <NaverMapCircleOverlay
           latitude={33.17827398}
           longitude={126.349895729}
-          radius={1000}
+          radius={50000}
+          color={'#f2f1'}
+          outlineColor={'#aaa'}
+          outlineWidth={2}
           onTap={() => console.log('hi')}
         />
         {/*<NaverMapPolygonOverlay*/}
@@ -108,23 +110,23 @@ export default function App() {
         {/*    ],*/}
         {/*  ]}*/}
         {/*/>*/}
-        <NaverMapPathOverlay
-          coords={[
-            { latitude: 33.5249594, longitude: 126.54180047 },
-            { latitude: 33.25683311547, longitude: 126.18193 },
-            { latitude: 33.3332807, longitude: 126.838389399 },
-          ]}
-          patternInterval={50}
-          progress={0.5}
-          color={'red'}
-          passedColor={'blue'}
-          width={8}
-          outlineWidth={5}
-          passedOutlineColor={'yellow'}
-          isHideCollidedCaptions
-          isHideCollidedSymbols
-          isHideCollidedMarkers
-        />
+        {/*<NaverMapPathOverlay*/}
+        {/*  coords={[*/}
+        {/*    { latitude: 33.5249594, longitude: 126.54180047 },*/}
+        {/*    { latitude: 33.25683311547, longitude: 126.18193 },*/}
+        {/*    { latitude: 33.3332807, longitude: 126.838389399 },*/}
+        {/*  ]}*/}
+        {/*  patternInterval={50}*/}
+        {/*  progress={0.5}*/}
+        {/*  color={'red'}*/}
+        {/*  passedColor={'blue'}*/}
+        {/*  width={8}*/}
+        {/*  outlineWidth={5}*/}
+        {/*  passedOutlineColor={'yellow'}*/}
+        {/*  isHideCollidedCaptions*/}
+        {/*  isHideCollidedSymbols*/}
+        {/*  isHideCollidedMarkers*/}
+        {/*/>*/}
       </NaverMapView>
 
       <View

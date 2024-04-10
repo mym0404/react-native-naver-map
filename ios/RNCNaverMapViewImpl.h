@@ -22,6 +22,8 @@
 #import <React/RCTConvert.h>
 #import <React/RCTView.h>
 #import "RNCNaverMapMarker.h"
+#import "RNCNaverMapCircle.h"
+#import "RNCNaverMapPolygon.h"
 #import <React/UIView+React.h>
 #import "MacroUtil.h"
 #import "FnUtil.h"

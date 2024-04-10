@@ -102,8 +102,8 @@ allprojects {
 | NaverMapView                                | ✅   | ✅       |     |
 | NaverMapMarkerOverlay                       | ⚠️  | ⚠️      |     |
 | Info Window(ToolTip for overlays)           | 📦  | 📦      |     |
-| NaverMapCircleOverlay                       | 📦  | ✅       |     |
-| NaverMapPolylineOverlay                     | 📦  | ✅       |     |
+| NaverMapCircleOverlay                       | ✅   | ✅       |     |
+| NaverMapPolylineOverlay                     | ✅   | ✅       |     |
 | NaverMapPolygonOverlay                      | 📦  | ✅       |     |
 | NaverMapLocationOverlay(+ location feature) | 📦  | 📦      |     |
 | NaverMapGroundOverlay                       | 📦  | 📦      |     |
@@ -269,10 +269,10 @@ allprojects {
 
 |              | iOS | Android | Web |
 |--------------|-----|---------|-----|
-| radius       | 📦  | ✅       |     |
-| color        | 📦  | ✅       |     |
-| outlineWidth | 📦  | ✅       |     |
-| outlineColor | 📦  | ✅       |     |
+| radius       | ✅   | ✅       |     |
+| color        | ✅   | ✅       |     |
+| outlineWidth | ✅   | ✅       |     |
+| outlineColor | ✅   | ✅       |     |
 
 ### `NaverMapPolygonOverlay`
 
@@ -280,11 +280,11 @@ allprojects {
 
 |              | iOS | Android | Web |
 |--------------|-----|---------|-----|
-| coords       | 📦  | ✅       |     |
-| holes        | 📦  | ✅       |     |
-| color        | 📦  | ✅       |     |
-| outlineWidth | 📦  | ✅       |     |
-| outlineColor | 📦  | ✅       |     |
+| coords       | ✅   | ✅       |     |
+| holes        | ✅   | ✅       |     |
+| color        | ✅   | ✅       |     |
+| outlineWidth | ✅   | ✅       |     |
+| outlineColor | ✅   | ✅       |     |
 
 ## Supporting Table - Architecture
 
