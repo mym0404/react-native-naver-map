@@ -104,10 +104,10 @@ allprojects {
 | Info Window(ToolTip for overlays)           | 📦  | 📦      |     |
 | NaverMapCircleOverlay                       | ✅   | ✅       |     |
 | NaverMapPolylineOverlay                     | ✅   | ✅       |     |
-| NaverMapPolygonOverlay                      | 📦  | ✅       |     |
+| NaverMapPolygonOverlay                      | ✅   | ✅       |     |
 | NaverMapLocationOverlay(+ location feature) | 📦  | 📦      |     |
 | NaverMapGroundOverlay                       | 📦  | 📦      |     |
-| NaverMapPathOverlay                         | 📦  | ✅       |     |
+| NaverMapPathOverlay                         | ✅   | ✅       |     |
 | NaverMapMultipartPathOverlay                | 📦  | 📦      |     |
 | NaverMapArrowPathOverlay                    | 📦  | 📦      |     |
 
@@ -236,12 +236,12 @@ allprojects {
 
 |          | iOS | Android | Web |
 |----------|-----|---------|-----|
-| coords   | 📦  | ✅       |     |
-| width    | 📦  | ✅       |     |
-| color    | 📦  | ✅       |     |
-| pattern  | 📦  | ✅       |     |
-| capType  | 📦  | ✅       |     |
-| joinType | 📦  | ✅       |     |
+| coords   | ✅   | ✅       |     |
+| width    | ✅   | ✅       |     |
+| color    | ✅   | ✅       |     |
+| pattern  | ✅   | ✅       |     |
+| capType  | ✅   | ✅       |     |
+| joinType | ✅   | ✅       |     |
 
 ### `NaverMapPathOverlay`
 
@@ -249,19 +249,19 @@ allprojects {
 
 |                        | iOS | Android | Web |
 |------------------------|-----|---------|-----|
-| coords                 | 📦  | ✅       |     |
-| width                  | 📦  | ✅       |     |
-| outlineWidth           | 📦  | ✅       |     |
+| coords                 | ✅   | ✅       |     |
+| width                  | ✅   | ✅       |     |
+| outlineWidth           | ✅   | ✅       |     |
 | patternImage           | 📦  | 📦      |     |
-| patternInterval        | 📦  | ✅       |     |
-| progress               | 📦  | ✅       |     |
-| color                  | 📦  | ✅       |     |
-| passedColor            | 📦  | ✅       |     |
-| outlineColor           | 📦  | ✅       |     |
-| passedOutlineColor     | 📦  | ✅       |     |
-| isHideCollidedSymbols  | 📦  | ✅       |     |
-| isHideCollidedMarkers  | 📦  | ✅       |     |
-| isHideCollidedCaptions | 📦  | ✅       |     |
+| patternInterval        | ✅   | ✅       |     |
+| progress               | ✅   | ✅       |     |
+| color                  | ✅   | ✅       |     |
+| passedColor            | ✅   | ✅       |     |
+| outlineColor           | ✅   | ✅       |     |
+| passedOutlineColor     | ✅   | ✅       |     |
+| isHideCollidedSymbols  | ✅   | ✅       |     |
+| isHideCollidedMarkers  | ✅   | ✅       |     |
+| isHideCollidedCaptions | ✅   | ✅       |     |
 
 ### `NaverMapCircleOverlay`
 
