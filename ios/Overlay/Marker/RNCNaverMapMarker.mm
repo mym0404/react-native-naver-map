@@ -12,6 +12,9 @@ using namespace facebook::react;
 @interface RNCNaverMapMarker () <RCTRNCNaverMapMarkerViewProtocol>
 
 @end
+@interface RCTBridge (Private)
++ (RCTBridge*)currentBridge;
+@end
 #endif
 
 @implementation RNCNaverMapMarker {
@@ -20,6 +23,17 @@ using namespace facebook::react;
   UIView* _iconView;
 }
 static NSMutableDictionary* _overlayImageHolder;
+
+/**
+ https://github.com/software-mansion/react-native-screens/blob/a8bb418a8428befbb264ef958a5d7f7ea743048a/ios/RNSScreenStackHeaderSubview.mm#L100
+ */
+- (RCTBridge*)bridge {
+#ifdef RCT_NEW_ARCH_ENABLED
+  return [RCTBridge currentBridge];
+#else
+  return _bridge;
+#endif
+}
 
 // static NSMutableDictionary* _overlayImageHolder;
 
@@ -185,7 +199,8 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
     return;
   }
 
-  _reloadImageCancellationBlock = [[_bridge moduleForClass:[RCTImageLoader class]]
+  RCTImageLoader* _Nonnull imageLoader = [self.bridge moduleForClass:[RCTImageLoader class]];
+  _reloadImageCancellationBlock = [imageLoader
       loadImageWithURLRequest:[RCTConvert NSURLRequest:image]
                          size:self.bounds.size
                         scale:RCTScreenScale()
@@ -195,10 +210,10 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
              partialLoadBlock:nil
               completionBlock:[self](NSError* error, UIImage* image) {
                 if (error) {
-                  NSLog(@"%@", error);
+                  NSLog(@"ERROR: %@", error);
                   return;
                 }
-                dispatch_async(dispatch_get_main_queue(), [self, &image]() {
+                dispatch_async(dispatch_get_main_queue(), [self, image]() {
                   if (_iconImageView) {
                     [_iconImageView removeFromSuperview];
                   }
@@ -273,61 +288,7 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
 - (void)setSubCaptionMaxZoom:(double)subMaxZoom {
   _inner.subCaptionMaxZoom = subMaxZoom;
 }
-
-- (void)setImage:(NSString*)image {
-  _image = image;
-
-  if (_reloadImageCancellationBlock) {
-    _reloadImageCancellationBlock();
-    _reloadImageCancellationBlock = nil;
-  }
-
-  if (!_image) {
-    if (_iconImageView) {
-      [_iconImageView removeFromSuperview];
-    }
-
-    return;
-  }
-
-  NMFOverlayImage* overlayImage = [_overlayImageHolder valueForKey:image];
-
-  if (overlayImage != nil) {
-    if (self->_iconImageView) {
-      [self->_iconImageView removeFromSuperview];
-    }
-
-    self->_inner.iconImage = overlayImage;
-    return;
-  }
-
-  _reloadImageCancellationBlock = [[_bridge moduleForClass:[RCTImageLoader class]]
-      loadImageWithURLRequest:[RCTConvert NSURLRequest:_image]
-                         size:self.bounds.size
-                        scale:RCTScreenScale()
-                      clipped:YES
-                   resizeMode:RCTResizeModeCenter
-                progressBlock:nil
-             partialLoadBlock:nil
-              completionBlock:^(NSError* error, UIImage* image) {
-                if (error) {
-                  NSLog(@"%@", error);
-                  return;
-                }
-
-                dispatch_async(dispatch_get_main_queue(), ^{
-                  if (self->_iconImageView) {
-                    [self->_iconImageView removeFromSuperview];
-                  }
-
-                  NMFOverlayImage* overlayImage = [NMFOverlayImage overlayImageWithImage:image];
-                  self->_inner.iconImage = overlayImage;
-
-                  [_overlayImageHolder setObject:overlayImage forKey:self->_image];
-                });
-              }];
-}
- */
+*/
 
 #ifdef RCT_NEW_ARCH_ENABLED
 

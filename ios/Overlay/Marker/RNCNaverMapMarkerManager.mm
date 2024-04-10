@@ -15,9 +15,13 @@ RCT_EXPORT_MODULE()
   return YES;
 }
 
+#ifndef RCT_NEW_ARCH_ENABLED
 - (UIView*)view {
-  return [RNCNaverMapMarker new];
+  auto marker = [RNCNaverMapMarker new];
+  marker.bridge = self.bridge;
+  return marker;
 }
+#endif
 
 // MARK: - COMMON PROPS
 RCT_EXPORT_VIEW_PROPERTY(position, NMGLatLng)

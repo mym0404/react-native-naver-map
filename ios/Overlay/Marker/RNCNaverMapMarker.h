@@ -35,11 +35,7 @@
 @interface RNCNaverMapMarker : RCTView
 #endif
 
-#ifdef RCT_NEW_ARCH_ENABLED
-@property(nonatomic, weak) RCTBridgeProxy* bridge;
-#else
 @property(nonatomic, weak) RCTBridge* bridge;
-#endif
 
 @property(nonatomic, strong) NMFMarker* inner;
 

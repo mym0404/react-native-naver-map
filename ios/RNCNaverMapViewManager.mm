@@ -16,7 +16,7 @@
   return YES;
 }
 
-RCT_EXPORT_MODULE(RNCNaverMapView)
+RCT_EXPORT_MODULE()
 
 #ifndef RCT_NEW_ARCH_ENABLED
 
