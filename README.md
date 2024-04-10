@@ -300,7 +300,8 @@ allprojects {
 - [x] Android/iOS - Project Setup & Component Structure (23.04.03)
 - [x] Android/iOS - General Props & Commands (23.04.05)
 - [x] Android/iOS - Camera, Region, Commands, Events (23.04.07)
-- [ ] Android/iOS - Implement Basic Overlays  <- 🔥
+- [x] Android/iOS - Implement Basic Overlays (23.04.10)
+- [ ] Android/iOS - Location Service  <- 🔥
 - [ ] Android/iOS - Implement Advanced Overlays
 - [x] Release
 - [ ] Docs - Docusaurus docs
