@@ -153,43 +153,43 @@ Currently, this package will request location permission for showing user's curr
 
 #### Props
 
-|                           | iOS | Android | Web |
-|---------------------------|-----|---------|-----|
-| mapType                   | ✅   | ✅       |     |
-| layerGroups               | ✅   | ✅       |     |
-| camera                    | ✅   | ✅       |     |
-| initialCamera             | ✅   | ✅       |     |
-| region                    | ✅   | ✅       |     |
-| initialRegion             | ✅   | ✅       |     |
-| isIndoorEnabled           | ✅   | ✅       |     |
-| isNightModeEnabled        | ✅   | ✅       |     |
-| isLiteModeEnabled         | ✅   | ✅       |     |
-| lightness                 | ✅   | ✅       |     |
-| buildingHeight            | ✅   | ✅       |     |
-| symbolScale               | ✅   | ✅       |     |
-| symbolPerspectiveRatio    | ✅   | ✅       |     |
-| mapPadding                | ✅   | ✅       |     |
-| isShowCompass             | ✅   | ✅       |     |
-| isShowScaleBar            | ✅   | ✅       |     |
-| isShowZoomControls        | ✅   | ✅       |     |
-| isShowIndoorLevelPicker   | ✅   | ✅       |     |
-| minZoom                   | ✅   | ✅       |     |
-| maxZoom                   | ✅   | ✅       |     |
-| extent                    | ✅   | ✅       |     |
-| isExtentBoundedInKorea    | ✅   | ✅       |     |
-| logoAlign                 | ✅   | ✅       |     |
-| logoMargin                | ✅   | ✅       |     |
-| isLogoInteractionEnabled  | ❌   | ❌       |     |
-| isScrollGesturesEnabled   | ✅   | ✅       |     |
-| isZoomGesturesEnabled     | ✅   | ✅       |     |
-| isTiltGesturesEnabled     | ✅   | ✅       |     |
-| isRotateGesturesEnabled   | ✅   | ✅       |     |
-| isStopGesturesEnabled     | ✅   | ✅       |     |
-| isShowLocationButton      | ✅   | ✅       |     |
-| requestLocationPermission | 📦  | 📦      |     |
-| locationPermissionType    | 📦  | 📦      |     |
-| locationService           | 📦  | 📦      |     |
-| markerClustering          | 📦  | 📦      |     |
+|                          | iOS | Android | Web |
+|--------------------------|-----|---------|-----|
+| mapType                  | ✅   | ✅       |     |
+| layerGroups              | ✅   | ✅       |     |
+| camera                   | ✅   | ✅       |     |
+| initialCamera            | ✅   | ✅       |     |
+| region                   | ✅   | ✅       |     |
+| initialRegion            | ✅   | ✅       |     |
+| isIndoorEnabled          | ✅   | ✅       |     |
+| isNightModeEnabled       | ✅   | ✅       |     |
+| isLiteModeEnabled        | ✅   | ✅       |     |
+| lightness                | ✅   | ✅       |     |
+| buildingHeight           | ✅   | ✅       |     |
+| symbolScale              | ✅   | ✅       |     |
+| symbolPerspectiveRatio   | ✅   | ✅       |     |
+| mapPadding               | ✅   | ✅       |     |
+| isShowCompass            | ✅   | ✅       |     |
+| isShowScaleBar           | ✅   | ✅       |     |
+| isShowZoomControls       | ✅   | ✅       |     |
+| isShowIndoorLevelPicker  | ✅   | ✅       |     |
+| minZoom                  | ✅   | ✅       |     |
+| maxZoom                  | ✅   | ✅       |     |
+| extent                   | ✅   | ✅       |     |
+| isExtentBoundedInKorea   | ✅   | ✅       |     |
+| logoAlign                | ✅   | ✅       |     |
+| logoMargin               | ✅   | ✅       |     |
+| isLogoInteractionEnabled | ❌   | ❌       |     |
+| isScrollGesturesEnabled  | ✅   | ✅       |     |
+| isZoomGesturesEnabled    | ✅   | ✅       |     |
+| isTiltGesturesEnabled    | ✅   | ✅       |     |
+| isRotateGesturesEnabled  | ✅   | ✅       |     |
+| isStopGesturesEnabled    | ✅   | ✅       |     |
+| isShowLocationButton     | ✅   | ✅       |     |
+| isUseTextureViewAndroid  | ❌   | ✅       |     |
+| markerClustering         | 📦  | 📦      |     |
+| fpsLimit                 | 📦  | 📦      |     |
+| gestureFrictions         | 📦  | 📦      |     |
 
 #### Events
 
@@ -337,8 +337,9 @@ Currently, this package will request location permission for showing user's curr
 - [x] Android/iOS - General Props & Commands (23.04.05)
 - [x] Android/iOS - Camera, Region, Commands, Events (23.04.07)
 - [x] Android/iOS - Implement Basic Overlays (23.04.10)
-- [ ] Android/iOS - Location Service  <- 🔥
-- [ ] Android/iOS - Implement Advanced Overlays
+- [x] Android/iOS - Location Service (23.04.10)
+- [ ] Android/iOS - Implement Advanced Overlays <- 🔥
+- [ ] Android/iOS - Support Paper(Old Arch)
 - [x] Release
 - [ ] Docs - Docusaurus docs
 
