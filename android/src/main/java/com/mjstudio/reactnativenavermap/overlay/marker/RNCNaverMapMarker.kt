@@ -31,7 +31,6 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.MarkerIcons
-import debugE
 import kotlin.math.max
 
 
@@ -139,7 +138,6 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
 
     fun setImage(uri: String?) {
         lastUri = uri
-        debugE(uri)
         uri?.let { uri ->
             val defaultIcons = when (uri) {
                 "blue" -> MarkerIcons.BLUE

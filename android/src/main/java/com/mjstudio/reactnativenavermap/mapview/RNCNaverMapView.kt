@@ -18,6 +18,7 @@ import com.naver.maps.map.CameraUpdate.REASON_LOCATION
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.NaverMapOptions
+import com.naver.maps.map.util.FusedLocationSource
 
 
 @SuppressLint("ViewConstructor")
@@ -31,7 +32,6 @@ class RNCNaverMapView(
     private var map: NaverMap? = null
     private var isAttached = false
     val overlays = mutableListOf<RNCNaverMapOverlay<*>>()
-
 
     private val reactTag: Int
         get() = RNCNaverMapViewWrapper.getReactTagFromMapView(this)
@@ -163,6 +163,15 @@ class RNCNaverMapView(
 
             else -> {
                 removeView(child)
+            }
+        }
+    }
+
+    fun setupLocationSource() {
+        reactContext.currentActivity?.also { activity ->
+            val source = FusedLocationSource(activity, 100)
+            withMap {
+                it.locationSource = source
             }
         }
     }

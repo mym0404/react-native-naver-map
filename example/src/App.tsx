@@ -98,32 +98,39 @@ export default function App() {
           }}
           isFlatEnabled={true}
         >
-          {/*<View*/}
-          {/*  key={3}*/}
-          {/*  style={{*/}
-          {/*    width: 100,*/}
-          {/*    height: 100,*/}
-          {/*    backgroundColor: '#0882',*/}
-          {/*    borderWidth: 1,*/}
-          {/*    borderColor: '#2228',*/}
-          {/*    borderRadius: 24,*/}
-          {/*    alignItems: 'center',*/}
-          {/*    justifyContent: 'center',*/}
-          {/*  }}*/}
-          {/*  collapsable={false}*/}
-          {/*>*/}
-          {/*  <Text*/}
-          {/*    style={{*/}
-          {/*      color: '#444f',*/}
-          {/*      shadowColor: 'black',*/}
-          {/*      shadowOpacity: 1,*/}
-          {/*      textAlign: 'center',*/}
-          {/*    }}*/}
-          {/*  >*/}
-          {/*    Hello I am a custom marker*/}
-          {/*  </Text>*/}
-          {/*</View>*/}
+          <View style={{ height: 116, width: 100 }} key={9} collapsable={false}>
+            <View
+              key={6}
+              style={{
+                width: 100,
+                height: 100,
+                backgroundColor: 'blue',
+                borderWidth: 1,
+                borderColor: '#2228',
+                borderRadius: 24,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              collapsable={false}
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                }}
+              >
+                Hello I am a custom marker
+              </Text>
+            </View>
+            <Text
+              style={{
+                textAlign: 'center',
+              }}
+            >
+              Hello I am a custom marker
+            </Text>
+          </View>
         </NaverMapMarkerOverlay>
+
         <NaverMapCircleOverlay
           latitude={33.17827398}
           longitude={126.349895729}

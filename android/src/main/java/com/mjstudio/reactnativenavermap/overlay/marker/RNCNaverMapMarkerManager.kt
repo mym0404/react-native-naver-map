@@ -1,6 +1,5 @@
 package com.mjstudio.reactnativenavermap.overlay.marker
 
-import android.graphics.Color
 import android.view.View
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.PixelUtil
@@ -151,11 +150,8 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
     }
 
     @ReactProp(name = "tintColor")
-    override fun setTintColor(view: RNCNaverMapMarker?, value: Int?) = view.withOverlay {
-        value?.run {
-            it.iconTintColor =
-                Color.argb(Color.alpha(this), Color.red(this), Color.green(this), Color.blue(this))
-        }
+    override fun setTintColor(view: RNCNaverMapMarker?, value: Int) = view.withOverlay {
+        it.iconTintColor = value
     }
 
     @ReactProp(name = "image")
@@ -163,6 +159,17 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
         view?.setImage(value)
     }
 
+    override fun setCaption(view: RNCNaverMapMarker?, value: ReadableMap?) = view.withOverlay {
+        value?.also { map ->
+            it.captionText = map.getString("text") ?: ""
+        }
+    }
+
+    override fun setSubCaption(view: RNCNaverMapMarker?, value: ReadableMap?) = view.withOverlay {
+        value?.also { map ->
+            it.subCaptionText = map.getString("text") ?: ""
+        }
+    }
 
     // region PROPS
 

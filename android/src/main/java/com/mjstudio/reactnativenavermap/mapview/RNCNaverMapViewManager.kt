@@ -7,6 +7,8 @@ import com.airbnb.android.react.maps.SizeReportingShadowNode
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.LayoutShadowNode
 import com.facebook.react.uimanager.PixelUtil
+import com.facebook.react.uimanager.ReactStylesDiffMap
+import com.facebook.react.uimanager.StateWrapper
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapViewManagerSpec
@@ -42,16 +44,29 @@ import com.naver.maps.map.NaverMap.MapType.Terrain
 import com.naver.maps.map.NaverMapOptions
 
 
-class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper>() {
+open class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper>() {
     override fun getName(): String {
         return NAME
     }
 
-    override fun createViewInstance(context: ThemedReactContext): RNCNaverMapViewWrapper {
-        return RNCNaverMapViewWrapper(context, NaverMapOptions()).also {
-            context.addLifecycleEventListener(it)
+    private var initialMapOptions: NaverMapOptions? = null
+
+    override fun createViewInstance(
+        reactTag: Int,
+        reactContext: ThemedReactContext,
+        initialProps: ReactStylesDiffMap?,
+        stateWrapper: StateWrapper?
+    ): RNCNaverMapViewWrapper {
+        initialMapOptions = NaverMapOptions().useTextureView(
+            initialProps?.getBoolean("isUseTextureViewAndroid", false) ?: false
+        )
+        return super.createViewInstance(reactTag, reactContext, initialProps, stateWrapper)
+    }
 
 
+    override fun createViewInstance(reactContext: ThemedReactContext): RNCNaverMapViewWrapper {
+        return RNCNaverMapViewWrapper(reactContext, initialMapOptions ?: NaverMapOptions()).also {
+            reactContext.addLifecycleEventListener(it)
         }
     }
 
@@ -108,16 +123,18 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     // region PROPS
 
     @ReactProp(name = "mapType")
-    override fun setMapType(view: RNCNaverMapViewWrapper?, value: String?) = view.withMap {
-        it.mapType = when (value) {
-            "Basic" -> Basic
-            "Navi" -> Navi
-            "Satellite" -> Satellite
-            "Hybrid" -> Hybrid
-            "Terrain" -> Terrain
-            "NaviHybrid" -> NaviHybrid
-            "None" -> None
-            else -> Basic
+    override fun setMapType(view: RNCNaverMapViewWrapper?, value: String?) {
+        view.withMap {
+            it.mapType = when (value) {
+                "Basic" -> Basic
+                "Navi" -> Navi
+                "Satellite" -> Satellite
+                "Hybrid" -> Hybrid
+                "Terrain" -> Terrain
+                "NaviHybrid" -> NaviHybrid
+                "None" -> None
+                else -> Basic
+            }
         }
     }
 
@@ -196,9 +213,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
 
     @ReactProp(name = "region")
     override fun setRegion(view: RNCNaverMapViewWrapper?, value: ReadableMap?) = view.withMap {
-//        debugE(value)
         value.getLatLngBoundsOrNull()?.run {
-//            debugE(value)
             val update = CameraUpdate.fitBounds(this)
             it.moveCamera(update)
         }
@@ -264,10 +279,9 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     }
 
     @ReactProp(name = "isShowCompass")
-    override fun setIsShowCompass(view: RNCNaverMapViewWrapper?, value: Boolean) =
-        view.withMap {
-            it.uiSettings.isCompassEnabled = value
-        }
+    override fun setIsShowCompass(view: RNCNaverMapViewWrapper?, value: Boolean) = view.withMap {
+        it.uiSettings.isCompassEnabled = value
+    }
 
     @ReactProp(name = "isShowScaleBar")
     override fun setIsShowScaleBar(view: RNCNaverMapViewWrapper?, value: Boolean) = view.withMap {
@@ -288,8 +302,11 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
 
     @ReactProp(name = "isShowLocationButton")
     override fun setIsShowLocationButton(view: RNCNaverMapViewWrapper?, value: Boolean) =
-        view.withMap {
-            it.uiSettings.isLocationButtonEnabled = value
+        view.withMapView {
+            it.setupLocationSource()
+            it.withMap { map ->
+                map.uiSettings.isLocationButtonEnabled = value
+            }
         }
 
     @ReactProp(name = "logoAlign")
@@ -339,6 +356,10 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     override fun setIsStopGesturesEnabled(view: RNCNaverMapViewWrapper?, value: Boolean) =
         view.withMap { it.uiSettings.isStopGesturesEnabled = value }
 
+    @ReactProp(name = "isUseTextureViewAndroid")
+    override fun setIsUseTextureViewAndroid(view: RNCNaverMapViewWrapper?, value: Boolean) {
+        // don't implement this
+    }
     // endregion
 
     // region COMMANDS
@@ -347,9 +368,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
 
 
     override fun coordinateToScreen(
-        view: RNCNaverMapViewWrapper?,
-        latitude: Double,
-        longitude: Double
+        view: RNCNaverMapViewWrapper?, latitude: Double, longitude: Double
     ) = view.withMap { }
 
 
@@ -385,8 +404,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
                 PixelUtil.toPixelFromDIP(latitudeDelta),
                 PixelUtil.toPixelFromDIP(longitudeDelta),
             )
-        )
-            .animate(CameraAnimationUtil.numberToCameraAnimationEasing(easing), duration.toLong())
+        ).animate(CameraAnimationUtil.numberToCameraAnimationEasing(easing), duration.toLong())
             .pivot(
                 PointF(pivotX.toFloat(), pivotY.toFloat())
             ).run {
@@ -410,8 +428,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
                 LatLng(latitude, longitude),
                 LatLng(latitude + latitudeDelta, longitude + longitudeDelta)
             )
-        )
-            .animate(CameraAnimationUtil.numberToCameraAnimationEasing(easing), duration.toLong())
+        ).animate(CameraAnimationUtil.numberToCameraAnimationEasing(easing), duration.toLong())
             .pivot(
                 PointF(pivotX.toFloat(), pivotY.toFloat())
             ).run {
@@ -422,6 +439,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     override fun cancelAnimation(view: RNCNaverMapViewWrapper?) = view.withMap {
         it.cancelTransitions()
     }
+
 
     companion object {
         const val NAME = "RNCNaverMapView"

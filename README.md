@@ -67,6 +67,27 @@ allprojects {
 
 #### 2. Add Naver SDK key to `AndroidManifest.xml`
 
+```xml
+<manifest>
+    <application>
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="YOUR_CLIENT_ID_HERE" />
+    </application>
+</manifest>
+```
+
+#### 3. (Optional) Request location permission to `AndroidManifest.xml`
+
+Currently, this package will request location permission for showing user's current location.
+
+```xml
+<manifest>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+</manifest>
+```
+
 ### iOS
 
 더 자세한 설정은 [공식 문서](https://navermaps.github.io/ios-map-sdk/guide-ko/1.html)를 참고해주세요.
@@ -84,6 +105,21 @@ allprojects {
 ...
 <dict>
 <plist>
+```
+
+#### 2. (Optional) Set location permission usage description to `info.plist`
+
+Currently, this package will request location permission for showing user's current location.
+
+```xml
+<plist version="1.0">
+<dict>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>{{your usage description}}</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>{{your usage description}}</string>
+</dict>
+</plist>
 ```
 
 ## Components

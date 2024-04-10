@@ -224,6 +224,13 @@ export type NaverMapViewProps = ViewProps & {
   isStopGesturesEnabled?: boolean;
 
   /**
+   * 안드로이드에서 SurfaceView대신 TextureView를 사용합니다.
+   *
+   * 컴포넌트가 mount되고 변경해도 동작하지 않습니다.
+   */
+  isUseTextureViewAndroid?: boolean;
+
+  /**
    * 지도 객체가 초기화가 완료된 뒤에 호출됩니다.
    */
   onInitialized?: () => void;
@@ -262,21 +269,30 @@ type CameraMoveBaseParams = {
   };
 };
 export type NaverMapViewRef = {
+  /**
+   * 카메라를 애니메이션과 함께 이동시킵니다.
+   */
   animateCameraTo: (
     params: {
       latitude: number;
       longitude: number;
     } & CameraMoveBaseParams
   ) => void;
+  /**
+   * 카메라를 특정 위치만큼 델타값으로 애니메이션과 함께 이동시킵니다.
+   */
   animateCameraBy: (
     params: {
       x: number;
       y: number;
     } & CameraMoveBaseParams
   ) => void;
+  /**
+   * 카메라를 특정 Region으로 애니메이션과 함께 이동시킵니다.
+   */
   animateRegionTo: (params: Region & CameraMoveBaseParams) => void;
   /**
-   * 두 좌표가 모두 보이는 최대 줌 레벨로 이동합니다.
+   * 카메라를 두 좌표가 모두 보이는 최대 줌 레벨로 애니메이션과 함께 이동시킵니다.
    *
    * 카메라의 중심은 두 좌표의 중심이며 `pivot`으로 조절할 수 있습니다.
    * `pivot`은 기본 0.5(중앙)이며 0 ~ 1 값으로 설정할 수 있습니다.
@@ -287,6 +303,10 @@ export type NaverMapViewRef = {
       coord2: Coord;
     } & CameraMoveBaseParams
   ) => void;
+
+  /**
+   * 카메라의 애니메이션을 취소합니다.
+   */
   cancelAnimation: () => void;
 };
 
@@ -340,6 +360,7 @@ export const NaverMapView = forwardRef(
       isTiltGesturesEnabled = true,
       isRotateGesturesEnabled = true,
       isStopGesturesEnabled = true,
+      isUseTextureViewAndroid = false,
 
       ...rest
     }: NaverMapViewProps,
@@ -536,6 +557,7 @@ export const NaverMapView = forwardRef(
         isTiltGesturesEnabled={isTiltGesturesEnabled}
         isRotateGesturesEnabled={isRotateGesturesEnabled}
         isStopGesturesEnabled={isStopGesturesEnabled}
+        isUseTextureViewAndroid={isUseTextureViewAndroid}
         {...rest}
       />
     );

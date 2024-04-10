@@ -86,9 +86,8 @@ interface Props extends ViewProps {
   isZoomGesturesEnabled?: boolean;
   isTiltGesturesEnabled?: boolean;
   isRotateGesturesEnabled?: boolean;
+  isUseTextureViewAndroid?: boolean;
   isStopGesturesEnabled?: boolean;
-
-  // useTextureView?: boolean;
 
   onInitialized?: DirectEventHandler<Readonly<{}>>;
   onOptionChanged?: DirectEventHandler<Readonly<{}>>;
