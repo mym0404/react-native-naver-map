@@ -22,8 +22,7 @@
 ### 1. 더 이상 관리되지 않는 [기존 라이브러리](https://github.com/QuadFlask/react-native-naver-map) 대체
 
 기존 라이브러리의 모든 기능을 가져간 채로 API의 변경도 마이그레이션을 위해 되도록이면 지양하려고 했으나
-개선이 필요한 부분들은 필요하다고 생각되면 바꿉니다. 예를 들어, 기존 라이브러리에서 `region`이
-잘못 계산되고 있던 버그 등입니다.
+개선이 필요한 부분들은 필요하다고 생각되면 바꿉니다. 예를 들어, 기존 라이브러리에서 `region`이 잘못 계산되고 있던 버그 등입니다.
 
 Usage는 [`react-native-map`의 Usage](https://github.com/react-native-maps/react-native-maps/blob/master/docs/mapview.md)
 를 되도록 따릅니다.
@@ -33,10 +32,13 @@ Usage는 [`react-native-map`의 Usage](https://github.com/react-native-maps/reac
 > [!NOTE]
 > Fabric을 지원한다고 Old Architecture를 지원하지 않는 것이 아닌 두 Architecture모두에서 작동하는 컴포넌트를 제작합니다.
 
-### 3. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 **최신 기능들을 모두 지원
-**합니다. Seamless한 Props와 Command들로 Naver Map을 조작할 수 있습니다.
+### 3. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 최신 기능들을 모두 지원합니다.
 
-### 4. Event Coalescing를 통해 Native -> JS 로의 이벤트 중 쓸모없는 이벤트들을 걸러내 성능이 최적화가 됩니다.
+Seamless한 Props와 Command들로 Naver Map을 조작할 수 있습니다.
+
+### 4. 성능
+
+Event Coalescing를 통해 Native -> JS 로의 이벤트 중 쓸모없는 이벤트들을 걸러내 성능이 최적화가 되는 등 여러가지 최적화 옵션을 넣거나 마커 등의 캐시가 코드상에서 처리됩니다.
 
 ## Usage
 
