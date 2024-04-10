@@ -9,10 +9,13 @@ import {
   type NaverMapViewRef,
   type Region,
   NaverMapMarkerOverlay,
+  NaverMapCircleOverlay,
+  NaverMapPolygonOverlay,
 } from '@mj-studio/react-native-naver-map';
 import Slider from '@react-native-community/slider';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import { formatJson } from '@mj-studio/js-util';
+import { NaverMapPathOverlay } from '../../src/component/NaverMapPathOverlay';
 
 const jejuRegion: Region = {
   latitude: 33.20530773,
@@ -84,51 +87,68 @@ export default function App() {
           latitude={33.3565607356}
           longitude={126.48599018}
           onTap={() => console.log(1)}
-          image={{ uri: 'https://picsum.photos/128/5' }}
-          width={24}
-          height={24}
+          image={require('./logo180.png')}
+          width={100}
+          height={100}
+          zIndex={999}
+          anchor={{ x: 0.5, y: 1 }}
         >
-          <View style={{ width: 50, height: 50, backgroundColor: 'red' }} />
+          <View
+            key={3}
+            style={{
+              width: 100,
+              height: 100,
+              backgroundColor: '#0882',
+              borderWidth: 1,
+              borderColor: '#2228',
+              borderRadius: 24,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            collapsable={false}
+          >
+            <Text
+              style={{
+                color: '#444f',
+                shadowColor: 'black',
+                shadowOpacity: 1,
+                textAlign: 'center',
+              }}
+            >
+              Hello I am a custom marker
+            </Text>
+          </View>
         </NaverMapMarkerOverlay>
-        {/*<NaverMapCircleOverlay*/}
-        {/*  latitude={33.17827398}*/}
-        {/*  longitude={126.349895729}*/}
-        {/*  radius={50000}*/}
-        {/*  color={'#f2f1'}*/}
-        {/*  outlineColor={'#aaa'}*/}
-        {/*  outlineWidth={2}*/}
-        {/*  onTap={() => console.log('hi')}*/}
-        {/*  isHidden*/}
-        {/*/>*/}
-        {/*<NaverMapPolygonOverlay*/}
-        {/*  outlineWidth={5}*/}
-        {/*  outlineColor={'#f2f2'}*/}
-        {/*  coords={[*/}
-        {/*    { latitude: 33.5249594, longitude: 126.54180047 },*/}
-        {/*    { latitude: 33.25683311547, longitude: 126.18193 },*/}
-        {/*    { latitude: 33.3332807, longitude: 126.838389399 },*/}
-        {/*  ]}*/}
-        {/*  holes={[*/}
-        {/*    [*/}
-        {/*      { latitude: 33.5229594, longitude: 126.54180047 },*/}
-        {/*      { latitude: 33.25683311547, longitude: 126.18193 },*/}
-        {/*      { latitude: 33.3332807, longitude: 126.838389399 },*/}
-        {/*    ],*/}
-        {/*  ]}*/}
-        {/*  isHidden*/}
-        {/*/>*/}
-        {/*<NaverMapPathOverlay*/}
-        {/*  coords={[*/}
-        {/*    { latitude: 33.5249594, longitude: 126.54180047 },*/}
-        {/*    { latitude: 33.25683311547, longitude: 126.18193 },*/}
-        {/*    { latitude: 33.3332807, longitude: 126.838389399 },*/}
-        {/*  ]}*/}
-        {/*  width={8}*/}
-        {/*  color={'red'}*/}
-        {/*  progress={-0.6}*/}
-        {/*  passedColor={'green'}*/}
-        {/*  isHidden*/}
-        {/*/>*/}
+        <NaverMapCircleOverlay
+          latitude={33.17827398}
+          longitude={126.349895729}
+          radius={50000}
+          color={'#f2f1'}
+          outlineColor={'#aaa'}
+          outlineWidth={2}
+          onTap={() => console.log('hi')}
+        />
+        <NaverMapPolygonOverlay
+          outlineWidth={5}
+          outlineColor={'#f2f2'}
+          color={'#0068'}
+          coords={[
+            { latitude: 33.2249594, longitude: 126.54180047 },
+            { latitude: 33.25683311547, longitude: 126.18193 },
+            { latitude: 33.3332807, longitude: 126.838389399 },
+          ]}
+        />
+        <NaverMapPathOverlay
+          coords={[
+            { latitude: 33.5249594, longitude: 126.24180047 },
+            { latitude: 33.25683311547, longitude: 126.18193 },
+            { latitude: 33.3332807, longitude: 126.838389399 },
+          ]}
+          width={8}
+          color={'red'}
+          progress={-0.6}
+          passedColor={'green'}
+        />
       </NaverMapView>
 
       <View

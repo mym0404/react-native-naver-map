@@ -19,8 +19,6 @@ using namespace facebook::react;
 
 @implementation RNCNaverMapMarker {
   RCTImageLoaderCancellationBlock _reloadImageCancellationBlock;
-  __weak UIImageView* _iconImageView;
-  UIView* _iconView;
 }
 static NSMutableDictionary* _overlayImageHolder;
 
@@ -72,39 +70,28 @@ static NSMutableDictionary* _overlayImageHolder;
   return self;
 }
 
-- (void)layoutSubviews {
-  float width = 0;
-  float height = 0;
-
-  for (UIView* v in [_iconView subviews]) {
-
-    float fw = v.frame.origin.x + v.frame.size.width;
-    float fh = v.frame.origin.y + v.frame.size.height;
-
-    width = MAX(fw, width);
-    height = MAX(fh, height);
-  }
-
-  [_iconView setFrame:CGRectMake(0, 0, width, height)];
-}
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-missing-super-calls"
 - (void)insertReactSubview:(UIView*)subview atIndex:(NSInteger)atIndex {
-  if (!_iconView) {
-    _iconView = [[UIView alloc] init];
-  }
-  [_iconView insertSubview:subview atIndex:atIndex];
-  //  self.inner.iconImage = [NMFOverlayImage overlayImageWithImage:]
-  //  auto dummySubview = [[RNCNaverDummyView alloc] initWithView:subview];
-  //  [super insertReactSubview:(UIView*)dummySubview atIndex:atIndex];
-  [self addSubview:_iconView];
+  _inner.iconImage = [NMFOverlayImage overlayImageWithImage:[self captureView:subview]];
 }
 
 - (void)removeReactSubview:(UIView*)subview {
-  ASSERT(_iconView == subview);
-  [_iconView removeFromSuperview];
+  self.image = _image;
 }
+
+- (UIImage*)captureView:(UIView*)view {
+  NSLog(@"%f %f", view.bounds.size.width, view.bounds.size.height);
+  // 시작 이미지 컨텍스트
+  UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, 0.0);
+  // 뷰 계층 렌더링
+  [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+  // 이미지 컨텍스트에서 UIImage를 얻습니다.
+  UIImage* img = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  return img;
+}
+
 #pragma clang diagnostic pop
 
 NMAP_INNER_SETTER(P, p, osition, NMGLatLng*)
@@ -192,9 +179,6 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
 
   NMFOverlayImage* cache = [_overlayImageHolder valueForKey:image];
   if (cache != nil) {
-    if (_iconImageView) {
-      [_iconImageView removeFromSuperview];
-    }
     _inner.iconImage = cache;
     return;
   }
@@ -214,9 +198,6 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
                   return;
                 }
                 dispatch_async(dispatch_get_main_queue(), [self, image]() {
-                  if (_iconImageView) {
-                    [_iconImageView removeFromSuperview];
-                  }
                   NMFOverlayImage* overlayImage = [NMFOverlayImage overlayImageWithImage:image];
                   self.inner.iconImage = overlayImage;
                   [_overlayImageHolder setObject:overlayImage forKey:self->_image];

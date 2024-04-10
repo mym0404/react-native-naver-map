@@ -1,7 +1,7 @@
 package com.mjstudio.reactnativenavermap.overlay.polygon
 
 import android.graphics.Color
-import com.facebook.react.bridge.ReadableArray
+import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
@@ -70,21 +70,21 @@ class RNCNaverMapPolygonManager : RNCNaverMapPolygonManagerSpec<RNCNaverMapPolyg
 
 
     @Suppress("UNCHECKED_CAST")
-    @ReactProp(name = "coords")
-    override fun setCoords(view: RNCNaverMapPolygon?, value: ReadableArray?) = view.withOverlay {
-        it.coords = value?.toArrayList()?.map { coord ->
+    @ReactProp(name = "geometries")
+    override fun setGeometries(view: RNCNaverMapPolygon?, value: ReadableMap?) = view.withOverlay {
+        it.coords = value?.getArray("coords")?.toArrayList()?.map { coord ->
             (coord as Map<String, *>).getLatLng()
         } ?: listOf()
-    }
 
-    @Suppress("UNCHECKED_CAST")
-    @ReactProp(name = "holes")
-    override fun setHoles(view: RNCNaverMapPolygon?, value: ReadableArray?) = view.withOverlay {
-        it.holes = value?.toArrayList()?.map { coords ->
-            (coords as List<*>).map { coord ->
-                (coord as Map<String, *>).getLatLng()
+        value?.getArray("holes")?.toArrayList()?.run {
+            it.holes = this.filter { hole ->
+                (hole is List<*>) && hole.size >= 3
+            }.map { hole ->
+                (hole as List<*>).map { coord ->
+                    (coord as Map<String, *>).getLatLng()
+                }
             }
-        } ?: listOf()
+        }
     }
 
 
