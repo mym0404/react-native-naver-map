@@ -33,8 +33,7 @@ Usage는 [`react-native-map`의 Usage](https://github.com/react-native-maps/reac
 > [!NOTE]
 > Fabric을 지원한다고 Old Architecture를 지원하지 않는 것이 아닌 두 Architecture모두에서 작동하는 컴포넌트를 제작합니다.
 
-### 3. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 **최신 기능들을 모두 지원**합니다. Seamless한 Props와 Command들로 Naver Map을 조작할 수
-   있습니다.
+### 3. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 **최신 기능들을 모두 지원**합니다. Seamless한 Props와 Command들로 Naver Map을 조작할 수 있습니다.
 
 ### 4. Event Coalescing를 통해 Native -> JS 로의 이벤트 중 쓸모없는 이벤트들을 걸러내 성능이 최적화가 됩니다.
 
