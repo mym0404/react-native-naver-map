@@ -56,7 +56,6 @@ NMAP_INNER_SETTER(R, r, adius, double)
 NMAP_INNER_SETTER(O, o, utlineWidth, double)
 - (void)setColor:(NSInteger)color {
   _color = color;
-  NSLog(@"%d %@", color, [Utils intToColor:color]);
   _inner.fillColor = [Utils intToColor:color];
 }
 - (void)setOutlineColor:(NSInteger)outlineColor {

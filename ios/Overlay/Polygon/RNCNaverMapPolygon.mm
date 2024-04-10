@@ -54,6 +54,7 @@ NMAP_INNER_SETTER(I, i, sMinZoomInclusive, BOOL)
 NMAP_INNER_SETTER(I, i, sMaxZoomInclusive, BOOL)
 
 - (void)setGeometries:(NSDictionary*)geometries {
+  _geometries = geometries;
   NSDictionary* dic = [RCTConvert NSDictionary:geometries];
 
   // process exterior ring
@@ -118,10 +119,10 @@ NMAP_INNER_SETTER(O, o, utlineWidth, double)
   NMAP_REMAP_SELF_PROP(color);
   NMAP_REMAP_SELF_PROP(outlineColor);
 
-  bool isSame = true;
-  if (prev.geometries.coords.size() == next.geometries.coords.size() ||
+  bool isSame = false;
+  if (prev.geometries.coords.size() == next.geometries.coords.size() &&
       prev.geometries.holes.size() == next.geometries.holes.size()) {
-    isSame = false;
+    isSame = true;
     for (int i = 0; i < prev.geometries.holes.size() && isSame; i++) {
       if (prev.geometries.holes[i].size() != next.geometries.holes[i].size()) {
         isSame = false;
@@ -146,6 +147,7 @@ NMAP_INNER_SETTER(O, o, utlineWidth, double)
       }
     }
   }
+
   if (!isSame) {
     auto coords = [NSMutableArray arrayWithCapacity:next.geometries.coords.size()];
     for (auto& coord : next.geometries.coords) {
@@ -170,9 +172,11 @@ NMAP_INNER_SETTER(O, o, utlineWidth, double)
 Class<RCTComponentViewProtocol> RNCNaverMapPolygonCls(void) {
   return RNCNaverMapPolygon.class;
 }
+// todo remove
 Class<RCTComponentViewProtocol> RNCNaverMapPolylineCls(void) {
   return RNCNaverMapPolygon.class;
 }
+// todo remove
 Class<RCTComponentViewProtocol> RNCNaverMapPathCls(void) {
   return RNCNaverMapPolygon.class;
 }
