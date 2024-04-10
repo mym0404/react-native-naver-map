@@ -41,7 +41,8 @@
     "studio:example": "studio $(pwd)/example/android",
     "xcode": "open $(pwd)/example/ios/NaverMapExample.xcworkspace",
     "pod:old": "cd example/ios && bundle install && bundle exec pod install",
-    "pod:new": "cd example/ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install"
+    "pod:new": "cd example/ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install",
+    "prepack": "bob build"
   },
   "keywords": [
     "react-native",
