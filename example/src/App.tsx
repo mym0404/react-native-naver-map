@@ -87,36 +87,42 @@ export default function App() {
           latitude={33.3565607356}
           longitude={126.48599018}
           onTap={() => console.log(1)}
-          width={100}
-          height={100}
-          zIndex={999}
           anchor={{ x: 0.5, y: 1 }}
+          caption={{
+            key: '1',
+            text: 'hello',
+          }}
+          subCaption={{
+            key: '123',
+            text: '123',
+          }}
+          isFlatEnabled={true}
         >
-          <View
-            key={3}
-            style={{
-              width: 100,
-              height: 100,
-              backgroundColor: '#0882',
-              borderWidth: 1,
-              borderColor: '#2228',
-              borderRadius: 24,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            collapsable={false}
-          >
-            <Text
-              style={{
-                color: '#444f',
-                shadowColor: 'black',
-                shadowOpacity: 1,
-                textAlign: 'center',
-              }}
-            >
-              Hello I am a custom marker
-            </Text>
-          </View>
+          {/*<View*/}
+          {/*  key={3}*/}
+          {/*  style={{*/}
+          {/*    width: 100,*/}
+          {/*    height: 100,*/}
+          {/*    backgroundColor: '#0882',*/}
+          {/*    borderWidth: 1,*/}
+          {/*    borderColor: '#2228',*/}
+          {/*    borderRadius: 24,*/}
+          {/*    alignItems: 'center',*/}
+          {/*    justifyContent: 'center',*/}
+          {/*  }}*/}
+          {/*  collapsable={false}*/}
+          {/*>*/}
+          {/*  <Text*/}
+          {/*    style={{*/}
+          {/*      color: '#444f',*/}
+          {/*      shadowColor: 'black',*/}
+          {/*      shadowOpacity: 1,*/}
+          {/*      textAlign: 'center',*/}
+          {/*    }}*/}
+          {/*  >*/}
+          {/*    Hello I am a custom marker*/}
+          {/*  </Text>*/}
+          {/*</View>*/}
         </NaverMapMarkerOverlay>
         <NaverMapCircleOverlay
           latitude={33.17827398}

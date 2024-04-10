@@ -4,7 +4,7 @@ import type {
   DirectEventHandler,
 } from 'react-native/Libraries/Types/CodegenTypes';
 import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
-import type { ViewProps, ColorValue } from 'react-native';
+import type { ViewProps } from 'react-native';
 
 /* Type should be redeclared because of codegen ts parser doesn't allow imported type
  * [comments](https://github.com/reactwg/react-native-new-architecture/discussions/91#discussioncomment-4282452)
@@ -35,8 +35,30 @@ interface Props extends BaseOverlay, ViewProps {
   isHideCollidedMarkers?: boolean;
   isHideCollidedCaptions?: boolean;
   isForceShowIcon?: boolean;
-  tintColor?: ColorValue;
+  tintColor?: Int32;
   image?: string;
+  caption?: Readonly<{
+    key: string;
+    text: string;
+    requestedWidth?: Double;
+    align?: Int32;
+    offset?: Double;
+    color?: Int32;
+    haloColor?: Int32;
+    textSize?: Double;
+    minZoom?: Double;
+    maxZoom?: Double;
+  }>;
+  subCaption?: Readonly<{
+    key: string;
+    text: string;
+    color?: Int32;
+    haloColor?: Int32;
+    textSize?: Double;
+    requestedWidth?: Double;
+    minZoom?: Double;
+    maxZoom?: Double;
+  }>;
 }
 
 export default codegenNativeComponent<Props>('RNCNaverMapMarker');

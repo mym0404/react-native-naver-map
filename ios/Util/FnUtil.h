@@ -45,8 +45,12 @@ static inline double getDoubleOrDefault(double value, double def) {
   if (!isValidNumber(value)) {
     return def;
   }
-  
+
   return value;
+}
+
+static inline NSString* getNsStr(std::string str) {
+  return [NSString stringWithUTF8String:str.c_str()];
 }
 
 #endif /* ifndef FnUtil_h */

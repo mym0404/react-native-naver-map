@@ -6,10 +6,50 @@ import {
   type ColorValue,
   type ImageSourcePropType,
   Image,
+  processColor,
 } from 'react-native';
 import { Const } from '../util/Const';
 import invariant from 'invariant';
 import { type MarkerImages, allMarkerImages } from '../types/MarkerImages';
+import type { Double, Int32 } from 'react-native/Libraries/Types/CodegenTypes';
+import { type Align, getAlignIntValue } from '../types/Align';
+
+type CaptionType = {
+  key: string;
+  text: string;
+  requestedWidth?: Double;
+  align?: Align;
+  offset?: Double;
+  color?: ColorValue;
+  haloColor?: Int32;
+  textSize?: Double;
+  minZoom?: Double;
+  maxZoom?: Double;
+};
+type SubCaptionType = {
+  key: string;
+  text: string;
+  color?: ColorValue;
+  haloColor?: Int32;
+  textSize?: Double;
+  requestedWidth?: Double;
+  minZoom?: Double;
+  maxZoom?: Double;
+};
+const defaultCaptionProps = {
+  key: 'DEFAULT',
+  text: '',
+  textSize: 12,
+  minZoom: 0,
+  maxZoom: 9999,
+} satisfies Partial<CaptionType>;
+const defaultSubCaptionProps = {
+  key: 'DEFAULT',
+  text: '',
+  textSize: 10,
+  minZoom: 0,
+  maxZoom: 9999,
+} satisfies Partial<SubCaptionType>;
 
 export type NaverMapMarkerOverlayProps = BaseOverlayProps & {
   width?: number;
@@ -25,6 +65,8 @@ export type NaverMapMarkerOverlayProps = BaseOverlayProps & {
   isForceShowIcon?: boolean;
   tintColor?: ColorValue;
   image?: ImageSourcePropType | (MarkerImages & {});
+  caption?: CaptionType;
+  subCaption?: SubCaptionType;
 } & PropsWithChildren<{}>;
 
 export const NaverMapMarkerOverlay = ({
@@ -53,6 +95,8 @@ export const NaverMapMarkerOverlay = ({
   tintColor,
   image,
   onTap,
+  caption,
+  subCaption,
   children,
 }: NaverMapMarkerOverlayProps) => {
   invariant(
@@ -60,10 +104,7 @@ export const NaverMapMarkerOverlay = ({
     '[NaverMapMarkerOverlay] children count should be equal or less than 1, is %s',
     Children.count(children)
   );
-  invariant(
-    Children.count(children) === 0 ? !!image : true,
-    '[NaverMapMarkerOverlay] pass `image` prop or `children` for the marker image'
-  );
+
   invariant(
     Children.count(children) > 0 ? !image : true,
     '[NaverMapMarkerOverlay] passing `image` prop and `children` both for the marker image detected. only one of two should be passed.'
@@ -95,9 +136,20 @@ export const NaverMapMarkerOverlay = ({
       isHideCollidedMarkers={isHideCollidedMarkers}
       isHideCollidedSymbols={isHideCollidedSymbols}
       isIconPerspectiveEnabled={isIconPerspectiveEnabled}
-      tintColor={tintColor}
-      image={getImageUri(image)}
+      tintColor={processColor(tintColor) as number}
+      image={getImageUri(image) ?? 'default'}
       onTapOverlay={onTap}
+      caption={{
+        ...defaultCaptionProps,
+        ...caption,
+        align: getAlignIntValue(caption?.align),
+        color: processColor(caption?.color ?? 'black') as number,
+      }}
+      subCaption={{
+        ...defaultSubCaptionProps,
+        ...subCaption,
+        color: processColor(subCaption?.color ?? 'black') as number,
+      }}
       children={children}
     />
   );

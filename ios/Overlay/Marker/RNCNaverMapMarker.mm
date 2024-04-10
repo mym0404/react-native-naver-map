@@ -227,71 +227,36 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
               }];
 }
 
-/*
-- (void)setCaptionText:(NSString*)text {
-  _inner.captionText = text;
-}
+- (void)setCaption:(NSDictionary*)value {
+  if ([_caption[@"key"] isEqualToString:value[@"key"]]) {
+    return;
+  }
+  _caption = value;
 
-- (void)setCaptionTextSize:(CGFloat)size {
-  _inner.captionTextSize = size;
+  _inner.captionText = value[@"text"];
+  _inner.captionRequestedWidth = [value[@"requestedWidth"] floatValue];
+  _inner.captionAligns = @[ [RCTConvert NMFAlignType:value[@"align"]] ];
+  _inner.captionOffset = [value[@"offset"] floatValue];
+  _inner.captionColor = [Utils intToColor:[value[@"color"] intValue]];
+  _inner.captionHaloColor = [Utils intToColor:[value[@"haloColor"] intValue]];
+  _inner.captionTextSize = [value[@"textSize"] floatValue];
+  _inner.captionMinZoom = [value[@"minZoom"] doubleValue];
+  _inner.captionMaxZoom = [value[@"maxZoom"] doubleValue];
 }
+- (void)setSubCaption:(NSDictionary*)value {
+  if ([_subCaption[@"key"] isEqualToString:value[@"key"]]) {
+    return;
+  }
+  _subCaption = value;
 
-- (void)setCaptionColor:(UIColor*)color {
-  _inner.captionColor = color == nil ? UIColor.blackColor : color;
+  _inner.subCaptionText = value[@"text"];
+  _inner.subCaptionRequestedWidth = [value[@"requestedWidth"] floatValue];
+  _inner.subCaptionColor = [Utils intToColor:[value[@"color"] intValue]];
+  _inner.subCaptionHaloColor = [Utils intToColor:[value[@"haloColor"] intValue]];
+  _inner.subCaptionTextSize = [value[@"textSize"] floatValue];
+  _inner.subCaptionMinZoom = [value[@"minZoom"] doubleValue];
+  _inner.subCaptionMaxZoom = [value[@"maxZoom"] doubleValue];
 }
-
-- (void)setCaptionHaloColor:(UIColor*)haloColor {
-  _inner.captionHaloColor = haloColor == nil ? UIColor.whiteColor : haloColor;
-}
-
-- (void)setCaptionAligns:(NSArray<NMFAlignType*>*)aligns {
-  _inner.captionAligns = aligns;
-}
-
-- (void)setCaptionOffset:(CGFloat)offset {
-  _inner.captionOffset = offset;
-}
-
-- (void)setCaptionRequestedWidth:(CGFloat)captionWidth {
-  _inner.captionRequestedWidth = captionWidth;
-}
-
-- (void)setCaptionMinZoom:(double)minZoom {
-  _inner.captionMinZoom = minZoom;
-}
-
-- (void)setCaptionMaxZoom:(double)maxZoom {
-  _inner.captionMaxZoom = maxZoom;
-}
-
-- (void)setSubCaptionText:(NSString*)subText {
-  _inner.subCaptionText = subText;
-}
-
-- (void)setSubCaptionTextSize:(CGFloat)subTextSize {
-  _inner.subCaptionTextSize = subTextSize;
-}
-
-- (void)setSubCaptionColor:(UIColor*)subColor {
-  _inner.subCaptionColor = subColor == nil ? UIColor.blackColor : subColor;
-}
-
-- (void)setSubCaptionHaloColor:(UIColor*)subHaloColor {
-  _inner.subCaptionHaloColor = subHaloColor == nil ? UIColor.whiteColor : subHaloColor;
-}
-
-- (void)setSubCaptionRequestedWidth:(CGFloat)subCaptionWidth {
-  _inner.subCaptionRequestedWidth = subCaptionWidth;
-}
-
-- (void)setSubCaptionMinZoom:(double)subMinZoom {
-  _inner.subCaptionMinZoom = subMinZoom;
-}
-
-- (void)setSubCaptionMaxZoom:(double)subMaxZoom {
-  _inner.subCaptionMaxZoom = subMaxZoom;
-}
-*/
 
 #ifdef RCT_NEW_ARCH_ENABLED
 
@@ -348,9 +313,34 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
   NMAP_REMAP_SELF_PROP(isHideCollidedCaptions);
   NMAP_REMAP_SELF_PROP(isForceShowIcon);
   NMAP_REMAP_SELF_PROP(tintColor);
+  NMAP_REMAP_SELF_STR_PROP(image);
 
-  if (prev.image != next.image) {
-    self.image = [NSString stringWithUTF8String:next.image.c_str()];
+  if (next.caption.key != prev.caption.key) {
+    self.caption = @{
+      @"key" : getNsStr(next.caption.key),
+      @"text" : getNsStr(next.caption.text),
+      @"requestedWidth" : @(next.caption.requestedWidth),
+      @"align" : @(next.caption.align),
+      @"offset" : @(next.caption.offset),
+      @"color" : @(next.caption.color),
+      @"haloColor" : @(next.caption.haloColor),
+      @"textSize" : @(next.caption.textSize),
+      @"minZoom" : @(next.caption.minZoom),
+      @"maxZoom" : @(next.caption.maxZoom)
+    };
+  }
+
+  if (next.subCaption.key != prev.subCaption.key) {
+    self.subCaption = @{
+      @"key" : getNsStr(next.subCaption.key),
+      @"text" : getNsStr(next.subCaption.text),
+      @"requestedWidth" : @(next.subCaption.requestedWidth),
+      @"color" : @(next.subCaption.color),
+      @"haloColor" : @(next.subCaption.haloColor),
+      @"textSize" : @(next.subCaption.textSize),
+      @"minZoom" : @(next.subCaption.minZoom),
+      @"maxZoom" : @(next.subCaption.maxZoom)
+    };
   }
 
   [super updateProps:props oldProps:oldProps];

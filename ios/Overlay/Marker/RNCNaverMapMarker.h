@@ -19,7 +19,7 @@
 #import "MacroUtil.h"
 #import <React/UIView+React.h>
 #import "FnUtil.h"
-#import "RNCNaverDummyView.h"
+#import "RCTConvert+NMFMapView.h"
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #import <React/RCTViewComponentView.h>
@@ -63,21 +63,7 @@
 
 @property(nonatomic, copy) NSString* image;
 
-//- (void)setCaptionText:(NSString *)text;
-//- (void)setCaptionTextSize:(CGFloat)size;
-//- (void)setCaptionColor:(UIColor *)color;
-//- (void)setCaptionHaloColor:(UIColor *)color;
-//- (void)setCaptionAligns:(NSArray<NMFAlignType *> *)aligns;
-//- (void)setCaptionOffset:(CGFloat)offset;
-//- (void)setCaptionRequestedWidth:(CGFloat)captionWidth;
-//- (void)setCaptionMinZoom:(double)minZoom;
-//- (void)setCaptionMaxZoom:(double)maxZoom;
-//- (void)setSubCaptionText:(NSString *)subText;
-//- (void)setSubCaptionTextSize:(CGFloat)subTextSize;
-//- (void)setSubCaptionColor:(UIColor *)subColor;
-//- (void)setSubCaptionHaloColor:(UIColor *)subHaloColor;
-//- (void)setSubCaptionRequestedWidth:(CGFloat)subCaptionWidth;
-//- (void)setSubCaptionMinZoom:(double)subMinZoom;
-//- (void)setSubCaptionMaxZoom:(double)subMaxZoom;
+@property(nonatomic, copy) NSDictionary* caption;
+@property(nonatomic, copy) NSDictionary* subCaption;
 
 @end
