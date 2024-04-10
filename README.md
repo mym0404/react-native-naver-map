@@ -32,13 +32,19 @@ Usage는 [`react-native-map`의 Usage](https://github.com/react-native-maps/reac
 > [!NOTE]
 > Fabric을 지원한다고 Old Architecture를 지원하지 않는 것이 아닌 두 Architecture모두에서 작동하는 컴포넌트를 제작합니다.
 
-### 3. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 최신 기능들을 모두 지원합니다.
+### 3. Expo 지원
+
+[expo config plugin](https://docs.expo.dev/modules/config-plugin-and-native-module-tutorial/)을 사용해 Expo환경에서도 빌드할 수 있습니다.
+
+Expo Go에선 사용하지 못하지만 [development build](https://docs.expo.dev/develop/development-builds/introduction/), production 환경에서 사용할 수 있습니다. 
+
+### 4. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 최신 기능들을 모두 지원합니다.
 
 Seamless한 Props와 Command들로 Naver Map을 조작할 수 있습니다.
 
-### 4. 성능
+### 5. 성능 최적화
 
-Event Coalescing를 통해 Native -> JS 로의 이벤트 중 쓸모없는 이벤트들을 걸러내 성능이 최적화가 되는 등 여러가지 최적화 옵션을 넣거나 마커 등의 캐시가 코드상에서 처리됩니다.
+Event Coalescing를 통해 Native -> JS 로의 이벤트 중 쓸모없는 이벤트들을 걸러내 성능이 최적화가 됩니다.
 
 ## Usage
 
@@ -335,13 +341,14 @@ Currently, this package will request location permission for showing user's curr
 ## Milestone
 
 - [x] Project Started (23.04.01)
-- [x] Android/iOS - Project Setup & Component Structure (23.04.03)
-- [x] Android/iOS - General Props & Commands (23.04.05)
-- [x] Android/iOS - Camera, Region, Commands, Events (23.04.07)
-- [x] Android/iOS - Implement Basic Overlays (23.04.10)
-- [x] Android/iOS - Location Service (23.04.10)
-- [ ] Android/iOS - Implement Advanced Overlays <- 🔥
-- [ ] Android/iOS - Support Paper(Old Arch)
+- [x] Project Setup & Component Structure (23.04.03)
+- [x] General Props & Commands (23.04.05)
+- [x] Camera, Region, Commands, Events (23.04.07)
+- [x] Implement Basic Overlays (23.04.10)
+- [x] Location Service (23.04.10)
+- [ ] Implement Advanced Overlays <- 🔥
+- [ ] Support Paper(Old Arch)
+- [ ] Support Expo with config plugin
 - [x] Release
 - [ ] Docs - Docusaurus docs
 
