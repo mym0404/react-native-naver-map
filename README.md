@@ -201,6 +201,7 @@ Currently, this package will request location permission for showing user's curr
 | markerClustering         | 📦  | 📦      |
 | fpsLimit                 | 📦  | 📦      |
 | gestureFrictions         | 📦  | 📦      |
+| locale                   | 📦  | 📦      |
 
 #### Events
 
