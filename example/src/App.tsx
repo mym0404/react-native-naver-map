@@ -99,36 +99,10 @@ export default function App() {
           width={100}
           height={100}
         >
-          <View style={{ height: 116, width: 100 }} collapsable={false}>
-            <View
-              style={{
-                width: 100,
-                height: 100,
-                backgroundColor: 'blue',
-                borderWidth: 1,
-                borderColor: '#2228',
-                borderRadius: 24,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              collapsable={false}
-            >
-              <Text
-                style={{
-                  textAlign: 'center',
-                }}
-              >
-                Hello I am a custom marker
-              </Text>
-            </View>
-            <Text
-              style={{
-                textAlign: 'center',
-              }}
-            >
-              Hello I am a custom marker
-            </Text>
-          </View>
+          <View
+            style={{ height: 100, width: 100, backgroundColor: 'red' }}
+            collapsable={false}
+          />
         </NaverMapMarkerOverlay>
 
         <NaverMapCircleOverlay
