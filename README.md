@@ -1,9 +1,7 @@
 - [English Documentation(not yet written)](/doc/en.md)
 
-> [!WARNING]
-> This project is ongoing. See the supporting table for progress.
->
->I want to release `1.0` until May, 2024
+> [!TIP]
+> This project is ready to use!
 
 ---
 
