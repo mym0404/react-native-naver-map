@@ -36,8 +36,8 @@ class RNCNaverMapCircleManager : RNCNaverMapCircleManagerSpec<RNCNaverMapCircle>
         this?.overlay?.run(fn)
     }
 
-    @ReactProp(name = "position")
-    override fun setPosition(view: RNCNaverMapCircle, value: ReadableMap?) = view.withOverlay {
+    @ReactProp(name = "coord")
+    override fun setCoord(view: RNCNaverMapCircle?, value: ReadableMap?) = view.withOverlay {
         value.getLatLng()?.run {
             it.center = this
         }

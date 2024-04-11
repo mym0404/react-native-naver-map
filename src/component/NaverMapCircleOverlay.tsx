@@ -29,7 +29,7 @@ export const NaverMapCircleOverlay = ({
 }: NaverMapCircleOverlayProps) => {
   return (
     <NativeNaverMapCircle
-      position={{
+      coord={{
         latitude,
         longitude,
       }}

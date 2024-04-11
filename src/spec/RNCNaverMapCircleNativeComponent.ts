@@ -11,7 +11,6 @@ import type { ViewProps } from 'react-native';
  */
 
 interface BaseOverlay {
-  position: { latitude: Double; longitude: Double };
   zIndexValue: Int32;
   isHidden: boolean;
   minZoom: Double;
@@ -23,6 +22,7 @@ interface BaseOverlay {
 ////////////////////
 
 interface Props extends BaseOverlay, ViewProps {
+  coord: Readonly<{ latitude: Double; longitude: Double }>;
   onTapOverlay?: DirectEventHandler<Readonly<{}>>;
   radius?: Double;
   color?: Int32;

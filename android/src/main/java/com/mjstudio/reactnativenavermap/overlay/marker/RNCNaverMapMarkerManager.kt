@@ -49,8 +49,8 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
         parent?.removeCustomView(index)
     }
 
-    @ReactProp(name = "position")
-    override fun setPosition(view: RNCNaverMapMarker, value: ReadableMap?) = view.withOverlay {
+    @ReactProp(name = "coord")
+    override fun setCoord(view: RNCNaverMapMarker?, value: ReadableMap?) = view.withOverlay {
         value.getLatLng()?.run {
             it.position = this
         }

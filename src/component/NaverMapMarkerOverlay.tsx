@@ -115,7 +115,7 @@ export const NaverMapMarkerOverlay = ({
   );
   return (
     <NativeNaverMapMarker
-      position={{
+      coord={{
         latitude,
         longitude,
       }}

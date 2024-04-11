@@ -8,9 +8,8 @@ import {
   NaverMapView,
   type NaverMapViewRef,
   type Region,
-  NaverMapMarkerOverlay,
-  NaverMapCircleOverlay,
   NaverMapPolygonOverlay,
+  NaverMapCircleOverlay,
 } from '@mj-studio/react-native-naver-map';
 import Slider from '@react-native-community/slider';
 import { request, PERMISSIONS } from 'react-native-permissions';
@@ -83,53 +82,53 @@ export default function App() {
         // }
         onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
       >
-        <NaverMapMarkerOverlay
-          latitude={33.3565607356}
-          longitude={126.48599018}
-          onTap={() => console.log(1)}
-          anchor={{ x: 0.5, y: 1 }}
-          caption={{
-            key: '1',
-            text: 'hello',
-          }}
-          subCaption={{
-            key: '123',
-            text: '123',
-          }}
-          isFlatEnabled={true}
-        >
-          <View style={{ height: 116, width: 100 }} key={9} collapsable={false}>
-            <View
-              key={6}
-              style={{
-                width: 100,
-                height: 100,
-                backgroundColor: 'blue',
-                borderWidth: 1,
-                borderColor: '#2228',
-                borderRadius: 24,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              collapsable={false}
-            >
-              <Text
-                style={{
-                  textAlign: 'center',
-                }}
-              >
-                Hello I am a custom marker
-              </Text>
-            </View>
-            <Text
-              style={{
-                textAlign: 'center',
-              }}
-            >
-              Hello I am a custom marker
-            </Text>
-          </View>
-        </NaverMapMarkerOverlay>
+        {/*<NaverMapMarkerOverlay*/}
+        {/*  latitude={33.3565607356}*/}
+        {/*  longitude={126.48599018}*/}
+        {/*  onTap={() => console.log(1)}*/}
+        {/*  anchor={{ x: 0.5, y: 1 }}*/}
+        {/*  caption={{*/}
+        {/*    key: '1',*/}
+        {/*    text: 'hello',*/}
+        {/*  }}*/}
+        {/*  subCaption={{*/}
+        {/*    key: '123',*/}
+        {/*    text: '123',*/}
+        {/*  }}*/}
+        {/*  isFlatEnabled={true}*/}
+        {/*>*/}
+        {/*  <View style={{ height: 116, width: 100 }} key={9} collapsable={false}>*/}
+        {/*    <View*/}
+        {/*      key={6}*/}
+        {/*      style={{*/}
+        {/*        width: 100,*/}
+        {/*        height: 100,*/}
+        {/*        backgroundColor: 'blue',*/}
+        {/*        borderWidth: 1,*/}
+        {/*        borderColor: '#2228',*/}
+        {/*        borderRadius: 24,*/}
+        {/*        alignItems: 'center',*/}
+        {/*        justifyContent: 'center',*/}
+        {/*      }}*/}
+        {/*      collapsable={false}*/}
+        {/*    >*/}
+        {/*      <Text*/}
+        {/*        style={{*/}
+        {/*          textAlign: 'center',*/}
+        {/*        }}*/}
+        {/*      >*/}
+        {/*        Hello I am a custom marker*/}
+        {/*      </Text>*/}
+        {/*    </View>*/}
+        {/*    <Text*/}
+        {/*      style={{*/}
+        {/*        textAlign: 'center',*/}
+        {/*      }}*/}
+        {/*    >*/}
+        {/*      Hello I am a custom marker*/}
+        {/*    </Text>*/}
+        {/*  </View>*/}
+        {/*</NaverMapMarkerOverlay>*/}
 
         <NaverMapCircleOverlay
           latitude={33.17827398}

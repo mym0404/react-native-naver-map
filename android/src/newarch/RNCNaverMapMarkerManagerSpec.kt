@@ -7,7 +7,7 @@ import com.facebook.react.viewmanagers.RNCNaverMapMarkerManagerDelegate
 import com.facebook.react.viewmanagers.RNCNaverMapMarkerManagerInterface
 
 abstract class RNCNaverMapMarkerManagerSpec<T : ViewGroup> : ViewGroupManager<T>(),
-    RNCNaverMapMarkerManagerInterface<T> {
+    RNCNaverMapMarkerManagerInterface<T?> {
     private val mDelegate: ViewManagerDelegate<T>
 
     init {

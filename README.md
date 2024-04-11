@@ -347,7 +347,7 @@ Currently, this package will request location permission for showing user's curr
 - [x] Implement Basic Overlays (23.04.10)
 - [x] Location Service (23.04.10)
 - [ ] Implement Advanced Overlays <- 🔥
-- [ ] Support Paper(Old Arch)
+- [x] Support Paper(Old Arch)
 - [ ] Support Expo with config plugin
 - [x] Release
 - [ ] Docs - Docusaurus docs
