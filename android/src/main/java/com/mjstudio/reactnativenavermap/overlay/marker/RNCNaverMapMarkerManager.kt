@@ -17,6 +17,7 @@ import com.mjstudio.reactnativenavermap.util.px
 import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Marker.SIZE_AUTO
+import debugE
 
 
 class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>() {
@@ -46,13 +47,16 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
     }
 
     override fun addView(parent: RNCNaverMapMarker?, child: View, index: Int) {
+        debugE("addView")
         parent?.setCustomView(child, index)
     }
 
-    override fun removeView(parent: RNCNaverMapMarker?, view: View) {
-    }
+//    override fun removeView(parent: RNCNaverMapMarker?, view: View) {
+//        debugE(1)
+//    }
 
     override fun removeViewAt(parent: RNCNaverMapMarker?, index: Int) {
+        debugE(2)
         parent?.removeCustomView(index)
     }
 

@@ -96,10 +96,11 @@ export default function App() {
             key: '1234',
             text: '123',
           }}
+          width={100}
+          height={100}
         >
-          <View style={{ height: 116, width: 100 }} key={9} collapsable={false}>
+          <View style={{ height: 116, width: 100 }} collapsable={false}>
             <View
-              key={6}
               style={{
                 width: 100,
                 height: 100,
