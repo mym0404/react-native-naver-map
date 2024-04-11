@@ -99,6 +99,58 @@ export default function App() {
           width={100}
           height={100}
         />
+        {/*<NaverMapMarkerOverlay*/}
+        {/*  latitude={33.4165607356}*/}
+        {/*  longitude={126.48599018}*/}
+        {/*  onTap={() => console.log(1)}*/}
+        {/*  anchor={{ x: 0.5, y: 1 }}*/}
+        {/*  caption={{*/}
+        {/*    key: '1',*/}
+        {/*    text: 'hello',*/}
+        {/*  }}*/}
+        {/*  subCaption={{*/}
+        {/*    key: '1234',*/}
+        {/*    text: '123',*/}
+        {/*  }}*/}
+        {/*  width={100}*/}
+        {/*  height={100}*/}
+        {/*>*/}
+        {/*  <View style={{ width: 100, height: 100, backgroundColor: 'red' }} />*/}
+        {/*</NaverMapMarkerOverlay>*/}
+        <NaverMapMarkerOverlay
+          latitude={34.1565607356}
+          longitude={126.88599018}
+          onTap={() => console.log(1)}
+          anchor={{ x: 0.5, y: 1 }}
+          caption={{
+            key: '1',
+            text: 'hello',
+          }}
+          subCaption={{
+            key: '1234',
+            text: '123',
+          }}
+          width={100}
+          height={100}
+          image={require('./logo180.png')}
+        />
+        <NaverMapMarkerOverlay
+          latitude={33.2565607356}
+          longitude={127.8599018}
+          onTap={() => console.log(1)}
+          anchor={{ x: 0.5, y: 1 }}
+          caption={{
+            key: '1',
+            text: 'hello',
+          }}
+          subCaption={{
+            key: '1234',
+            text: '123',
+          }}
+          width={100}
+          height={100}
+          image={{ uri: 'https://picsum.photos/100/100' }}
+        />
 
         <NaverMapCircleOverlay
           latitude={33.17827398}

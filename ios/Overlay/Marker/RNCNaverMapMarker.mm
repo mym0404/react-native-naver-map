@@ -76,13 +76,11 @@ static NSMutableDictionary* _overlayImageHolder;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-missing-super-calls"
 - (void)insertReactSubview:(UIView*)subview atIndex:(NSInteger)atIndex {
-  NSLog(@"insertReactSubview");
   _inner.iconImage = [NMFOverlayImage overlayImageWithImage:[self captureView:subview]];
   _isImageSetFromSubview = YES;
 }
 
 - (void)removeReactSubview:(UIView*)subview {
-  NSLog(@"removeReactSubview");
   _isImageSetFromSubview = NO;
 
   if (_image) {
@@ -95,7 +93,6 @@ static NSMutableDictionary* _overlayImageHolder;
 }
 
 - (UIImage*)captureView:(UIView*)view {
-  NSLog(@"%f %f", view.bounds.size.width, view.bounds.size.height);
   // 시작 이미지 컨텍스트
   UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, 0.0);
   // 뷰 계층 렌더링
