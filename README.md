@@ -34,9 +34,12 @@ Usage는 [`react-native-map`의 Usage](https://github.com/react-native-maps/reac
 
 ### 3. Expo 지원
 
-[expo config plugin](https://docs.expo.dev/modules/config-plugin-and-native-module-tutorial/)을 사용해 Expo환경에서도 빌드할 수 있습니다.
+[expo config plugin](https://docs.expo.dev/modules/config-plugin-and-native-module-tutorial/)을 사용해
+Expo환경에서도 빌드할 수 있습니다.
 
-Expo Go에선 사용하지 못하지만 [development build](https://docs.expo.dev/develop/development-builds/introduction/), production 환경에서 사용할 수 있습니다. 
+Expo Go에선 사용하지
+못하지만 [development build](https://docs.expo.dev/develop/development-builds/introduction/), production
+환경에서 사용할 수 있습니다.
 
 ### 4. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 최신 기능들을 모두 지원합니다.
 
@@ -136,19 +139,19 @@ Currently, this package will request location permission for showing user's curr
 - ⚠️ Developing, lack of features yet
 - 📦 Planned
 
-|                                             | iOS | Android | Web |
-|---------------------------------------------|-----|---------|-----|
-| NaverMapView                                | ✅   | ✅       |     |
-| NaverMapMarkerOverlay                       | ✅   | ✅       |     |
-| Info Window(ToolTip for overlays)           | 📦  | 📦      |     |
-| NaverMapCircleOverlay                       | ✅   | ✅       |     |
-| NaverMapPolylineOverlay                     | ✅   | ✅       |     |
-| NaverMapPolygonOverlay                      | ✅   | ✅       |     |
-| NaverMapLocationOverlay(+ location feature) | 📦  | 📦      |     |
-| NaverMapGroundOverlay                       | 📦  | 📦      |     |
-| NaverMapPathOverlay                         | ✅   | ✅       |     |
-| NaverMapMultipartPathOverlay                | 📦  | 📦      |     |
-| NaverMapArrowPathOverlay                    | 📦  | 📦      |     |
+|                                             | iOS | Android |
+|---------------------------------------------|-----|---------|
+| NaverMapView                                | ✅   | ✅       |
+| NaverMapMarkerOverlay                       | ✅   | ✅       |
+| Info Window(ToolTip for overlays)           | 📦  | 📦      |
+| NaverMapCircleOverlay                       | ✅   | ✅       |
+| NaverMapPolylineOverlay                     | ✅   | ✅       |
+| NaverMapPolygonOverlay                      | ✅   | ✅       |
+| NaverMapLocationOverlay(+ location feature) | 📦  | 📦      |
+| NaverMapGroundOverlay                       | 📦  | 📦      |
+| NaverMapPathOverlay                         | ✅   | ✅       |
+| NaverMapMultipartPathOverlay                | 📦  | 📦      |
+| NaverMapArrowPathOverlay                    | 📦  | 📦      |
 
 ## Props & Commands
 
@@ -161,81 +164,81 @@ Currently, this package will request location permission for showing user's curr
 
 #### Props
 
-|                          | iOS | Android | Web |
-|--------------------------|-----|---------|-----|
-| mapType                  | ✅   | ✅       |     |
-| layerGroups              | ✅   | ✅       |     |
-| camera                   | ✅   | ✅       |     |
-| initialCamera            | ✅   | ✅       |     |
-| region                   | ✅   | ✅       |     |
-| initialRegion            | ✅   | ✅       |     |
-| isIndoorEnabled          | ✅   | ✅       |     |
-| isNightModeEnabled       | ✅   | ✅       |     |
-| isLiteModeEnabled        | ✅   | ✅       |     |
-| lightness                | ✅   | ✅       |     |
-| buildingHeight           | ✅   | ✅       |     |
-| symbolScale              | ✅   | ✅       |     |
-| symbolPerspectiveRatio   | ✅   | ✅       |     |
-| mapPadding               | ✅   | ✅       |     |
-| isShowCompass            | ✅   | ✅       |     |
-| isShowScaleBar           | ✅   | ✅       |     |
-| isShowZoomControls       | ✅   | ✅       |     |
-| isShowIndoorLevelPicker  | ✅   | ✅       |     |
-| minZoom                  | ✅   | ✅       |     |
-| maxZoom                  | ✅   | ✅       |     |
-| extent                   | ✅   | ✅       |     |
-| isExtentBoundedInKorea   | ✅   | ✅       |     |
-| logoAlign                | ✅   | ✅       |     |
-| logoMargin               | ✅   | ✅       |     |
-| isLogoInteractionEnabled | ❌   | ❌       |     |
-| isScrollGesturesEnabled  | ✅   | ✅       |     |
-| isZoomGesturesEnabled    | ✅   | ✅       |     |
-| isTiltGesturesEnabled    | ✅   | ✅       |     |
-| isRotateGesturesEnabled  | ✅   | ✅       |     |
-| isStopGesturesEnabled    | ✅   | ✅       |     |
-| isShowLocationButton     | ✅   | ✅       |     |
-| isUseTextureViewAndroid  | ❌   | ✅       |     |
-| markerClustering         | 📦  | 📦      |     |
-| fpsLimit                 | 📦  | 📦      |     |
-| gestureFrictions         | 📦  | 📦      |     |
+|                          | iOS | Android |
+|--------------------------|-----|---------|
+| mapType                  | ✅   | ✅       |
+| layerGroups              | ✅   | ✅       |
+| camera                   | ✅   | ✅       |
+| initialCamera            | ✅   | ✅       |
+| region                   | ✅   | ✅       |
+| initialRegion            | ✅   | ✅       |
+| isIndoorEnabled          | ✅   | ✅       |
+| isNightModeEnabled       | ✅   | ✅       |
+| isLiteModeEnabled        | ✅   | ✅       |
+| lightness                | ✅   | ✅       |
+| buildingHeight           | ✅   | ✅       |
+| symbolScale              | ✅   | ✅       |
+| symbolPerspectiveRatio   | ✅   | ✅       |
+| mapPadding               | ✅   | ✅       |
+| isShowCompass            | ✅   | ✅       |
+| isShowScaleBar           | ✅   | ✅       |
+| isShowZoomControls       | ✅   | ✅       |
+| isShowIndoorLevelPicker  | ✅   | ✅       |
+| minZoom                  | ✅   | ✅       |
+| maxZoom                  | ✅   | ✅       |
+| extent                   | ✅   | ✅       |
+| isExtentBoundedInKorea   | ✅   | ✅       |
+| logoAlign                | ✅   | ✅       |
+| logoMargin               | ✅   | ✅       |
+| isLogoInteractionEnabled | ❌   | ❌       |
+| isScrollGesturesEnabled  | ✅   | ✅       |
+| isZoomGesturesEnabled    | ✅   | ✅       |
+| isTiltGesturesEnabled    | ✅   | ✅       |
+| isRotateGesturesEnabled  | ✅   | ✅       |
+| isStopGesturesEnabled    | ✅   | ✅       |
+| isShowLocationButton     | ✅   | ✅       |
+| isUseTextureViewAndroid  | ❌   | ✅       |
+| markerClustering         | 📦  | 📦      |
+| fpsLimit                 | 📦  | 📦      |
+| gestureFrictions         | 📦  | 📦      |
 
 #### Events
 
-|                 | iOS | Android | Web |
-|-----------------|-----|---------|-----|
-| onInitialized   | ✅   | ✅       |     |
-| onOptionChanged | ✅   | ✅       |     |
-| onCameraChanged | ✅   | ✅       |     |
-| onTapMap        | ✅   | ✅       |     |
-| onTapSymbol     | 📦  | 📦      |     |
-| onAuthFailed    | ❌   | ❌       |     |
+|                 | iOS | Android |
+|-----------------|-----|---------|
+| onInitialized   | ✅   | ✅       |
+| onOptionChanged | ✅   | ✅       |
+| onCameraChanged | ✅   | ✅       |
+| onTapMap        | ✅   | ✅       |
+| onTapSymbol     | 📦  | 📦      |
+| onAuthFailed    | ❌   | ❌       |
 
 #### Commands
 
-|                            | iOS | Android | Web |
-|----------------------------|-----|---------|-----|
-| animateCameraTo            | ✅   | ✅       |     |
-| animateCameraBy            | ✅   | ✅       |     |
-| animateRegionTo            | ✅   | ✅       |     |
-| animateCameraWithTwoCoords | ✅   | ✅       |     |
-| cancelAnimation            | ✅   | ✅       |     |
-| screenToCoordinate         | 📦  | 📦      |     |
-| coordinateToScreen         | 📦  | 📦      |     |
+|                            | iOS | Android |
+|----------------------------|-----|---------|
+| animateCameraTo            | ✅   | ✅       |
+| animateCameraBy            | ✅   | ✅       |
+| animateRegionTo            | ✅   | ✅       |
+| animateCameraWithTwoCoords | ✅   | ✅       |
+| cancelAnimation            | ✅   | ✅       |
+| screenToCoordinate         | 📦  | 📦      |
+| coordinateToScreen         | 📦  | 📦      |
 
 ### Marker Common
 
 #### Props
 
-|                    | iOS | Android | Web |
-|--------------------|-----|---------|-----|
-| latitude           | ✅   | ✅       |     |
-| longitude          | ✅   | ✅       |     |
-| zIndex             | ✅   | ✅       |     |
-| isHidden           | ✅   | ✅       |     |
-| minZoom            | ✅   | ✅       |     |
-| maxZoom            | ✅   | ✅       |     |
-| isMinZoomInclusive | ✅   | ✅       |     |
-| isMaxZoomInclusive | ✅   | ✅       |     |
+|                    | iOS | Android |
+|--------------------|-----|---------|
+| latitude           | ✅   | ✅       |
+| longitude          | ✅   | ✅       |
+| zIndex             | ✅   | ✅       |
+| isHidden           | ✅   | ✅       |
+| minZoom            | ✅   | ✅       |
+| maxZoom            | ✅   | ✅       |
+| isMinZoomInclusive | ✅   | ✅       |
+| isMaxZoomInclusive | ✅   | ✅       |
 
 #### Events
 
@@ -248,114 +251,108 @@ Currently, this package will request location permission for showing user's curr
 
 #### Props
 
-|                           | iOS | Android | Web |
-|---------------------------|-----|---------|-----|
-| width                     | ✅   | ✅       |     |
-| height                    | ✅   | ✅       |     |
-| anchor                    | ✅   | ✅       |     |
-| angle                     | ✅   | ✅       |     |
-| isFlatEnabled             | ✅   | ✅       |     |
-| isIconPerspectiveEnabled  | ✅   | ✅       |     |
-| alpha                     | ✅   | ✅       |     |
-| isHideCollidedSymbols     | ✅   | ✅       |     |
-| isHideCollidedMarkers     | ✅   | ✅       |     |
-| isHideCollidedCaptions    | ✅   | ✅       |     |
-| isForceShowIcon           | ✅   | ✅       |     |
-| tintColor                 | ✅   | ✅       |     |
-| image(default symbols)    | ✅   | ✅       |     |
-| image(local image)        | ✅   | ✅       |     |
-| image(network image)      | ✅   | ✅       |     |
-| image(custom view)        | ✅   | ✅       |     |
-| caption                   | ✅   | ✅       |     |
-| caption-key               | ✅   | ✅       |     |
-| caption-text              | ✅   | ✅       |     |
-| caption-requestedWidth    | ✅   | ✅       |     |
-| caption-align             | ✅   | ✅       |     |
-| caption-offset            | ✅   | ✅       |     |
-| caption-color             | ✅   | ✅       |     |
-| caption-haloColor         | ✅   | ✅       |     |
-| caption-textSize          | ✅   | ✅       |     |
-| caption-minZoom           | ✅   | ✅       |     |
-| caption-maxZoom           | ✅   | ✅       |     |
-| caption-fontFamily        | ❓   | ❓       |     |
-| subcaption                | ✅   | ✅       |     |
-| subcaption-key            | ✅   | ✅       |     |
-| subcaption-text           | ✅   | ✅       |     |
-| subcaption-color          | ✅   | ✅       |     |
-| subcaption-haloColor      | ✅   | ✅       |     |
-| subcaption-textSize       | ✅   | ✅       |     |
-| subcaption-requestedWidth | ✅   | ✅       |     |
-| subcaption-minZoom        | ✅   | ✅       |     |
-| subcaption-maxZoom        | ✅   | ✅       |     |
+|                           | iOS | Android |
+|---------------------------|-----|---------|
+| width                     | ✅   | ✅       |
+| height                    | ✅   | ✅       |
+| anchor                    | ✅   | ✅       |
+| angle                     | ✅   | ✅       |
+| isFlatEnabled             | ✅   | ✅       |
+| isIconPerspectiveEnabled  | ✅   | ✅       |
+| alpha                     | ✅   | ✅       |
+| isHideCollidedSymbols     | ✅   | ✅       |
+| isHideCollidedMarkers     | ✅   | ✅       |
+| isHideCollidedCaptions    | ✅   | ✅       |
+| isForceShowIcon           | ✅   | ✅       |
+| tintColor                 | ✅   | ✅       |
+| image(default symbols)    | ✅   | ✅       |
+| image(local image)        | ✅   | ✅       |
+| image(network image)      | ✅   | ✅       |
+| image(custom view)        | ✅   | ✅       |
+| caption                   | ✅   | ✅       |
+| caption-key               | ✅   | ✅       |
+| caption-text              | ✅   | ✅       |
+| caption-requestedWidth    | ✅   | ✅       |
+| caption-align             | ✅   | ✅       |
+| caption-offset            | ✅   | ✅       |
+| caption-color             | ✅   | ✅       |
+| caption-haloColor         | ✅   | ✅       |
+| caption-textSize          | ✅   | ✅       |
+| caption-minZoom           | ✅   | ✅       |
+| caption-maxZoom           | ✅   | ✅       |
+| caption-fontFamily        | ❓   | ❓       |
+| subcaption                | ✅   | ✅       |
+| subcaption-key            | ✅   | ✅       |
+| subcaption-text           | ✅   | ✅       |
+| subcaption-color          | ✅   | ✅       |
+| subcaption-haloColor      | ✅   | ✅       |
+| subcaption-textSize       | ✅   | ✅       |
+| subcaption-requestedWidth | ✅   | ✅       |
+| subcaption-minZoom        | ✅   | ✅       |
+| subcaption-maxZoom        | ✅   | ✅       |
 
 ### `NaverMapPolylineOverlay`
 
 #### Props
 
-|          | iOS | Android | Web |
-|----------|-----|---------|-----|
-| coords   | ✅   | ✅       |     |
-| width    | ✅   | ✅       |     |
-| color    | ✅   | ✅       |     |
-| pattern  | ✅   | ✅       |     |
-| capType  | ✅   | ✅       |     |
-| joinType | ✅   | ✅       |     |
+|          | iOS | Android |
+|----------|-----|---------|
+| coords   | ✅   | ✅       |
+| width    | ✅   | ✅       |
+| color    | ✅   | ✅       |
+| pattern  | ✅   | ✅       |
+| capType  | ✅   | ✅       |
+| joinType | ✅   | ✅       |
 
 ### `NaverMapPathOverlay`
 
 #### Props
 
-|                        | iOS | Android | Web |
-|------------------------|-----|---------|-----|
-| coords                 | ✅   | ✅       |     |
-| width                  | ✅   | ✅       |     |
-| outlineWidth           | ✅   | ✅       |     |
-| patternImage           | 📦  | 📦      |     |
-| patternInterval        | ✅   | ✅       |     |
-| progress               | ✅   | ✅       |     |
-| color                  | ✅   | ✅       |     |
-| passedColor            | ✅   | ✅       |     |
-| outlineColor           | ✅   | ✅       |     |
-| passedOutlineColor     | ✅   | ✅       |     |
-| isHideCollidedSymbols  | ✅   | ✅       |     |
-| isHideCollidedMarkers  | ✅   | ✅       |     |
-| isHideCollidedCaptions | ✅   | ✅       |     |
+|                        | iOS | Android |
+|------------------------|-----|---------|
+| coords                 | ✅   | ✅       |
+| width                  | ✅   | ✅       |
+| outlineWidth           | ✅   | ✅       |
+| patternImage           | 📦  | 📦      |
+| patternInterval        | ✅   | ✅       |
+| progress               | ✅   | ✅       |
+| color                  | ✅   | ✅       |
+| passedColor            | ✅   | ✅       |
+| outlineColor           | ✅   | ✅       |
+| passedOutlineColor     | ✅   | ✅       |
+| isHideCollidedSymbols  | ✅   | ✅       |
+| isHideCollidedMarkers  | ✅   | ✅       |
+| isHideCollidedCaptions | ✅   | ✅       |
 
 ### `NaverMapCircleOverlay`
 
 #### Props
 
-|              | iOS | Android | Web |
-|--------------|-----|---------|-----|
-| radius       | ✅   | ✅       |     |
-| color        | ✅   | ✅       |     |
-| outlineWidth | ✅   | ✅       |     |
-| outlineColor | ✅   | ✅       |     |
+|              | iOS | Android |
+|--------------|-----|---------|
+| radius       | ✅   | ✅       |
+| color        | ✅   | ✅       |
+| outlineWidth | ✅   | ✅       |
+| outlineColor | ✅   | ✅       |
 
 ### `NaverMapPolygonOverlay`
 
 #### Props
 
-|              | iOS | Android | Web |
-|--------------|-----|---------|-----|
-| coords       | ✅   | ✅       |     |
-| holes        | ✅   | ✅       |     |
-| color        | ✅   | ✅       |     |
-| outlineWidth | ✅   | ✅       |     |
-| outlineColor | ✅   | ✅       |     |
+|              | iOS | Android |
+|--------------|-----|---------|
+| coords       | ✅   | ✅       |
+| holes        | ✅   | ✅       |
+| color        | ✅   | ✅       |
+| outlineWidth | ✅   | ✅       |
+| outlineColor | ✅   | ✅       |
 
 ## Supporting Table - Architecture
 
-|        | iOS                    | Android                | Web        |
-|--------|------------------------|------------------------|------------|
-| Bridge | Working In Progress ⚒️ | Working In Progress ⚒️ | Planned 📦 |
-| Fabric | Working In Progress ⚒️ | Working In Progress ⚒️ | Planned 📦 |
-
-> [!TIP]
-> Bridge와 Fabric 아키텍쳐 모두 따로따로 지원을 준비해야 하는 것은 아닙니다.
-> 추상화 레이어로 분리되어 있고 실제 내부 구현이 완료되면 플랫폼마다 Bridge/Fabric모두 출시가 될 것입니다.
->
->작업 우선순위는 (Android,iOS) -> Web 입니다.
+|        | iOS | Android |
+|--------|-----|---------|
+| Bridge | ✅   | ✅       |
+| Fabric | ✅️  | ✅️      |
 
 ## Milestone
 
