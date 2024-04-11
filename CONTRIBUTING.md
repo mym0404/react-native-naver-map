@@ -100,11 +100,12 @@ Note the `"fabric":true` and `"concurrentRoot":true` properties.
 
 ### Type Check & Lint
 
-Make sure your code passes TypeScript and ESLint. Run the following to verify:
+Make sure your code passes TypeScript and ESLint and clang. Run the following to verify:
 
 ```sh
 yarn typecheck
 yarn lint
+yarn lint:clang
 ```
 
 To fix formatting errors, run the following:
@@ -121,7 +122,7 @@ yarn test
 
 ### Formatting for native codes
 
-There is no linter for native code yet. But please format code for readability.
+There is no linter for android native code yet. But please format code for readability.
 
 #### Kotlin
 
@@ -169,6 +170,8 @@ The `package.json` file contains various scripts for common tasks:
 - `yarn`: setup project by installing dependencies.
 - `yarn typecheck`: type-check files with TypeScript.
 - `yarn lint`: lint files with ESLint.
+- `yarn format:clang`: format files with clang-format.
+- `yarn lint:clang`: lint files with clang-format.
 - `yarn test`: run unit tests with Jest.
 - `yarn example start`: start the Metro server for the example app.
 - `yarn example android`: run the example app on Android.
