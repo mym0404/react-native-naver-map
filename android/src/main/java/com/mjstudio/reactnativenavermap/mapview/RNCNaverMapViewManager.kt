@@ -6,7 +6,6 @@ import android.view.View
 import com.airbnb.android.react.maps.SizeReportingShadowNode
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.LayoutShadowNode
-import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.ReactStylesDiffMap
 import com.facebook.react.uimanager.StateWrapper
 import com.facebook.react.uimanager.ThemedReactContext
@@ -22,6 +21,7 @@ import com.mjstudio.reactnativenavermap.util.getDoubleOrNull
 import com.mjstudio.reactnativenavermap.util.getLatLng
 import com.mjstudio.reactnativenavermap.util.getLatLngBoundsOrNull
 import com.mjstudio.reactnativenavermap.util.isValidNumber
+import com.mjstudio.reactnativenavermap.util.px
 import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
@@ -393,8 +393,8 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
 
     override fun animateCameraBy(
         view: RNCNaverMapViewWrapper?,
-        latitudeDelta: Double,
-        longitudeDelta: Double,
+        x: Double,
+        y: Double,
         duration: Int,
         easing: Int,
         pivotX: Double,
@@ -402,8 +402,8 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     ) = view.withMap {
         CameraUpdate.scrollBy(
             PointF(
-                PixelUtil.toPixelFromDIP(latitudeDelta),
-                PixelUtil.toPixelFromDIP(longitudeDelta),
+                x.px.toFloat(),
+                y.px.toFloat(),
             )
         ).animate(CameraAnimationUtil.numberToCameraAnimationEasing(easing), duration.toLong())
             .pivot(

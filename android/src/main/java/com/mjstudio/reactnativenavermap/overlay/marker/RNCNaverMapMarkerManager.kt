@@ -1,21 +1,28 @@
 package com.mjstudio.reactnativenavermap.overlay.marker
 
+import android.graphics.Color
 import android.view.View
 import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapMarkerManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
+import com.mjstudio.reactnativenavermap.util.getAlign
+import com.mjstudio.reactnativenavermap.util.getDoubleOrNull
+import com.mjstudio.reactnativenavermap.util.getIntOrNull
 import com.mjstudio.reactnativenavermap.util.getLatLng
 import com.mjstudio.reactnativenavermap.util.getPoint
 import com.mjstudio.reactnativenavermap.util.isValidNumber
+import com.mjstudio.reactnativenavermap.util.px
 import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Marker.SIZE_AUTO
 
 
 class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>() {
+    private var captionKey = DEFAULT_CAPTION_KEY
+    private var subCaptionKey = DEFAULT_CAPTION_KEY
+
     override fun getName(): String {
         return NAME
     }
@@ -90,12 +97,12 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
 
     @ReactProp(name = "width")
     override fun setWidth(view: RNCNaverMapMarker?, value: Double) = view.withOverlay {
-        it.width = if (isValidNumber(value)) PixelUtil.toPixelFromDIP(value).toInt() else SIZE_AUTO
+        it.width = if (isValidNumber(value)) value.px else SIZE_AUTO
     }
 
     @ReactProp(name = "height")
     override fun setHeight(view: RNCNaverMapMarker?, value: Double) = view.withOverlay {
-        it.height = if (isValidNumber(value)) PixelUtil.toPixelFromDIP(value).toInt() else SIZE_AUTO
+        it.height = if (isValidNumber(value)) value.px else SIZE_AUTO
     }
 
     @ReactProp(name = "anchor")
@@ -159,15 +166,39 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
         view?.setImage(value)
     }
 
+    @ReactProp(name = "caption")
     override fun setCaption(view: RNCNaverMapMarker?, value: ReadableMap?) = view.withOverlay {
         value?.also { map ->
+            val key = map.getString("key") ?: DEFAULT_CAPTION_KEY
+            if (key == captionKey) return@also
+            captionKey = key
+
             it.captionText = map.getString("text") ?: ""
+            it.captionRequestedWidth = (map.getDoubleOrNull("requestedWidth") ?: .0).px
+            it.setCaptionAligns(map.getAlign("align"))
+            it.captionOffset = (map.getDoubleOrNull("offset") ?: .0).px
+            it.captionColor = map.getIntOrNull("color") ?: Color.BLACK
+            it.captionHaloColor = map.getIntOrNull("haloColor") ?: Color.TRANSPARENT
+            it.captionTextSize = map.getDouble("textSize").toFloat()
+            it.captionMinZoom = map.getDouble("minZoom")
+            it.captionMaxZoom = map.getDouble("maxZoom")
         }
     }
 
+    @ReactProp(name = "subCaption")
     override fun setSubCaption(view: RNCNaverMapMarker?, value: ReadableMap?) = view.withOverlay {
         value?.also { map ->
+            val key = map.getString("key") ?: DEFAULT_CAPTION_KEY
+            if (key == subCaptionKey) return@also
+            subCaptionKey = key
+
             it.subCaptionText = map.getString("text") ?: ""
+            it.subCaptionColor = map.getIntOrNull("color") ?: Color.BLACK
+            it.subCaptionHaloColor = map.getIntOrNull("haloColor") ?: Color.TRANSPARENT
+            it.subCaptionTextSize = map.getDouble("textSize").toFloat()
+            it.subCaptionRequestedWidth = map.getDouble("requestedWidth").px
+            it.subCaptionMinZoom = map.getDouble("minZoom")
+            it.subCaptionMaxZoom = map.getDouble("maxZoom")
         }
     }
 
@@ -175,5 +206,6 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
 
     companion object {
         const val NAME = "RNCNaverMapMarker"
+        const val DEFAULT_CAPTION_KEY = "DEFAULT"
     }
 }

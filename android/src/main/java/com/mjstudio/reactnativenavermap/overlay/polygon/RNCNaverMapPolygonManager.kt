@@ -1,13 +1,12 @@
 package com.mjstudio.reactnativenavermap.overlay.polygon
 
-import android.graphics.Color
 import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapPolygonManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
 import com.mjstudio.reactnativenavermap.util.getLatLng
+import com.mjstudio.reactnativenavermap.util.px
 import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.PolygonOverlay
 
@@ -95,12 +94,12 @@ class RNCNaverMapPolygonManager : RNCNaverMapPolygonManagerSpec<RNCNaverMapPolyg
 
     @ReactProp(name = "outlineWidth")
     override fun setOutlineWidth(view: RNCNaverMapPolygon?, value: Double) = view.withOverlay {
-        it.outlineWidth = PixelUtil.toPixelFromDIP(value).toInt()
+        it.outlineWidth = value.px
     }
 
     @ReactProp(name = "outlineColor")
     override fun setOutlineColor(view: RNCNaverMapPolygon?, value: Int) = view.withOverlay {
-        it.outlineColor = value ?: Color.TRANSPARENT
+        it.outlineColor = value
     }
 
 

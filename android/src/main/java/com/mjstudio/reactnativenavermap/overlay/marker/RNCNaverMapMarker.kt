@@ -151,6 +151,7 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
                 "lowDensityCluster" -> MarkerIcons.CLUSTER_LOW_DENSITY
                 "mediumDensityCluster" -> MarkerIcons.CLUSTER_MEDIUM_DENSITY
                 "highDensityCluster" -> MarkerIcons.CLUSTER_HIGH_DENSITY
+                "default" -> MarkerIcons.GREEN
                 else -> null
             }
             if (defaultIcons != null) {

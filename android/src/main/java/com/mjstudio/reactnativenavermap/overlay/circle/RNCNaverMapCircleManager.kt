@@ -1,13 +1,12 @@
 package com.mjstudio.reactnativenavermap.overlay.circle
 
-import android.graphics.Color
 import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapCircleManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
 import com.mjstudio.reactnativenavermap.util.getLatLng
+import com.mjstudio.reactnativenavermap.util.px
 import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.CircleOverlay
 
@@ -87,12 +86,12 @@ class RNCNaverMapCircleManager : RNCNaverMapCircleManagerSpec<RNCNaverMapCircle>
 
     @ReactProp(name = "outlineWidth")
     override fun setOutlineWidth(view: RNCNaverMapCircle?, value: Double) = view.withOverlay {
-        it.outlineWidth = PixelUtil.toPixelFromDIP(value).toInt()
+        it.outlineWidth = value.px
     }
 
     @ReactProp(name = "outlineColor")
     override fun setOutlineColor(view: RNCNaverMapCircle?, value: Int) = view.withOverlay {
-        it.outlineColor = value ?: Color.TRANSPARENT
+        it.outlineColor = value
     }
 
 

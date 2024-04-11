@@ -1,15 +1,14 @@
 package com.mjstudio.reactnativenavermap.overlay.polyline
 
 import com.facebook.react.bridge.ReadableArray
-import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapPolylineManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
 import com.mjstudio.reactnativenavermap.util.getLatLng
+import com.mjstudio.reactnativenavermap.util.px
 import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.PolylineOverlay
-import kotlin.math.roundToInt
 
 
 class RNCNaverMapPolylineManager : RNCNaverMapPolylineManagerSpec<RNCNaverMapPolyline>() {
@@ -79,7 +78,7 @@ class RNCNaverMapPolylineManager : RNCNaverMapPolylineManagerSpec<RNCNaverMapPol
 
     @ReactProp(name = "width")
     override fun setWidth(view: RNCNaverMapPolyline?, value: Double) = view.withOverlay {
-        it.width = PixelUtil.toPixelFromDIP(value).roundToInt()
+        it.width = value.px
     }
 
 

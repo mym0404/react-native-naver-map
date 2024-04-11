@@ -11,7 +11,7 @@ import {
 import { Const } from '../util/Const';
 import invariant from 'invariant';
 import { type MarkerImages, allMarkerImages } from '../types/MarkerImages';
-import type { Double, Int32 } from 'react-native/Libraries/Types/CodegenTypes';
+import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import { type Align, getAlignIntValue } from '../types/Align';
 
 type CaptionType = {
@@ -21,7 +21,7 @@ type CaptionType = {
   align?: Align;
   offset?: Double;
   color?: ColorValue;
-  haloColor?: Int32;
+  haloColor?: ColorValue;
   textSize?: Double;
   minZoom?: Double;
   maxZoom?: Double;
@@ -30,7 +30,7 @@ type SubCaptionType = {
   key: string;
   text: string;
   color?: ColorValue;
-  haloColor?: Int32;
+  haloColor?: ColorValue;
   textSize?: Double;
   requestedWidth?: Double;
   minZoom?: Double;
@@ -42,6 +42,9 @@ const defaultCaptionProps = {
   textSize: 12,
   minZoom: 0,
   maxZoom: 9999,
+  color: 'black',
+  haloColor: 'transparent',
+  requestedWidth: 0,
 } satisfies Partial<CaptionType>;
 const defaultSubCaptionProps = {
   key: 'DEFAULT',
@@ -49,6 +52,9 @@ const defaultSubCaptionProps = {
   textSize: 10,
   minZoom: 0,
   maxZoom: 9999,
+  color: 'black',
+  haloColor: 'transparent',
+  requestedWidth: 0,
 } satisfies Partial<SubCaptionType>;
 
 export type NaverMapMarkerOverlayProps = BaseOverlayProps & {
@@ -143,12 +149,22 @@ export const NaverMapMarkerOverlay = ({
         ...defaultCaptionProps,
         ...caption,
         align: getAlignIntValue(caption?.align),
-        color: processColor(caption?.color ?? 'black') as number,
+        color: processColor(
+          caption?.color ?? defaultCaptionProps.color
+        ) as number,
+        haloColor: processColor(
+          caption?.haloColor ?? defaultCaptionProps.haloColor
+        ) as number,
       }}
       subCaption={{
         ...defaultSubCaptionProps,
         ...subCaption,
-        color: processColor(subCaption?.color ?? 'black') as number,
+        color: processColor(
+          subCaption?.color ?? defaultSubCaptionProps.color
+        ) as number,
+        haloColor: processColor(
+          subCaption?.haloColor ?? defaultSubCaptionProps.haloColor
+        ) as number,
       }}
       children={children}
     />

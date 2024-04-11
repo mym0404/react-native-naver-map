@@ -2,8 +2,10 @@ package com.mjstudio.reactnativenavermap.util
 
 import android.graphics.PointF
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.uimanager.PixelUtil
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
+import com.naver.maps.map.overlay.Align
 
 fun ReadableMap?.getLatLng(): LatLng? {
     val latitude = this?.getDoubleOrNull("latitude")
@@ -30,11 +32,28 @@ fun ReadableMap?.getDoubleOrNull(key: String): Double? {
     return null
 }
 
-fun ReadableMap?.getIntOrNull(key: String): Int? {
-    if (this?.hasKey(key) == true) {
+fun ReadableMap.getIntOrNull(key: String): Int? {
+    if (hasKey(key)) {
         return this.getInt(key)
     }
     return null
+}
+
+fun ReadableMap.getAlign(key: String): Align {
+    if (!hasKey(key)) {
+        return Align.Bottom
+    }
+    return when (getInt(key)) {
+        0 -> Align.Center
+        1 -> Align.Left
+        2 -> Align.Right
+        3 -> Align.Top
+        5 -> Align.TopLeft
+        6 -> Align.TopRight
+        7 -> Align.BottomRight
+        8 -> Align.BottomLeft
+        else -> Align.Bottom
+    }
 }
 
 fun ReadableMap?.getLatLngBoundsOrNull(): LatLngBounds? {
@@ -80,3 +99,8 @@ fun isValidNumber(value: Any?): Boolean {
     if (value == null || value !is Number) return false
     return isValidNumber(value.toDouble())
 }
+
+val Double?.px: Int
+    get() = if (this == null) 0 else PixelUtil.toPixelFromDIP(this).toInt()
+val Int?.px: Int
+    get() = if (this == null) 0 else PixelUtil.toPixelFromDIP(toDouble()).toInt()

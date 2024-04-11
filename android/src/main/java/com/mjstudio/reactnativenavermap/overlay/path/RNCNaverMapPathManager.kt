@@ -1,15 +1,14 @@
 package com.mjstudio.reactnativenavermap.overlay.path
 
 import com.facebook.react.bridge.ReadableArray
-import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapPathManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
 import com.mjstudio.reactnativenavermap.util.getLatLng
+import com.mjstudio.reactnativenavermap.util.px
 import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.PathOverlay
-import kotlin.math.roundToInt
 
 
 class RNCNaverMapPathManager : RNCNaverMapPathManagerSpec<RNCNaverMapPath>() {
@@ -79,12 +78,12 @@ class RNCNaverMapPathManager : RNCNaverMapPathManagerSpec<RNCNaverMapPath>() {
 
     @ReactProp(name = "width")
     override fun setWidth(view: RNCNaverMapPath?, value: Double) = view.withOverlay {
-        it.width = PixelUtil.toPixelFromDIP(value).roundToInt()
+        it.width = value.px
     }
 
     @ReactProp(name = "outlineWidth")
     override fun setOutlineWidth(view: RNCNaverMapPath?, value: Double) = view.withOverlay {
-        it.outlineWidth = PixelUtil.toPixelFromDIP(value).roundToInt()
+        it.outlineWidth = value.px
     }
 
     @ReactProp(name = "passedOutlineColor")
