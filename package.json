@@ -32,7 +32,7 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "format:clang": "./script/clang-format.sh",
     "lint:clang": "./script/clang-lint.sh",
-    "t": "yarn lint && yarn typecheck",
+    "t": "yarn lint && yarn typecheck && yarn lint:clang",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "husky",
     "release": "./script/release.sh",
