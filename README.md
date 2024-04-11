@@ -252,45 +252,45 @@ Currently, this package will request location permission for showing user's curr
 
 #### Props
 
-|                           | iOS | Android |
-|---------------------------|-----|---------|
-| width                     | ✅   | ✅       |
-| height                    | ✅   | ✅       |
-| anchor                    | ✅   | ✅       |
-| angle                     | ✅   | ✅       |
-| isFlatEnabled             | ✅   | ✅       |
-| isIconPerspectiveEnabled  | ✅   | ✅       |
-| alpha                     | ✅   | ✅       |
-| isHideCollidedSymbols     | ✅   | ✅       |
-| isHideCollidedMarkers     | ✅   | ✅       |
-| isHideCollidedCaptions    | ✅   | ✅       |
-| isForceShowIcon           | ✅   | ✅       |
-| tintColor                 | ✅   | ✅       |
-| image(default symbols)    | ✅   | ✅       |
-| image(local image)        | ✅   | ✅       |
-| image(network image)      | ✅   | ✅       |
-| image(custom view)        | ✅   | ✅       |
-| caption                   | ✅   | ✅       |
-| caption-key               | ✅   | ✅       |
-| caption-text              | ✅   | ✅       |
-| caption-requestedWidth    | ✅   | ✅       |
-| caption-align             | ✅   | ✅       |
-| caption-offset            | ✅   | ✅       |
-| caption-color             | ✅   | ✅       |
-| caption-haloColor         | ✅   | ✅       |
-| caption-textSize          | ✅   | ✅       |
-| caption-minZoom           | ✅   | ✅       |
-| caption-maxZoom           | ✅   | ✅       |
-| caption-fontFamily        | ❓   | ❓       |
-| subcaption                | ✅   | ✅       |
-| subcaption-key            | ✅   | ✅       |
-| subcaption-text           | ✅   | ✅       |
-| subcaption-color          | ✅   | ✅       |
-| subcaption-haloColor      | ✅   | ✅       |
-| subcaption-textSize       | ✅   | ✅       |
-| subcaption-requestedWidth | ✅   | ✅       |
-| subcaption-minZoom        | ✅   | ✅       |
-| subcaption-maxZoom        | ✅   | ✅       |
+|                           | iOS                                                | Android |
+|---------------------------|----------------------------------------------------|---------|
+| width                     | ✅                                                  | ✅       |
+| height                    | ✅                                                  | ✅       |
+| anchor                    | ✅                                                  | ✅       |
+| angle                     | ✅                                                  | ✅       |
+| isFlatEnabled             | ✅                                                  | ✅       |
+| isIconPerspectiveEnabled  | ✅                                                  | ✅       |
+| alpha                     | ✅                                                  | ✅       |
+| isHideCollidedSymbols     | ✅                                                  | ✅       |
+| isHideCollidedMarkers     | ✅                                                  | ✅       |
+| isHideCollidedCaptions    | ✅                                                  | ✅       |
+| isForceShowIcon           | ✅                                                  | ✅       |
+| tintColor                 | ✅                                                  | ✅       |
+| image(default symbols)    | ✅                                                  | ✅       |
+| image(local image)        | ✅                                                  | ✅       |
+| image(network image)      | ✅                                                  | ✅       |
+| image(custom view)        | (new arch ✅) (old arch 📦, not a techinical issue) | ✅       |
+| caption                   | ✅                                                  | ✅       |
+| caption-key               | ✅                                                  | ✅       |
+| caption-text              | ✅                                                  | ✅       |
+| caption-requestedWidth    | ✅                                                  | ✅       |
+| caption-align             | ✅                                                  | ✅       |
+| caption-offset            | ✅                                                  | ✅       |
+| caption-color             | ✅                                                  | ✅       |
+| caption-haloColor         | ✅                                                  | ✅       |
+| caption-textSize          | ✅                                                  | ✅       |
+| caption-minZoom           | ✅                                                  | ✅       |
+| caption-maxZoom           | ✅                                                  | ✅       |
+| caption-fontFamily        | ❓                                                  | ❓       |
+| subcaption                | ✅                                                  | ✅       |
+| subcaption-key            | ✅                                                  | ✅       |
+| subcaption-text           | ✅                                                  | ✅       |
+| subcaption-color          | ✅                                                  | ✅       |
+| subcaption-haloColor      | ✅                                                  | ✅       |
+| subcaption-textSize       | ✅                                                  | ✅       |
+| subcaption-requestedWidth | ✅                                                  | ✅       |
+| subcaption-minZoom        | ✅                                                  | ✅       |
+| subcaption-maxZoom        | ✅                                                  | ✅       |
 
 ### `NaverMapPolylineOverlay`
 

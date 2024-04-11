@@ -98,12 +98,7 @@ export default function App() {
           }}
           width={100}
           height={100}
-        >
-          <View
-            style={{ height: 100, width: 100, backgroundColor: 'red' }}
-            collapsable={false}
-          />
-        </NaverMapMarkerOverlay>
+        />
 
         <NaverMapCircleOverlay
           latitude={33.17827398}
