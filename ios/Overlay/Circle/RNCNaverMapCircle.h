@@ -5,23 +5,23 @@
 //  Created by mj on 4/6/24.
 //
 
+#import "FnUtil.h"
+#import "MacroUtil.h"
+#import "Utils.h"
 #import <Foundation/Foundation.h>
 #import <NMapsMap/NMFCircleOverlay.h>
 #import <React/RCTImageLoader.h>
 #import <React/RCTUtils.h>
-#import <UIKit/UIKit.h>
 #import <React/RCTView.h>
-#import "Utils.h"
-#import "MacroUtil.h"
-#import "FnUtil.h"
+#import <UIKit/UIKit.h>
 
 #ifdef RCT_NEW_ARCH_ENABLED
+#import "RCTFabricComponentsPlugins.h"
 #import <React/RCTViewComponentView.h>
 #import <react/renderer/components/RNCNaverMapSpec/ComponentDescriptors.h>
 #import <react/renderer/components/RNCNaverMapSpec/EventEmitters.h>
 #import <react/renderer/components/RNCNaverMapSpec/Props.h>
 #import <react/renderer/components/RNCNaverMapSpec/RCTComponentViewHelpers.h>
-#import "RCTFabricComponentsPlugins.h"
 @interface RNCNaverMapCircle : RCTViewComponentView
 #else
 @interface RNCNaverMapCircle : RCTView
@@ -29,7 +29,7 @@
 
 @property(nonatomic, strong) NMFCircleOverlay* inner;
 
-@property(nonatomic, copy) NMGLatLng* position;
+@property(nonatomic, copy) NMGLatLng* coord;
 @property(nonatomic, assign) NSInteger zIndexValue;
 @property(nonatomic, assign) BOOL isHidden;
 @property(nonatomic, assign) double minZoom;

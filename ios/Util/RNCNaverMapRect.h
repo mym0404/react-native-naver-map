@@ -16,29 +16,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RNCNaverMapRect : NSObject
 
-@property (nonatomic, assign) double top;
-@property (nonatomic, assign) double right;
-@property (nonatomic, assign) double bottom;
-@property (nonatomic, assign) double left;
+@property(nonatomic, assign) double top;
+@property(nonatomic, assign) double right;
+@property(nonatomic, assign) double bottom;
+@property(nonatomic, assign) double left;
 
-- (instancetype)init:(double)top
-               right:(double)right
-              bottom:(double)bottom
-                left:(double)left;
+- (instancetype)init:(double)top right:(double)right bottom:(double)bottom left:(double)left;
 
 - (UIEdgeInsets)convertToUIEdgeInsets;
 
 @end
 
-static inline RNCNaverMapRect * _Nonnull RNCNaverMapRectMake(
-    double top,
-    double right,
-    double bottom,
-    double left) {
-    return [[RNCNaverMapRect alloc] init:top
-                                   right:right
-                                  bottom:bottom
-                                    left:left];
+static inline RNCNaverMapRect* _Nonnull RNCNaverMapRectMake(double top, double right, double bottom,
+                                                            double left) {
+  return [[RNCNaverMapRect alloc] init:top right:right bottom:bottom left:left];
 }
 
 NS_ASSUME_NONNULL_END

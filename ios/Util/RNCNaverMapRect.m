@@ -7,23 +7,26 @@
 
 #import "RNCNaverMapRect.h"
 
-@implementation  RNCNaverMapRect
+@implementation RNCNaverMapRect
 
-- (nonnull instancetype)init:(double)top right:(double)right bottom:(double)bottom left:(double)left {
-    self = [super init];
+- (nonnull instancetype)init:(double)top
+                       right:(double)right
+                      bottom:(double)bottom
+                        left:(double)left {
+  self = [super init];
 
-    if (self) {
-        _top = top;
-        _right = right;
-        _bottom = bottom;
-        _left = left;
-    }
+  if (self) {
+    _top = top;
+    _right = right;
+    _bottom = bottom;
+    _left = left;
+  }
 
-    return self;
+  return self;
 }
 
 - (UIEdgeInsets)convertToUIEdgeInsets {
-    return UIEdgeInsetsMake(_top, _left, _bottom, _right);
+  return UIEdgeInsetsMake(_top, _left, _bottom, _right);
 }
 
 @end

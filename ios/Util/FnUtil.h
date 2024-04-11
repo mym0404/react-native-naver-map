@@ -6,6 +6,7 @@
 //
 #ifndef FnUtil_h
 #define FnUtil_h
+#import "string"
 
 static inline BOOL isValidNumber(NSNumber* value) {
   if (!value || [value isKindOfClass:[NSNull class]]) {

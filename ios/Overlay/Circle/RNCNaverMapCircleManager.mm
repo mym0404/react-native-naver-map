@@ -5,14 +5,14 @@
 //  Created by mj on 4/6/24.
 //
 
+#import "RCTConvert+NMFMapView.h"
+#import "RNCNaverMapCircle.h"
 #import <Foundation/Foundation.h>
-#import <NMapsMap/NMFMarker.h>
 #import <NMapsGeometry/NMGLatLng.h>
+#import <NMapsMap/NMFMarker.h>
 #import <React/RCTComponent.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTViewManager.h>
-#import "RCTConvert+NMFMapView.h"
-#import "RNCNaverMapCircle.h"
 
 @interface RNCNaverMapCircleManager : RCTViewManager
 @end
@@ -30,7 +30,7 @@ RCT_EXPORT_MODULE()
 }
 
 // MARK: - COMMON PROPS
-RCT_EXPORT_VIEW_PROPERTY(position, NMGLatLng)
+RCT_EXPORT_VIEW_PROPERTY(coord, NMGLatLng)
 RCT_EXPORT_VIEW_PROPERTY(zIndexValue, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(isHidden, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(minZoom, double)

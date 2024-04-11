@@ -5,8 +5,8 @@
 #import <UIKit/UIKit.h>
 
 @interface Utils : NSObject
-+ (UIColor *)hexToColor:(NSString*)stringToConvert;
-+ (UIColor *)intToColor:(NSInteger)intToConvert;
++ (UIColor*)hexToColor:(NSString*)stringToConvert;
++ (UIColor*)intToColor:(NSInteger)intToConvert;
 @end
 
 #endif /* Utils_h */

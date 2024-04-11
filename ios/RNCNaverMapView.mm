@@ -19,11 +19,11 @@ using namespace facebook::react;
 #pragma clang diagnostic ignored "-Wobjc-missing-super-calls"
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol>*)childComponentView
                           index:(NSInteger)index {
-    [_view insertReactSubview:childComponentView atIndex:index];
+  [_view insertReactSubview:childComponentView atIndex:index];
 }
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol>*)childComponentView
                             index:(NSInteger)index {
-    [_view removeReactSubview:childComponentView];
+  [_view removeReactSubview:childComponentView];
 }
 #pragma clang diagnostic pop
 

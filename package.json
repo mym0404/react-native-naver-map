@@ -30,6 +30,8 @@
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "format:clang": "./script/clang-format.sh",
+    "lint:clang": "./script/clang-lint.sh",
     "t": "yarn lint && yarn typecheck",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "husky",

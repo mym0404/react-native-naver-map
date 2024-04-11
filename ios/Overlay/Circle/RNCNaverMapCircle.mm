@@ -45,7 +45,7 @@ using namespace facebook::react;
   return self;
 }
 
-NMAP_SETTER(P, p, osition, inner.center, NMGLatLng*)
+NMAP_SETTER(C, c, oord, inner.center, NMGLatLng*)
 NMAP_SETTER(Z, z, IndexValue, inner.zIndex, NSInteger)
 NMAP_SETTER(I, i, sHidden, inner.hidden, BOOL)
 NMAP_INNER_SETTER(M, m, inZoom, double)
@@ -82,9 +82,8 @@ NMAP_INNER_SETTER(O, o, utlineWidth, double)
   const auto& prev = *std::static_pointer_cast<RNCNaverMapCircleProps const>(_props);
   const auto& next = *std::static_pointer_cast<RNCNaverMapCircleProps const>(props);
 
-  if (prev.position.latitude != next.position.latitude ||
-      prev.position.longitude != next.position.longitude) {
-    self.position = NMGLatLngMake(next.position.latitude, next.position.longitude);
+  if (prev.coord.latitude != next.coord.latitude || prev.coord.longitude != next.coord.longitude) {
+    self.coord = NMGLatLngMake(next.coord.latitude, next.coord.longitude);
   }
 
   NMAP_REMAP_SELF_PROP(zIndexValue);

@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) double latitudeDelta;
 @property(nonatomic, assign) double longitudeDelta;
 
-- (instancetype)init:(double) lat
+- (instancetype)init:(double)lat
                  lng:(double)lng
             latDelta:(double)latDelta
             lngDelta:(double)lngDelta;
