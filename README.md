@@ -55,10 +55,10 @@ Event Coalescing를 통해 Native -> JS 로의 이벤트 중 쓸모없는 이벤
 # npm
 npm install --save @mj-studio/react-native-naver-map
 
-#yarn
+# yarn
 yarn add @mj-studio/react-native-naver-map
 
-#expo
+# expo
 npx expo install @mj-studio/react-native-naver-map
 ```
 
