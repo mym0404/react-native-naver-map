@@ -307,13 +307,13 @@ Expo는 위에서 설명된 Android, iOS의 설정법이 필요하지 않습니�
 
 마커의 종류는 총 네가지입니다.
 
-1. default symbol (green, red, gray, ...)
+1. Default Symbol (green, red, gray, ...) (caching ✅)
 
 ```js
 image={'green'}
 ```
 
-2. local resources (`ImageSourcePropType` of react native)
+2. Local Resource (`ImageSourcePropType` of react native) (caching ✅)
 
 이는 추후에 더 나은 성능을 위해 Android, iOS native resource를 사용해 screen density에 따라 최적의 마커가 선택되게 할 수 있는 로직을 구현하려 합니다.
 
@@ -321,7 +321,7 @@ image={'green'}
 image={require('./marker.png')}
 ```
 
-3. network image
+3. Network Image (caching ✅)
 
 ```js
 image={{uri: 'https://example.com/image.png'}}
@@ -330,7 +330,17 @@ image={{uri: 'https://example.com/image.png'}}
 >[!WARNING]
 >현재 header auth같은 객채 내의 다른 속성은 지원되지 않습니다.
 
-4. custom react view
+4. Custom React View (caching ❌)
+
+iOS에선 현재 View들에 `collapsible=false`를 설정해야 동작할 것입니다.
+
+```tsx
+<NaverMapMarkerOverlay width={100} height={100} ...>
+  <View collapsible={false} style={{width: 100, height: 100}}>
+    ...
+  </View>
+</NaverMapMarkerOverlay>
+```
 
 >[!IMPORTANT]
 >이 타입은 많이 생성될 시 성능에 굉장히 영향을 미칠 수 있습니다.
