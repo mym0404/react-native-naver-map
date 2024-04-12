@@ -64,53 +64,6 @@ npx expo install @mj-studio/react-native-naver-map
 
 For ios, you should install pods
 
-### Expo
-
-#### 1. Add `expo-build-properties` package
-
-This is for inject naver maven repository.
-
-```shell
-npx expo install expo-build-properties
-```
-
-#### 2. Add Config Plugin into `app.json`
-
-```json
-{
-  ...
-  "plugins": [
-    [
-      "@mj-studio/react-native-naver-map",
-      {
-        "client_id": "{{Naver Map Client Key}}",
-        // (optional)
-        "android": {
-          "ACCESS_FINE_LOCATION": true,
-          "ACCESS_COARSE_LOCATION": true
-        },
-        // (optional)
-        "ios": {
-          "NSLocationAlwaysUsageDescription": "{{ your location usage description }}",
-          "NSLocationWhenInUseUsageDescription": "{{ your location usage description }}"
-        }
-      }
-    ],
-    [
-      "expo-build-properties",
-      {
-        "android": {
-          "extraMavenRepos": ["https://repository.map.naver.com/archive/maven"]
-        }
-      }
-    ],
-    ...
-  ]
-}
-```
-
-#### 2. For android
-
 ### Android
 
 더 자세한 설정은 [공식 문서](https://navermaps.github.io/android-map-sdk/guide-ko/1.html)를 참고해주세요.
@@ -185,6 +138,53 @@ Currently, this package will request location permission for showing user's curr
 </dict>
 </plist>
 ```
+
+### Expo
+
+#### 1. Add `expo-build-properties` package
+
+This is for inject naver maven repository.
+
+```shell
+npx expo install expo-build-properties
+```
+
+#### 2. Add Config Plugin into `app.json`
+
+```json
+{
+  ...
+  "plugins": [
+    [
+      "@mj-studio/react-native-naver-map",
+      {
+        "client_id": "{{Naver Map Client Key}}",
+        // (optional)
+        "android": {
+          "ACCESS_FINE_LOCATION": true,
+          "ACCESS_COARSE_LOCATION": true
+        },
+        // (optional)
+        "ios": {
+          "NSLocationAlwaysUsageDescription": "{{ your location usage description }}",
+          "NSLocationWhenInUseUsageDescription": "{{ your location usage description }}"
+        }
+      }
+    ],
+    [
+      "expo-build-properties",
+      {
+        "android": {
+          "extraMavenRepos": ["https://repository.map.naver.com/archive/maven"]
+        }
+      }
+    ],
+    ...
+  ]
+}
+```
+
+Expo는 위에서 설명된 Android, iOS의 설정법이 필요하지 않습니다.
 
 ## Components
 
