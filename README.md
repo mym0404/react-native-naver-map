@@ -52,9 +52,64 @@ Event Coalescing를 통해 Native -> JS 로의 이벤트 중 쓸모없는 이벤
 ### Install
 
 ```shell
+# npm
+npm install --save @mj-studio/react-native-naver-map
+
+#yarn
 yarn add @mj-studio/react-native-naver-map
-# for ios, you should install pods
+
+#expo
+npx expo install @mj-studio/react-native-naver-map
 ```
+
+For ios, you should install pods
+
+### Expo
+
+#### 1. Add `expo-build-properties` package
+
+This is for inject naver maven repository.
+
+```shell
+npx expo install expo-build-properties
+```
+
+#### 2. Add Config Plugin into `app.json`
+
+```json
+{
+  ...
+  "plugins": [
+    [
+      "@mj-studio/react-native-naver-map",
+      {
+        "client_id": "{{Naver Map Client Key}}",
+        // (optional)
+        "android": {
+          "ACCESS_FINE_LOCATION": true,
+          "ACCESS_COARSE_LOCATION": true
+        },
+        // (optional)
+        "ios": {
+          "NSLocationAlwaysUsageDescription": "{{ your location usage description }}",
+          "NSLocationWhenInUseUsageDescription": "{{ your location usage description }}"
+        }
+      }
+    ],
+    [
+      "expo-build-properties",
+      {
+        "android": {
+          "extraMavenRepos": ["https://repository.map.naver.com/archive/maven"]
+        }
+      }
+    ],
+    ...
+  ]
+}
+```
+
+#### 2. For android, 
 
 ### Android
 
@@ -361,11 +416,11 @@ Currently, this package will request location permission for showing user's curr
 - [x] Camera, Region, Commands, Events (23.04.07)
 - [x] Implement Basic Overlays (23.04.10)
 - [x] Location Service (23.04.10)
+- [x] Support Paper(Old Arch) (23.04.11)
+- [x] Release (23.04.11)
+- [x] Support Expo with config plugin (23.04.12)
+- [x] Docs
 - [ ] Implement Advanced Overlays <- 🔥
-- [x] Support Paper(Old Arch)
-- [x] Support Expo with config plugin
-- [x] Release
-- [ ] Docs - Docusaurus docs
 
 ## Contributing
 
