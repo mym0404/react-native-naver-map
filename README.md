@@ -39,7 +39,7 @@ Expo Go에선 사용하지
 못하지만 [development build](https://docs.expo.dev/develop/development-builds/introduction/), production
 환경에서 사용할 수 있습니다.
 
-### 4. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 최신 기능들을 모두 지원합니다.
+### 4. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 최신 기능들을 모두 지원합니다
 
 Seamless한 Props와 Command들로 Naver Map을 조작할 수 있습니다.
 
@@ -109,7 +109,7 @@ npx expo install expo-build-properties
 }
 ```
 
-#### 2. For android, 
+#### 2. For android
 
 ### Android
 
@@ -302,6 +302,45 @@ Currently, this package will request location permission for showing user's curr
 | onLongTap | ❌   | 📦      |     |
 
 ### `NaverMapMarkerOverlay`
+
+#### 마커의 종류와 성능
+
+마커의 종류는 총 네가지입니다.
+
+1. default symbol (green, red, gray, ...)
+
+```js
+image={'green'}
+```
+
+2. local resources (`ImageSourcePropType` of react native)
+
+이는 추후에 더 나은 성능을 위해 Android, iOS native resource를 사용해 screen density에 따라 최적의 마커가 선택되게 할 수 있는 로직을 구현하려 합니다.
+
+```js
+image={require('./marker.png')}
+```
+
+3. network image
+
+```js
+image={{uri: 'https://example.com/image.png'}}
+```
+
+>[!WARNING]
+>현재 header auth같은 객채 내의 다른 속성은 지원되지 않습니다.
+
+4. custom react view
+
+>[!IMPORTANT]
+>이 타입은 많이 생성될 시 성능에 굉장히 영향을 미칠 수 있습니다.
+>아직은 단순하게만 사용하시거나 되도록이면 이미지를 사용하는 것을 추천드립니다.
+
+현재 이 타입은 Android에선 `react-native-map`의 구현체를 비슷하게 가져와 React Native의 Shadow Node를 조금 커스텀해서 자식의 위치를 추적한다음 실제 Android의 `View`를 삽입해줍니다.
+
+iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니다.
+
+두 방법 모두가 이미지 캐싱이 아직 지원되지 않고(추후에 `reuseableIdentifier`같은 속성으로 지원이 가능할 것으로 보입니다), 마커 하나당 많은 리소스를 차지하게 됩니다.
 
 #### Props
 
