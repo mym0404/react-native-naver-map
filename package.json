@@ -45,7 +45,8 @@
     "xcode": "open $(pwd)/example/ios/NaverMapExample.xcworkspace",
     "pod:old": "cd example/ios && bundle install && bundle exec pod install",
     "pod:new": "cd example/ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install",
-    "prepack": "bob build"
+    "prepack": "yarn build:expo-config-plugin && bob build",
+    "build:expo-config-plugin": " tsc --project ./expo-config-plugin"
   },
   "keywords": [
     "react-native",
@@ -152,7 +153,8 @@
   },
   "eslintIgnore": [
     "node_modules/",
-    "lib/"
+    "lib/",
+    "expo-config-plugin"
   ],
   "prettier": {
     "quoteProps": "consistent",
