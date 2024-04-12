@@ -15,6 +15,7 @@
     "cpp",
     "*.podspec",
     "app.plugin.js",
+    "expo-config-plugin/build/index.js",
     "!ios/build",
     "!android/build",
     "!android/gradle",
