@@ -287,45 +287,45 @@ iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니
 
 #### Events
 
-| Event            | iOS | Android | Type | Description |
-|------------------|-----|---------|------|-------------|
-| onTapSymbol      | 📦  | 📦      |      |             |
-| onAuthFailed     | ❌   | ❌       |      |             |
-| onLocationChange | 📦  | 📦      |      |             |
+| Event            | iOS | Android |
+|------------------|-----|---------|
+| onTapSymbol      | 📦  | 📦      |
+| onAuthFailed     | ❌   | ❌       |
+| onLocationChange | 📦  | 📦      |
 
 #### Commands
 
-| Command                    | iOS | Android | Type | Description |
-|----------------------------|-----|---------|------|-------------|
-| screenToCoordinate         | 📦  | 📦      |      |             |
-| coordinateToScreen         | 📦  | 📦      |      |             |
-| clusterMarkers             | 📦  | 📦      |      |             |
+| Command                    | iOS | Android |
+|----------------------------|-----|---------|
+| screenToCoordinate         | 📦  | 📦      |
+| coordinateToScreen         | 📦  | 📦      |
+| clusterMarkers             | 📦  | 📦      |
 
 ### Marker Common
 
 #### Events
 
-|           | iOS | Android | Type | Description |
-|-----------|-----|---------|------|-------------|
-| onLongTap | ❌   | 📦      |      |             |
+|           | iOS | Android |
+|-----------|-----|---------|
+| onLongTap | ❌   | 📦      |
 
 ### `NaverMapMarkerOverlay`
 
 #### Props
 
-| Prop                      | iOS                                                | Android | Type | Default | Description |
-|---------------------------|----------------------------------------------------|---------|------|---------|-------------|
-| image(custom view)        | (new arch ✅) (old arch 📦, not a techinical issue) | ✅       |      |         |             |
-| caption-fontFamily        | ❓                                                  | ❓       |      |         |             |
-| subcaption-fontFamily     | ❓                                                  | ❓       |      |         |             |
+| Prop                      | iOS                                                | Android |
+|---------------------------|----------------------------------------------------|---------|
+| image(custom view)        | (new arch ✅) (old arch 📦, not a techinical issue) | ✅       |
+| caption-fontFamily        | ❓                                                  | ❓       |
+| subcaption-fontFamily     | ❓                                                  | ❓       |
 
 ### `NaverMapPathOverlay`
 
 #### Props
 
-| Prop                   | iOS | Android | Type | Default | Description |
-|------------------------|-----|---------|------|---------|-------------|
-| patternImage           | 📦  | 📦      |      |         |             |
+| Prop                   | iOS | Android |
+|------------------------|-----|---------|
+| patternImage           | 📦  | 📦      |
 
 ## Supporting Table - Architecture
 
