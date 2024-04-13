@@ -111,8 +111,8 @@ meter {
     --header-height: 3rem;
     --line-height: 1.5;
     --member-group-spacing: 3rem;
-    --member-spacing: 3rem;
-    --paragraph-spacing: 2rem;
+    --member-spacing: 2.5rem;
+    --paragraph-spacing: 1rem;
     --header-margin: 1.5rem 0 1rem 0;
     --term-spacing: 0.5rem;
     --list-spacing: 1.5rem;
