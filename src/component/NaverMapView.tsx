@@ -36,6 +36,8 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * @see MapType
    * @group Map Look & Feel
+   *
+   * @default Basic
    */
   mapType?: MapType;
 
@@ -50,6 +52,8 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * @see [references](https://navermaps.github.io/android-map-sdk/guide-ko/2-3.html)
    * @group Map Look & Feel
+   *
+   * @default ['BUILDING']
    */
   layerGroups?: {
     // 건물 그룹입니다. 활성화할 경우 건물 형상, 주소 심벌 등 건물과 관련된 요소가 노출됩니다. 기본적으로 활성화됩니다.
@@ -122,6 +126,8 @@ export interface NaverMapViewProps extends ViewProps {
    * 실내지도가 활성화되면 줌 레벨이 일정 수준 이상이고 실내지도가 있는 영역에 지도의 중심이 위치할 경우 자동으로 해당 영역에 대한 실내지도가 나타납니다.
    * 단, 지도 유형이 실내지도를 지원하지 않으면 실내지도를 활성화하더라도 아무런 변화가 일어나지 않습니다.
    * Basic, Terrain 지도 유형만이 실내지도를 지원합니다.
+   *
+   * @default false
    */
   isIndoorEnabled?: boolean;
   /**
@@ -129,34 +135,59 @@ export interface NaverMapViewProps extends ViewProps {
    * 야간 모드가 활성화되면 지도의 전반적인 스타일이 어두운 톤으로 변경됩니다.
    * 단, 지도 유형이 야간 모드를 지원하지 않을 경우 야간 모드를 활성화하더라도 아무런 변화가 일어나지 않습니다.
    * Navi 지도 유형만이 야간 모드를 지원합니다.
+   *
+   * @default false
    */
   isNightModeEnabled?: boolean;
+  /**
+   * 이 속성을 사용하면 라이트 모드를 활성화할 수 있습니다.
+   * 라이트 모드가 활성화되면 지도의 로딩이 빨라지고 메모리 소모가 줄어듭니다.
+   * 그러나 다음과 같은 제약이 생깁니다.
+   *
+   * - 지도의 전반적인 화질이 하락합니다.
+   * - Navi 지도 유형을 사용할 수 없습니다.
+   * - 레이어 그룹을 활성화할 수 없습니다.
+   * - 실내지도, 야간 모드를 사용할 수 없습니다.
+   * - 디스플레이 옵션을 변경할 수 없습니다.
+   * - 카메라가 회전하거나 기울어지면 지도 심벌도 함께 회전하거나 기울어집니다.
+   * - 줌 레벨이 커지거나 작아지면 지도 심벌도 일정 정도 함께 커지거나 작아집니다.
+   * - 지도 심벌의 클릭 이벤트를 처리할 수 없습니다.
+   * - 마커와 지도 심벌 간 겹침을 처리할 수 없습니다.
+   *
+   * 따라서 라이트 모드는 꼭 필요한 상황에만 제한적으로 사용하는 것이 좋습니다.
+   *
+   * @default false
+   */
   isLiteModeEnabled?: boolean;
   /**
    * lightness 속성을 사용하면 지도의 밝기를 지정할 수 있습니다.
    * 지도의 밝기를 지정하더라도 오버레이의 밝기는 변경되지 않으므로 오버레이를 강조하고자 할 때 사용할 수 있습니다.
    * 값은 -1~1의 비율로 지정할 수 있으며, -1에 가까울수록 어두워지고 1에 가까울수록 밝아집니다.
-   * 기본값은 0입니다.
+   *
+   * @default 0
    */
   lightness?: number;
   /**
    * 지도가 기울어지면 건물이 입체적으로 표시됩니다.
    * buildingHeight 속성을 사용하면 입체적으로 표현되는 건물의 높이를 지정할 수 있습니다.
    * 값은 0~1의 비율로 지정할 수 있으며, 0으로 지정하면 지도가 기울어지더라도 건물이 입체적으로 표시되지 않습니다.
-   * 기본값은 1입니다.
+   *
+   * @default 1
    */
   buildingHeight?: number;
   /**
    * symbolScale 속성을 사용하면 심벌의 크기를 변경할 수 있습니다.
    * 0~2의 비율로 지정할 수 있으며, 값이 클수록 심벌이 커집니다.
-   * 기본값은 1입니다.
+   *
+   * @default 1
    */
   symbolScale?: number;
   /**
    * 지도를 기울이면 가까이 있는 심벌은 크게, 멀리 있는 심벌은 작게 그려집니다.
    * symbolPerspectiveRatio 속성을 사용하면 심벌의 원근 효과를 조절할 수 있습니다.
    * 0~1의 비율로 지정할 수 있으며, 값이 작을수록 원근감이 줄어들어 0이 되면 원근 효과가 완전히 사라집니다.
-   * 기본값은 1입니다.
+   *
+   * @default 1
    */
   symbolPerspectiveRatio?: number;
   /**
