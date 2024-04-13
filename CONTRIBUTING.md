@@ -153,15 +153,14 @@ We use [TypeScript](https://www.typescriptlang.org/) for type checking, [ESLint]
 
 Our pre-commit hooks verify that the linter and tests pass when committing.
 
-### Publishing to npm
+### API Documentation
 
-We use [release-it](https://github.com/release-it/release-it) to make it easier to publish new versions. It handles common tasks like bumping version based on semver, creating tags and releases etc.
+We use [TypeDoc](https://typedoc.org/guides/overview/) for generating api documentation automatically from the code.
 
-To publish new versions, run the following:
+When changing code, be sure to attach comments in JSDoc Style to functions, variables, interfaces, type aliases, classes, etc. of the code.
 
-```sh
-yarn release
-```
+You can check generated docs with `yarn build:docs` command.
+
 
 ### Scripts
 
@@ -180,6 +179,7 @@ The `package.json` file contains various scripts for common tasks:
 - `yarn studio`: open android studio
 - `yarn studio:example`: open android studio for example project
 - `yarn xcode`: open xcode for example project
+- `yarn build:docs`: build documentation at `./docs`.
 
 ### Sending a pull request
 
