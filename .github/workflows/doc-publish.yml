@@ -5,7 +5,7 @@ on:
       - main
 
 jobs:
-  check:
+  publish-doc:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
