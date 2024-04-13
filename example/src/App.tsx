@@ -248,6 +248,18 @@ export default function App() {
             });
           }}
         />
+        <Button
+          title={'Cancel'}
+          onPress={() => {
+            ref.current?.cancelAnimation();
+          }}
+        />
+        <Button
+          title={'Location Tracking Mode'}
+          onPress={() => {
+            ref.current?.setLocationTrackingMode('Face');
+          }}
+        />
 
         <Toggle value={nightMode} onChange={setNightMode} text={'Night'} />
         <Toggle value={indoor} onChange={setIndoor} text={'Indoor'} />

@@ -261,14 +261,15 @@ Expo는 위에서 설명된 Android, iOS의 설정법이 필요하지 않습니�
 
 #### Events
 
-| Event           | iOS | Android | Type | Description |
-|-----------------|-----|---------|------|-------------|
-| onInitialized   | ✅   | ✅       |      |             |
-| onOptionChanged | ✅   | ✅       |      |             |
-| onCameraChanged | ✅   | ✅       |      |             |
-| onTapMap        | ✅   | ✅       |      |             |
-| onTapSymbol     | 📦  | 📦      |      |             |
-| onAuthFailed    | ❌   | ❌       |      |             |
+| Event            | iOS | Android | Type | Description |
+|------------------|-----|---------|------|-------------|
+| onInitialized    | ✅   | ✅       |      |             |
+| onOptionChanged  | ✅   | ✅       |      |             |
+| onCameraChanged  | ✅   | ✅       |      |             |
+| onTapMap         | ✅   | ✅       |      |             |
+| onTapSymbol      | 📦  | 📦      |      |             |
+| onAuthFailed     | ❌   | ❌       |      |             |
+| onLocationChange | 📦  | 📦      |      |             |
 
 #### Commands
 
@@ -282,6 +283,7 @@ Expo는 위에서 설명된 Android, iOS의 설정법이 필요하지 않습니�
 | screenToCoordinate         | 📦  | 📦      |      |             |
 | coordinateToScreen         | 📦  | 📦      |      |             |
 | clusterMarkers             | 📦  | 📦      |      |             |
+| setLocationTrackingMode    | ✅   | ✅       |      |             |
 
 ### Marker Common
 
@@ -458,7 +460,21 @@ iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니
 | outlineWidth | ✅   | ✅       |      |         |             |
 | outlineColor | ✅   | ✅       |      |         |             |
 
-[//]: # (### Types)
+### Types
+
+#### Align
+
+- Center
+- Left
+- Right
+- Top
+- Bottom
+- TopLeft
+- TopRight
+- BottomRight
+- BottomLeft
+
+WIP
 
 ## Supporting Table - Architecture
 

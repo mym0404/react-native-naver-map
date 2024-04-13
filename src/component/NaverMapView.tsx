@@ -26,6 +26,7 @@ import {
 } from '../types/CameraAnimationEasing';
 import { useStableCallback } from '../util/useStableCallback';
 import { Const } from '../util/Const';
+import type { LocationTrackingMode } from '../types/LocationTrackingMode';
 
 export type NaverMapViewProps = ViewProps & {
   /**
@@ -308,6 +309,13 @@ export type NaverMapViewRef = {
    * 카메라의 애니메이션을 취소합니다.
    */
   cancelAnimation: () => void;
+
+  /**
+   * 위치 추적 모드를 변경합니다.
+   *
+   * {@link LocationTrackingMode}
+   */
+  setLocationTrackingMode: (mode: LocationTrackingMode) => void;
 };
 
 function clamp(v: number, min: number, max: number): number {
@@ -479,6 +487,11 @@ export const NaverMapView = forwardRef(
         cancelAnimation: () => {
           if (innerRef.current) {
             Commands.cancelAnimation(innerRef.current);
+          }
+        },
+        setLocationTrackingMode: (mode: LocationTrackingMode) => {
+          if (innerRef.current) {
+            Commands.setLocationTrackingMode(innerRef.current, mode);
           }
         },
       }),

@@ -72,6 +72,8 @@ internal interface RNCNaverMapViewManagerInterface<T : ViewGroup?> {
     )
 
     fun cancelAnimation(view: T)
+
+    fun setLocationTrackingMode(view: T, mode: String?)
 }
 
 abstract class RNCNaverMapViewManagerSpec<T : ViewGroup> : ViewGroupManager<T>(),

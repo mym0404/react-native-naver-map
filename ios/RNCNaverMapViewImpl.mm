@@ -338,4 +338,20 @@ NMAP_SETTER(I, i, sStopGesturesEnabled, mapView.stopGestureEnabled, BOOL)
   [self.mapView moveCamera:update];
 }
 
+- (void)cancelAnimation {
+  [self.mapView cancelTransitions];
+}
+
+- (void)setLocationTrackingMode:(NSString*)mode {
+  if ([mode isEqualToString:@"NoFollow"]) {
+    self.mapView.positionMode = NMFMyPositionNormal;
+  } else if ([mode isEqualToString:@"Follow"]) {
+    self.mapView.positionMode = NMFMyPositionDirection;
+  } else if ([mode isEqualToString:@"Face"]) {
+    self.mapView.positionMode = NMFMyPositionCompass;
+  } else {
+    self.mapView.positionMode = NMFMyPositionDisabled;
+  }
+}
+
 @end

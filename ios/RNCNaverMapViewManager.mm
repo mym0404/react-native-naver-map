@@ -139,5 +139,7 @@ QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(animateRegionTo, latitude
                                        : easing pivotX
                                        : pivotX pivotY
                                        : pivotY)
+QUICK_RCT_EXPORT_COMMAND_METHOD(cancelAnimation)
+QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(setLocationTrackingMode, mode : (NSString*)mode, mode)
 
 @end

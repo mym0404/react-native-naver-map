@@ -36,3 +36,4 @@ export * from './types/CameraChangeReason';
 export * from './types/MarkerImages';
 export * from './types/CapType';
 export * from './types/JoinType';
+export * from './types/LocationTrackingMode';

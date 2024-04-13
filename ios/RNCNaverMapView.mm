@@ -220,6 +220,14 @@ using namespace facebook::react;
                   pivotY:pivotY];
 }
 
+- (void)cancelAnimation {
+  [_view cancelAnimation];
+}
+
+- (void)setLocationTrackingMode:(NSString*)mode {
+  [_view setLocationTrackingMode:mode];
+}
+
 - (void)handleCommand:(const NSString*)commandName args:(const NSArray*)args {
   RCTRNCNaverMapViewHandleCommand(self, commandName, args);
 }

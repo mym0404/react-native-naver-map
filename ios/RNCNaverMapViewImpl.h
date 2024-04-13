@@ -108,6 +108,8 @@ using namespace facebook::react;
                  easing:(NSInteger)easing
                  pivotX:(double)pivotX
                  pivotY:(double)pivotY;
+- (void)cancelAnimation;
+- (void)setLocationTrackingMode:(NSString*)mode;
 #endif /* ifndef RCT_NEW_ARCH_ENABLED */
 
 @end

@@ -166,6 +166,10 @@ interface NaverMapNativeCommands {
     pivotY?: Double
   ) => void;
   cancelAnimation: (ref: React.ElementRef<ComponentType>) => void;
+  setLocationTrackingMode: (
+    ref: React.ElementRef<ComponentType>,
+    mode: string
+  ) => void;
 }
 
 export default codegenNativeComponent<Props>('RNCNaverMapView');
@@ -178,5 +182,6 @@ export const Commands: NaverMapNativeCommands =
       'animateCameraBy',
       'cancelAnimation',
       'animateRegionTo',
+      'setLocationTrackingMode',
     ],
   });

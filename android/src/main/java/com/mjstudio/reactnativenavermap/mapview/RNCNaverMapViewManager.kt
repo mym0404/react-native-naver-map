@@ -27,6 +27,7 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.NaverMap.LAYER_GROUP_BICYCLE
 import com.naver.maps.map.NaverMap.LAYER_GROUP_BUILDING
@@ -440,6 +441,16 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     override fun cancelAnimation(view: RNCNaverMapViewWrapper?) = view.withMap {
         it.cancelTransitions()
     }
+
+    override fun setLocationTrackingMode(view: RNCNaverMapViewWrapper?, mode: String?) =
+        view.withMap {
+            it.locationTrackingMode = when (mode) {
+                "NoFollow" -> LocationTrackingMode.NoFollow
+                "Follow" -> LocationTrackingMode.Follow
+                "Face" -> LocationTrackingMode.Face
+                else -> LocationTrackingMode.None
+            }
+        }
 
 
     companion object {
