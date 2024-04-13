@@ -32,7 +32,13 @@ Usage는 [`react-native-map`의 Usage](https://github.com/react-native-maps/reac
 > [!NOTE]
 > Fabric을 지원한다고 Old Architecture를 지원하지 않는 것이 아닌 두 Architecture모두에서 작동하는 컴포넌트를 제작합니다.
 
-### 3. Expo 지원
+### 3. 상세한 API Documentation 지원
+
+거의 모든 타입이 설명되어 있는 [API Docs](https://mj-studio-library.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)를 구성했습니다.
+
+최대한 가독성을 살렸으며 `component` 쪽에서 원하는 컴포넌트의 타입과 `Prop`및 `Ref`로 사용법을 확인 가능합니다.
+
+### 4. Expo 지원
 
 [expo config plugin](https://docs.expo.dev/modules/config-plugin-and-native-module-tutorial/)을 사용해
 Expo환경에서도 빌드할 수 있습니다.
@@ -41,11 +47,11 @@ Expo Go에선 사용하지
 못하지만 [development build](https://docs.expo.dev/develop/development-builds/introduction/), production
 환경에서 사용할 수 있습니다.
 
-### 4. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 최신 기능들을 모두 지원합니다
+### 5. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 최신 기능들을 모두 지원합니다
 
 Seamless한 Props와 Command들로 Naver Map을 조작할 수 있습니다.
 
-### 5. 성능 최적화
+### 6. 성능 최적화
 
 Event Coalescing를 통해 Native -> JS 로의 이벤트 중 쓸모없는 이벤트들을 걸러내 성능이 최적화가 됩니다.
 
