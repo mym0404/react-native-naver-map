@@ -192,7 +192,7 @@ Expo는 위에서 설명된 Android, iOS의 설정법이 필요하지 않습니�
 - ⚠️ Developing, lack of features yet
 - 📦 Planned
 
-|                                             | iOS | Android |
+| Component                                   | iOS | Android |
 |---------------------------------------------|-----|---------|
 | NaverMapView                                | ✅   | ✅       |
 | NaverMapMarkerOverlay                       | ✅   | ✅       |
@@ -217,7 +217,7 @@ Expo는 위에서 설명된 Android, iOS의 설정법이 필요하지 않습니�
 
 #### Props
 
-|                          | iOS | Android |
+| Props                    | iOS | Android |
 |--------------------------|-----|---------|
 | mapType                  | ✅   | ✅       |
 | layerGroups              | ✅   | ✅       |
