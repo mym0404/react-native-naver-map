@@ -1694,6 +1694,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@blackwych/typedoc-plugin-categorized-hierarchy-theme@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@blackwych/typedoc-plugin-categorized-hierarchy-theme@npm:1.1.1"
+  dependencies:
+    clsx: "npm:^1.1.1"
+    fs-extra: "npm:^10.0.1"
+    typedoc: "npm:^0.22.13"
+  checksum: 10/e9681a4a8431e647a166e14610e08912709cdbbd633e908c47a07c80d0ed8b459915654a1f8cda1f7a46299d2a2103b229a889a00fdbc771b86df6d82de16c89
+  languageName: node
+  linkType: hard
+
 "@commitlint/cli@npm:^17.8.1":
   version: 17.8.1
   resolution: "@commitlint/cli@npm:17.8.1"
@@ -2470,6 +2481,7 @@ __metadata:
   resolution: "@mj-studio/react-native-naver-map@workspace:."
   dependencies:
     "@8hobbies/typedoc-plugin-404": "npm:^2.0.2"
+    "@blackwych/typedoc-plugin-categorized-hierarchy-theme": "npm:^1.1.1"
     "@commitlint/config-conventional": "npm:^17.0.2"
     "@expo/config-plugins": "npm:7.8.4"
     "@react-native/eslint-config": "npm:^0.73.1"
@@ -4753,6 +4765,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"clsx@npm:^1.1.1":
+  version: 1.2.1
+  resolution: "clsx@npm:1.2.1"
+  checksum: 10/5ded6f61f15f1fa0350e691ccec43a28b12fb8e64c8e94715f2a937bc3722d4c3ed41d6e945c971fc4dcc2a7213a43323beaf2e1c28654af63ba70c9968a8643
+  languageName: node
+  linkType: hard
+
 "co@npm:^4.6.0":
   version: 4.6.0
   resolution: "co@npm:4.6.0"
@@ -6725,7 +6744,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:^10.1.0":
+"fs-extra@npm:^10.0.1, fs-extra@npm:^10.1.0":
   version: 10.1.0
   resolution: "fs-extra@npm:10.1.0"
   dependencies:
@@ -8936,7 +8955,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonc-parser@npm:^3.2.0":
+"jsonc-parser@npm:^3.0.0, jsonc-parser@npm:^3.2.0":
   version: 3.2.1
   resolution: "jsonc-parser@npm:3.2.1"
   checksum: 10/fe2df6f39e21653781d52cae20c5b9e0ab62461918d97f9430b216cea9b6500efc1d8b42c6584cc0a7548b4c996055e9cdc39f09b9782fa6957af2f45306c530
@@ -9411,7 +9430,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"marked@npm:^4.3.0":
+"marked@npm:^4.0.16, marked@npm:^4.3.0":
   version: 4.3.0
   resolution: "marked@npm:4.3.0"
   bin:
@@ -9793,7 +9812,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^5.0.1":
+"minimatch@npm:^5.0.1, minimatch@npm:^5.1.0":
   version: 5.1.6
   resolution: "minimatch@npm:5.1.6"
   dependencies:
@@ -11969,6 +11988,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"shiki@npm:^0.10.1":
+  version: 0.10.1
+  resolution: "shiki@npm:0.10.1"
+  dependencies:
+    jsonc-parser: "npm:^3.0.0"
+    vscode-oniguruma: "npm:^1.6.1"
+    vscode-textmate: "npm:5.2.0"
+  checksum: 10/eeed2eb2090202ef0917f8a4accd12a204ebbc533b2b78c32cfa2119ea05470ab2aef2f53d84ff90c3c17d05f0b1456813d6234906cc4917ff038f9c32f15cb7
+  languageName: node
+  linkType: hard
+
 "shiki@npm:^0.14.7":
   version: 0.14.7
   resolution: "shiki@npm:0.14.7"
@@ -12993,6 +13023,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typedoc@npm:^0.22.13":
+  version: 0.22.18
+  resolution: "typedoc@npm:0.22.18"
+  dependencies:
+    glob: "npm:^8.0.3"
+    lunr: "npm:^2.3.9"
+    marked: "npm:^4.0.16"
+    minimatch: "npm:^5.1.0"
+    shiki: "npm:^0.10.1"
+  peerDependencies:
+    typescript: 4.0.x || 4.1.x || 4.2.x || 4.3.x || 4.4.x || 4.5.x || 4.6.x || 4.7.x
+  bin:
+    typedoc: bin/typedoc
+  checksum: 10/d0c9267507cc44522811bb238d97daa3362bcc0e1fb8281dfaa8301249fd682e47bcc7c8e5ea22392c8a72ee87bb0fc69ec59f9878585e7935efed44a0cdf357
+  languageName: node
+  linkType: hard
+
 "typedoc@npm:^0.25.13":
   version: 0.25.13
   resolution: "typedoc@npm:0.25.13"
@@ -13306,10 +13353,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vscode-oniguruma@npm:^1.7.0":
+"vscode-oniguruma@npm:^1.6.1, vscode-oniguruma@npm:^1.7.0":
   version: 1.7.0
   resolution: "vscode-oniguruma@npm:1.7.0"
   checksum: 10/7da9d21459f9788544b258a5fd1b9752df6edd8b406a19eea0209c6bf76507d5717277016799301c4da0d536095f9ca8c06afd1ab8f4001189090c804ca4814e
+  languageName: node
+  linkType: hard
+
+"vscode-textmate@npm:5.2.0":
+  version: 5.2.0
+  resolution: "vscode-textmate@npm:5.2.0"
+  checksum: 10/bb7e377ebee67ae1c62a6f5be3923d80e192572003f51c4243193bb057c727588d2300ad6aeb824da46c94d531d37310802bfbedc75f2758503ff795ad14b333
   languageName: node
   linkType: hard
 

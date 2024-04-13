@@ -6,7 +6,7 @@
   "kindSortOrder": ["Function"],
   "readme": "README.md",
   "tsconfig": "tsconfig.json",
-  "commentStyle": ["All"],
+  "commentStyle": "all",
   "exclude": ["src/spec/**/*", "src/internal/**/*"],
   "searchInComments": true,
   "sort": ["kind", "static-first", "alphabetical"],
@@ -29,5 +29,6 @@
   "favicon": "public/favicon.png",
   "navigationLinks": {
     "Github": "https://github.com/mj-studio-library/react-native-naver-map"
-  }
+  },
+  "customCss": "./public/doc.css"
 }
