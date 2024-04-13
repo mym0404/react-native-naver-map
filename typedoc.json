@@ -1,5 +1,5 @@
 {
-  "name": "React Native Naver Map",
+  "name": "React Native Naver Map | MJ Studio",
   "entryPoints": ["src/index.tsx"],
   "entryPointStrategy": "resolve",
   "out": "docs",
