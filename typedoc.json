@@ -24,5 +24,6 @@
     "external": false,
     "@alpha": false,
     "@beta": false
-  }
+  },
+  "favicon": "public/favicon.png"
 }
