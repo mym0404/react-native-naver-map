@@ -81,3 +81,5 @@ lib/
 example/android/app/src/main/res/values/secret.xml
 example/ios/Secret.xcconfig
 .env
+
+docs/

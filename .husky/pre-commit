@@ -2,7 +2,5 @@ echo '🔥 pre-commit hook running...'
 yarn lint
 yarn typecheck
 yarn lint:clang
-yarn build:docs
-git add docs
 yarn build:expo-config-plugin
 git add expo-config-plugin

@@ -161,9 +161,7 @@ When changing code, be sure to attach comments in JSDoc Style to functions, vari
 
 You can check generated docs with `yarn build:docs` command.
 
-> [!TIP]
-> This is automatically generated at the commit time and should be included in the VCS system.
-
+The documentation is published on push main branch automatically.
 
 ### Scripts
 
