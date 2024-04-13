@@ -3,13 +3,14 @@ import React from 'react';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
 import { type ColorValue, processColor } from 'react-native';
 import { Const } from '../util/Const';
+import type { Coord } from '../types/Coord';
 
-export type NaverMapCircleOverlayProps = BaseOverlayProps & {
+export interface NaverMapCircleOverlayProps extends BaseOverlayProps, Coord {
   radius?: number;
   color?: ColorValue;
   outlineWidth?: number;
   outlineColor?: ColorValue;
-};
+}
 
 export const NaverMapCircleOverlay = ({
   latitude,

@@ -15,25 +15,27 @@ import type { Camera } from '../types/Camera';
 import type { Region } from '../types/Region';
 import type { Rect } from '../types/Rect';
 import type { LogoAlign } from '../types/LogoAlign';
-import {
-  type CameraChangeReason,
-  cameraChangeReasonFromNumber,
-} from '../types/CameraChangeReason';
+import { type CameraChangeReason } from '../types/CameraChangeReason';
 import type { Coord } from '../types/Coord';
-import {
-  type CameraAnimationEasing,
-  cameraEasingToNumber,
-} from '../types/CameraAnimationEasing';
+import { type CameraAnimationEasing } from '../types/CameraAnimationEasing';
 import { useStableCallback } from '../util/useStableCallback';
 import { Const } from '../util/Const';
 import type { LocationTrackingMode } from '../types/LocationTrackingMode';
+import {
+  cameraEasingToNumber,
+  cameraChangeReasonFromNumber,
+} from '../internal/Util';
 
-export type NaverMapViewProps = ViewProps & {
+/**
+ * @category Hell
+ */
+export interface NaverMapViewProps extends ViewProps {
   /**
    * mapType 속성을 지정하면 지도의 유형을 변경할 수 있습니다.
    * 지도의 유형을 변경하면 가장 바닥에 나타나는 배경 지도의 스타일이 변경됩니다.
    *
    * @see MapType
+   * @group Map Look & Feel
    */
   mapType?: MapType;
 
@@ -47,6 +49,7 @@ export type NaverMapViewProps = ViewProps & {
    * default값은 BUILDING만 활성화되어있는 상태입니다.
    *
    * @see [references](https://navermaps.github.io/android-map-sdk/guide-ko/2-3.html)
+   * @group Map Look & Feel
    */
   layerGroups?: {
     // 건물 그룹입니다. 활성화할 경우 건물 형상, 주소 심벌 등 건물과 관련된 요소가 노출됩니다. 기본적으로 활성화됩니다.
@@ -69,6 +72,7 @@ export type NaverMapViewProps = ViewProps & {
    *
    * @see Camera
    * @see initialCamera
+   * @group Camera
    */
   camera?: Partial<Camera>;
   /**
@@ -80,6 +84,7 @@ export type NaverMapViewProps = ViewProps & {
    *
    * @see Camera
    * @see camera
+   * @group Camera
    */
   initialCamera?: Partial<Camera>;
   /**
@@ -97,6 +102,7 @@ export type NaverMapViewProps = ViewProps & {
    *
    * @see Region
    * @see initialRegion
+   * @group Camera
    */
   region?: Region;
   /**
@@ -108,6 +114,7 @@ export type NaverMapViewProps = ViewProps & {
    *
    * @see Region
    * @see region
+   * @group Camera
    */
   initialRegion?: Region;
   /**
@@ -209,6 +216,7 @@ export type NaverMapViewProps = ViewProps & {
    * 네이버 로고의 위치입니다.
    *
    * @see LogoAlign
+   * @group Logo
    */
   logoAlign?: LogoAlign;
 
@@ -216,6 +224,7 @@ export type NaverMapViewProps = ViewProps & {
    * 네이버 로고의 마진입니다.
    *
    * @see Rect
+   * @group Logo
    */
   logoMargin?: Partial<Rect>;
 
@@ -228,27 +237,37 @@ export type NaverMapViewProps = ViewProps & {
 
   /**
    * 스크롤: 한 개 또는 두 개 이상의 손가락으로 지도를 드래그하면 카메라가 손가락을 따라 이동합니다.
+   *
+   * @group Gesture
    */
   isScrollGesturesEnabled?: boolean;
 
   /**
    * 줌: 지도를 더블 탭하면 줌 레벨이 한 단계 확대됩니다. 두 손가락 탭하면 한 단계 축소됩니다.
    * 핀치와 스트레치 또는 한 손가락 줌 제스처로도 지도의 줌 레벨을 변경할 수 있습니다.
+   *
+   * @group Gesture
    */
   isZoomGesturesEnabled?: boolean;
 
   /**
    * 틸트: 두 개의 손가락으로 지도를 위아래로 드래그하면 기울임 각도가 바뀝니다.
+   *
+   * @group Gesture
    */
   isTiltGesturesEnabled?: boolean;
 
   /**
    * 회전: 두 개의 손가락으로 지도를 돌리면 베어링 각도가 바뀝니다.
+   *
+   * @group Gesture
    */
   isRotateGesturesEnabled?: boolean;
 
   /**
    * 스톱: 카메라 애니메이션이 진행 중일 때 지도를 탭하면 애니메이션이 취소되고 카메라가 현재 위치에 멈춥니다.
+   *
+   * @group Gesture
    */
   isStopGesturesEnabled?: boolean;
 
@@ -269,6 +288,8 @@ export type NaverMapViewProps = ViewProps & {
 
   /**
    * 지도 객체가 초기화가 완료된 뒤에 호출됩니다.
+   *
+   * @group Events
    */
   onInitialized?: () => void;
   /**
@@ -278,6 +299,8 @@ export type NaverMapViewProps = ViewProps & {
    * 이 이벤트는 지도의 옵션에 따라 UI나 다른 속성을 변경하고자 할 때 유용합니다.
    * 예를 들어 지도가 야간 모드로 변경되면 마커의 색상도 어두운 색으로 변경해야 자연스러운데,
    * 이런 경우에 옵션 변경 이벤트를 사용할 수 있습니다.
+   *
+   * @event
    */
   onOptionChanged?: () => void;
   /**
@@ -288,6 +311,7 @@ export type NaverMapViewProps = ViewProps & {
    *
    * @see CameraChangeReason
    * @see Camera
+   * @event
    */
   onCameraChanged?: (
     params: Camera & {
@@ -299,19 +323,21 @@ export type NaverMapViewProps = ViewProps & {
    * 맵을 클릭했을 때 발생하는 이벤트입니다.
    *
    * @see Coord
+   * @event
    */
   onTapMap?: (params: Coord & { x: number; y: number }) => void;
-};
+}
 
-type CameraMoveBaseParams = {
+export interface CameraMoveBaseParams {
+  // 지속시간, milliseconds
   duration?: number;
   easing?: CameraAnimationEasing;
   pivot?: {
     x: number;
     y: number;
   };
-};
-export type NaverMapViewRef = {
+}
+export interface NaverMapViewRef {
   /**
    * 카메라를 애니메이션과 함께 이동시킵니다.
    */
@@ -358,7 +384,7 @@ export type NaverMapViewRef = {
    * {@link LocationTrackingMode}
    */
   setLocationTrackingMode: (mode: LocationTrackingMode) => void;
-};
+}
 
 function clamp(v: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, v));

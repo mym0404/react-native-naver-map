@@ -1,0 +1,28 @@
+{
+  "entryPoints": ["src/index.tsx"],
+  "entryPointStrategy": "resolve",
+  "out": "docs",
+  "kindSortOrder": ["Function"],
+  "readme": "README.md",
+  "tsconfig": "tsconfig.json",
+  "commentStyle": ["All"],
+  "exclude": ["src/spec/**/*", "src/internal/**/*"],
+  "searchInComments": true,
+  "sort": ["kind", "static-first", "alphabetical"],
+  "plugin": ["typedoc-plugin-extras", "typedoc-theme-hierarchy", "@8hobbies/typedoc-plugin-404"],
+  "theme": "hierarchy",
+  "customTitle": "React Native Naver Map",
+  "customDescription": "\uD83D\uDCCD Naver Map Component for React Native Supporting Fabric and Bridge and Expo",
+  "footerLastModified": true,
+  "footerTypedocVersion": true,
+  "categorizeByGroup": true,
+  "groupOrder": ["Events","*", "Properties"],
+  "visibilityFilters": {
+    "protected": false,
+    "private": false,
+    "inherited": true,
+    "external": false,
+    "@alpha": false,
+    "@beta": false
+  }
+}

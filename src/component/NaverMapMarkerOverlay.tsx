@@ -10,11 +10,13 @@ import {
 } from 'react-native';
 import { Const } from '../util/Const';
 import invariant from 'invariant';
-import { type MarkerImages, allMarkerImages } from '../types/MarkerImages';
+import { type MarkerImages } from '../types/MarkerImages';
 import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
-import { type Align, getAlignIntValue } from '../types/Align';
+import { type Align } from '../types/Align';
+import type { Coord } from '../types/Coord';
+import { getAlignIntValue, allMarkerImages } from '../internal/Util';
 
-type CaptionType = {
+export interface CaptionType {
   key: string;
   text: string;
   requestedWidth?: Double;
@@ -25,8 +27,8 @@ type CaptionType = {
   textSize?: Double;
   minZoom?: Double;
   maxZoom?: Double;
-};
-type SubCaptionType = {
+}
+export interface SubCaptionType {
   key: string;
   text: string;
   color?: ColorValue;
@@ -35,7 +37,7 @@ type SubCaptionType = {
   requestedWidth?: Double;
   minZoom?: Double;
   maxZoom?: Double;
-};
+}
 const defaultCaptionProps = {
   key: 'DEFAULT',
   text: '',
@@ -57,7 +59,10 @@ const defaultSubCaptionProps = {
   requestedWidth: 0,
 } satisfies Partial<SubCaptionType>;
 
-export type NaverMapMarkerOverlayProps = BaseOverlayProps & {
+export interface NaverMapMarkerOverlayProps
+  extends BaseOverlayProps,
+    Coord,
+    PropsWithChildren<{}> {
   width?: number;
   height?: number;
   anchor?: PointProp;
@@ -73,7 +78,7 @@ export type NaverMapMarkerOverlayProps = BaseOverlayProps & {
   image?: ImageSourcePropType | (MarkerImages & {});
   caption?: CaptionType;
   subCaption?: SubCaptionType;
-} & PropsWithChildren<{}>;
+}
 
 export const NaverMapMarkerOverlay = ({
   latitude,

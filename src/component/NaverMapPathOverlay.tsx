@@ -6,10 +6,7 @@ import { Const } from '../util/Const';
 import type { Coord } from '@mj-studio/react-native-naver-map';
 import invariant from 'invariant';
 
-export type NaverMapPathOverlayProps = Omit<
-  BaseOverlayProps,
-  'latitude' | 'longitude'
-> & {
+export interface NaverMapPathOverlayProps extends BaseOverlayProps {
   coords: Coord[];
   width?: number;
   outlineWidth?: number;
@@ -22,7 +19,7 @@ export type NaverMapPathOverlayProps = Omit<
   isHideCollidedSymbols?: boolean;
   isHideCollidedMarkers?: boolean;
   isHideCollidedCaptions?: boolean;
-};
+}
 
 export const NaverMapPathOverlay = ({
   zIndex = Const.Z_SHAPE,

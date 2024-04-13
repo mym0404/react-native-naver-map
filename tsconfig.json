@@ -25,5 +25,5 @@
     "target": "esnext",
     "verbatimModuleSyntax": true
   },
-  "exclude": ["./expo-config-plugin"]
+  "exclude": ["./expo-config-plugin", "./docs"]
 }

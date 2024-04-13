@@ -2,10 +2,13 @@ export {
   NaverMapView,
   type NaverMapViewProps,
   type NaverMapViewRef,
+  type CameraMoveBaseParams,
 } from './component/NaverMapView';
 export {
   NaverMapMarkerOverlay,
   type NaverMapMarkerOverlayProps,
+  type CaptionType,
+  type SubCaptionType,
 } from './component/NaverMapMarkerOverlay';
 export {
   NaverMapCircleOverlay,
@@ -21,6 +24,7 @@ export {
 } from './component/NaverMapPolylineOverlay';
 
 export * from './spec/RNCNaverMapViewNativeComponent';
+export * from './types/BaseOverlayProps';
 export * from './types/Coord';
 export * from './types/Rect';
 export * from './types/Region';

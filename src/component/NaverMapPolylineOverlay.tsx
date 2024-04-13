@@ -10,17 +10,14 @@ import type {
 } from '@mj-studio/react-native-naver-map';
 import invariant from 'invariant';
 
-export type NaverMapPolylineOverlayProps = Omit<
-  BaseOverlayProps,
-  'latitude' | 'longitude'
-> & {
+export interface NaverMapPolylineOverlayProps extends BaseOverlayProps {
   coords: Coord[];
   width?: number;
   color?: ColorValue;
   pattern?: number[];
   capType?: CapType;
   joinType?: JoinType;
-};
+}
 
 export const NaverMapPolylineOverlay = ({
   zIndex = Const.Z_SHAPE,

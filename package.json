@@ -47,7 +47,8 @@
     "pod:old": "cd example/ios && bundle install && bundle exec pod install",
     "pod:new": "cd example/ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install",
     "prepack": "yarn build:expo-config-plugin && bob build",
-    "build:expo-config-plugin": " tsc --project ./expo-config-plugin"
+    "build:expo-config-plugin": "tsc --project ./expo-config-plugin",
+    "build:docs": "rm -rf docs && typedoc"
   },
   "keywords": [
     "react-native",
@@ -68,6 +69,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
+    "@8hobbies/typedoc-plugin-404": "^2.0.2",
     "@commitlint/config-conventional": "^17.0.2",
     "@react-native/eslint-config": "^0.73.1",
     "@release-it/conventional-changelog": "^5.0.0",
@@ -87,6 +89,9 @@
     "react-native-builder-bob": "^0.20.0",
     "release-it": "^15.0.0",
     "turbo": "^1.10.7",
+    "typedoc": "^0.25.13",
+    "typedoc-plugin-extras": "^3.0.0",
+    "typedoc-theme-hierarchy": "^4.1.2",
     "typescript": "5.1.6"
   },
   "optionalDependencies": {
@@ -155,7 +160,8 @@
   "eslintIgnore": [
     "node_modules/",
     "lib/",
-    "expo-config-plugin"
+    "expo-config-plugin",
+    "docs/"
   ],
   "prettier": {
     "quoteProps": "consistent",

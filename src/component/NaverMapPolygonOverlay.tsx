@@ -6,16 +6,13 @@ import { Const } from '../util/Const';
 import type { Coord } from '@mj-studio/react-native-naver-map';
 import invariant from 'invariant';
 
-export type NaverMapPolygonOverlayProps = Omit<
-  BaseOverlayProps,
-  'latitude' | 'longitude'
-> & {
+export interface NaverMapPolygonOverlayProps extends BaseOverlayProps {
   coords: Coord[];
   holes?: Coord[][];
   color?: ColorValue;
   outlineWidth?: number;
   outlineColor?: ColorValue;
-};
+}
 
 export const NaverMapPolygonOverlay = ({
   zIndex = Const.Z_SHAPE,

@@ -1,7 +1,7 @@
 /**
  * 카메라의 상태를 나타내는 객체입니다.
  */
-export type Camera = {
+export interface Camera {
   // 위도
   latitude: number;
   // 경도
@@ -28,4 +28,4 @@ export type Camera = {
    * 즉, 동쪽을 바라볼 때 90도, 남쪽을 바라볼 때 180도가 됩니다.
    */
   bearing: number;
-};
+}

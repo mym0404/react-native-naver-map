@@ -11,19 +11,3 @@ export type CameraChangeReason =
   | 'Gesture'
   | 'Control'
   | 'Location';
-export function cameraChangeReasonFromNumber(
-  value: number
-): CameraChangeReason {
-  switch (value) {
-    case 0:
-      return 'Developer';
-    case 1:
-      return 'Gesture';
-    case 2:
-      return 'Control';
-    case 3:
-      return 'Location';
-    default:
-      return 'Developer';
-  }
-}

@@ -4,7 +4,6 @@ import { useRef, useState, useEffect } from 'react';
 import { View, Button, Switch, Text } from 'react-native';
 import {
   type MapType,
-  MapTypes,
   NaverMapView,
   type NaverMapViewRef,
   type Region,
@@ -28,6 +27,19 @@ const jejuRegion: Region = {
 //   longitude: jejuRegion.longitude + jejuRegion.longitudeDelta / 2,
 //   zoom: 8.5,
 // };
+
+/**
+ * @private
+ */
+export const MapTypes = [
+  'Basic',
+  'Navi',
+  'Satellite',
+  'Hybrid',
+  'Terrain',
+  'NaviHybrid',
+  'None',
+] satisfies MapType[];
 
 export default function App() {
   const ref = useRef<NaverMapViewRef>(null);
