@@ -1,4 +1,5 @@
 {
+  "name": "React Native Naver Map",
   "entryPoints": ["src/index.tsx"],
   "entryPointStrategy": "resolve",
   "out": "docs",
@@ -25,5 +26,8 @@
     "@alpha": false,
     "@beta": false
   },
-  "favicon": "public/favicon.png"
+  "favicon": "public/favicon.png",
+  "navigationLinks": {
+    "Github": "https://github.com/mj-studio-library/react-native-naver-map"
+  }
 }
