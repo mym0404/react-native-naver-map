@@ -464,6 +464,8 @@ iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니
 
 #### Align
 
+정렬 위치입니다.
+
 - Center
 - Left
 - Right
@@ -474,7 +476,24 @@ iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니
 - BottomRight
 - BottomLeft
 
-WIP
+#### Camera
+
+|           | Type   | Default | Description                                                                                                          |
+|-----------|--------|---------|----------------------------------------------------------------------------------------------------------------------|
+| latitude  | number |         | 위도                                                                                                                   |
+| longitude | number |         | 경도                                                                                                                   |
+| zoom      | number |         | zoom은 카메라의 줌 레벨을 나타내는 속성입니다.<br/>줌 레벨은 지도의 축척을 나타냅니다.<br/>즉, 줌 레벨이 작을수록 지도가 축소되고 클수록 확대됩니다. 줌 레벨이 커지면 지도에 나타나는 정보도 더욱 세밀해집니다. |
+| tilt      | number |         |                                                                                                                      |
+| bearing   | number |         |                                                                                                                      |
+
+
+Camera = {
+latitude: number;
+longitude: number;
+zoom: number;
+tilt: number;
+bearing: number;
+}
 
 ## Supporting Table - Architecture
 
