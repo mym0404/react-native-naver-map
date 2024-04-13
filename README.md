@@ -47,9 +47,7 @@ Seamless한 Props와 Command들로 Naver Map을 조작할 수 있습니다.
 
 Event Coalescing를 통해 Native -> JS 로의 이벤트 중 쓸모없는 이벤트들을 걸러내 성능이 최적화가 됩니다.
 
-## Usage
-
-### Install
+## Install
 
 ```shell
 # npm
@@ -185,6 +183,10 @@ npx expo install expo-build-properties
 ```
 
 Expo는 위에서 설명된 Android, iOS의 설정법이 필요하지 않습니다.
+
+## Usage
+
+Check our official [Document Site](https://mj-studio-library.github.io/react-native-naver-map/)!
 
 ## Components
 
