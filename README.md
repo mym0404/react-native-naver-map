@@ -1,7 +1,7 @@
-- [English Documentation(not yet written)](/doc/en.md)
-
 > [!TIP]
 > This project is ready to use!
+
+# React Native Naver Map
 
 [![NPM](https://badge.fury.io/js/@mj-studio%2Freact-native-naver-map.svg)](https://badge.fury.io/js/@mj-studio%2Freact-native-naver-map) [![Android SDK - 3.18.0](https://img.shields.io/badge/Android_SDK-3.18.0-2ea44f)](https://) [![iOS SDK - 3.18.0](https://img.shields.io/badge/iOS_SDK-3.18.0-3522ff)](https://)
 
@@ -188,7 +188,7 @@ Expo는 위에서 설명된 Android, iOS의 설정법이 필요하지 않습니�
 
 ## Components
 
-> ![NOTE]
+> [!NOTE]
 > 대부분의 Type들과 Prop들의 설명은 코드의 주석에도 적혀있고 이 프로젝트는 TypeScript를 지원하니 코드에서만 확인해도 사용에 무리가 없을 것입니다.
 
 - ✅ Fully Supported
