@@ -1,4 +1,4 @@
-name: CI
+name: API DOC
 on:
   push:
     branches:
