@@ -80,6 +80,7 @@ using namespace facebook::react;
 @property(nonatomic, assign) BOOL isTiltGesturesEnabled;
 @property(nonatomic, assign) BOOL isRotateGesturesEnabled;
 @property(nonatomic, assign) BOOL isStopGesturesEnabled;
+@property(nonatomic, strong) NSString* locale;
 
 @property(nonatomic, copy) RCTDirectEventBlock onInitialized;
 @property(nonatomic, copy) RCTDirectEventBlock onOptionChanged;

@@ -159,6 +159,7 @@ NMAP_SETTER(I, i, sZoomGesturesEnabled, mapView.zoomGestureEnabled, BOOL)
 NMAP_SETTER(I, i, sTiltGesturesEnabled, mapView.tiltGestureEnabled, BOOL)
 NMAP_SETTER(I, i, sRotateGesturesEnabled, mapView.rotateGestureEnabled, BOOL)
 NMAP_SETTER(I, i, sStopGesturesEnabled, mapView.stopGestureEnabled, BOOL)
+NMAP_MAP_SETTER(L, l, ocale, NSString*)
 
 - (void)setLayerGroups:(NSInteger)layerGroups {
   BOOL building = layerGroups & (1 << 0);

@@ -57,6 +57,7 @@ RCT_EXPORT_VIEW_PROPERTY(isZoomGesturesEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(isTiltGesturesEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(isRotateGesturesEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(isStopGesturesEnabled, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(locale, NSString)
 
 // event
 RCT_EXPORT_VIEW_PROPERTY(onInitialized, RCTDirectEventBlock)

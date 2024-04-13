@@ -130,6 +130,7 @@ using namespace facebook::react;
   NMAP_REMAP_PROP(isTiltGesturesEnabled)
   NMAP_REMAP_PROP(isRotateGesturesEnabled)
   NMAP_REMAP_PROP(isStopGesturesEnabled)
+  NMAP_REMAP_STR_PROP(locale)
 
   auto c1 = prev.camera, c2 = next.camera;
 

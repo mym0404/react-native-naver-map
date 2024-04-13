@@ -43,6 +43,7 @@ import com.naver.maps.map.NaverMap.MapType.None
 import com.naver.maps.map.NaverMap.MapType.Satellite
 import com.naver.maps.map.NaverMap.MapType.Terrain
 import com.naver.maps.map.NaverMapOptions
+import java.util.Locale
 
 
 class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper>() {
@@ -59,9 +60,14 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
         initialProps: ReactStylesDiffMap?,
         stateWrapper: StateWrapper?
     ): RNCNaverMapViewWrapper {
-        initialMapOptions = NaverMapOptions().useTextureView(
-            initialProps?.getBoolean("isUseTextureViewAndroid", false) ?: false
-        )
+        initialMapOptions = NaverMapOptions().apply {
+            useTextureView(
+                initialProps?.getBoolean("isUseTextureViewAndroid", false) ?: false
+            )
+            initialProps?.getString("locale")?.also { locale ->
+                locale(Locale.forLanguageTag(locale))
+            }
+        }
         return super.createViewInstance(reactTag, reactContext, initialProps, stateWrapper)
     }
 
@@ -362,6 +368,14 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     override fun setIsUseTextureViewAndroid(view: RNCNaverMapViewWrapper?, value: Boolean) {
         // don't implement this
     }
+
+    @ReactProp(name = "locale")
+    override fun setLocale(view: RNCNaverMapViewWrapper?, value: String?) = view.withMap {
+        if (value != null) {
+            it.locale = Locale.forLanguageTag(value)
+        }
+    }
+
     // endregion
 
     // region COMMANDS

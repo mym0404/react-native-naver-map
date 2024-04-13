@@ -37,6 +37,8 @@ internal interface RNCNaverMapViewManagerInterface<T : ViewGroup?> {
     fun setIsRotateGesturesEnabled(view: T, value: Boolean)
     fun setIsUseTextureViewAndroid(view: T, value: Boolean)
     fun setIsStopGesturesEnabled(view: T, value: Boolean)
+    fun setLocale(view: T, value: String?)
+
     fun screenToCoordinate(view: T, x: Double, y: Double)
     fun coordinateToScreen(view: T, latitude: Double, longitude: Double)
     fun animateCameraTo(

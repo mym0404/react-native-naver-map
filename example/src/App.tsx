@@ -76,6 +76,7 @@ export default function App() {
         isShowLocationButton={myLocation}
         isExtentBoundedInKorea
         logoAlign={'TopRight'}
+        locale={'ja'}
         // onInitialized={() => console.log('initialized!')}
         // onOptionChanged={() => console.log('Option Changed!')}
         // onCameraChanged={(args) =>

@@ -25,7 +25,7 @@
 
 #define NMAP_REMAP_STR_PROP(name)                                                                  \
   if (prev.name != next.name) {                                                                    \
-    _view.name = RCTNSStringFromString(next.name);                                                 \
+    _view.name = [NSString stringWithUTF8String:next.name.c_str()];                                \
   }
 
 #define NMAP_REMAP_SELF_PROP(name)                                                                 \

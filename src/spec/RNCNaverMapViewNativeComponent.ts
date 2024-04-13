@@ -89,6 +89,8 @@ interface Props extends ViewProps {
   isUseTextureViewAndroid?: boolean;
   isStopGesturesEnabled?: boolean;
 
+  locale?: string;
+
   onInitialized?: DirectEventHandler<Readonly<{}>>;
   onOptionChanged?: DirectEventHandler<Readonly<{}>>;
   onCameraChanged?: DirectEventHandler<

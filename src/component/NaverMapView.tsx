@@ -232,6 +232,11 @@ export type NaverMapViewProps = ViewProps & {
   isUseTextureViewAndroid?: boolean;
 
   /**
+   * 지도의 언어를 지정합니다.
+   */
+  locale?: string;
+
+  /**
    * 지도 객체가 초기화가 완료된 뒤에 호출됩니다.
    */
   onInitialized?: () => void;
@@ -369,6 +374,7 @@ export const NaverMapView = forwardRef(
       isRotateGesturesEnabled = true,
       isStopGesturesEnabled = true,
       isUseTextureViewAndroid = false,
+      locale,
 
       ...rest
     }: NaverMapViewProps,
@@ -571,6 +577,7 @@ export const NaverMapView = forwardRef(
         isRotateGesturesEnabled={isRotateGesturesEnabled}
         isStopGesturesEnabled={isStopGesturesEnabled}
         isUseTextureViewAndroid={isUseTextureViewAndroid}
+        locale={locale}
         {...rest}
       />
     );

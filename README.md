@@ -220,44 +220,44 @@ Expo는 위에서 설명된 Android, iOS의 설정법이 필요하지 않습니�
 
 #### Props
 
-| Prop                     | iOS | Android | Type | Default | Description |
-|--------------------------|-----|---------|------|---------|-------------|
-| mapType                  | ✅   | ✅       |      |         |             |
-| layerGroups              | ✅   | ✅       |      |         |             |
-| camera                   | ✅   | ✅       |      |         |             |
-| initialCamera            | ✅   | ✅       |      |         |             |
-| region                   | ✅   | ✅       |      |         |             |
-| initialRegion            | ✅   | ✅       |      |         |             |
-| isIndoorEnabled          | ✅   | ✅       |      |         |             |
-| isNightModeEnabled       | ✅   | ✅       |      |         |             |
-| isLiteModeEnabled        | ✅   | ✅       |      |         |             |
-| lightness                | ✅   | ✅       |      |         |             |
-| buildingHeight           | ✅   | ✅       |      |         |             |
-| symbolScale              | ✅   | ✅       |      |         |             |
-| symbolPerspectiveRatio   | ✅   | ✅       |      |         |             |
-| mapPadding               | ✅   | ✅       |      |         |             |
-| isShowCompass            | ✅   | ✅       |      |         |             |
-| isShowScaleBar           | ✅   | ✅       |      |         |             |
-| isShowZoomControls       | ✅   | ✅       |      |         |             |
-| isShowIndoorLevelPicker  | ✅   | ✅       |      |         |             |
-| minZoom                  | ✅   | ✅       |      |         |             |
-| maxZoom                  | ✅   | ✅       |      |         |             |
-| extent                   | ✅   | ✅       |      |         |             |
-| isExtentBoundedInKorea   | ✅   | ✅       |      |         |             |
-| logoAlign                | ✅   | ✅       |      |         |             |
-| logoMargin               | ✅   | ✅       |      |         |             |
-| isLogoInteractionEnabled | ❌   | ❌       |      |         |             |
-| isScrollGesturesEnabled  | ✅   | ✅       |      |         |             |
-| isZoomGesturesEnabled    | ✅   | ✅       |      |         |             |
-| isTiltGesturesEnabled    | ✅   | ✅       |      |         |             |
-| isRotateGesturesEnabled  | ✅   | ✅       |      |         |             |
-| isStopGesturesEnabled    | ✅   | ✅       |      |         |             |
-| isShowLocationButton     | ✅   | ✅       |      |         |             |
-| isUseTextureViewAndroid  | ❌   | ✅       |      |         |             |
-| markerClustering         | 📦  | 📦      |      |         |             |
-| fpsLimit                 | 📦  | 📦      |      |         |             |
-| gestureFrictions         | 📦  | 📦      |      |         |             |
-| locale                   | 📦  | 📦      |      |         |             |
+| Prop                     | iOS | Android | Type    | Default       | Description                           |
+|--------------------------|-----|---------|---------|---------------|---------------------------------------|
+| mapType                  | ✅   | ✅       |         |               |                                       |
+| layerGroups              | ✅   | ✅       |         |               |                                       |
+| camera                   | ✅   | ✅       |         |               |                                       |
+| initialCamera            | ✅   | ✅       |         |               |                                       |
+| region                   | ✅   | ✅       |         |               |                                       |
+| initialRegion            | ✅   | ✅       |         |               |                                       |
+| isIndoorEnabled          | ✅   | ✅       |         |               |                                       |
+| isNightModeEnabled       | ✅   | ✅       |         |               |                                       |
+| isLiteModeEnabled        | ✅   | ✅       |         |               |                                       |
+| lightness                | ✅   | ✅       |         |               |                                       |
+| buildingHeight           | ✅   | ✅       |         |               |                                       |
+| symbolScale              | ✅   | ✅       |         |               |                                       |
+| symbolPerspectiveRatio   | ✅   | ✅       |         |               |                                       |
+| mapPadding               | ✅   | ✅       |         |               |                                       |
+| isShowCompass            | ✅   | ✅       |         |               |                                       |
+| isShowScaleBar           | ✅   | ✅       |         |               |                                       |
+| isShowZoomControls       | ✅   | ✅       |         |               |                                       |
+| isShowIndoorLevelPicker  | ✅   | ✅       |         |               |                                       |
+| minZoom                  | ✅   | ✅       |         |               |                                       |
+| maxZoom                  | ✅   | ✅       |         |               |                                       |
+| extent                   | ✅   | ✅       |         |               |                                       |
+| isExtentBoundedInKorea   | ✅   | ✅       |         |               |                                       |
+| logoAlign                | ✅   | ✅       |         |               |                                       |
+| logoMargin               | ✅   | ✅       |         |               |                                       |
+| isLogoInteractionEnabled | ❌   | ❌       |         |               |                                       |
+| isScrollGesturesEnabled  | ✅   | ✅       |         |               |                                       |
+| isZoomGesturesEnabled    | ✅   | ✅       |         |               |                                       |
+| isTiltGesturesEnabled    | ✅   | ✅       |         |               |                                       |
+| isRotateGesturesEnabled  | ✅   | ✅       |         |               |                                       |
+| isStopGesturesEnabled    | ✅   | ✅       |         |               |                                       |
+| isShowLocationButton     | ✅   | ✅       |         |               |                                       |
+| isUseTextureViewAndroid  | ❌   | ✅       |         |               |                                       |
+| markerClustering         | 📦  | 📦      |         |               |                                       |
+| fpsLimit                 | 📦  | 📦      |         |               |                                       |
+| gestureFrictions         | 📦  | 📦      |         |               |                                       |
+| locale                   | ✅   | ✅       | String? | system locale | 지도의 언어를 지정합니다, e.g.) `ja`, `ko`, `en` |
 
 #### Events
 
