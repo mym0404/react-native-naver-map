@@ -17,7 +17,6 @@ import type { Rect } from '../types/Rect';
 import type { LogoAlign } from '../types/LogoAlign';
 import { type CameraChangeReason } from '../types/CameraChangeReason';
 import type { Coord } from '../types/Coord';
-import { type CameraAnimationEasing } from '../types/CameraAnimationEasing';
 import { useStableCallback } from '../util/useStableCallback';
 import { Const } from '../util/Const';
 import type { LocationTrackingMode } from '../types/LocationTrackingMode';
@@ -25,6 +24,7 @@ import {
   cameraEasingToNumber,
   cameraChangeReasonFromNumber,
 } from '../internal/Util';
+import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
 
 /**
  * @category Hell
@@ -328,25 +328,11 @@ export interface NaverMapViewProps extends ViewProps {
   onTapMap?: (params: Coord & { x: number; y: number }) => void;
 }
 
-export interface CameraMoveBaseParams {
-  // 지속시간, milliseconds
-  duration?: number;
-  easing?: CameraAnimationEasing;
-  pivot?: {
-    x: number;
-    y: number;
-  };
-}
 export interface NaverMapViewRef {
   /**
    * 카메라를 애니메이션과 함께 이동시킵니다.
    */
-  animateCameraTo: (
-    params: {
-      latitude: number;
-      longitude: number;
-    } & CameraMoveBaseParams
-  ) => void;
+  animateCameraTo: (params: Coord & CameraMoveBaseParams) => void;
   /**
    * 카메라를 특정 위치만큼 델타값으로 애니메이션과 함께 이동시킵니다.
    */

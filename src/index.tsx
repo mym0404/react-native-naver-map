@@ -2,7 +2,6 @@ export {
   NaverMapView,
   type NaverMapViewProps,
   type NaverMapViewRef,
-  type CameraMoveBaseParams,
 } from './component/NaverMapView';
 export {
   NaverMapMarkerOverlay,
@@ -38,3 +37,4 @@ export * from './types/MarkerImages';
 export * from './types/CapType';
 export * from './types/JoinType';
 export * from './types/LocationTrackingMode';
+export * from './types/CameraMoveBaseParams';
