@@ -32,6 +32,8 @@ export type NaverMapViewProps = ViewProps & {
   /**
    * mapType 속성을 지정하면 지도의 유형을 변경할 수 있습니다.
    * 지도의 유형을 변경하면 가장 바닥에 나타나는 배경 지도의 스타일이 변경됩니다.
+   *
+   * @see MapType
    */
   mapType?: MapType;
 
@@ -64,6 +66,9 @@ export type NaverMapViewProps = ViewProps & {
    * 카메라의 위치를 조절합니다. `region`이 존재해도 `camera`가 설정되면 동작하지 않습니다.
    *
    * [Reference](https://navermaps.github.io/ios-map-sdk/guide-ko/3-1.html)
+   *
+   * @see Camera
+   * @see initialCamera
    */
   camera?: Partial<Camera>;
   /**
@@ -73,6 +78,8 @@ export type NaverMapViewProps = ViewProps & {
    *
    * 컴포넌트가 mount되고 변경해도 동작하지 않습니다.
    *
+   * @see Camera
+   * @see camera
    */
   initialCamera?: Partial<Camera>;
   /**
@@ -87,6 +94,9 @@ export type NaverMapViewProps = ViewProps & {
    *
    * 예를 들어, `latitudeDelta`가 0.1이라면 위도가 지도의 보이는 곳의 끝과 끝에서 0.1이 차이난다는 것을 의미합니다.
    * 하지만 `longitudeDelta`가 특정 값보다 커서 최대 줌 레벨이 더 작아진다면 0.1보다 더 차이나게 될 수도 있고 반대도 같습니다.
+   *
+   * @see Region
+   * @see initialRegion
    */
   region?: Region;
   /**
@@ -95,6 +105,9 @@ export type NaverMapViewProps = ViewProps & {
    * `region`를 사용하지 않을 때만 사용해야합니다.
    *
    * 컴포넌트가 mount되고 변경해도 동작하지 않습니다.
+   *
+   * @see Region
+   * @see region
    */
   initialRegion?: Region;
   /**
@@ -140,7 +153,11 @@ export type NaverMapViewProps = ViewProps & {
    */
   symbolPerspectiveRatio?: number;
   /**
+   * 콘텐츠 패딩을 지정할 수 있습니다.
+   * 다음 그림과 같이 UI 요소가 지도의 일부를 덮을 경우, 카메라는 지도 뷰의 중심에 위치하므로 실제로 보이는 지도의 중심과 카메라의 위치가 불일치하게 됩니다.
    *
+   * @description
+   * <img src="https://navermaps.github.io/ios-map-sdk/assets/3-1-contentspadding1.png" alt="Docs Image" width="500">
    */
   mapPadding?: Partial<Rect>;
   /**
@@ -188,7 +205,18 @@ export type NaverMapViewProps = ViewProps & {
    */
   isExtentBoundedInKorea?: boolean;
 
+  /**
+   * 네이버 로고의 위치입니다.
+   *
+   * @see LogoAlign
+   */
   logoAlign?: LogoAlign;
+
+  /**
+   * 네이버 로고의 마진입니다.
+   *
+   * @see Rect
+   */
   logoMargin?: Partial<Rect>;
 
   /**
@@ -233,6 +261,9 @@ export type NaverMapViewProps = ViewProps & {
 
   /**
    * 지도의 언어를 지정합니다.
+   *
+   * @example `ko`, `ja`, `en`
+   * @default system locale
    */
   locale?: string;
 
@@ -255,7 +286,8 @@ export type NaverMapViewProps = ViewProps & {
    * reason은 이벤트를 발생시킨 카메라 이동의 원인입니다.
    * reason을 이용해 카메라 이동의 원인을 지정할 수 있으며, 이벤트 리스너 내에서 이 값을 이용해 어떤 원인에 의해 발생한 이벤트인지 판단할 수 있습니다.
    *
-   * {@link CameraChangeReason}
+   * @see CameraChangeReason
+   * @see Camera
    */
   onCameraChanged?: (
     params: Camera & {
@@ -263,6 +295,11 @@ export type NaverMapViewProps = ViewProps & {
     }
   ) => void;
 
+  /**
+   * 맵을 클릭했을 때 발생하는 이벤트입니다.
+   *
+   * @see Coord
+   */
   onTapMap?: (params: Coord & { x: number; y: number }) => void;
 };
 
