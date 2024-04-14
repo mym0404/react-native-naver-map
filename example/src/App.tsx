@@ -10,6 +10,7 @@ import {
   NaverMapPolygonOverlay,
   NaverMapCircleOverlay,
   NaverMapMarkerOverlay,
+  type Camera,
 } from '@mj-studio/react-native-naver-map';
 import Slider from '@react-native-community/slider';
 import { request, PERMISSIONS } from 'react-native-permissions';
@@ -22,11 +23,11 @@ const jejuRegion: Region = {
   latitudeDelta: 0.38,
   longitudeDelta: 0.8,
 };
-// const jejuCamera: Partial<Camera> = {
-//   latitude: jejuRegion.latitude + jejuRegion.latitudeDelta / 2,
-//   longitude: jejuRegion.longitude + jejuRegion.longitudeDelta / 2,
-//   zoom: 8.5,
-// };
+const jejuCamera: Camera = {
+  latitude: jejuRegion.latitude + jejuRegion.latitudeDelta / 2,
+  longitude: jejuRegion.longitude + jejuRegion.longitudeDelta / 2,
+  zoom: 16,
+};
 
 /**
  * @private
@@ -220,10 +221,7 @@ export default function App() {
         <Button
           title={'Move to'}
           onPress={() => {
-            ref.current?.animateCameraTo({
-              latitude: 33.3932536781,
-              longitude: 126.55746544,
-            });
+            ref.current?.animateCameraTo(jejuCamera);
           }}
         />
         <Button

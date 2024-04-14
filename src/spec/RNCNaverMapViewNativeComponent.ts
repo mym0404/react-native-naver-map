@@ -145,7 +145,8 @@ interface NaverMapNativeCommands {
     duration?: Int32,
     easing?: Int32 /*'EaseIn' | 'None' | 'Linear' | 'Fly' | 'EaseOut'*/,
     pivotX?: Double,
-    pivotY?: Double
+    pivotY?: Double,
+    zoom?: Double
   ) => void;
   animateCameraBy: (
     ref: React.ElementRef<ComponentType>,

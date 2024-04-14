@@ -395,9 +395,18 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
         duration: Int,
         easing: Int,
         pivotX: Double,
-        pivotY: Double
+        pivotY: Double,
+        zoom: Double,
     ) = view.withMap {
-        CameraUpdate.scrollTo(LatLng(latitude, longitude))
+        val update = if (isValidNumber(zoom)) CameraUpdate.scrollAndZoomTo(
+            LatLng(
+                latitude,
+                longitude
+            ),
+            zoom,
+        ) else CameraUpdate.scrollTo(LatLng(latitude, longitude))
+
+        update
             .animate(CameraAnimationUtil.numberToCameraAnimationEasing(easing), duration.toLong())
             .pivot(
                 PointF(pivotX.toFloat(), pivotY.toFloat())

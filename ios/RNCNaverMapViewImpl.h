@@ -94,7 +94,8 @@ using namespace facebook::react;
                duration:(NSInteger)duration
                  easing:(NSInteger)easing
                  pivotX:(double)pivotX
-                 pivotY:(double)pivotY;
+                 pivotY:(double)pivotY
+                   zoom:(double)zoom;
 - (void)animateCameraBy:(double)x
                       y:(double)y
                duration:(NSInteger)duration

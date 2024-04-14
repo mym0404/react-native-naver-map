@@ -106,12 +106,14 @@ QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(animateCameraTo, latitude
                                        : (NSInteger)duration easing
                                        : (NSInteger)easing pivotX
                                        : (double)pivotX pivotY
-                                       : (double)pivotY, latitude longitude
+                                       : (double)pivotY zoom
+                                       : (double)zoom, latitude longitude
                                        : longitude duration
                                        : duration easing
                                        : easing pivotX
                                        : pivotX pivotY
-                                       : pivotY)
+                                       : pivotY zoom
+                                       : zoom)
 QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(animateCameraBy, x
                                        : (double)x y
                                        : (double)y duration

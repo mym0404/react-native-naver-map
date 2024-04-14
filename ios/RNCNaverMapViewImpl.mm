@@ -295,9 +295,13 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
                duration:(NSInteger)duration
                  easing:(NSInteger)easing
                  pivotX:(double)pivotX
-                 pivotY:(double)pivotY {
+                 pivotY:(double)pivotY
+                   zoom:(double)zoom {
   NMFCameraUpdate* update =
-      [NMFCameraUpdate cameraUpdateWithScrollTo:NMGLatLngMake(latitude, longitude)];
+      isValidNumber(zoom)
+          ? [NMFCameraUpdate cameraUpdateWithScrollTo:NMGLatLngMake(latitude, longitude)
+                                               zoomTo:zoom]
+          : [NMFCameraUpdate cameraUpdateWithScrollTo:NMGLatLngMake(latitude, longitude)];
 
   update.animation = getEasingAnimation(easing);
   update.animationDuration = (NSTimeInterval)((double)duration) / 1000;

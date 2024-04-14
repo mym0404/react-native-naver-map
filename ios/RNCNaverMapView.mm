@@ -185,13 +185,15 @@ using namespace facebook::react;
                duration:(NSInteger)duration
                  easing:(NSInteger)easing
                  pivotX:(double)pivotX
-                 pivotY:(double)pivotY {
+                 pivotY:(double)pivotY
+                   zoom:(double)zoom {
   [_view animateCameraTo:latitude
                longitude:longitude
                 duration:duration
                   easing:easing
                   pivotX:pivotX
-                  pivotY:pivotY];
+                  pivotY:pivotY
+                    zoom:zoom];
 }
 
 - (void)animateCameraBy:(double)x

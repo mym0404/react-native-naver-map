@@ -48,7 +48,8 @@ internal interface RNCNaverMapViewManagerInterface<T : ViewGroup?> {
         duration: Int,
         easing: Int,
         pivotX: Double,
-        pivotY: Double
+        pivotY: Double,
+        zoom: Double,
     )
 
     fun animateCameraBy(
@@ -106,7 +107,8 @@ abstract class RNCNaverMapViewManagerSpec<T : ViewGroup> : ViewGroupManager<T>()
                 args.getInt(2),
                 args.getInt(3),
                 args.getDouble(4),
-                args.getDouble(5)
+                args.getDouble(5),
+                args.getDouble(6),
             )
 
             "animateCameraBy" -> animateCameraBy(

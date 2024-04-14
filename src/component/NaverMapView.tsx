@@ -364,7 +364,9 @@ export interface NaverMapViewRef {
   /**
    * 카메라를 애니메이션과 함께 이동시킵니다.
    */
-  animateCameraTo: (params: Coord & CameraMoveBaseParams) => void;
+  animateCameraTo: (
+    params: Coord & CameraMoveBaseParams & { zoom?: number }
+  ) => void;
   /**
    * 카메라를 특정 위치만큼 델타값으로 애니메이션과 함께 이동시킵니다.
    */
@@ -494,7 +496,14 @@ export const NaverMapView = forwardRef(
     useImperativeHandle(
       ref,
       () => ({
-        animateCameraTo: ({ duration, easing, latitude, longitude, pivot }) => {
+        animateCameraTo: ({
+          duration,
+          easing,
+          latitude,
+          longitude,
+          pivot,
+          zoom = Const.NULL_NUMBER,
+        }) => {
           if (innerRef.current) {
             Commands.animateCameraTo(
               innerRef.current,
@@ -503,7 +512,8 @@ export const NaverMapView = forwardRef(
               duration ?? Const.DEFAULT_ANIM_DURATION,
               cameraEasingToNumber(easing ?? Const.DEFAULT_EASING),
               pivot?.x ?? 0.5,
-              pivot?.y ?? 0.5
+              pivot?.y ?? 0.5,
+              zoom
             );
           }
         },
