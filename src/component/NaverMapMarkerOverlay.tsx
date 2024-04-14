@@ -53,7 +53,7 @@ export interface CaptionType {
    * @default Bottom
    */
   align?: Align;
-  // 아이콘과 캡션 간의 거리를 지정할 수 있습니다.
+  /** 아이콘과 캡션 간의 거리를 지정할 수 있습니다. */
   offset?: Double;
   /**
    * 텍스트의 색상입니다.

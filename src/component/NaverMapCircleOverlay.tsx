@@ -6,7 +6,7 @@ import { Const } from '../util/Const';
 import type { Coord } from '../types/Coord';
 
 export interface NaverMapCircleOverlayProps extends BaseOverlayProps, Coord {
-  // 지도에 원의 반지름을 미터 단위로 표시합니다.
+  /** 지도에 원의 반지름을 미터 단위로 표시합니다. */
   radius?: number;
   /**
    * 원의 색상입니다.

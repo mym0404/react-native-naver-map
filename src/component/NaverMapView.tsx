@@ -23,6 +23,7 @@ import type { LocationTrackingMode } from '../types/LocationTrackingMode';
 import {
   cameraEasingToNumber,
   cameraChangeReasonFromNumber,
+  createCameraInstance,
 } from '../internal/Util';
 import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
 
@@ -56,17 +57,17 @@ export interface NaverMapViewProps extends ViewProps {
    * @default ['BUILDING']
    */
   layerGroups?: {
-    // 건물 그룹입니다. 활성화할 경우 건물 형상, 주소 심벌 등 건물과 관련된 요소가 노출됩니다. 기본적으로 활성화됩니다.
+    /** 건물 그룹입니다. 활성화할 경우 건물 형상, 주소 심벌 등 건물과 관련된 요소가 노출됩니다. 기본적으로 활성화됩니다. */
     BUILDING: boolean;
-    // 실시간 교통정보 그룹입니다. 활성화할 경우 실시간 교통정보가 노출됩니다.
+    /** 실시간 교통정보 그룹입니다. 활성화할 경우 실시간 교통정보가 노출됩니다. */
     TRAFFIC: boolean;
-    // 대중교통 그룹입니다. 활성화할 경우 철도, 지하철 노선, 버스정류장 등 대중교통과 관련된 요소가 노출됩니다.
+    /** 대중교통 그룹입니다. 활성화할 경우 철도, 지하철 노선, 버스정류장 등 대중교통과 관련된 요소가 노출됩니다. */
     TRANSIT: boolean;
-    // 자전거 그룹입니다. 활성화할 경우 자전거 도로, 자전거 주차대 등 자전거와 관련된 요소가 노출됩니다.
+    /** 자전거 그룹입니다. 활성화할 경우 자전거 도로, 자전거 주차대 등 자전거와 관련된 요소가 노출됩니다. */
     BICYCLE: boolean;
-    // 등산로 그룹입니다. 활성화할 경우 등산로, 등고선 등 등산과 관련된 요소가 노출됩니다.
+    /** 등산로 그룹입니다. 활성화할 경우 등산로, 등고선 등 등산과 관련된 요소가 노출됩니다. */
     MOUNTAIN: boolean;
-    // 지적편집도 그룹입니다. 활성화할 경우 지적편집도가 노출됩니다.
+    /** 지적편집도 그룹입니다. 활성화할 경우 지적편집도가 노출됩니다. */
     CADASTRAL: boolean;
   };
   /**
@@ -78,7 +79,7 @@ export interface NaverMapViewProps extends ViewProps {
    * @see initialCamera
    * @group Camera
    */
-  camera?: Partial<Camera>;
+  camera?: Camera;
   /**
    * 맵이 생성된 후 첫 카메라 설정입니다.
    *
@@ -90,7 +91,7 @@ export interface NaverMapViewProps extends ViewProps {
    * @see camera
    * @group Camera
    */
-  initialCamera?: Partial<Camera>;
+  initialCamera?: Camera;
   /**
    * 해당 영역이 완전히 보이는 좌표와 최대 줌 레벨로 카메라가 이동합니다.
    *
@@ -595,10 +596,10 @@ export const NaverMapView = forwardRef(
           (layerGroups?.MOUNTAIN ? 16 : 0) +
           (layerGroups?.CADASTRAL ? 32 : 0)
         }
-        camera={camera}
+        camera={camera ? createCameraInstance(camera) : undefined}
         initialCamera={
           !camera && initialCamera
-            ? initialCamera
+            ? createCameraInstance(initialCamera)
             : {
                 latitude: Const.NULL_NUMBER,
                 longitude: Const.NULL_NUMBER,

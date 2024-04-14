@@ -3,7 +3,9 @@ import type {
   CameraChangeReason,
   Align,
   MarkerImages,
+  Camera,
 } from '@mj-studio/react-native-naver-map';
+import { Const } from '../util/Const';
 
 export function cameraEasingToNumber(
   value: CameraAnimationEasing = 'EaseIn'
@@ -78,3 +80,19 @@ export const allMarkerImages = [
   'mediumDensityCluster',
   'highDensityCluster',
 ] satisfies MarkerImages[];
+
+export function createCameraInstance({
+  bearing,
+  latitude,
+  longitude,
+  tilt,
+  zoom,
+}: Camera): Camera {
+  return {
+    latitude,
+    longitude,
+    zoom: zoom ?? Const.DEFAULT_ZOOM,
+    tilt: tilt ?? Const.DEFAULT_TILT,
+    bearing: bearing ?? Const.DEFAULT_BEARING,
+  };
+}

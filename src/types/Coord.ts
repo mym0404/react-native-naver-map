@@ -3,8 +3,8 @@
  * latitude 속성이 위도를, longitude 속성이 경도를 나타냅니다.
  */
 export interface Coord {
-  // 위도
+  /** 위도 */
   latitude: number;
-  // 경도
+  /** 경도 */
   longitude: number;
 }

@@ -14,8 +14,8 @@ import React from 'react';
  */
 
 type Camera = {
-  latitude?: Double;
-  longitude?: Double;
+  latitude: Double;
+  longitude: Double;
   zoom?: Double;
   tilt?: Double;
   bearing?: Double;

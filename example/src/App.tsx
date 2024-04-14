@@ -62,6 +62,10 @@ export default function App() {
   return (
     <View style={{ flex: 1 }}>
       <NaverMapView
+        // camera={jejuCamera}
+        // initialCamera={jejuCamera}
+        // region={jejuRegion}
+        initialRegion={jejuRegion}
         ref={ref}
         style={{ flex: 1 }}
         mapType={mapType}
@@ -73,10 +77,6 @@ export default function App() {
           TRAFFIC: false,
           TRANSIT: false,
         }}
-        // camera={jejuCamera}
-        // initialCamera={jejuCamera}
-        // region={jejuRegion}
-        initialRegion={jejuRegion}
         isIndoorEnabled={indoor}
         symbolScale={symbolScale}
         lightness={lightness}
