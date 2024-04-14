@@ -149,15 +149,7 @@ Currently, this package will request location permission for showing user's curr
 
 ### Expo
 
-#### 1. Add `expo-build-properties` package
-
-This is for inject naver maven repository.
-
-```shell
-npx expo install expo-build-properties
-```
-
-#### 2. Add Config Plugin into `app.json`
+#### 1. Add Config Plugin into `app.json`
 
 ```json
 {
@@ -176,14 +168,6 @@ npx expo install expo-build-properties
         "ios": {
           "NSLocationAlwaysUsageDescription": "{{ your location usage description }}",
           "NSLocationWhenInUseUsageDescription": "{{ your location usage description }}"
-        }
-      }
-    ],
-    [
-      "expo-build-properties",
-      {
-        "android": {
-          "extraMavenRepos": ["https://repository.map.naver.com/archive/maven"]
         }
       }
     ],

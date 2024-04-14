@@ -5,6 +5,7 @@ import {
   AndroidConfig,
   type ConfigPlugin,
 } from '@expo/config-plugins';
+import { withBuildProperties } from 'expo-build-properties';
 
 const withNaverMap: ConfigPlugin<{
   client_id: string;
@@ -55,6 +56,12 @@ const withNaverMap: ConfigPlugin<{
         : '',
     ].filter(Boolean)
   );
+
+  config = withBuildProperties(config, {
+    android: {
+      extraMavenRepos: ['https://repository.map.naver.com/archive/maven'],
+    },
+  });
 
   return config;
 };

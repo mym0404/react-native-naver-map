@@ -2494,6 +2494,7 @@ __metadata:
     eslint: "npm:^8.51.0"
     eslint-config-prettier: "npm:^9.0.0"
     eslint-plugin-prettier: "npm:^5.0.1"
+    expo-build-properties: "npm:0.11.1"
     husky: "npm:^9.0.11"
     invariant: "npm:^2.2.4"
     jest: "npm:^29.7.0"
@@ -2512,6 +2513,8 @@ __metadata:
     react-native: "*"
   dependenciesMeta:
     "@expo/config-plugins":
+      optional: true
+    expo-build-properties:
       optional: true
   languageName: unknown
   linkType: soft
@@ -6449,6 +6452,18 @@ __metadata:
     jest-message-util: "npm:^29.7.0"
     jest-util: "npm:^29.7.0"
   checksum: 10/63f97bc51f56a491950fb525f9ad94f1916e8a014947f8d8445d3847a665b5471b768522d659f5e865db20b6c2033d2ac10f35fcbd881a4d26407a4f6f18451a
+  languageName: node
+  linkType: hard
+
+"expo-build-properties@npm:0.11.1":
+  version: 0.11.1
+  resolution: "expo-build-properties@npm:0.11.1"
+  dependencies:
+    ajv: "npm:^8.11.0"
+    semver: "npm:^7.5.3"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/c88b0ef3b6a02c7fba11d0a46c7857efb9ce6a507cea6c994137fafb75433e8d13f838982b577c3bab0c90c3fc42911c55f1966312b6724bb8171d440210cf2b
   languageName: node
   linkType: hard
 
