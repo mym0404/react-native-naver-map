@@ -73,7 +73,15 @@ export interface CaptionType {
    *  @default 12
    */
   textSize?: Double;
+  /**
+   * 특정 줌 레벨에서만 캡션이 나타나도록 지정할 수 있습니다.
+   * 카메라의 줌 레벨이 minZoom과 maxZoom 범위를 벗어나면 캡션이 숨겨지고 아이콘만 나타납니다.
+   */
   minZoom?: Double;
+  /**
+   * 특정 줌 레벨에서만 캡션이 나타나도록 지정할 수 있습니다.
+   * 카메라의 줌 레벨이 minZoom과 maxZoom 범위를 벗어나면 캡션이 숨겨지고 아이콘만 나타납니다.
+   */
   maxZoom?: Double;
 }
 export interface SubCaptionType {

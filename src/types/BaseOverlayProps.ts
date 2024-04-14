@@ -14,9 +14,17 @@ export interface BaseOverlayProps {
   zIndex?: number;
   /** 감춰진 여부입니다. */
   isHidden?: boolean;
-  /** 지도에 보이는 최소 줌 레벨입니다. */
+  /**
+   * 지도에 보이는 최소 줌 레벨입니다.
+   *
+   * @default 0
+   */
   minZoom?: number;
-  /** 지도에 보이는 최대 줌 레벨입니다. */
+  /**
+   * 지도에 보이는 최대 줌 레벨입니다.
+   *
+   * @default 9999
+   */
   maxZoom?: number;
   /** 최소 줌 레벨이 포함될 때도 보이는 지 여부입니다. */
   isMinZoomInclusive?: boolean;
