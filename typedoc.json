@@ -23,8 +23,8 @@
     "private": false,
     "inherited": true,
     "external": false,
-    "@alpha": false,
-    "@beta": false
+    "@alpha": true,
+    "@beta": true
   },
   "favicon": "public/favicon.png",
   "navigationLinks": {
