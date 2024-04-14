@@ -17,7 +17,7 @@
 
 리액트 네이티브 [Naver Map](https://www.ncloud.com/product/applicationService/maps) 컴포넌트입니다.
 
-![preview](https://raw.githubusercontent.com/mym0404/image-archive/master/202404101826965.webp)
+<img src="https://raw.githubusercontent.com/mym0404/image-archive/master/202404101826965.webp" width="500" alt="preview">
 
 ## 왜 이 라이브러리를 써야하나요?
 
@@ -148,6 +148,10 @@ Currently, this package will request location permission for showing user's curr
 </dict>
 </plist>
 ```
+
+다음은 설정된 모습을 Xcode에서 본 스크린샷입니다.
+
+![xcode screenshot](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*j-1aZQDMa-ODU2k38HXApA.png)
 
 ### Expo
 
