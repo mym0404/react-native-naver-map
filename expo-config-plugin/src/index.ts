@@ -4,10 +4,14 @@ import {
   withAndroidManifest,
   AndroidConfig,
   type ConfigPlugin,
+  createRunOncePlugin,
+  withPlugins,
 } from '@expo/config-plugins';
 import { withBuildProperties } from 'expo-build-properties';
 
-const withNaverMap: ConfigPlugin<{
+const pkg = require('@mj-studio/react-native-naver-map/package.json');
+
+let withNaverMap: ConfigPlugin<{
   client_id: string;
   android?: {
     ACCESS_FINE_LOCATION?: boolean;
@@ -57,13 +61,18 @@ const withNaverMap: ConfigPlugin<{
     ].filter(Boolean)
   );
 
-  config = withBuildProperties(config, {
-    android: {
-      extraMavenRepos: ['https://repository.map.naver.com/archive/maven'],
-    },
-  });
+  config = withPlugins(config, [
+    [
+      withBuildProperties,
+      {
+        android: {
+          extraMavenRepos: ['https://repository.map.naver.com/archive/maven'],
+        },
+      },
+    ],
+  ]);
 
   return config;
 };
 
-export default withNaverMap;
+export default createRunOncePlugin(withNaverMap, pkg.name, pkg.version);
