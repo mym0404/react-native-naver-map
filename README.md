@@ -1,5 +1,7 @@
-> [!TIP]
-> This project is ready to use!
+>[!TIP]
+>This project is ready to use!
+>
+>If this project has helped you out, please support us with a star 🌟.
 
 # React Native Naver Map
 
