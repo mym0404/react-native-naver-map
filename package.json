@@ -131,7 +131,7 @@
     },
     "github": {
       "release": true,
-      "releaseNotes": "FROM={{latestTag}} TO={{tagName}} node ./script/get-release-notes.js"
+      "releaseNotes": "FROM=${latestTag} TO=${tagName} node ./script/get-release-notes.js"
     },
     "plugins": {
       "@release-it/conventional-changelog": {
