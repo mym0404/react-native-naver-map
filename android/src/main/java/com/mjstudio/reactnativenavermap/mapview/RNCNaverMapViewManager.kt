@@ -52,6 +52,9 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     }
 
     private var initialMapOptions: NaverMapOptions? = null
+    private var animationDuration = 0
+    private var animationEasing = CameraAnimationUtil.numberToCameraAnimationEasing(0)
+    private var isFirstCameraMoving = true
 
 
     override fun createViewInstance(
@@ -197,12 +200,21 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
             val tilt = value.getDoubleOrNull("tilt") ?: it.cameraPosition.tilt
             val bearing = value.getDoubleOrNull("bearing") ?: it.cameraPosition.bearing
 
-            it.cameraPosition = CameraPosition(
-                latlng,
-                zoom,
-                tilt,
-                bearing,
+            it.moveCamera(
+                CameraUpdate.toCameraPosition(
+                    CameraPosition(
+                        latlng,
+                        zoom,
+                        tilt,
+                        bearing,
+                    )
+                ).apply {
+                    if (animationDuration > 0 && !isFirstCameraMoving) {
+                        animate(animationEasing, animationDuration.toLong())
+                    }
+                }
             )
+            isFirstCameraMoving = false
         }
     }
 
@@ -222,9 +234,24 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     @ReactProp(name = "region")
     override fun setRegion(view: RNCNaverMapViewWrapper?, value: ReadableMap?) = view.withMap {
         value.getLatLngBoundsOrNull()?.run {
-            val update = CameraUpdate.fitBounds(this)
+            val update = CameraUpdate.fitBounds(this).apply {
+                if (animationDuration > 0 && !isFirstCameraMoving) {
+                    animate(animationEasing, animationDuration.toLong())
+                }
+            }
             it.moveCamera(update)
+            isFirstCameraMoving = false
         }
+    }
+
+    @ReactProp(name = "animationDuration")
+    override fun setAnimationDuration(view: RNCNaverMapViewWrapper?, value: Int) {
+        animationDuration = value
+    }
+
+    @ReactProp(name = "animationEasing")
+    override fun setAnimationEasing(view: RNCNaverMapViewWrapper?, value: Int) {
+        animationEasing = CameraAnimationUtil.numberToCameraAnimationEasing(value)
     }
 
     @ReactProp(name = "isIndoorEnabled")

@@ -26,6 +26,7 @@ import {
   createCameraInstance,
 } from '../internal/Util';
 import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
+import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
 
 /**
  * @category Hell
@@ -35,9 +36,8 @@ export interface NaverMapViewProps extends ViewProps {
    * mapType 속성을 지정하면 지도의 유형을 변경할 수 있습니다.
    * 지도의 유형을 변경하면 가장 바닥에 나타나는 배경 지도의 스타일이 변경됩니다.
    *
-   * @see MapType
+   * @see {@link MapType}
    * @group Map Look & Feel
-   *
    * @default Basic
    */
   mapType?: MapType;
@@ -75,8 +75,8 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * [Reference](https://navermaps.github.io/ios-map-sdk/guide-ko/3-1.html)
    *
-   * @see Camera
-   * @see initialCamera
+   * @see {@link Camera}
+   * @see {@link initialCamera}
    * @group Camera
    */
   camera?: Camera;
@@ -87,8 +87,8 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * 컴포넌트가 mount되고 변경해도 동작하지 않습니다.
    *
-   * @see Camera
-   * @see camera
+   * @see {@link Camera}
+   * @see {@link camera}
    * @group Camera
    */
   initialCamera?: Camera;
@@ -105,8 +105,8 @@ export interface NaverMapViewProps extends ViewProps {
    * 예를 들어, `latitudeDelta`가 0.1이라면 위도가 지도의 보이는 곳의 끝과 끝에서 0.1이 차이난다는 것을 의미합니다.
    * 하지만 `longitudeDelta`가 특정 값보다 커서 최대 줌 레벨이 더 작아진다면 0.1보다 더 차이나게 될 수도 있고 반대도 같습니다.
    *
-   * @see Region
-   * @see initialRegion
+   * @see {@link Region}
+   * @see {@link initialRegion}
    * @group Camera
    */
   region?: Region;
@@ -117,11 +117,29 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * 컴포넌트가 mount되고 변경해도 동작하지 않습니다.
    *
-   * @see Region
-   * @see region
+   * @see {@link Region}
+   * @see {@link region}
    * @group Camera
    */
   initialRegion?: Region;
+  /**
+   * `camera`, `region`이 변경될 때 카메라 이동의 애니메이션 지속시간, milliseconds
+   * 0일 때는 애니메이션이 작동하지 않습니다.
+   *
+   * @group Animation
+   * @see {@link animationEasing}
+   * @default 0
+   */
+  animationDuration?: number;
+  /**
+   *
+   * `camera`, `region`이 변경될 때 카메라 이동의 애니메이션 Easing
+   *
+   * @group Animation
+   * @see {@link animationDuration}
+   * @default EaseOut
+   */
+  animationEasing?: CameraAnimationEasing;
   /**
    * indoorMapEnabled 속성을 사용하면 실내지도를 활성화할 수 있습니다.
    * 실내지도가 활성화되면 줌 레벨이 일정 수준 이상이고 실내지도가 있는 영역에 지도의 중심이 위치할 경우 자동으로 해당 영역에 대한 실내지도가 나타납니다.
@@ -247,7 +265,7 @@ export interface NaverMapViewProps extends ViewProps {
   /**
    * 네이버 로고의 위치입니다.
    *
-   * @see LogoAlign
+   * @see {@link LogoAlign}
    * @group Logo
    */
   logoAlign?: LogoAlign;
@@ -255,7 +273,7 @@ export interface NaverMapViewProps extends ViewProps {
   /**
    * 네이버 로고의 마진입니다.
    *
-   * @see Rect
+   * @see {@link Rect}
    * @group Logo
    */
   logoMargin?: Partial<Rect>;
@@ -341,8 +359,8 @@ export interface NaverMapViewProps extends ViewProps {
    * reason은 이벤트를 발생시킨 카메라 이동의 원인입니다.
    * reason을 이용해 카메라 이동의 원인을 지정할 수 있으며, 이벤트 리스너 내에서 이 값을 이용해 어떤 원인에 의해 발생한 이벤트인지 판단할 수 있습니다.
    *
-   * @see CameraChangeReason
-   * @see Camera
+   * @see {@link CameraChangeReason}
+   * @see {@link Camera}
    * @event
    */
   onCameraChanged?: (
@@ -354,7 +372,7 @@ export interface NaverMapViewProps extends ViewProps {
   /**
    * 맵을 클릭했을 때 발생하는 이벤트입니다.
    *
-   * @see Coord
+   * @see {@link Coord}
    * @event
    */
   onTapMap?: (params: Coord & { x: number; y: number }) => void;
@@ -417,6 +435,8 @@ export const NaverMapView = forwardRef(
       initialCamera,
       region,
       initialRegion,
+      animationDuration = 0,
+      animationEasing = Const.DEFAULT_EASING,
       mapType = 'Basic',
       layerGroups = {
         BUILDING: true,
@@ -629,6 +649,8 @@ export const NaverMapView = forwardRef(
                 longitudeDelta: Const.NULL_NUMBER,
               }
         }
+        animationDuration={animationDuration}
+        animationEasing={cameraEasingToNumber(animationEasing)}
         isIndoorEnabled={isIndoorEnabled}
         isNightModeEnabled={isNightModeEnabled}
         isLiteModeEnabled={isLiteModeEnabled}

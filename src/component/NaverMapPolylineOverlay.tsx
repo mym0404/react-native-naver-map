@@ -36,7 +36,7 @@ export interface NaverMapPolylineOverlayProps extends BaseOverlayProps {
    *
    * <img src="https://navermaps.github.io/ios-map-sdk/assets/5-4-captype.png" width="300" alt="preview">
    *
-   * @see CapType
+   * @see {@link CapType}
    * @default Round
    */
   capType?: CapType;
@@ -51,7 +51,7 @@ export interface NaverMapPolylineOverlayProps extends BaseOverlayProps {
    * <img src="https://navermaps.github.io/ios-map-sdk/assets/5-4-join-miter.png" width="300" alt="preview">
    * <img src="https://navermaps.github.io/ios-map-sdk/assets/5-4-join-round.png" width="300" alt="preview">
    *
-   * @see JoinType
+   * @see {@link JoinType}
    * @default Round
    */
   joinType?: JoinType;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useRef, useState, useEffect } from 'react';
 
-import { View, Button, Switch, Text } from 'react-native';
+import { View, Switch, Text, TouchableOpacity } from 'react-native';
 import {
   type MapType,
   NaverMapView,
@@ -23,11 +23,24 @@ const jejuRegion: Region = {
   latitudeDelta: 0.38,
   longitudeDelta: 0.8,
 };
-const jejuCamera: Camera = {
-  latitude: jejuRegion.latitude + jejuRegion.latitudeDelta / 2,
-  longitude: jejuRegion.longitude + jejuRegion.longitudeDelta / 2,
-  zoom: 16,
-};
+
+const Cameras = {
+  Seolleung: {
+    latitude: 37.50497126,
+    longitude: 127.04905021,
+    zoom: 14,
+  },
+  Gangnam: {
+    latitude: 37.498040483,
+    longitude: 127.02758183,
+    zoom: 14,
+  },
+  Jeju: {
+    latitude: jejuRegion.latitude + jejuRegion.latitudeDelta / 2,
+    longitude: jejuRegion.longitude + jejuRegion.longitudeDelta / 2,
+    zoom: 10,
+  },
+} satisfies Record<string, Camera>;
 
 /**
  * @private
@@ -45,6 +58,8 @@ export const MapTypes = [
 export default function App() {
   const ref = useRef<NaverMapViewRef>(null);
 
+  const [camera, setCamera] = useState(Cameras.Jeju);
+
   const [nightMode, setNightMode] = useState(false);
   const [indoor, setIndoor] = useState(false);
   const [mapType, setMapType] = useState<MapType>(MapTypes[0]!);
@@ -61,12 +76,16 @@ export default function App() {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
       <NaverMapView
-        // camera={jejuCamera}
+        camera={camera}
         // initialCamera={jejuCamera}
         // region={jejuRegion}
-        initialRegion={jejuRegion}
+        // initialRegion={jejuRegion}
         ref={ref}
         style={{ flex: 1 }}
         mapType={mapType}
@@ -90,6 +109,8 @@ export default function App() {
         isExtentBoundedInKorea
         logoAlign={'TopRight'}
         locale={'ja'}
+        animationDuration={5000}
+        animationEasing={'Fly'}
         // onInitialized={() => console.log('initialized!')}
         // onOptionChanged={() => console.log('Option Changed!')}
         // onCameraChanged={(args) =>
@@ -110,8 +131,6 @@ export default function App() {
             key: '1234',
             text: '123',
           }}
-          width={100}
-          height={100}
         />
         {/*<NaverMapMarkerOverlay*/}
         {/*  latitude={33.4165607356}*/}
@@ -144,8 +163,6 @@ export default function App() {
             key: '1234',
             text: '123',
           }}
-          width={100}
-          height={100}
           image={require('./logo180.png')}
         />
         <NaverMapMarkerOverlay
@@ -203,12 +220,13 @@ export default function App() {
           flexDirection: 'row',
           flexWrap: 'wrap',
           alignItems: 'stretch',
-          paddingVertical: 24,
-          paddingHorizontal: 20,
-          gap: 12,
+          paddingVertical: 20,
+          paddingHorizontal: 12,
+          gap: 6,
+          backgroundColor: '#000',
         }}
       >
-        <Button
+        <Btn
           title={`Type(${mapType})`}
           onPress={() =>
             setMapType(
@@ -218,13 +236,19 @@ export default function App() {
             )
           }
         />
-        <Button
-          title={'Move to'}
+        <Btn
+          title={'Update Camera'}
           onPress={() => {
-            ref.current?.animateCameraTo(jejuCamera);
+            setCamera(Cameras.Gangnam);
           }}
         />
-        <Button
+        <Btn
+          title={'Move to'}
+          onPress={() => {
+            ref.current?.animateCameraTo(Cameras.Jeju);
+          }}
+        />
+        <Btn
           title={'Move by'}
           onPress={() => {
             ref.current?.animateCameraBy({
@@ -233,7 +257,7 @@ export default function App() {
             });
           }}
         />
-        <Button
+        <Btn
           title={'Move Two Coord'}
           onPress={() => {
             ref.current?.animateCameraWithTwoCoords({
@@ -248,7 +272,7 @@ export default function App() {
             });
           }}
         />
-        <Button
+        <Btn
           title={'Move Region'}
           onPress={() => {
             ref.current?.animateRegionTo({
@@ -259,13 +283,13 @@ export default function App() {
             });
           }}
         />
-        <Button
+        <Btn
           title={'Cancel'}
           onPress={() => {
             ref.current?.cancelAnimation();
           }}
         />
-        <Button
+        <Btn
           title={'Location Tracking Mode'}
           onPress={() => {
             ref.current?.setLocationTrackingMode('Face');
@@ -279,7 +303,7 @@ export default function App() {
         <Toggle
           value={myLocation}
           onChange={setMyLocation}
-          text={'Location Button'}
+          text={'Location Btn'}
         />
         <Toggle
           value={zoomControls}
@@ -310,6 +334,27 @@ export default function App() {
   );
 }
 
+const Btn = ({ onPress, title }: { title: string; onPress: () => void }) => {
+  return (
+    <TouchableOpacity
+      accessibilityRole={'button'}
+      accessibilityLabel={title}
+      style={{
+        paddingVertical: 4,
+        paddingHorizontal: 6,
+        borderRadius: 4,
+        borderWidth: 1,
+        borderColor: '#aaa',
+      }}
+      onPress={onPress}
+    >
+      <Text style={{ fontWeight: 'bold', color: '#ddd', fontSize: 10 }}>
+        {title}
+      </Text>
+    </TouchableOpacity>
+  );
+};
+
 const Toggle = ({
   onChange,
   text,
@@ -321,8 +366,18 @@ const Toggle = ({
 }) => {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-      <Text>{text}</Text>
-      <Switch value={value} onValueChange={onChange} />
+      <Text style={{ fontWeight: 'bold', color: '#bbb', fontSize: 10 }}>
+        {text}
+      </Text>
+      <Switch
+        value={value}
+        onValueChange={onChange}
+        thumbColor={'white'}
+        trackColor={{
+          true: '#2a6',
+          false: 'gray',
+        }}
+      />
     </View>
   );
 };
@@ -341,16 +396,19 @@ const Range = ({
   max?: number;
 }) => {
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-      <Text>{text}</Text>
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+      <Text style={{ fontWeight: 'bold', color: '#bbb', fontSize: 10 }}>
+        {text}
+      </Text>
       <Slider
-        style={{ width: 100, height: 32 }}
+        style={{ width: 80, height: 32 }}
         minimumValue={min}
         maximumValue={max}
         minimumTrackTintColor={'#222222'}
         maximumTrackTintColor={'#000000'}
         onValueChange={onChange}
         value={value}
+        thumbTintColor={'white'}
       />
     </View>
   );

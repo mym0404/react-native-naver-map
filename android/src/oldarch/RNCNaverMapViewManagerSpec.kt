@@ -13,6 +13,8 @@ internal interface RNCNaverMapViewManagerInterface<T : ViewGroup?> {
     fun setCamera(view: T, value: ReadableMap?)
     fun setInitialRegion(view: T, value: ReadableMap?)
     fun setRegion(view: T, value: ReadableMap?)
+    fun setAnimationDuration(view: T, value: Int)
+    fun setAnimationEasing(view: T, value: Int)
     fun setIsIndoorEnabled(view: T, value: Boolean)
     fun setIsNightModeEnabled(view: T, value: Boolean)
     fun setIsLiteModeEnabled(view: T, value: Boolean)

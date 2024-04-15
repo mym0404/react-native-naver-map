@@ -323,13 +323,13 @@ export interface NaverMapMarkerOverlayProps
   /**
    * 마커의 캡션입니다.
    *
-   * @see CaptionType
+   * @see {@link CaptionType}
    */
   caption?: CaptionType;
   /**
    * 마커의 서브캡션입니다.
    *
-   * @see SubCaptionType
+   * @see {@link SubCaptionType}
    */
   subCaption?: SubCaptionType;
 }
