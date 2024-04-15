@@ -19,6 +19,30 @@ interface BaseOverlay {
   isMaxZoomInclusive: boolean;
 }
 
+export type NativeCaptionProp = Readonly<{
+  key: string;
+  text: string;
+  requestedWidth?: Double;
+  align?: Int32;
+  offset?: Double;
+  color?: Int32;
+  haloColor?: Int32;
+  textSize?: Double;
+  minZoom?: Double;
+  maxZoom?: Double;
+}>;
+
+export type NativeSubCaptionProp = Readonly<{
+  key: string;
+  text: string;
+  color?: Int32;
+  haloColor?: Int32;
+  textSize?: Double;
+  requestedWidth?: Double;
+  minZoom?: Double;
+  maxZoom?: Double;
+}>;
+
 ////////////////////
 
 interface Props extends BaseOverlay, ViewProps {
@@ -37,28 +61,8 @@ interface Props extends BaseOverlay, ViewProps {
   isForceShowIcon?: boolean;
   tintColor?: Int32;
   image?: string;
-  caption?: Readonly<{
-    key: string;
-    text: string;
-    requestedWidth?: Double;
-    align?: Int32;
-    offset?: Double;
-    color?: Int32;
-    haloColor?: Int32;
-    textSize?: Double;
-    minZoom?: Double;
-    maxZoom?: Double;
-  }>;
-  subCaption?: Readonly<{
-    key: string;
-    text: string;
-    color?: Int32;
-    haloColor?: Int32;
-    textSize?: Double;
-    requestedWidth?: Double;
-    minZoom?: Double;
-    maxZoom?: Double;
-  }>;
+  caption?: NativeCaptionProp;
+  subCaption?: NativeSubCaptionProp;
 }
 
 export default codegenNativeComponent<Props>('RNCNaverMapMarker');
