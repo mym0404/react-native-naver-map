@@ -6,8 +6,11 @@
 # React Native Naver Map
 
 [![NPM](http://img.shields.io/npm/v/@mj-studio/react-native-naver-map)](https://npmjs.org/package/@mj-studio/react-native-naver-map)
-[![Android SDK - 3.18.0](https://img.shields.io/badge/Android_SDK-3.18.0-2ea44f)](https://)
-[![iOS SDK - 3.18.0](https://img.shields.io/badge/iOS_SDK-3.18.0-3522ff)](https://)
+![Android SDK - 3.18.0](https://img.shields.io/badge/Android_SDK-3.18.0-2ea44f)
+![iOS SDK - 3.18.0](https://img.shields.io/badge/iOS_SDK-3.18.0-3522ff)
+
+![weekly download badge](https://img.shields.io/npm/dm/@mj-studio/react-native-naver-map.svg)
+
 
 [API Docs](https://mj-studio-library.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)
 
