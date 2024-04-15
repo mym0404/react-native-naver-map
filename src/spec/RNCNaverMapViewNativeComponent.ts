@@ -57,6 +57,9 @@ interface Props extends ViewProps {
   initialRegion?: Readonly<Region>;
   region?: Readonly<Region>;
 
+  animationDuration?: Int32;
+  animationEasing?: Int32 /*'EaseIn' | 'None' | 'Linear' | 'Fly' | 'EaseOut'*/;
+
   isIndoorEnabled?: boolean;
   isNightModeEnabled?: boolean;
   isLiteModeEnabled?: boolean;

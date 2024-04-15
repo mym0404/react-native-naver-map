@@ -1,33 +1,43 @@
-import * as React from 'react';
-import { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 
-import { View, Button, Switch, Text } from 'react-native';
+import { View } from 'react-native';
 import {
   type MapType,
-  NaverMapView,
   type NaverMapViewRef,
-  type Region,
-  NaverMapPolygonOverlay,
-  NaverMapCircleOverlay,
-  NaverMapMarkerOverlay,
   type Camera,
+  NaverMapMarkerOverlay,
+  NaverMapCircleOverlay,
+  NaverMapPolygonOverlay,
+  NaverMapView,
 } from '@mj-studio/react-native-naver-map';
-import Slider from '@react-native-community/slider';
-import { request, PERMISSIONS } from 'react-native-permissions';
+import { Toggle, Btn, Range } from './component/components';
 import { formatJson } from '@mj-studio/js-util';
 import { NaverMapPathOverlay } from '../../src/component/NaverMapPathOverlay';
 
-const jejuRegion: Region = {
-  latitude: 33.20530773,
-  longitude: 126.14656715029,
-  latitudeDelta: 0.38,
-  longitudeDelta: 0.8,
-};
-const jejuCamera: Camera = {
-  latitude: jejuRegion.latitude + jejuRegion.latitudeDelta / 2,
-  longitude: jejuRegion.longitude + jejuRegion.longitudeDelta / 2,
-  zoom: 16,
-};
+// const jejuRegion: Region = {
+//   latitude: 33.20530773,
+//   longitude: 126.14656715029,
+//   latitudeDelta: 0.38,
+//   longitudeDelta: 0.8,
+// };
+
+const Cameras = {
+  Seolleung: {
+    latitude: 37.50497126,
+    longitude: 127.04905021,
+    zoom: 14,
+  },
+  Gangnam: {
+    latitude: 37.498040483,
+    longitude: 127.02758183,
+    zoom: 14,
+  },
+  Jeju: {
+    latitude: 33.39530773,
+    longitude: 126.54656715029,
+    zoom: 8,
+  },
+} satisfies Record<string, Camera>;
 
 /**
  * @private
@@ -45,6 +55,8 @@ export const MapTypes = [
 export default function App() {
   const ref = useRef<NaverMapViewRef>(null);
 
+  const [camera, setCamera] = useState(Cameras.Jeju);
+
   const [nightMode, setNightMode] = useState(false);
   const [indoor, setIndoor] = useState(false);
   const [mapType, setMapType] = useState<MapType>(MapTypes[0]!);
@@ -56,17 +68,21 @@ export default function App() {
   const [indoorLevelPicker, setIndoorLevelPicker] = useState(true);
   const [myLocation, setMyLocation] = useState(true);
 
-  useEffect(() => {
-    request(PERMISSIONS.IOS.LOCATION_ALWAYS);
-  }, []);
+  // useEffect(() => {
+  //   request(PERMISSIONS.IOS.LOCATION_ALWAYS);
+  // }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
       <NaverMapView
-        // camera={jejuCamera}
+        camera={camera}
         // initialCamera={jejuCamera}
         // region={jejuRegion}
-        initialRegion={jejuRegion}
+        // initialRegion={jejuRegion}
         ref={ref}
         style={{ flex: 1 }}
         mapType={mapType}
@@ -90,6 +106,8 @@ export default function App() {
         isExtentBoundedInKorea
         logoAlign={'TopRight'}
         locale={'ja'}
+        animationDuration={500}
+        animationEasing={'Fly'}
         // onInitialized={() => console.log('initialized!')}
         // onOptionChanged={() => console.log('Option Changed!')}
         // onCameraChanged={(args) =>
@@ -110,8 +128,6 @@ export default function App() {
             key: '1234',
             text: '123',
           }}
-          width={100}
-          height={100}
         />
         {/*<NaverMapMarkerOverlay*/}
         {/*  latitude={33.4165607356}*/}
@@ -137,15 +153,13 @@ export default function App() {
           onTap={() => console.log(1)}
           anchor={{ x: 0.5, y: 1 }}
           caption={{
-            key: '1',
+            key: '123',
             text: 'hello',
           }}
           subCaption={{
-            key: '1234',
+            key: '12324',
             text: '123',
           }}
-          width={100}
-          height={100}
           image={require('./logo180.png')}
         />
         <NaverMapMarkerOverlay
@@ -187,28 +201,56 @@ export default function App() {
         />
         <NaverMapPathOverlay
           coords={[
-            { latitude: 33.5249594, longitude: 126.24180047 },
-            { latitude: 33.25683311547, longitude: 126.18193 },
-            { latitude: 33.3332807, longitude: 126.838389399 },
+            { latitude: 32.345332063, longitude: 126.24180047 },
+            { latitude: 32.70066, longitude: 126.2719053 },
+            { latitude: 32.360030018, longitude: 126.37221049 },
+            { longitude: 126.4661129593128, latitude: 32.671851556552205 },
+            { longitude: 126.52469300979067, latitude: 32.38556958856244 },
           ]}
           width={8}
-          color={'red'}
-          progress={-0.6}
-          passedColor={'green'}
+          color={'white'}
+          progress={0.5}
+          passedColor={'black'}
+          outlineWidth={1}
+        />
+        <NaverMapPathOverlay
+          coords={[
+            { longitude: 126.62990091699743, latitude: 32.40928161528563 },
+            { longitude: 126.71646354934853, latitude: 32.636702779539824 },
+            { longitude: 126.81191068177424, latitude: 32.41288583990872 },
+          ]}
+          width={8}
+          color={'white'}
+          progress={0.5}
+          passedColor={'black'}
+          outlineWidth={1}
+        />
+        <NaverMapPathOverlay
+          coords={[
+            { longitude: 126.93240597362552, latitude: 32.433509943138404 },
+            { longitude: 126.93474226289788, latitude: 32.6383463419792 },
+            { longitude: 127.07281803100506, latitude: 32.57085962943823 },
+            { longitude: 126.96403036772739, latitude: 32.52862726684933 },
+          ]}
+          width={8}
+          color={'white'}
+          progress={0.5}
+          passedColor={'black'}
+          outlineWidth={1}
         />
       </NaverMapView>
-
       <View
         style={{
           flexDirection: 'row',
           flexWrap: 'wrap',
           alignItems: 'stretch',
-          paddingVertical: 24,
-          paddingHorizontal: 20,
-          gap: 12,
+          paddingVertical: 20,
+          paddingHorizontal: 12,
+          gap: 6,
+          backgroundColor: '#000',
         }}
       >
-        <Button
+        <Btn
           title={`Type(${mapType})`}
           onPress={() =>
             setMapType(
@@ -218,13 +260,19 @@ export default function App() {
             )
           }
         />
-        <Button
-          title={'Move to'}
+        <Btn
+          title={'Update Camera'}
           onPress={() => {
-            ref.current?.animateCameraTo(jejuCamera);
+            setCamera(Cameras.Gangnam);
           }}
         />
-        <Button
+        <Btn
+          title={'Move to'}
+          onPress={() => {
+            ref.current?.animateCameraTo(Cameras.Jeju);
+          }}
+        />
+        <Btn
           title={'Move by'}
           onPress={() => {
             ref.current?.animateCameraBy({
@@ -233,7 +281,7 @@ export default function App() {
             });
           }}
         />
-        <Button
+        <Btn
           title={'Move Two Coord'}
           onPress={() => {
             ref.current?.animateCameraWithTwoCoords({
@@ -248,7 +296,7 @@ export default function App() {
             });
           }}
         />
-        <Button
+        <Btn
           title={'Move Region'}
           onPress={() => {
             ref.current?.animateRegionTo({
@@ -259,13 +307,13 @@ export default function App() {
             });
           }}
         />
-        <Button
+        <Btn
           title={'Cancel'}
           onPress={() => {
             ref.current?.cancelAnimation();
           }}
         />
-        <Button
+        <Btn
           title={'Location Tracking Mode'}
           onPress={() => {
             ref.current?.setLocationTrackingMode('Face');
@@ -279,7 +327,7 @@ export default function App() {
         <Toggle
           value={myLocation}
           onChange={setMyLocation}
-          text={'Location Button'}
+          text={'Location Btn'}
         />
         <Toggle
           value={zoomControls}
@@ -309,49 +357,3 @@ export default function App() {
     </View>
   );
 }
-
-const Toggle = ({
-  onChange,
-  text,
-  value,
-}: {
-  value: boolean;
-  onChange: (value: boolean) => void;
-  text: string;
-}) => {
-  return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-      <Text>{text}</Text>
-      <Switch value={value} onValueChange={onChange} />
-    </View>
-  );
-};
-
-const Range = ({
-  onChange,
-  text,
-  value,
-  max,
-  min,
-}: {
-  value: number;
-  onChange: (value: number) => void;
-  text: string;
-  min?: number;
-  max?: number;
-}) => {
-  return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-      <Text>{text}</Text>
-      <Slider
-        style={{ width: 100, height: 32 }}
-        minimumValue={min}
-        maximumValue={max}
-        minimumTrackTintColor={'#222222'}
-        maximumTrackTintColor={'#000000'}
-        onValueChange={onChange}
-        value={value}
-      />
-    </View>
-  );
-};

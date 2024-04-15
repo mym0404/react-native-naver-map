@@ -57,6 +57,8 @@ using namespace facebook::react;
 @property(nonatomic, copy) NSDictionary* initialCamera;
 @property(nonatomic, copy) RNCNaverMapRegion* region;
 @property(nonatomic, copy) RNCNaverMapRegion* initialRegion;
+@property(nonatomic, assign) NSInteger animationDuration;
+@property(nonatomic, assign) NSInteger animationEasing;
 @property(nonatomic, copy) RNCNaverMapRect* mapPadding;
 @property(nonatomic, assign) BOOL isIndoorEnabled;
 @property(nonatomic, assign) BOOL isNightModeEnabled;

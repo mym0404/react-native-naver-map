@@ -54,7 +54,6 @@ NMAP_INNER_SETTER(I, i, sMinZoomInclusive, BOOL)
 NMAP_INNER_SETTER(I, i, sMaxZoomInclusive, BOOL)
 
 NMAP_INNER_SETTER(W, w, idth, double)
-NMAP_INNER_SETTER(O, o, utlineWidth, double)
 NMAP_INNER_SETTER(P, p, atternInterval, NSInteger)
 NMAP_INNER_SETTER(P, p, rogress, double)
 
@@ -73,6 +72,10 @@ NMAP_INNER_SETTER(P, p, rogress, double)
 - (void)setPassedOutlineColor:(NSInteger)passedOutlineColor {
   _passedOutlineColor = passedOutlineColor;
   _inner.passedOutlineColor = [Utils intToColor:passedOutlineColor];
+}
+- (void)setOutlineWidth:(double)outlineWidth{
+  _outlineWidth = outlineWidth;
+  _inner.outlineWidth = outlineWidth;
 }
 
 NMAP_INNER_SETTER(I, i, sHideCollidedSymbols, BOOL)
