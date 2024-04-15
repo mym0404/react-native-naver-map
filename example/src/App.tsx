@@ -42,7 +42,7 @@ const Cameras = {
 /**
  * @private
  */
-export const MapTypes = [
+const MapTypes = [
   'Basic',
   'Navi',
   'Satellite',
@@ -116,16 +116,10 @@ export default function App() {
         onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
       >
         <NaverMapMarkerOverlay
-          latitude={33.3565607356}
-          longitude={126.48599018}
+          latitude={33.1622465837814}
+          longitude={126.277859838727}
           onTap={() => console.log(1)}
           anchor={{ x: 0.5, y: 1 }}
-          caption={{
-            text: 'hello',
-          }}
-          subCaption={{
-            text: '123',
-          }}
         />
         {/*<NaverMapMarkerOverlay*/}
         {/*  latitude={33.4165607356}*/}
