@@ -135,10 +135,7 @@
     "plugins": {
       "@release-it/conventional-changelog": {
         "header": "# Changelog",
-        "preset": "conventionalcommits",
-        "writerOpts": {
-          "groupBy": "scope"
-        }
+        "preset": "conventionalcommits"
       }
     }
   },
