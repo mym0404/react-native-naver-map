@@ -106,7 +106,7 @@ export default function App() {
         isExtentBoundedInKorea
         logoAlign={'TopRight'}
         locale={'ja'}
-        animationDuration={0}
+        animationDuration={500}
         animationEasing={'Fly'}
         // onInitialized={() => console.log('initialized!')}
         // onOptionChanged={() => console.log('Option Changed!')}
@@ -153,11 +153,11 @@ export default function App() {
           onTap={() => console.log(1)}
           anchor={{ x: 0.5, y: 1 }}
           caption={{
-            key: '1',
+            key: '123',
             text: 'hello',
           }}
           subCaption={{
-            key: '1234',
+            key: '12324',
             text: '123',
           }}
           image={require('./logo180.png')}
@@ -211,6 +211,7 @@ export default function App() {
           color={'white'}
           progress={0.5}
           passedColor={'black'}
+          outlineWidth={1}
         />
         <NaverMapPathOverlay
           coords={[
@@ -222,6 +223,7 @@ export default function App() {
           color={'white'}
           progress={0.5}
           passedColor={'black'}
+          outlineWidth={1}
         />
         <NaverMapPathOverlay
           coords={[
@@ -234,6 +236,7 @@ export default function App() {
           color={'white'}
           progress={0.5}
           passedColor={'black'}
+          outlineWidth={1}
         />
       </NaverMapView>
       <View

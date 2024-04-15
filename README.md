@@ -23,7 +23,7 @@
 
 리액트 네이티브 [Naver Map](https://www.ncloud.com/product/applicationService/maps) 컴포넌트입니다.
 
-<img src="https://raw.githubusercontent.com/mym0404/image-archive/master/202404101826965.webp" width="500" alt="preview">
+<img src="https://raw.githubusercontent.com/mym0404/image-archive/master/202404152351235.webp" width="500" alt="preview">
 
 ## 왜 이 라이브러리를 써야하나요?
 

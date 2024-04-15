@@ -30,6 +30,7 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
 @implementation RNCNaverMapViewImpl {
   BOOL _initialRegionSet;
   BOOL _initialCameraSet;
+  BOOL _isFirstCameraAnimationRun;
 
   // Array to manually track RN subviews
   //
@@ -206,7 +207,13 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
                                                                 heading:heading];
   NMFCameraUpdate* update = [NMFCameraUpdate cameraUpdateWithPosition:cameraPosition];
 
+  if (_animationDuration > 0 && _isFirstCameraAnimationRun) {
+    update.animationDuration = (NSTimeInterval)((double)_animationDuration) / 1000;
+    update.animation = getEasingAnimation(_animationEasing);
+  }
+
   [self.mapView moveCamera:update];
+  _isFirstCameraAnimationRun = YES;
 }
 
 - (void)setInitialCamera:(NSDictionary*)initialCamera {
@@ -225,7 +232,13 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
   NMFCameraUpdate* update =
       [NMFCameraUpdate cameraUpdateWithFitBounds:[region convertToNMGLatLngBounds]];
 
+  if (_animationDuration > 0 && _isFirstCameraAnimationRun) {
+    update.animationDuration = (NSTimeInterval)((double)_animationDuration) / 1000;
+    update.animation = getEasingAnimation(_animationEasing);
+  }
+
   [self.mapView moveCamera:update];
+  _isFirstCameraAnimationRun = YES;
 }
 
 - (void)setInitialRegion:(RNCNaverMapRegion*)initialRegion {
