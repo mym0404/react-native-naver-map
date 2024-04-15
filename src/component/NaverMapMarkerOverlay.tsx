@@ -1,8 +1,11 @@
-import { default as NativeNaverMapMarker } from '../spec/RNCNaverMapMarkerNativeComponent';
-import React, { type PropsWithChildren, Children } from 'react';
+import {
+  default as NativeNaverMapMarker,
+  type NativeCaptionProp,
+  type NativeSubCaptionProp,
+} from '../spec/RNCNaverMapMarkerNativeComponent';
+import React, { type PropsWithChildren, Children, useMemo } from 'react';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
 import {
-  type PointProp,
   type ColorValue,
   type ImageSourcePropType,
   Image,
@@ -15,28 +18,9 @@ import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import { type Align } from '../types/Align';
 import type { Coord } from '../types/Coord';
 import { getAlignIntValue, allMarkerImages } from '../internal/Util';
+import type { Point } from '../types/Point';
 
 export interface CaptionType {
-  /**
-   * 캡션의 키값입니다. 캡션의 속성을 변경해도 키값이 변하지 않으면 적용되지 않습니다.
-   *
-   * 속성이 변할 때 키 값도 같이 변경해주어야 합니다.
-   *
-   * @example
-   *
-   * 예를 들어 텍스트와 텍스트의 크기를 동적으로 변경하고 싶다면,
-   *
-   * ```tsx
-   * caption={{
-   *   key: `${text}-${textSize}`,
-   *   text,
-   *   textSize,
-   * }}
-   * ```
-   *
-   * 처럼 작성할 수 있습니다.
-   */
-  key: string;
   /** 캡션으로 표시할 텍스트를 지정할 수 있습니다.
    * 빈 문자열이나 null을 지정하면 캡션이 나타나지 않습니다. */
   text: string;
@@ -85,26 +69,6 @@ export interface CaptionType {
   maxZoom?: Double;
 }
 export interface SubCaptionType {
-  /**
-   * 서브캡션의 키값입니다. 서브캡션의 속성을 변경해도 키값이 변하지 않으면 적용되지 않습니다.
-   *
-   * 속성이 변할 때 키 값도 같이 변경해주어야 합니다.
-   *
-   * @example
-   *
-   * 예를 들어 텍스트와 텍스트의 크기를 동적으로 변경하고 싶다면,
-   *
-   * ```tsx
-   * caption={{
-   *   key: `${text}-${textSize}`,
-   *   text,
-   *   textSize,
-   * }}
-   * ```
-   *
-   * 처럼 작성할 수 있습니다.
-   */
-  key: string;
   /** 캡션으로 표시할 텍스트를 지정할 수 있습니다.
    * 빈 문자열이나 null을 지정하면 캡션이 나타나지 않습니다. */
   text: string;
@@ -147,7 +111,6 @@ export interface SubCaptionType {
   maxZoom?: Double;
 }
 const defaultCaptionProps = {
-  key: 'DEFAULT',
   text: '',
   textSize: 12,
   minZoom: 0,
@@ -157,7 +120,6 @@ const defaultCaptionProps = {
   requestedWidth: 0,
 } satisfies Partial<CaptionType>;
 const defaultSubCaptionProps = {
-  key: 'DEFAULT',
   text: '',
   textSize: 10,
   minZoom: 0,
@@ -200,8 +162,10 @@ export interface NaverMapMarkerOverlayProps
    * 다음은 마커의 앵커를 아이콘의 오른쪽 아래로 지정하는 예제입니다.
    *
    * <img src="https://navermaps.github.io/android-map-sdk/assets/5-2-anchor.png" alt="example2" width="500">
+   *
+   * @default {x: 0.5, y: 1}
    */
-  anchor?: PointProp;
+  anchor?: Point;
   /**
    * angle 속성을 지정하면 아이콘을 회전시킬 수 있습니다. 각도는 화면의 위쪽 방향을 기준으로 시계 방향으로 커집니다. 즉, 0도일 경우 화면의 위쪽, 90도일 경우 오른쪽, 180도일 경우 아래쪽을 향하게 됩니다.
    *
@@ -348,7 +312,7 @@ export const NaverMapMarkerOverlay = ({
   height = Const.NULL_NUMBER,
 
   alpha = 1,
-  anchor = { x: 0, y: 0 },
+  anchor = { x: 0.5, y: 1 },
   angle = 0,
   isFlatEnabled = false,
   isForceShowIcon = false,
@@ -378,12 +342,50 @@ export const NaverMapMarkerOverlay = ({
     image ? getImageUri(image) : true,
     "[NaverMapMarkerOverlay] `image` uri is not found. If it is network image, then it should `{'uri': '...'}`. If it is local image, then it should be a ImageSourcePropType like `require('./myImage.png')`"
   );
+
+  const coord = useMemo<Coord>(
+    () => ({ latitude, longitude }),
+    [latitude, longitude]
+  );
+
+  const _caption = useMemo<NativeCaptionProp>(() => {
+    const inner = {
+      ...defaultCaptionProps,
+      ...caption,
+      align: getAlignIntValue(caption?.align),
+      color: processColor(
+        caption?.color ?? defaultCaptionProps.color
+      ) as number,
+      haloColor: processColor(
+        caption?.haloColor ?? defaultCaptionProps.haloColor
+      ) as number,
+    } satisfies Omit<NativeCaptionProp, 'key'>;
+
+    return Object.assign(inner, {
+      key: JSON.stringify(inner),
+    });
+  }, [caption]);
+
+  const _subCaption = useMemo<NativeSubCaptionProp>(() => {
+    const inner = {
+      ...defaultSubCaptionProps,
+      ...subCaption,
+      color: processColor(
+        subCaption?.color ?? defaultSubCaptionProps.color
+      ) as number,
+      haloColor: processColor(
+        subCaption?.haloColor ?? defaultSubCaptionProps.haloColor
+      ) as number,
+    };
+
+    return Object.assign(inner, {
+      key: JSON.stringify(inner),
+    });
+  }, [subCaption]);
+
   return (
     <NativeNaverMapMarker
-      coord={{
-        latitude,
-        longitude,
-      }}
+      coord={coord}
       zIndexValue={zIndex}
       isHidden={isHidden}
       minZoom={minZoom}
@@ -404,27 +406,8 @@ export const NaverMapMarkerOverlay = ({
       tintColor={processColor(tintColor) as number}
       image={getImageUri(image) ?? 'default'}
       onTapOverlay={onTap}
-      caption={{
-        ...defaultCaptionProps,
-        ...caption,
-        align: getAlignIntValue(caption?.align),
-        color: processColor(
-          caption?.color ?? defaultCaptionProps.color
-        ) as number,
-        haloColor: processColor(
-          caption?.haloColor ?? defaultCaptionProps.haloColor
-        ) as number,
-      }}
-      subCaption={{
-        ...defaultSubCaptionProps,
-        ...subCaption,
-        color: processColor(
-          subCaption?.color ?? defaultSubCaptionProps.color
-        ) as number,
-        haloColor: processColor(
-          subCaption?.haloColor ?? defaultSubCaptionProps.haloColor
-        ) as number,
-      }}
+      caption={_caption}
+      subCaption={_subCaption}
       children={children}
     />
   );

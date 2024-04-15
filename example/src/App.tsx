@@ -121,11 +121,9 @@ export default function App() {
           onTap={() => console.log(1)}
           anchor={{ x: 0.5, y: 1 }}
           caption={{
-            key: '1',
             text: 'hello',
           }}
           subCaption={{
-            key: '1234',
             text: '123',
           }}
         />
@@ -153,11 +151,9 @@ export default function App() {
           onTap={() => console.log(1)}
           anchor={{ x: 0.5, y: 1 }}
           caption={{
-            key: '123',
-            text: 'hello',
+            text: 'helloj2',
           }}
           subCaption={{
-            key: '12324',
             text: '123',
           }}
           image={require('./logo180.png')}
@@ -168,11 +164,9 @@ export default function App() {
           onTap={() => console.log(1)}
           anchor={{ x: 0.5, y: 1 }}
           caption={{
-            key: '1',
             text: 'hello',
           }}
           subCaption={{
-            key: '1234',
             text: '123',
           }}
           width={100}

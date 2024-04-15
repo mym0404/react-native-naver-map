@@ -38,3 +38,4 @@ export * from './types/CapType';
 export * from './types/JoinType';
 export * from './types/LocationTrackingMode';
 export * from './types/CameraMoveBaseParams';
+export * from './types/Point';
