@@ -68,13 +68,11 @@ body:
       description: What version of Device Version are you running?
       placeholder: ex. Android 34, iOS 17.4
   - type: checkboxes
-    id: expo
     attributes:
       label: Expo App
       description: Are you using Expo?
       options:
-        - label: Yes
-          required: true
+        - label: I am using Expo
   - type: textarea
     id: what-happened
     attributes:
