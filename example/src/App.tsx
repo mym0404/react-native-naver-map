@@ -1,28 +1,25 @@
-import * as React from 'react';
-import { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 
-import { View, Switch, Text, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import {
   type MapType,
-  NaverMapView,
   type NaverMapViewRef,
-  type Region,
-  NaverMapPolygonOverlay,
-  NaverMapCircleOverlay,
-  NaverMapMarkerOverlay,
   type Camera,
+  NaverMapMarkerOverlay,
+  NaverMapCircleOverlay,
+  NaverMapPolygonOverlay,
+  NaverMapView,
 } from '@mj-studio/react-native-naver-map';
-import Slider from '@react-native-community/slider';
-import { request, PERMISSIONS } from 'react-native-permissions';
+import { Toggle, Btn, Range } from './component/components';
 import { formatJson } from '@mj-studio/js-util';
 import { NaverMapPathOverlay } from '../../src/component/NaverMapPathOverlay';
 
-const jejuRegion: Region = {
-  latitude: 33.20530773,
-  longitude: 126.14656715029,
-  latitudeDelta: 0.38,
-  longitudeDelta: 0.8,
-};
+// const jejuRegion: Region = {
+//   latitude: 33.20530773,
+//   longitude: 126.14656715029,
+//   latitudeDelta: 0.38,
+//   longitudeDelta: 0.8,
+// };
 
 const Cameras = {
   Seolleung: {
@@ -36,9 +33,9 @@ const Cameras = {
     zoom: 14,
   },
   Jeju: {
-    latitude: jejuRegion.latitude + jejuRegion.latitudeDelta / 2,
-    longitude: jejuRegion.longitude + jejuRegion.longitudeDelta / 2,
-    zoom: 10,
+    latitude: 33.39530773,
+    longitude: 126.54656715029,
+    zoom: 8,
   },
 } satisfies Record<string, Camera>;
 
@@ -71,9 +68,9 @@ export default function App() {
   const [indoorLevelPicker, setIndoorLevelPicker] = useState(true);
   const [myLocation, setMyLocation] = useState(true);
 
-  useEffect(() => {
-    request(PERMISSIONS.IOS.LOCATION_ALWAYS);
-  }, []);
+  // useEffect(() => {
+  //   request(PERMISSIONS.IOS.LOCATION_ALWAYS);
+  // }, []);
 
   return (
     <View
@@ -109,7 +106,7 @@ export default function App() {
         isExtentBoundedInKorea
         logoAlign={'TopRight'}
         locale={'ja'}
-        animationDuration={5000}
+        animationDuration={0}
         animationEasing={'Fly'}
         // onInitialized={() => console.log('initialized!')}
         // onOptionChanged={() => console.log('Option Changed!')}
@@ -204,17 +201,41 @@ export default function App() {
         />
         <NaverMapPathOverlay
           coords={[
-            { latitude: 33.5249594, longitude: 126.24180047 },
-            { latitude: 33.25683311547, longitude: 126.18193 },
-            { latitude: 33.3332807, longitude: 126.838389399 },
+            { latitude: 32.345332063, longitude: 126.24180047 },
+            { latitude: 32.70066, longitude: 126.2719053 },
+            { latitude: 32.360030018, longitude: 126.37221049 },
+            { longitude: 126.4661129593128, latitude: 32.671851556552205 },
+            { longitude: 126.52469300979067, latitude: 32.38556958856244 },
           ]}
           width={8}
-          color={'red'}
-          progress={-0.6}
-          passedColor={'green'}
+          color={'white'}
+          progress={0.5}
+          passedColor={'black'}
+        />
+        <NaverMapPathOverlay
+          coords={[
+            { longitude: 126.62990091699743, latitude: 32.40928161528563 },
+            { longitude: 126.71646354934853, latitude: 32.636702779539824 },
+            { longitude: 126.81191068177424, latitude: 32.41288583990872 },
+          ]}
+          width={8}
+          color={'white'}
+          progress={0.5}
+          passedColor={'black'}
+        />
+        <NaverMapPathOverlay
+          coords={[
+            { longitude: 126.93240597362552, latitude: 32.433509943138404 },
+            { longitude: 126.93474226289788, latitude: 32.6383463419792 },
+            { longitude: 127.07281803100506, latitude: 32.57085962943823 },
+            { longitude: 126.96403036772739, latitude: 32.52862726684933 },
+          ]}
+          width={8}
+          color={'white'}
+          progress={0.5}
+          passedColor={'black'}
         />
       </NaverMapView>
-
       <View
         style={{
           flexDirection: 'row',
@@ -333,83 +354,3 @@ export default function App() {
     </View>
   );
 }
-
-const Btn = ({ onPress, title }: { title: string; onPress: () => void }) => {
-  return (
-    <TouchableOpacity
-      accessibilityRole={'button'}
-      accessibilityLabel={title}
-      style={{
-        paddingVertical: 4,
-        paddingHorizontal: 6,
-        borderRadius: 4,
-        borderWidth: 1,
-        borderColor: '#aaa',
-      }}
-      onPress={onPress}
-    >
-      <Text style={{ fontWeight: 'bold', color: '#ddd', fontSize: 10 }}>
-        {title}
-      </Text>
-    </TouchableOpacity>
-  );
-};
-
-const Toggle = ({
-  onChange,
-  text,
-  value,
-}: {
-  value: boolean;
-  onChange: (value: boolean) => void;
-  text: string;
-}) => {
-  return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-      <Text style={{ fontWeight: 'bold', color: '#bbb', fontSize: 10 }}>
-        {text}
-      </Text>
-      <Switch
-        value={value}
-        onValueChange={onChange}
-        thumbColor={'white'}
-        trackColor={{
-          true: '#2a6',
-          false: 'gray',
-        }}
-      />
-    </View>
-  );
-};
-
-const Range = ({
-  onChange,
-  text,
-  value,
-  max,
-  min,
-}: {
-  value: number;
-  onChange: (value: number) => void;
-  text: string;
-  min?: number;
-  max?: number;
-}) => {
-  return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-      <Text style={{ fontWeight: 'bold', color: '#bbb', fontSize: 10 }}>
-        {text}
-      </Text>
-      <Slider
-        style={{ width: 80, height: 32 }}
-        minimumValue={min}
-        maximumValue={max}
-        minimumTrackTintColor={'#222222'}
-        maximumTrackTintColor={'#000000'}
-        onValueChange={onChange}
-        value={value}
-        thumbTintColor={'white'}
-      />
-    </View>
-  );
-};
