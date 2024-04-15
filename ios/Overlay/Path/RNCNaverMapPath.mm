@@ -73,7 +73,7 @@ NMAP_INNER_SETTER(P, p, rogress, double)
   _passedOutlineColor = passedOutlineColor;
   _inner.passedOutlineColor = [Utils intToColor:passedOutlineColor];
 }
-- (void)setOutlineWidth:(double)outlineWidth{
+- (void)setOutlineWidth:(double)outlineWidth {
   _outlineWidth = outlineWidth;
   _inner.outlineWidth = outlineWidth;
 }

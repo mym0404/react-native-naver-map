@@ -130,7 +130,8 @@
       "publish": true
     },
     "github": {
-      "release": true
+      "release": true,
+      "releaseNotes": "FROM={{latestTag}} TO={{tagName}} node ./script/get-release-notes.js"
     },
     "plugins": {
       "@release-it/conventional-changelog": {
