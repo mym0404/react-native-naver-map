@@ -21,6 +21,10 @@ export {
   NaverMapPolylineOverlay,
   type NaverMapPolylineOverlayProps,
 } from './component/NaverMapPolylineOverlay';
+export {
+  NaverMapPathOverlay,
+  type NaverMapPathOverlayProps,
+} from './component/NaverMapPathOverlay';
 
 export * from './spec/RNCNaverMapViewNativeComponent';
 export * from './types/BaseOverlayProps';

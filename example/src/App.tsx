@@ -9,10 +9,10 @@ import {
   NaverMapCircleOverlay,
   NaverMapPolygonOverlay,
   NaverMapView,
+  NaverMapPathOverlay,
 } from '@mj-studio/react-native-naver-map';
 import { Toggle, Btn, Range } from './component/components';
 import { formatJson } from '@mj-studio/js-util';
-import { NaverMapPathOverlay } from '../../src/component/NaverMapPathOverlay';
 
 // const jejuRegion: Region = {
 //   latitude: 33.20530773,
