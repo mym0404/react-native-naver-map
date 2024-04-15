@@ -130,12 +130,15 @@
       "publish": true
     },
     "github": {
-      "release": true,
-      "releaseNotes": "./generate-release-notes.sh ${latestVersion} v${version}"
+      "release": true
     },
     "plugins": {
       "@release-it/conventional-changelog": {
-        "preset": "angular"
+        "header": "# Changelog",
+        "preset": "conventionalcommits",
+        "writerOpts": {
+          "groupBy": "scope"
+        }
       }
     }
   },
