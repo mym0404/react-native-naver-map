@@ -413,12 +413,14 @@ Naver Map SDK에서 내부적으로 이용하는 `FusedLocationSource`는 사용
 
 Android는 비교적 간단하게 권한을 구현할 수 있습니다.
 
-아래 두 가지만 `AndroidManifest.xml`에 사용한다고 명시하면 됩니다.
+아래 권한들만 `AndroidManifest.xml`에 사용한다고 명시하면 됩니다.
 
 - `android.permission.ACCESS_FINE_LOCATION`
-  - 정확한 위치 정보
+  - 정확한 위치 정보 권한
 - `android.permission.ACCESS_COARSE_LOCATION`
-  - 대략적인 위치 정보
+  - 대략적인 위치 정보 권한
+- `android.permission.ACCESS_BACKGROUND_LOCATION`
+  - 백그라운드 상태에서 위치 정보 권한
 
 #### 코드에서의 권한 요청
 
