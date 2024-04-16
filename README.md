@@ -19,7 +19,7 @@
 
 ---
 
-![rnnm](https://github.com/mj-studio-library/react-native-naver-map/assets/33388801/de8cbe13-1fc7-453b-88a4-41c23a2b2d8b)
+![Thumbnail](https://raw.githubusercontent.com/mym0404/image-archive/master/202404170104669.webp)
 
 리액트 네이티브 [Naver Map](https://www.ncloud.com/product/applicationService/maps) 컴포넌트입니다.
 
