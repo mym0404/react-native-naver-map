@@ -118,6 +118,8 @@ Currently, this package will request location permission for showing user's curr
 <manifest>
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  # optional for background location
+  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 </manifest>
 ```
 
@@ -185,7 +187,8 @@ npx expo install expo-build-properties
         // (optional, you can set with expo-location instead of this package)
         "android": {
           "ACCESS_FINE_LOCATION": true,
-          "ACCESS_COARSE_LOCATION": true
+          "ACCESS_COARSE_LOCATION": true,
+          "ACCESS_BACKGROUND_LOCATION": true
         },
         // (optional, you can set with expo-location instead of this package)
         "ios": {
@@ -397,6 +400,12 @@ setup_permissions([
 ])
 ```
 
+Xcode에서 앱 타겟의 `Signing & Capabilities` 탭에서 `Background Modes`를 활성화하고 `Location updates`옵션을 선택합니다.
+
+이는 백그라운드에서 위치를 받아오기 위해 필요하므로 필요없다면 설정하지 않아도 됩니다.
+
+![Xcode config result](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161737676.webp)
+
 #### Android
 
 Naver Map SDK에서 내부적으로 이용하는 `FusedLocationSource`는 사용자가 [isShowLocationButton prop](https://mj-studio-library.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html#isShowLocationButton)을
@@ -415,6 +424,7 @@ Android는 비교적 간단하게 권한을 구현할 수 있습니다.
 
 여기까지의 설정이 끝났다면 지도가 필요한 화면에서 다음과 같이 코드로 권한을 요청할 수 있습니다.
 
+For Bare RN Project or ejected Expo (`react-native-permissions`)
 ```tsx
 // useEffect는 단순히 컴포넌트가 mount될 때 호출해주기 위해서 사용되었습니다.
 useEffect(() => {
@@ -435,7 +445,10 @@ useEffect(() => {
     });
   }
   if (Platform.OS === 'android') {
-    request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
+    requestMultiple([
+      PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
+    ])
       .then((status) => {
         console.log(`Location request status: ${status}`);
       })
@@ -446,23 +459,31 @@ useEffect(() => {
 }, []);
 ```
 
-For expo
+For Expo (`expo-location`)
 ```tsx
 import * as Location from 'expo-location'
 
 ...
-
 useEffect(() => {
-   (async () => {
-     try {
-       await Location.requestForegroundPermissionsAsync();
-       await Location.requestBackgroundPermissionsAsync();
-     }catch(e) {
-       console.error(`Location request has been failed: ${e}`);
-     }
-   })();
+  (async () => {
+    try {
+      const {granted} = await Location.requestForegroundPermissionsAsync();
+      /**
+       * Note: Foreground permissions should be granted before asking for the background permissions
+       * (your app can't obtain background permission without foreground permission).
+       */ 
+      if(granted) {
+        await Location.requestBackgroundPermissionsAsync();
+      }
+    } catch(e) {
+      console.error(`Location request has been failed: ${e}`);
+    }
+  })();
 }, []);
 ```
+
+![permission-result-1](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161733072.webp)
+![permission-result-2](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161737907.webp)
 
 ## Components
 

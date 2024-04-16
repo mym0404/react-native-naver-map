@@ -11,6 +11,7 @@ const withNaverMap: ConfigPlugin<{
   android?: {
     ACCESS_FINE_LOCATION?: boolean;
     ACCESS_COARSE_LOCATION?: boolean;
+    ACCESS_BACKGROUND_LOCATION?: boolean;
   };
   ios?: {
     NSLocationAlwaysAndWhenInUseUsageDescription?: string;
@@ -63,6 +64,9 @@ const withNaverMap: ConfigPlugin<{
         : '',
       android.ACCESS_COARSE_LOCATION
         ? 'android.permission.ACCESS_COARSE_LOCATION'
+        : '',
+      android.ACCESS_BACKGROUND_LOCATION
+        ? 'android.permission.ACCESS_BACKGROUND_LOCATION'
         : '',
     ].filter(Boolean)
   );

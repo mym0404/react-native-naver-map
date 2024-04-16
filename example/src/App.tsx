@@ -17,6 +17,7 @@ import {
   request,
   PERMISSIONS,
   requestLocationAccuracy,
+  requestMultiple,
 } from 'react-native-permissions';
 
 // const jejuRegion: Region = {
@@ -91,7 +92,10 @@ export default function App() {
       });
     }
     if (Platform.OS === 'android') {
-      request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
+      requestMultiple([
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
+      ])
         .then((status) => {
           console.log(`Location request status: ${status}`);
         })
