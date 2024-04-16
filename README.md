@@ -19,7 +19,7 @@
 
 ---
 
-![Thumbnail](https://raw.githubusercontent.com/mym0404/image-archive/master/202404170104669.webp)
+![thumbnail](https://raw.githubusercontent.com/mym0404/image-archive/master/202404170109909.webp)
 
 리액트 네이티브 [Naver Map](https://www.ncloud.com/product/applicationService/maps) 컴포넌트입니다.
 
