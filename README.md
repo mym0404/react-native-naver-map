@@ -116,10 +116,12 @@ Currently, this package will request location permission for showing user's curr
 
 ```xml
 <manifest>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 </manifest>
 ```
+
+자세한 권한에 관련된 내용은 [아래](#permission)에 기재되어있습니다.
 
 ### iOS
 
@@ -132,10 +134,8 @@ Currently, this package will request location permission for showing user's curr
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-...
-    <key>NMFClientId</key>
-    <string>YOUR_CLIENT_ID_HERE</string>
-...
+  <key>NMFClientId</key>
+  <string>YOUR_CLIENT_ID_HERE</string>
 <dict>
 <plist>
 ```
@@ -147,17 +147,20 @@ Currently, this package will request location permission for showing user's curr
 ```xml
 <plist version="1.0">
 <dict>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>{{your usage description}}</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>{{your usage description}}</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>{{usage description}}</string>
+  <key>NSLocationTemporaryUsageDescriptionDictionary</key>
+  <dict>
+    <key>{{your purpose key}}</key>
+    <string>{{usage description}}</string>
+  </dict>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>{{usage description}}</string>
 </dict>
 </plist>
 ```
 
-다음은 설정된 모습을 Xcode에서 본 스크린샷입니다.
-
-![xcode screenshot](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*j-1aZQDMa-ODU2k38HXApA.png)
+자세한 권한에 관련된 내용은 [아래](#permission)에 기재되어있습니다.
 
 ### Expo
 
@@ -179,15 +182,19 @@ npx expo install expo-build-properties
       "@mj-studio/react-native-naver-map",
       {
         "client_id": "{{Naver Map Client Key}}",
-        // (optional)
+        // (optional, you can set with expo-location instead of this package)
         "android": {
           "ACCESS_FINE_LOCATION": true,
           "ACCESS_COARSE_LOCATION": true
         },
-        // (optional)
+        // (optional, you can set with expo-location instead of this package)
         "ios": {
-          "NSLocationAlwaysUsageDescription": "{{ your location usage description }}",
-          "NSLocationWhenInUseUsageDescription": "{{ your location usage description }}"
+          "NSLocationAlwaysAndWhenInUseUsageDescription": "{{ your location usage description }}",
+          "NSLocationWhenInUseUsageDescription": "{{ your location usage description }}",
+          "NSLocationTemporaryUsageDescriptionDictionary": {
+            "purposeKey": "{{ your purpose key }}",
+            "usageDescription": "{{ your location usage description }}"
+          }
         }
       }
     ],
@@ -205,6 +212,8 @@ npx expo install expo-build-properties
 ```
 
 Expo는 위에서 설명된 Android, iOS의 설정법이 필요하지 않습니다.
+
+자세한 권한에 관련된 내용은 [아래](#permission)에 기재되어있습니다.
 
 ## Example
 
@@ -334,7 +343,108 @@ const jejuRegion: Region = {
 
 ## Usage
 
-Check our official [Document Site](https://mj-studio-library.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)!
+### API Documentation
+
+[Documentation](https://mj-studio-library.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)
+
+모든 코드엔 JSDoc으로 주석이 삽입되어있으므로 Documentation없이도 개발을 시작할 수 있습니다.
+
+하지만 정확히 어떤 타입들이 있고 어떤 속성을 의미하는지 웹사이트에서 확인하시려면 [Documentation](https://mj-studio-library.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)를 참고해주세요.
+
+### Permission
+
+기본적으로 앱에서 권한은 직접 관리가 되어야 합니다.
+
+이를 관리하기 위해 [react-native-permissions](https://github.com/zoontek/react-native-permissions)라이브러리를 사용하는 예시를 알아보겠습니다.
+
+>[!TIP]
+>Expo 사용자라면 [expo-location](https://docs.expo.dev/versions/latest/sdk/location/)를 참고해서 권한을 사용할 예정이다 라고 명시할 수 있습니다.
+>따라서 아래 내용들 중 대부분은 필요하지 않고, 필요한 권한이 무엇인지, 어떻게 명시해야 하는지를 살펴보신 다음 [expo-location](https://docs.expo.dev/versions/latest/sdk/location/)에서의 사용법을 따르셔야 합니다.
+
+우선 패키지를 설치하고 설정합니다.
+
+```shell
+yarn add react-native-permissions
+```
+
+`react-native-permission`의 각 플랫폼별 설정 방법은 [사용법](https://github.com/zoontek/react-native-permissions#setup)을 직접 참고해
+`Podfile(iOS)`, `AndroidManifest.xml(Android)` 를 적절히 변경해주시길 바랍니다. 
+
+#### iOS
+
+iOS는 다음과 같은 세 가지의 권한이 연관되어있습니다.
+
+- `NSLocationAlwaysAndWhenInUseUsageDescription(>= iOS 11)`
+  - 앱이 foreground와 background 모두에서 위치 정보에 액세스하는 것을 허용합니다.
+  - iOS 11 이상에서는 ﻿NSLocationAlwaysUsageDescription 대신 이 키를 사용해야 합니다.
+- `NSLocationWhenInUseUsageDescription`
+  - 앱이 foreground에 있을 때 (즉, 사용자가 actively하게 앱을 사용 중일 때) 위치 정보에 액세스하는 것을 허용합니다.
+- `NSLocationTemporaryUsageDescriptionDictionary(>= iOS 14)`
+  - 앱이 임시로 정확한 위치 정보에 액세스할 수 있도록 허용합니다. 이는 앱이 특정 작업을 수행하는 동안에만 정확한 위치가 필요한 경우 사용됩니다.
+
+>[!TIP]
+>앱이 iOS 11미만의 기기를 지원하고 있지 않다면 `NSLocationAlwaysUsageDescription`을 기재하지 않아도 됩니다.
+>만약 지원한다면 같이 설정해주셔야 합니다.
+
+그럼 `Podfile`에서 다음과 같은 세 가지의 권한을 허용해줍니다.
+
+```ruby
+setup_permissions([
+  'LocationAccuracy',
+  'LocationAlways',
+  'LocationWhenInUse',
+  ...
+])
+```
+
+#### Android
+
+Naver Map SDK에서 내부적으로 이용하는 `FusedLocationSource`는 사용자가 [isShowLocationButton prop](https://mj-studio-library.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html#isShowLocationButton)을
+`true`로 설정하는 순간 자동으로 권한 요청을 시행합니다.
+
+Android는 비교적 간단하게 권한을 구현할 수 있습니다.
+
+아래 두 가지만 `AndroidManifest.xml`에 사용한다고 명시하면 됩니다.
+
+- `android.permission.ACCESS_FINE_LOCATION`
+  - 정확한 위치 정보
+- `android.permission.ACCESS_COARSE_LOCATION`
+  - 대략적인 위치 정보
+
+#### 코드에서의 권한 요청
+
+여기까지의 설정이 끝났다면 지도가 필요한 화면에서 다음과 같이 코드로 권한을 요청할 수 있습니다.
+
+```tsx
+// useEffect는 단순히 컴포넌트가 mount될 때 호출해주기 위해서 사용되었습니다.
+useEffect(() => {
+  if (Platform.OS === 'ios') {
+    request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((status) => {
+      console.log(`Location request status: ${status}`);
+      if (status === 'granted') {
+        requestLocationAccuracy({
+          purposeKey: 'common-purpose', // replace your purposeKey of Info.plist
+        })
+          .then((accuracy) => {
+            console.log(`Location accuracy is: ${accuracy}`);
+          })
+          .catch((e) => {
+            console.error(`Location accuracy request has been failed: ${e}`);
+          });
+      }
+    });
+  }
+  if (Platform.OS === 'android') {
+    request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
+      .then((status) => {
+        console.log(`Location request status: ${status}`);
+      })
+      .catch((e) => {
+        console.error(`Location request has been failed: ${e}`);
+      });
+  }
+}, []);
+```
 
 ## Components
 

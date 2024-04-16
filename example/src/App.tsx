@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import {
   type MapType,
   type NaverMapViewRef,
@@ -13,6 +13,11 @@ import {
 } from '@mj-studio/react-native-naver-map';
 import { Toggle, Btn, Range } from './component/components';
 import { formatJson } from '@mj-studio/js-util';
+import {
+  request,
+  PERMISSIONS,
+  requestLocationAccuracy,
+} from 'react-native-permissions';
 
 // const jejuRegion: Region = {
 //   latitude: 33.20530773,
@@ -68,9 +73,33 @@ export default function App() {
   const [indoorLevelPicker, setIndoorLevelPicker] = useState(true);
   const [myLocation, setMyLocation] = useState(true);
 
-  // useEffect(() => {
-  //   request(PERMISSIONS.IOS.LOCATION_ALWAYS);
-  // }, []);
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((status) => {
+        console.log(`Location request status: ${status}`);
+        if (status === 'granted') {
+          requestLocationAccuracy({
+            purposeKey: 'common-purpose', // replace your purposeKey of Info.plist
+          })
+            .then((accuracy) => {
+              console.log(`Location accuracy is: ${accuracy}`);
+            })
+            .catch((e) => {
+              console.error(`Location accuracy request has been failed: ${e}`);
+            });
+        }
+      });
+    }
+    if (Platform.OS === 'android') {
+      request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
+        .then((status) => {
+          console.log(`Location request status: ${status}`);
+        })
+        .catch((e) => {
+          console.error(`Location request has been failed: ${e}`);
+        });
+    }
+  }, []);
 
   return (
     <View

@@ -13,19 +13,30 @@ const withNaverMap: ConfigPlugin<{
     ACCESS_COARSE_LOCATION?: boolean;
   };
   ios?: {
-    NSLocationAlwaysUsageDescription?: string;
+    NSLocationAlwaysAndWhenInUseUsageDescription?: string;
+    NSLocationTemporaryUsageDescriptionDictionary?: {
+      purposeKey: string;
+      usageDescription: string;
+    };
     NSLocationWhenInUseUsageDescription?: string;
   };
 }> = (config, { client_id, android = {}, ios = {} }) => {
   config = withInfoPlist(config, (config) => {
     config.modResults.NMFClientId = client_id;
-    if (ios.NSLocationAlwaysUsageDescription) {
-      config.modResults.NSLocationAlwaysUsageDescription =
-        ios.NSLocationAlwaysUsageDescription;
+    if (ios.NSLocationAlwaysAndWhenInUseUsageDescription) {
+      config.modResults.NSLocationAlwaysAndWhenInUseUsageDescription =
+        ios.NSLocationAlwaysAndWhenInUseUsageDescription;
     }
-    if (ios.NSLocationAlwaysUsageDescription) {
+    if (ios.NSLocationWhenInUseUsageDescription) {
       config.modResults.NSLocationAlwaysUsageDescription =
-        ios.NSLocationAlwaysUsageDescription;
+        ios.NSLocationWhenInUseUsageDescription;
+    }
+    if (ios.NSLocationTemporaryUsageDescriptionDictionary) {
+      const { purposeKey, usageDescription } =
+        ios.NSLocationTemporaryUsageDescriptionDictionary;
+      config.modResults.NSLocationTemporaryUsageDescriptionDictionary = {
+        [purposeKey]: usageDescription,
+      };
     }
     return config;
   });

@@ -8,7 +8,7 @@ PODS:
     - hermes-engine/Pre-built (= 0.73.6)
   - hermes-engine/Pre-built (0.73.6)
   - libevent (2.1.12)
-  - mj-studio-react-native-naver-map (1.0.13):
+  - mj-studio-react-native-naver-map (1.0.14):
     - glog
     - hermes-engine
     - NMapsMap (= 3.18.0)
@@ -1344,7 +1344,7 @@ SPEC CHECKSUMS:
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   hermes-engine: 9cecf9953a681df7556b8cc9c74905de8f3293c0
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  mj-studio-react-native-naver-map: 7a85a044dd1808bfd2039ecd99d53a7272963afb
+  mj-studio-react-native-naver-map: 6cfc55d90b02707ab1300f7740470e7d5cf875b8
   NMapsGeometry: 53c573ead66466681cf123f99f698dc8071a4b83
   NMapsMap: 36dc18a1f5f315121b33fccd2398c7a702bf0fc8
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0
@@ -1393,10 +1393,10 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 9636eee762c699ca7c85751a359101797e4c8b3b
   React-utils: d16c1d2251c088ad817996621947d0ac8167b46c
   ReactCommon: 2aa35648354bd4c4665b9a5084a7d37097b89c10
-  RNPermissions: 998b595706d73f160161f3c5a9c11dd1c215dc1b
+  RNPermissions: 6fa25833c1a80f35c03e0a456ffe591b69f09e62
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 805bf71192903b20fc14babe48080582fee65a80
 
-PODFILE CHECKSUM: 19fc19a37e29f5db8df93009850f10258acc64dd
+PODFILE CHECKSUM: 84911b4c52757798c040fdc33fae23430223c20c
 
 COCOAPODS: 1.14.3
