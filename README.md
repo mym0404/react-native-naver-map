@@ -446,6 +446,24 @@ useEffect(() => {
 }, []);
 ```
 
+For expo
+```tsx
+import * as Location from 'expo-location'
+
+...
+
+useEffect(() => {
+   (async () => {
+     try {
+       await Location.requestForegroundPermissionsAsync();
+       await Location.requestBackgroundPermissionsAsync();
+     }catch(e) {
+       console.error(`Location request has been failed: ${e}`);
+     }
+   })();
+}, []);
+```
+
 ## Components
 
 > [!NOTE]
