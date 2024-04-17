@@ -3,7 +3,7 @@ package com.mjstudio.reactnativenavermap.util
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 
-data class RNCNaverMapRegion(
+internal data class RNCNaverMapRegion(
     val latitude: Double,
     val longitude: Double,
     val latitudeDelta: Double,

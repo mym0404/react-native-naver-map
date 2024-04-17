@@ -159,7 +159,7 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
     }
 
     @ReactProp(name = "image")
-    override fun setImage(view: RNCNaverMapMarker?, value: String?) {
+    override fun setImage(view: RNCNaverMapMarker?, value: ReadableMap?) {
         view?.setImage(value)
     }
 

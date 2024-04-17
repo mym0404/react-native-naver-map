@@ -4,8 +4,8 @@ import android.graphics.Rect
 import com.facebook.react.bridge.ReadableMap
 import kotlin.math.roundToInt
 
-object RectUtil {
-    fun getRect(padding: ReadableMap?, density: Float, defaultValue: Double = 0.0): Rect? {
+internal object RectUtil {
+    internal fun getRect(padding: ReadableMap?, density: Float, defaultValue: Double = 0.0): Rect? {
         var left = 0
         var top = 0
         var right = 0

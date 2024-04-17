@@ -174,7 +174,7 @@ export default function App() {
             collapsable={false}
             key={5}
           >
-            <Text>123</Text>
+            <Text>123456</Text>
           </View>
         </NaverMapMarkerOverlay>
         <NaverMapMarkerOverlay

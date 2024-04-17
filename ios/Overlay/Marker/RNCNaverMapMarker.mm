@@ -72,6 +72,13 @@ static NSMutableDictionary* _overlayImageHolder;
   return self;
 }
 
+- (void)dealloc {
+  if (_imageCanceller) {
+    _imageCanceller();
+    _imageCanceller = nil;
+  }
+}
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-missing-super-calls"
 - (void)insertReactSubview:(UIView*)subview atIndex:(NSInteger)atIndex {

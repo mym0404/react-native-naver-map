@@ -4,7 +4,11 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.uimanager.UIManagerHelper
 import com.facebook.react.uimanager.events.Event
 
-fun <T : Event<*>> ReactContext.emitEvent(reactTag: Int, callback: (surfaceId: Int, reactTag: Int) -> T) {
+internal fun <T : Event<*>> ReactContext.emitEvent(
+    reactTag: Int,
+    callback: (surfaceId: Int, reactTag: Int) -> T
+) {
     val surfaceId = UIManagerHelper.getSurfaceId(this)
-    UIManagerHelper.getEventDispatcherForReactTag(this, reactTag)?.dispatchEvent(callback(surfaceId, reactTag))
+    UIManagerHelper.getEventDispatcherForReactTag(this, reactTag)
+        ?.dispatchEvent(callback(surfaceId, reactTag))
 }

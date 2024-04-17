@@ -57,6 +57,10 @@ Expo Go, Snack에선 사용하지
 
 ### 5. 5가지 마커 이미지 타입 및 캐싱 지원
 
+`[iOS, Android] x [new arch, old arch] x [debug, release]`
+
+**총 8가지 조건에서 모두 정상적으로 렌더링 되는 것을 테스트했습니다.**
+
 - 네이버 맵 제공 기본 심볼 (`symbol`)
 - React Native프로젝트의 로컬 이미지 리소스
 - 성능 최적화를 위한 네이티브 프로젝트의 로컬 이미지 리소스 - Android(Drawable), iOS(Bundle Asset)
@@ -521,6 +525,10 @@ useEffect(() => {
 ## 마커 이미지의 종류와 성능
 
 마커의 종류는 총 5가지입니다.
+
+`[iOS, Android] x [new arch, old arch] x [debug, release]`
+
+**총 8가지 조건에서 모두 정상적으로 렌더링 되는 것을 테스트했습니다.**
 
 > [!TIP]
 > `reuseIdentifier`는 전달하지 않아도 모두 자동으로 캐싱이 됩니다.
