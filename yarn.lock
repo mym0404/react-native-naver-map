@@ -6,11 +6,11 @@ __metadata:
   cacheKey: 10
 
 "@8hobbies/typedoc-plugin-404@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "@8hobbies/typedoc-plugin-404@npm:2.0.2"
+  version: 2.1.0
+  resolution: "@8hobbies/typedoc-plugin-404@npm:2.1.0"
   peerDependencies:
     typedoc: ^0.25.13
-  checksum: 10/3af46d7b7d2a97a90c822e5b7518cc608e7ffa49ea0cbbc340064ff2ffaa0140cdd75fac417365663d93b9e153a442f4896dcb5fc6779cc764bd60e0d83fea2b
+  checksum: 10/74c18781285c5c3bf78046a55731abedc7eac7305247f9ab17250741324113dcaa4839170254ae016c4f1d846b44456d759a5c122bcfd09b2de18124c45c60cb
   languageName: node
   linkType: hard
 
