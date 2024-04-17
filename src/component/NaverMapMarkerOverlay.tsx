@@ -234,6 +234,9 @@ export interface NaverMapMarkerOverlayProps
    *
    * 마커의 종류는 총 5가지입니다.
    *
+   * > 되도록이면 마커는 모두 `width`, `height` prop을 사용해야합니다. 2번 타입의 경우 현재 debug/release 빌드의 크기가 `width`, `height`없이 다르게 나오는 현상이 있습니다.
+   * > release에서는 제대로 나옵니다.
+   *
    * 1. Naver Map Basic Symbol (green, red, gray, ...) (caching ✅)
    *
    * ```js
