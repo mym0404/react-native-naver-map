@@ -43,6 +43,16 @@ export type NativeSubCaptionProp = Readonly<{
   maxZoom?: Double;
 }>;
 
+export type NativeImageProp =
+  | undefined
+  | Readonly<{
+      symbol?: string;
+      rnAssetUri?: string;
+      httpUri?: string;
+      assetName?: string;
+      reuseIdentifier?: string;
+    }>;
+
 ////////////////////
 
 interface Props extends BaseOverlay, ViewProps {
@@ -60,7 +70,7 @@ interface Props extends BaseOverlay, ViewProps {
   isHideCollidedCaptions?: boolean;
   isForceShowIcon?: boolean;
   tintColor?: Int32;
-  image?: string;
+  image?: NativeImageProp;
   caption?: NativeCaptionProp;
   subCaption?: NativeSubCaptionProp;
 }

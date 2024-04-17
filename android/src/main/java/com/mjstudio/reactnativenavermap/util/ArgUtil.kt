@@ -7,7 +7,7 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.overlay.Align
 
-fun ReadableMap?.getLatLng(): LatLng? {
+internal fun ReadableMap?.getLatLng(): LatLng? {
     val latitude = this?.getDoubleOrNull("latitude")
     val longitude = this?.getDoubleOrNull("longitude")
     if (isValidNumber(latitude) && isValidNumber(longitude)) {
@@ -16,7 +16,7 @@ fun ReadableMap?.getLatLng(): LatLng? {
     return null
 }
 
-fun Map<String, *>.getLatLng(): LatLng? {
+internal fun Map<String, *>.getLatLng(): LatLng? {
     val latitude = getValue("latitude")
     val longitude = getValue("longitude")
     if (isValidNumber(latitude) && isValidNumber(longitude)) {
@@ -25,21 +25,21 @@ fun Map<String, *>.getLatLng(): LatLng? {
     return null
 }
 
-fun ReadableMap?.getDoubleOrNull(key: String): Double? {
+internal fun ReadableMap?.getDoubleOrNull(key: String): Double? {
     if (this?.hasKey(key) == true) {
         return this.getDouble(key)
     }
     return null
 }
 
-fun ReadableMap.getIntOrNull(key: String): Int? {
+internal fun ReadableMap.getIntOrNull(key: String): Int? {
     if (hasKey(key)) {
         return this.getInt(key)
     }
     return null
 }
 
-fun ReadableMap.getAlign(key: String): Align {
+internal fun ReadableMap.getAlign(key: String): Align {
     if (!hasKey(key)) {
         return Align.Bottom
     }
@@ -56,11 +56,11 @@ fun ReadableMap.getAlign(key: String): Align {
     }
 }
 
-fun ReadableMap?.getLatLngBoundsOrNull(): LatLngBounds? {
+internal fun ReadableMap?.getLatLngBoundsOrNull(): LatLngBounds? {
     return getRegion()?.convertToBounds()
 }
 
-fun ReadableMap?.getRegion(): RNCNaverMapRegion? {
+internal fun ReadableMap?.getRegion(): RNCNaverMapRegion? {
     if (this?.hasKey("latitude") == true && this.hasKey("longitude") && this.hasKey("latitudeDelta") && this.hasKey(
             "longitudeDelta"
         )
@@ -75,7 +75,7 @@ fun ReadableMap?.getRegion(): RNCNaverMapRegion? {
     return null
 }
 
-fun ReadableMap?.getPoint(): PointF? {
+internal fun ReadableMap?.getPoint(): PointF? {
     if (this?.hasKey("x") == true && this.hasKey("y")) {
         val x = getDouble("x")
         val y = getDouble("y")
@@ -84,23 +84,23 @@ fun ReadableMap?.getPoint(): PointF? {
     return null
 }
 
-fun isValidNumber(value: Double?): Boolean {
+internal fun isValidNumber(value: Double?): Boolean {
     if (value == null) return false
     val invalid = -123123123.0
     return !(value < invalid + 1 && value > invalid - 1)
 }
 
-fun isValidNumber(value: Int?): Boolean {
+internal fun isValidNumber(value: Int?): Boolean {
     if (value == null) return false
     return isValidNumber(value.toDouble())
 }
 
-fun isValidNumber(value: Any?): Boolean {
+internal fun isValidNumber(value: Any?): Boolean {
     if (value == null || value !is Number) return false
     return isValidNumber(value.toDouble())
 }
 
-val Double?.px: Int
+internal val Double?.px: Int
     get() = if (this == null) 0 else PixelUtil.toPixelFromDIP(this).toInt()
-val Int?.px: Int
+internal val Int?.px: Int
     get() = if (this == null) 0 else PixelUtil.toPixelFromDIP(toDouble()).toInt()

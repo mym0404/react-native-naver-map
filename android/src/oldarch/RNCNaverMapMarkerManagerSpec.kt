@@ -25,7 +25,7 @@ internal interface RNCNaverMapMarkerManagerInterface<T : ViewGroup?> {
     fun setIsHideCollidedCaptions(view: T, value: Boolean)
     fun setIsForceShowIcon(view: T, value: Boolean)
     fun setTintColor(view: T, value: Int)
-    fun setImage(view: T, value: String?)
+    fun setImage(view: T, value: ReadableMap?)
     fun setCaption(view: T, value: ReadableMap?)
     fun setSubCaption(view: T, value: ReadableMap?)
 }

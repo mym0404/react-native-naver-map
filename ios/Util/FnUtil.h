@@ -6,7 +6,7 @@
 //
 #ifndef FnUtil_h
 #define FnUtil_h
-#import "string"
+#include <string>
 
 static inline BOOL isValidNumber(NSNumber* value) {
   if (!value || [value isKindOfClass:[NSNull class]]) {
@@ -52,6 +52,10 @@ static inline double getDoubleOrDefault(double value, double def) {
 
 static inline NSString* getNsStr(std::string str) {
   return [NSString stringWithUTF8String:str.c_str()];
+}
+
+static inline BOOL isNotEmptyString(NSString* str) {
+  return ![str isKindOfClass:[NSNull class]] && str && str.length > 0;
 }
 
 #endif /* ifndef FnUtil_h */

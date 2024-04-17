@@ -2,23 +2,22 @@ import {
   default as NativeNaverMapMarker,
   type NativeCaptionProp,
   type NativeSubCaptionProp,
+  type NativeImageProp,
 } from '../spec/RNCNaverMapMarkerNativeComponent';
 import React, { type PropsWithChildren, Children, useMemo } from 'react';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
-import {
-  type ColorValue,
-  type ImageSourcePropType,
-  Image,
-  processColor,
-} from 'react-native';
-import { Const } from '../util/Const';
+import { type ColorValue, processColor } from 'react-native';
+import { Const } from '../internal/util/Const';
 import invariant from 'invariant';
-import { type MarkerImages } from '../types/MarkerImages';
 import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import { type Align } from '../types/Align';
 import type { Coord } from '../types/Coord';
-import { getAlignIntValue, allMarkerImages } from '../internal/Util';
+import {
+  getAlignIntValue,
+  convertJsImagePropToNativeProp,
+} from '../internal/Util';
 import type { Point } from '../types/Point';
+import type { MarkerImageProp } from '../types/MarkerImageProp';
 
 export interface CaptionType {
   /** 캡션으로 표시할 텍스트를 지정할 수 있습니다.
@@ -233,39 +232,47 @@ export interface NaverMapMarkerOverlayProps
    *
    * @description
    *
-   * 마커의 종류는 총 네가지입니다.
+   * 마커의 종류는 총 5가지입니다.
    *
-   * 1. Default Symbol (green, red, gray, ...) (caching ✅)
+   * 1. Naver Map Basic Symbol (green, red, gray, ...) (caching ✅)
    *
    * ```js
-   * image={'green'}
+   * image={{symbol: 'green'}}
    * ```
    *
-   * 2. Local Resource (`ImageSourcePropType` of react native) (caching ✅)
-   *
-   * 이는 추후에 더 나은 성능을 위해 Android, iOS native resource를 사용해 screen density에 따라 최적의 마커가 선택되게 할 수 있는 로직을 구현하려
-   * 합니다.
+   * 2. Local Resource (`require` react native image file) (caching ✅)
    *
    * ```js
    * image={require('./marker.png')}
    * ```
    *
-   * 3. Network Image (caching ✅)
+   * 3. Local Native Resource
    *
    * ```js
-   * image={{uri: 'https://example.com/image.png'}}
+   * image={{assetName: 'asset_image'}}
    * ```
    *
-   * > 현재 header auth같은 객채 내의 다른 속성은 지원되지 않습니다.
+   * - iOS: main bundle의 image asset 이름
+   * - Android: resources의 drawable 이름
    *
-   * 4. Custom React View (caching ❌)
+   * 4. Network Image (caching ✅)
    *
-   * iOS에선 현재 View들에 `collapsible=false`를 설정해야 동작할 것입니다.
+   * ```js
+   * image={{httpUri: 'https://example.com/image.png'}}
+   * ```
+   *
+   * > 현재 header같은 속성은 지원되지 않습니다.
+   *
+   * 5. Custom React View (caching ❌)
+   *
+   * iOS(new arch)에선 현재 View들에 `collapsable=false`를 설정해야 동작합니다.
+   *
+   * > 마커의 생김새를 바꿔야 한다면 그것에 대한 의존성들을 제일 상위 자식의 `key`로 전달해야합니다.
    *
    * ```tsx
-   * <NaverMapMarkerOverlay width={100} height={100} ...>
-   *   <View collapsible={false} style={{width: 100, height: 100}}>
-   *     ...
+   * <NaverMapMarkerOverlay width={width} height={height} ...>
+   *   <View key={`${text}/${width}/${height}`} collapsable={false} style={{width, height}}>
+   *     <Text>{text}</Text>
    *   </View>
    * </NaverMapMarkerOverlay>
    * ```
@@ -278,12 +285,11 @@ export interface NaverMapMarkerOverlayProps
    *
    * iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니다.
    *
-   * 두 방법 모두가 이미지 캐싱이 아직 지원되지 않고(추후에 `reuseableIdentifier`같은 속성으로 지원이 가능할 것으로 보입니다), 마커 하나당 많은 리소스를 차지하게
-   * 됩니다.
+   * 두 방법 모두가 이미지 캐싱이 아직 지원되지 않고(추후에 `reuseableIdentifier`같은 속성으로 지원이 가능할 것으로 보입니다), 마커 하나당 많은 리소스를 차지하게 됩니다.
    *
-   * @default green
+   * @default {symbol: 'green'}
    */
-  image?: ImageSourcePropType | (MarkerImages & {});
+  image?: MarkerImageProp;
   /**
    * 마커의 캡션입니다.
    *
@@ -322,7 +328,7 @@ export const NaverMapMarkerOverlay = ({
   isIconPerspectiveEnabled = false,
 
   tintColor,
-  image = 'green',
+  image = { symbol: 'green' },
   onTap,
   caption,
   subCaption,
@@ -332,15 +338,6 @@ export const NaverMapMarkerOverlay = ({
     Children.count(children) <= 1,
     '[NaverMapMarkerOverlay] children count should be equal or less than 1, is %s',
     Children.count(children)
-  );
-
-  invariant(
-    Children.count(children) > 0 ? !image : true,
-    '[NaverMapMarkerOverlay] passing `image` prop and `children` both for the marker image detected. only one of two should be passed.'
-  );
-  invariant(
-    image ? getImageUri(image) : true,
-    "[NaverMapMarkerOverlay] `image` uri is not found. If it is network image, then it should `{'uri': '...'}`. If it is local image, then it should be a ImageSourcePropType like `require('./myImage.png')`"
   );
 
   const coord = useMemo<Coord>(
@@ -383,6 +380,11 @@ export const NaverMapMarkerOverlay = ({
     });
   }, [subCaption]);
 
+  const _image = useMemo<NativeImageProp>(
+    () => convertJsImagePropToNativeProp(image),
+    [image]
+  );
+
   return (
     <NativeNaverMapMarker
       coord={coord}
@@ -404,7 +406,7 @@ export const NaverMapMarkerOverlay = ({
       isHideCollidedSymbols={isHideCollidedSymbols}
       isIconPerspectiveEnabled={isIconPerspectiveEnabled}
       tintColor={processColor(tintColor) as number}
-      image={getImageUri(image) ?? 'default'}
+      image={_image}
       onTapOverlay={onTap}
       caption={_caption}
       subCaption={_subCaption}
@@ -412,14 +414,3 @@ export const NaverMapMarkerOverlay = ({
     />
   );
 };
-
-function getImageUri(src?: ImageSourcePropType | string): string | undefined {
-  let imageUri;
-  if (typeof src === 'string' && allMarkerImages.includes(src as any)) {
-    imageUri = src;
-  } else if (typeof src !== 'string' && src) {
-    let image = Image.resolveAssetSource(src) || { uri: null };
-    imageUri = image.uri;
-  }
-  return imageUri;
-}

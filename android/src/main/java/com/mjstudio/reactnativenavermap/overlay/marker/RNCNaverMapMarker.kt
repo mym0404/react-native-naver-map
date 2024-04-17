@@ -4,33 +4,24 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.drawable.Animatable
-import android.net.Uri
 import android.view.View
 import androidx.core.view.children
 import com.airbnb.android.react.maps.TrackableView
 import com.airbnb.android.react.maps.ViewChangesTracker
-import com.facebook.common.references.CloseableReference
-import com.facebook.datasource.DataSource
-import com.facebook.drawee.backends.pipeline.Fresco
-import com.facebook.drawee.controller.BaseControllerListener
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.generic.GenericDraweeHierarchy
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
-import com.facebook.drawee.interfaces.DraweeController
 import com.facebook.drawee.view.DraweeHolder
-import com.facebook.imagepipeline.image.CloseableImage
-import com.facebook.imagepipeline.image.CloseableStaticBitmap
-import com.facebook.imagepipeline.image.ImageInfo
-import com.facebook.imagepipeline.request.ImageRequestBuilder
+import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
 import com.mjstudio.reactnativenavermap.overlay.RNCNaverMapOverlay
+import com.mjstudio.reactnativenavermap.util.ImageRequestCanceller
 import com.mjstudio.reactnativenavermap.util.emitEvent
+import com.mjstudio.reactnativenavermap.util.getOverlayImage
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
-import com.naver.maps.map.util.MarkerIcons
 import kotlin.math.max
 
 
@@ -40,12 +31,19 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
     private var imageHolder: DraweeHolder<GenericDraweeHierarchy>? = null
     private var customView: View? = null
     private var customViewBitmap: Bitmap? = null
-    private var lastUri: String? = null
+    private var lastImage: ReadableMap? = null
+    private var imageRequestCanceller: ImageRequestCanceller? = null
+    private var isImageSetFromSubview = false
 
     init {
         imageHolder = DraweeHolder.create(createDraweeHierarchy(), context)?.apply {
             onAttach()
         }
+    }
+
+    override fun onDetachedFromWindow() {
+        imageRequestCanceller?.invoke()
+        super.onDetachedFromWindow()
     }
 
     override val overlay: Marker by lazy {
@@ -78,6 +76,7 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
 
     fun setCustomView(view: View, index: Int) {
         super.addView(view, index)
+        isImageSetFromSubview = true
         if (view.layoutParams == null) {
             view.setLayoutParams(
                 LayoutParams(
@@ -95,7 +94,8 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
         customView = null
         ViewChangesTracker.getInstance().removeMarker(this)
         if (customViewBitmap != null && !customViewBitmap!!.isRecycled) customViewBitmap!!.recycle()
-        setImage(lastUri)
+        isImageSetFromSubview = false
+        setImage(lastImage)
         super.removeView(children.elementAt(index))
     }
 
@@ -136,92 +136,18 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
         updateCustomView();
     }
 
-    fun setImage(uri: String?) {
-        lastUri = uri
-        uri?.let { uri ->
-            val defaultIcons = when (uri) {
-                "blue" -> MarkerIcons.BLUE
-                "gray" -> MarkerIcons.GRAY
-                "green" -> MarkerIcons.GREEN
-                "lightblue" -> MarkerIcons.LIGHTBLUE
-                "pink" -> MarkerIcons.PINK
-                "red" -> MarkerIcons.RED
-                "yellow" -> MarkerIcons.YELLOW
-                "black" -> MarkerIcons.BLACK
-                "lowDensityCluster" -> MarkerIcons.CLUSTER_LOW_DENSITY
-                "mediumDensityCluster" -> MarkerIcons.CLUSTER_MEDIUM_DENSITY
-                "highDensityCluster" -> MarkerIcons.CLUSTER_HIGH_DENSITY
-                "default" -> MarkerIcons.GREEN
-                else -> null
-            }
-            if (defaultIcons != null) {
-                setOverlayImage(defaultIcons)
-                return
-            }
-            val overlayImage = OverlayImages[uri]
-            if (overlayImage != null) {
-                setOverlayImage(overlayImage)
-                return
-            }
-
-
-            if (uri.startsWith("http://") ||
-                uri.startsWith("https://") ||
-                uri.startsWith("file://") ||
-                uri.startsWith("asset://")
-            ) {
-                val imageRequest = ImageRequestBuilder
-                    .newBuilderWithSource(Uri.parse(uri))
-                    .build()
-                val dataSource: DataSource<CloseableReference<CloseableImage>> =
-                    Fresco.getImagePipeline()
-                        .fetchDecodedImage(imageRequest, this)
-                val controller: DraweeController = Fresco.newDraweeControllerBuilder()
-                    .setImageRequest(imageRequest)
-                    .setControllerListener(object : BaseControllerListener<ImageInfo?>() {
-                        override fun onFinalImageSet(
-                            id: String,
-                            imageInfo: ImageInfo?,
-                            animatable: Animatable?
-                        ) {
-                            var imageReference: CloseableReference<CloseableImage>? = null
-                            var overlayImage: OverlayImage? = null
-                            try {
-                                imageReference = dataSource.result
-                                if (imageReference != null) {
-                                    val image = imageReference.get()
-                                    if (image is CloseableStaticBitmap) {
-                                        var bitmap: Bitmap? = image.underlyingBitmap
-                                        if (bitmap != null) {
-                                            bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-                                            overlayImage = OverlayImage.fromBitmap(bitmap)
-                                            OverlayImages.put(uri, overlayImage)
-                                        }
-                                    }
-                                }
-                            } finally {
-                                dataSource.close()
-                                if (imageReference != null) {
-                                    CloseableReference.closeSafely(imageReference)
-                                }
-                            }
-                            overlayImage?.let { setOverlayImage(it) }
-                        }
-                    })
-                    .setOldController(imageHolder!!.controller)
-                    .build()
-                imageHolder!!.setController(controller)
-            } else {
-                OverlayImage.fromResource(getRidFromName(uri)).run {
-                    OverlayImages.put(uri, this)
-                    setOverlayImage(this)
-                }
-            }
+    fun setImage(image: ReadableMap?) {
+        lastImage = image
+        if (isImageSetFromSubview) return
+        imageRequestCanceller?.invoke()
+        imageRequestCanceller = getOverlayImage(imageHolder!!, context, image) {
+            setOverlayImage(it)
         }
     }
 
     private fun setOverlayImage(image: OverlayImage?) {
-        overlay.icon = image ?: MarkerIcons.GREEN
+        overlay.icon =
+            image ?: OverlayImage.fromBitmap(Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888))
     }
 
     private fun createDraweeHierarchy(): GenericDraweeHierarchy {
@@ -229,10 +155,5 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
             .setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
             .setFadeDuration(0)
             .build()
-    }
-
-    @SuppressLint("DiscouragedApi")
-    private fun getRidFromName(name: String): Int {
-        return context.resources.getIdentifier(name, "drawable", context.packageName)
     }
 }
