@@ -44,7 +44,7 @@ static NSMutableDictionary* imageCache;
   }
 
   if (!json) {
-    callback(NMF_MARKER_IMAGE_GREEN);
+    callback(nil);
     return ^{
     };
   }
@@ -74,7 +74,7 @@ static NSMutableDictionary* imageCache;
     } else if ([symbol isEqualToString:@"highDensityCluster"]) {
       callback(NMF_MARKER_IMAGE_CLUSTER_HIGH_DENSITY);
     } else {
-      callback(NMF_MARKER_IMAGE_GREEN);
+      callback(nil);
     }
     return ^{
     };
@@ -111,7 +111,7 @@ static NSMutableDictionary* imageCache;
     };
   }
 
-  callback(NMF_MARKER_IMAGE_GREEN);
+  callback(nil);
   return ^{
   };
 }

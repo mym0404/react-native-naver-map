@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 
-import { View, Platform } from 'react-native';
+import { View, Platform, Text } from 'react-native';
 import {
   type MapType,
   type NaverMapViewRef,
@@ -161,8 +161,21 @@ export default function App() {
           anchor={{ x: 0.5, y: 1 }}
           width={100}
           height={100}
+          key={3}
         >
-          <View style={{ width: 100, height: 100, backgroundColor: 'red' }} />
+          <View
+            style={{
+              width: 100,
+              height: 100,
+              backgroundColor: 'red',
+              alignItems: 'center',
+              alignSelf: 'center',
+            }}
+            collapsable={false}
+            key={5}
+          >
+            <Text>123</Text>
+          </View>
         </NaverMapMarkerOverlay>
         <NaverMapMarkerOverlay
           latitude={34.1565607356}

@@ -75,12 +75,15 @@ static NSMutableDictionary* _overlayImageHolder;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-missing-super-calls"
 - (void)insertReactSubview:(UIView*)subview atIndex:(NSInteger)atIndex {
-  _inner.iconImage = [NMFOverlayImage overlayImageWithImage:[self captureView:subview]];
   if (_imageCanceller) {
     _imageCanceller();
     _imageCanceller = nil;
   }
   _isImageSetFromSubview = YES;
+  // prevent default image is set after this logic in old arch
+  dispatch_async(dispatch_get_main_queue(), [self, subview]() {
+    self.inner.iconImage = [NMFOverlayImage overlayImageWithImage:[self captureView:subview]];
+  });
 }
 
 - (void)removeReactSubview:(UIView*)subview {
@@ -91,14 +94,13 @@ static NSMutableDictionary* _overlayImageHolder;
 }
 
 - (UIImage*)captureView:(UIView*)view {
-  // 시작 이미지 컨텍스트
-  UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, 0.0);
-  // 뷰 계층 렌더링
-  [view.layer renderInContext:UIGraphicsGetCurrentContext()];
-  // 이미지 컨텍스트에서 UIImage를 얻습니다.
-  UIImage* img = UIGraphicsGetImageFromCurrentImageContext();
-  UIGraphicsEndImageContext();
-  return img;
+  UIGraphicsImageRenderer* renderer =
+      [[UIGraphicsImageRenderer alloc] initWithSize:view.bounds.size];
+  auto ret =
+      [renderer imageWithActions:^(UIGraphicsImageRendererContext* _Nonnull rendererContext) {
+        [view.layer renderInContext:rendererContext.CGContext];
+      }];
+  return ret;
 }
 
 #pragma clang diagnostic pop
@@ -137,7 +139,6 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
 
 - (void)setImage:(NSDictionary*)image {
   _image = image;
-
   // If subview exists for custom marker, then skip image
   if (_isImageSetFromSubview) {
     return;

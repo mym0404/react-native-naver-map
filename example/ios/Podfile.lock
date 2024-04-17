@@ -8,7 +8,7 @@ PODS:
     - hermes-engine/Pre-built (= 0.73.6)
   - hermes-engine/Pre-built (0.73.6)
   - libevent (2.1.12)
-  - mj-studio-react-native-naver-map (1.0.14):
+  - mj-studio-react-native-naver-map (1.1.1):
     - glog
     - hermes-engine
     - NMapsMap (= 3.18.0)
@@ -1344,7 +1344,7 @@ SPEC CHECKSUMS:
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   hermes-engine: 9cecf9953a681df7556b8cc9c74905de8f3293c0
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  mj-studio-react-native-naver-map: 6cfc55d90b02707ab1300f7740470e7d5cf875b8
+  mj-studio-react-native-naver-map: 9b1687ae09f9eaa1f8f998aeb29e760b12ef7f48
   NMapsGeometry: 53c573ead66466681cf123f99f698dc8071a4b83
   NMapsMap: 36dc18a1f5f315121b33fccd2398c7a702bf0fc8
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0

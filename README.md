@@ -55,11 +55,19 @@ Expo Go, Snack에선 사용하지
 못하지만 [development build](https://docs.expo.dev/develop/development-builds/introduction/), production
 환경에서 손쉽게 사용할 수 있습니다.
 
-### 5. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 최신 기능들을 모두 지원합니다
+### 5. 5가지 마커 이미지 타입 및 캐싱 지원
+
+- 네이버 맵 제공 기본 심볼 (`symbol`)
+- React Native프로젝트의 로컬 이미지 리소스
+- 성능 최적화를 위한 네이티브 프로젝트의 로컬 이미지 리소스 - Android(Drawable), iOS(Bundle Asset)
+- HTTP 네트워크 웹이미지
+- `children`으로 전달하는 React Native Custom View
+
+### 6. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 최신 기능들을 모두 지원합니다
 
 Seamless한 Props와 Command들로 Naver Map을 조작할 수 있습니다.
 
-### 6. 성능 최적화
+### 7. 성능 최적화
 
 Event Coalescing를 통해 Native -> JS 로의 이벤트 중 쓸모없는 이벤트들을 걸러내 성능이 최적화가 됩니다.
 
@@ -512,40 +520,52 @@ useEffect(() => {
 
 ## 마커 이미지의 종류와 성능
 
-마커의 종류는 총 네가지입니다.
+마커의 종류는 총 5가지입니다.
 
-1. Default Symbol (green, red, gray, ...) (caching ✅)
+> [!TIP]
+> `reuseIdentifier`는 전달하지 않아도 모두 자동으로 캐싱이 됩니다.
+
+1. Naver Map Basic Symbol (green, red, gray, ...) (caching ✅)
 
 ```js
-image={'green'}
+image={{symbol: 'green'}}
 ```
 
-2. Local Resource (`ImageSourcePropType` of react native) (caching ✅)
-
-이는 추후에 더 나은 성능을 위해 Android, iOS native resource를 사용해 screen density에 따라 최적의 마커가 선택되게 할 수 있는 로직을 구현하려
-합니다.
+2. Local Resource (`require` react native image file) (caching ✅)
 
 ```js
 image={require('./marker.png')}
 ```
 
-3. Network Image (caching ✅)
+3. Local Native Resource
 
 ```js
-image={{uri: 'https://example.com/image.png'}}
+image={{assetName: 'asset_image'}}
+```
+
+- iOS: main bundle의 image asset 이름
+- Android: resources의 drawable 이름
+
+4. Network Image (caching ✅)
+
+```js
+image={{httpUri: 'https://example.com/image.png'}}
 ```
 
 > [!WARNING]
-> 현재 header auth같은 객채 내의 다른 속성은 지원되지 않습니다.
+> 현재 header같은 속성은 지원되지 않습니다.
 
-4. Custom React View (caching ❌)
+5. Custom React View (caching ❌)
 
-iOS에선 현재 View들에 `collapsible=false`를 설정해야 동작할 것입니다.
+iOS(new arch)에선 현재 View들에 `collapsable=false`를 설정해야 동작합니다.
+
+> [!TIP]
+> 마커의 생김새를 바꿔야 한다면 그것에 대한 의존성들을 제일 상위 자식의 `key`로 전달해야합니다. 
 
 ```tsx
-<NaverMapMarkerOverlay width={100} height={100} ...>
-  <View collapsible={false} style={{width: 100, height: 100}}>
-    ...
+<NaverMapMarkerOverlay width={width} height={height} ...>
+  <View key={`${text}/${width}/${height}`} collapsable={false} style={{width, height}}>
+    <Text>{text}</Text>
   </View>
 </NaverMapMarkerOverlay>
 ```
@@ -612,7 +632,6 @@ iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니
 
 | Prop                      | iOS                                                | Android |
 |---------------------------|----------------------------------------------------|---------|
-| image(custom view)        | (new arch ✅) (old arch 📦, not a techinical issue) | ✅       |
 | caption-fontFamily        | ❓                                                  | ❓       |
 | subcaption-fontFamily     | ❓                                                  | ❓       |
 
