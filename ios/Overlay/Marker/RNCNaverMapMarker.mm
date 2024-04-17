@@ -18,9 +18,8 @@ using namespace facebook::react;
 #endif
 
 @implementation RNCNaverMapMarker {
-  RCTImageLoaderCancellationBlock _reloadImageCancellationBlock;
+  void (^_imageCanceller)(void);
   BOOL _isImageSetFromSubview;
-  ;
 }
 static NSMutableDictionary* _overlayImageHolder;
 
@@ -77,19 +76,18 @@ static NSMutableDictionary* _overlayImageHolder;
 #pragma clang diagnostic ignored "-Wobjc-missing-super-calls"
 - (void)insertReactSubview:(UIView*)subview atIndex:(NSInteger)atIndex {
   _inner.iconImage = [NMFOverlayImage overlayImageWithImage:[self captureView:subview]];
+  if (_imageCanceller) {
+    _imageCanceller();
+    _imageCanceller = nil;
+  }
   _isImageSetFromSubview = YES;
 }
 
 - (void)removeReactSubview:(UIView*)subview {
   _isImageSetFromSubview = NO;
 
-  if (_image) {
-    // after custom marker is removed, set image from prop.
-    self.image = _image;
-  } else {
-    // or set default marker
-    self.image = @"default";
-  }
+  // after custom marker is removed, set image from prop.
+  self.image = _image;
 }
 
 - (UIImage*)captureView:(UIView*)view {
@@ -137,7 +135,7 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
   _inner.height = getDoubleOrDefault(height, NMF_MARKER_SIZE_AUTO);
 }
 
-- (void)setImage:(nonnull NSString*)image {
+- (void)setImage:(NSDictionary*)image {
   _image = image;
 
   // If subview exists for custom marker, then skip image
@@ -146,82 +144,17 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
   }
 
   // Cancel pending request
-  if (_reloadImageCancellationBlock) {
-    _reloadImageCancellationBlock();
-    _reloadImageCancellationBlock = nil;
+  if (_imageCanceller) {
+    _imageCanceller();
+    _imageCanceller = nil;
   }
 
-  BOOL isSet = false;
-  if ([image isEqualToString:@"blue"]) {
-    _inner.iconImage = NMF_MARKER_IMAGE_BLUE;
-    isSet = true;
-  } else if ([image isEqualToString:@"gray"]) {
-    _inner.iconImage = NMF_MARKER_IMAGE_GRAY;
-    isSet = true;
-  } else if ([image isEqualToString:@"green"]) {
-    _inner.iconImage = NMF_MARKER_IMAGE_GREEN;
-    isSet = true;
-  } else if ([image isEqualToString:@"lightblue"]) {
-    _inner.iconImage = NMF_MARKER_IMAGE_LIGHTBLUE;
-    isSet = true;
-  } else if ([image isEqualToString:@"pink"]) {
-    _inner.iconImage = NMF_MARKER_IMAGE_PINK;
-    isSet = true;
-  } else if ([image isEqualToString:@"red"]) {
-    _inner.iconImage = NMF_MARKER_IMAGE_RED;
-    isSet = true;
-  } else if ([image isEqualToString:@"yellow"]) {
-    _inner.iconImage = NMF_MARKER_IMAGE_YELLOW;
-    isSet = true;
-  } else if ([image isEqualToString:@"black"]) {
-    _inner.iconImage = NMF_MARKER_IMAGE_BLACK;
-    isSet = true;
-  } else if ([image isEqualToString:@"lowDensityCluster"]) {
-    _inner.iconImage = NMF_MARKER_IMAGE_CLUSTER_LOW_DENSITY;
-    isSet = true;
-  } else if ([image isEqualToString:@"mediumDensityCluster"]) {
-    _inner.iconImage = NMF_MARKER_IMAGE_CLUSTER_MEDIUM_DENSITY;
-    isSet = true;
-  } else if ([image isEqualToString:@"highDensityCluster"]) {
-    _inner.iconImage = NMF_MARKER_IMAGE_CLUSTER_HIGH_DENSITY;
-    isSet = true;
-  } else if ([image isEqualToString:@"default"]) {
-    _inner.iconImage = NMF_MARKER_IMAGE_DEFAULT;
-    isSet = true;
-  }
-
-  if (isSet) {
-    return;
-  }
-
-  NMFOverlayImage* cache = [_overlayImageHolder valueForKey:image];
-  if (cache != nil) {
-    _inner.iconImage = cache;
-    return;
-  }
-
-  RCTImageLoader* _Nonnull imageLoader = [self.bridge moduleForClass:[RCTImageLoader class]];
-  _reloadImageCancellationBlock = [imageLoader
-      loadImageWithURLRequest:[RCTConvert NSURLRequest:image]
-                         size:self.bounds.size
-                        scale:RCTScreenScale()
-                      clipped:YES
-                   resizeMode:RCTResizeModeCenter
-                progressBlock:nil
-             partialLoadBlock:nil
-              completionBlock:[self](NSError* error, UIImage* image) {
-                dispatch_async(dispatch_get_main_queue(), [self, error, image]() {
-                  if (error) {
-                    NSLog(@"ERROR: %@", error);
-                    // on error, set default
-                    _inner.iconImage = NMF_MARKER_IMAGE_DEFAULT;
-                  } else {
-                    NMFOverlayImage* overlayImage = [NMFOverlayImage overlayImageWithImage:image];
-                    self.inner.iconImage = overlayImage;
-                    [_overlayImageHolder setObject:overlayImage forKey:self->_image];
-                  }
-                });
-              }];
+  _imageCanceller = [Utils getImage:[self bridge]
+                               json:image
+                           callback:^(NMFOverlayImage* image) {
+                             dispatch_async(dispatch_get_main_queue(),
+                                            [self, image]() { self.inner.iconImage = image; });
+                           }];
 }
 
 - (void)setCaption:(NSDictionary*)value {
@@ -309,7 +242,20 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
   NMAP_REMAP_SELF_PROP(isHideCollidedCaptions);
   NMAP_REMAP_SELF_PROP(isForceShowIcon);
   NMAP_REMAP_SELF_PROP(tintColor);
-  NMAP_REMAP_SELF_STR_PROP(image);
+
+  {
+    auto p = prev.image, n = next.image;
+    if (p.reuseIdentifier != n.reuseIdentifier || p.assetName != n.assetName ||
+        p.httpUri != n.httpUri || p.rnAssetUri != n.rnAssetUri || p.symbol != n.symbol) {
+      self.image = @{
+        @"reuseIdentifier" : getNsStr(n.reuseIdentifier),
+        @"assetName" : getNsStr(n.assetName),
+        @"httpUri" : getNsStr(n.httpUri),
+        @"rnAssetUri" : getNsStr(n.rnAssetUri),
+        @"symbol" : getNsStr(n.symbol),
+      };
+    }
+  }
 
   if (next.caption.key != prev.caption.key) {
     self.caption = @{

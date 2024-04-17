@@ -61,7 +61,7 @@
 @property(nonatomic, assign) BOOL isForceShowIcon;
 @property(nonatomic, assign) NSInteger tintColor;
 
-@property(nonatomic, copy) NSString* image;
+@property(nonatomic, copy) NSDictionary* image;
 
 @property(nonatomic, copy) NSDictionary* caption;
 @property(nonatomic, copy) NSDictionary* subCaption;

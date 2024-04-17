@@ -2,7 +2,7 @@ import { default as NativeNaverMapPolyline } from '../spec/RNCNaverMapPolylineNa
 import React from 'react';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
 import { type ColorValue, processColor } from 'react-native';
-import { Const } from '../util/Const';
+import { Const } from '../internal/util/Const';
 import type {
   Coord,
   CapType,

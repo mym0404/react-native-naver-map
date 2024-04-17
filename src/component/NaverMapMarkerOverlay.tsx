@@ -2,23 +2,22 @@ import {
   default as NativeNaverMapMarker,
   type NativeCaptionProp,
   type NativeSubCaptionProp,
+  type NativeImageProp,
 } from '../spec/RNCNaverMapMarkerNativeComponent';
 import React, { type PropsWithChildren, Children, useMemo } from 'react';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
-import {
-  type ColorValue,
-  type ImageSourcePropType,
-  Image,
-  processColor,
-} from 'react-native';
-import { Const } from '../util/Const';
+import { type ColorValue, processColor } from 'react-native';
+import { Const } from '../internal/util/Const';
 import invariant from 'invariant';
-import { type MarkerImages } from '../types/MarkerImages';
 import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import { type Align } from '../types/Align';
 import type { Coord } from '../types/Coord';
-import { getAlignIntValue, allMarkerImages } from '../internal/Util';
+import {
+  getAlignIntValue,
+  convertJsImagePropToNativeProp,
+} from '../internal/Util';
 import type { Point } from '../types/Point';
+import type { MarkerImageProp } from '../types/MarkerImageProp';
 
 export interface CaptionType {
   /** 캡션으로 표시할 텍스트를 지정할 수 있습니다.
@@ -283,7 +282,7 @@ export interface NaverMapMarkerOverlayProps
    *
    * @default green
    */
-  image?: ImageSourcePropType | (MarkerImages & {});
+  image?: MarkerImageProp;
   /**
    * 마커의 캡션입니다.
    *
@@ -322,7 +321,7 @@ export const NaverMapMarkerOverlay = ({
   isIconPerspectiveEnabled = false,
 
   tintColor,
-  image = 'green',
+  image = { symbol: 'green' },
   onTap,
   caption,
   subCaption,
@@ -332,15 +331,6 @@ export const NaverMapMarkerOverlay = ({
     Children.count(children) <= 1,
     '[NaverMapMarkerOverlay] children count should be equal or less than 1, is %s',
     Children.count(children)
-  );
-
-  invariant(
-    Children.count(children) > 0 ? !image : true,
-    '[NaverMapMarkerOverlay] passing `image` prop and `children` both for the marker image detected. only one of two should be passed.'
-  );
-  invariant(
-    image ? getImageUri(image) : true,
-    "[NaverMapMarkerOverlay] `image` uri is not found. If it is network image, then it should `{'uri': '...'}`. If it is local image, then it should be a ImageSourcePropType like `require('./myImage.png')`"
   );
 
   const coord = useMemo<Coord>(
@@ -383,6 +373,11 @@ export const NaverMapMarkerOverlay = ({
     });
   }, [subCaption]);
 
+  const _image = useMemo<NativeImageProp>(
+    () => convertJsImagePropToNativeProp(image),
+    [image]
+  );
+
   return (
     <NativeNaverMapMarker
       coord={coord}
@@ -404,7 +399,7 @@ export const NaverMapMarkerOverlay = ({
       isHideCollidedSymbols={isHideCollidedSymbols}
       isIconPerspectiveEnabled={isIconPerspectiveEnabled}
       tintColor={processColor(tintColor) as number}
-      image={getImageUri(image) ?? 'default'}
+      image={_image}
       onTapOverlay={onTap}
       caption={_caption}
       subCaption={_subCaption}
@@ -412,14 +407,3 @@ export const NaverMapMarkerOverlay = ({
     />
   );
 };
-
-function getImageUri(src?: ImageSourcePropType | string): string | undefined {
-  let imageUri;
-  if (typeof src === 'string' && allMarkerImages.includes(src as any)) {
-    imageUri = src;
-  } else if (typeof src !== 'string' && src) {
-    let image = Image.resolveAssetSource(src) || { uri: null };
-    imageUri = image.uri;
-  }
-  return imageUri;
-}

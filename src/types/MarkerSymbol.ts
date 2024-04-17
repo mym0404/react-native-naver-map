@@ -1,5 +1,4 @@
-export type MarkerImages =
-  | 'default'
+export type MarkerSymbol =
   | 'blue'
   | 'gray'
   | 'green'

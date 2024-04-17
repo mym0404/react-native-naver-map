@@ -88,6 +88,7 @@
 		13B07FAE1A68108700A75B9A /* NaverMapExample */ = {
 			isa = PBXGroup;
 			children = (
+				2DB3E0A22BD021A4002F2EB8 /* Resources */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -107,6 +108,13 @@
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-NaverMapExample-NaverMapExampleTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2DB3E0A22BD021A4002F2EB8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {

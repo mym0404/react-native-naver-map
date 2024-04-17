@@ -2,10 +2,11 @@ import type {
   CameraAnimationEasing,
   CameraChangeReason,
   Align,
-  MarkerImages,
   Camera,
+  MarkerImageProp,
 } from '@mj-studio/react-native-naver-map';
-import { Const } from '../util/Const';
+import { Const } from './util/Const';
+import { Image } from 'react-native';
 
 export function cameraEasingToNumber(
   value: CameraAnimationEasing = 'EaseIn'
@@ -66,21 +67,6 @@ export function getAlignIntValue(value?: Align) {
   }
 }
 
-export const allMarkerImages = [
-  'default',
-  'blue',
-  'gray',
-  'green',
-  'lightblue',
-  'pink',
-  'red',
-  'yellow',
-  'black',
-  'lowDensityCluster',
-  'mediumDensityCluster',
-  'highDensityCluster',
-] satisfies MarkerImages[];
-
 export function createCameraInstance({
   bearing,
   latitude,
@@ -96,3 +82,28 @@ export function createCameraInstance({
     bearing: bearing ?? Const.DEFAULT_BEARING,
   };
 }
+
+export const convertJsImagePropToNativeProp = (image: MarkerImageProp) => {
+  if (typeof image === 'number') {
+    const rnAssetUri = Image.resolveAssetSource(image)?.uri;
+    if (rnAssetUri) {
+      return { rnAssetUri };
+    } else {
+      return;
+    }
+  }
+  const { assetName, httpUri, reuseIdentifier, symbol } = image as Exclude<
+    MarkerImageProp,
+    number
+  >;
+  if (assetName) {
+    return { assetName, reuseIdentifier };
+  }
+  if (httpUri) {
+    return { httpUri, reuseIdentifier };
+  }
+  if (symbol) {
+    return { symbol, reuseIdentifier };
+  }
+  return;
+};

@@ -17,8 +17,8 @@ import type { Rect } from '../types/Rect';
 import type { LogoAlign } from '../types/LogoAlign';
 import { type CameraChangeReason } from '../types/CameraChangeReason';
 import type { Coord } from '../types/Coord';
-import { useStableCallback } from '../util/useStableCallback';
-import { Const } from '../util/Const';
+import { useStableCallback } from '../internal/util/useStableCallback';
+import { Const } from '../internal/util/Const';
 import type { LocationTrackingMode } from '../types/LocationTrackingMode';
 import {
   cameraEasingToNumber,
