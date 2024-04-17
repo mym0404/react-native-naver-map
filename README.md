@@ -587,8 +587,7 @@ iOS(new arch)에선 현재 View들에 `collapsable=false`를 설정해야 동작
 
 iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니다.
 
-두 방법 모두가 이미지 캐싱이 아직 지원되지 않고(추후에 `reuseableIdentifier`같은 속성으로 지원이 가능할 것으로 보입니다), 마커 하나당 많은 리소스를 차지하게
-됩니다.
+두 방법 모두가 이미지 캐싱이 아직 지원되지 않고(추후에 `reuseableIdentifier`같은 속성으로 지원이 가능할 것으로 보입니다), 마커 하나당 많은 리소스를 차지하게 됩니다.
 
 
 ## TODO - Props & Commands
