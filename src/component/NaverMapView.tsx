@@ -27,6 +27,7 @@ import {
   cameraEasingToNumber,
   cameraChangeReasonFromNumber,
   createCameraInstance,
+  convertJsImagePropToNativeProp,
 } from '../internal/Util';
 import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
 import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
@@ -542,7 +543,12 @@ export const NaverMapView = forwardRef(
         ret.push({
           key,
           animate,
-          markers,
+          markers: markers.map((m) => ({
+            ...m,
+            image: convertJsImagePropToNativeProp(
+              m.image ?? { symbol: 'green' }
+            ),
+          })),
           maxZoom,
           minZoom,
           screenDistance,

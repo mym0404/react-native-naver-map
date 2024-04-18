@@ -189,6 +189,13 @@ using namespace facebook::react;
           @"identifier" : getNsStr(marker.identifier),
           @"latitude" : @(marker.latitude),
           @"longitude" : @(marker.longitude),
+          @"image" : @{
+            @"reuseIdentifier" : getNsStr(marker.image.reuseIdentifier),
+            @"assetName" : getNsStr(marker.image.assetName),
+            @"httpUri" : getNsStr(marker.image.httpUri),
+            @"rnAssetUri" : getNsStr(marker.image.rnAssetUri),
+            @"symbol" : getNsStr(marker.image.symbol),
+          },
         }];
       }
 

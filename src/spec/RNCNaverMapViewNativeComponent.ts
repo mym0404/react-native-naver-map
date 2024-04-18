@@ -17,8 +17,17 @@ type Coord = {
   latitude: Double;
   longitude: Double;
 };
+type NativeImageProp = Readonly<{
+  symbol?: string;
+  rnAssetUri?: string;
+  httpUri?: string;
+  assetName?: string;
+  reuseIdentifier?: string;
+}>;
+
 type ClusterMarker = Coord & {
   identifier: string;
+  image?: NativeImageProp;
 };
 type Camera = {
   latitude: Double;

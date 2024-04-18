@@ -9,14 +9,25 @@
 
 @implementation RNCNaverMapClusterKey
 
-+ (instancetype)markerKeyWithIdentifier:(NSString*)identifier position:(NMGLatLng*)position {
-  return [[RNCNaverMapClusterKey alloc] initWithIdentifier:identifier position:position];
++ (instancetype)markerKeyWithIdentifier:(NSString*)identifier
+                               position:(NMGLatLng*)position
+                                 bridge:(RCTBridge*)bridge
+                                  image:(NSDictionary*)image {
+  return [[RNCNaverMapClusterKey alloc] initWithIdentifier:identifier
+                                                  position:position
+                                                    bridge:bridge
+                                                     image:image];
 }
 
-- (instancetype)initWithIdentifier:(NSString*)identifier position:(NMGLatLng*)position {
+- (instancetype)initWithIdentifier:(nonnull NSString*)identifier
+                          position:(nonnull NMGLatLng*)position
+                            bridge:(RCTBridge*)bridge
+                             image:(nonnull NSDictionary*)image {
   if (self = [super init]) {
     _identifier = identifier;
     _position = position;
+    _bridge = bridge;
+    _image = image;
   }
 
   return self;
@@ -40,7 +51,10 @@
 }
 
 - (nonnull id)copyWithZone:(NSZone*)zone {
-  return [[[self class] alloc] initWithIdentifier:self.identifier position:self.position];
+  return [[[self class] alloc] initWithIdentifier:[self.identifier copy]
+                                         position:[self.position copy]
+                                           bridge:self.bridge
+                                            image:[self.image copy]];
 }
 
 @end

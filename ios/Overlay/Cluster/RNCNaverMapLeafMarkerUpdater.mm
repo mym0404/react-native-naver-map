@@ -8,17 +8,32 @@
 #import "RNCNaverMapLeafMarkerUpdater.h"
 
 @implementation RNCNaverMapLeafMarkerUpdater
-- (void)updateLeafMarker:(NMCLeafMarkerInfo* _Nonnull)info marker:(NMFMarker* _Nonnull)marker {
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-selector-name"
+- (void)updateLeafMarker:(NMCLeafMarkerInfo* _Nonnull)info:(NMFMarker* _Nonnull)marker {
   [super updateLeafMarker:info:marker];
+
   RNCNaverMapClusterKey* key = (RNCNaverMapClusterKey*)info.key;
-  NSArray<NMFOverlayImage*>* icons = @[
-    NMF_MARKER_IMAGE_BLUE, NMF_MARKER_IMAGE_GREEN, NMF_MARKER_IMAGE_RED, NMF_MARKER_IMAGE_YELLOW
-  ];
-  //  marker.iconImage = icons[key.identifier % icons.count];
-  //  __block typeof(self) weakSelf = self;
-  //  marker.touchHandler = ^BOOL(NMFOverlay* _Nonnull __weak overlay) {
-  //    [weakSelf.clusterer remove:(RNCNaverMapClusterKey*)info.key];
-  //    return YES;
-  //  };
+
+  NSDictionary* image = key.image;
+
+  __weak NMFMarker* weakMarker = marker;
+  if (key.bridge) {
+    /**
+     Fire-forget strategy for cluster leaf marker image at now.
+     TODO - handle image request canceller for each markers.
+     */
+    [Utils getImage:key.bridge
+               json:image
+           callback:^(NMFOverlayImage* overlayImage) {
+             dispatch_async(dispatch_get_main_queue(), ^() {
+               if (weakMarker) {
+                 weakMarker.iconImage = overlayImage;
+               }
+             });
+           }];
+  }
 }
+#pragma clang diagnostic pop
 @end

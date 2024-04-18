@@ -6,6 +6,7 @@
 //
 
 #import "RNCNaverMapClusterKey.h"
+#import "Utils.h"
 #import <Foundation/Foundation.h>
 #import <NMapsMap/NMCClusterer.h>
 #import <NMapsMap/NMCDefaultLeafMarkerUpdater.h>

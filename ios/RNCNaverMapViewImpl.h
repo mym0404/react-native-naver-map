@@ -37,6 +37,7 @@
 #import <NMapsMap/NMFMarkerConstants.h>
 #import <NMapsMap/NMFNaverMapView.h>
 #import <NMapsMap/NMFUtils.h>
+#import <React/RCTBridge.h>
 #import <React/RCTConvert.h>
 #import <React/RCTView.h>
 #import <React/UIView+React.h>

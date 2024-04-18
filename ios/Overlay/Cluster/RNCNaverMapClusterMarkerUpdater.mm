@@ -19,7 +19,9 @@
 #import <NMapsMap/NMFMarker.h>
 
 @implementation RNCNaverMapClusterMarkerUpdater
-- (void)updateClusterMarker:(NMCClusterMarkerInfo*)info marker:(NMFMarker*)marker {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-selector-name"
+- (void)updateClusterMarker:(NMCClusterMarkerInfo*)info:(NMFMarker*)marker {
   [super updateClusterMarker:info:marker];
   if (info.size < 3) {
     marker.iconImage = NMF_MARKER_IMAGE_CLUSTER_LOW_DENSITY;
@@ -27,4 +29,5 @@
     marker.iconImage = NMF_MARKER_IMAGE_CLUSTER_MEDIUM_DENSITY;
   }
 }
+#pragma clang diagnostic pop
 @end

@@ -7,6 +7,12 @@
 
 #import "RNCNaverMapViewImpl.h"
 
+#ifdef RCT_NEW_ARCH_ENABLED
+@interface RCTBridge (Private)
++ (RCTBridge*)currentBridge;
+@end
+#endif
+
 NMFCameraUpdateAnimation getEasingAnimation(int easing) {
   if (easing == 1) {
     return NMFCameraUpdateAnimationNone;
@@ -46,6 +52,18 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
   // https://github.com/facebook/react-native/blob/v0.16.0/Libraries/Text/RCTTextField.m#L20
   NSMutableArray<UIView*>* _reactSubviews;
 }
+
+/**
+ https://github.com/software-mansion/react-native-screens/blob/a8bb418a8428befbb264ef958a5d7f7ea743048a/ios/RNSScreenStackHeaderSubview.mm#L100
+ */
+- (RCTBridge*)bridge {
+#ifdef RCT_NEW_ARCH_ENABLED
+  return [RCTBridge currentBridge];
+#else
+  return _bridge;
+#endif
+}
+
 // MARK: - INIT & SETUP
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -308,7 +326,6 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
   }
 
   for (NSDictionary* c in value) {
-    NSString* clustererKey = c[@"key"];
     [self addClusterer:c];
   }
 }
@@ -316,21 +333,24 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
 - (void)addClusterer:(nonnull NSDictionary*)dict {
 
   NSString* clustererKey = dict[@"key"];
-  double screenDistance = [dict[@"screenDistance"] doubleValue];
+  //  double screenDistance = [dict[@"screenDistance"] doubleValue];
   double minZoom = [dict[@"minZoom"] doubleValue];
   double maxZoom = [dict[@"maxZoom"] doubleValue];
   BOOL animate = [dict[@"animate"] boolValue];
   NSDictionary* markers = dict[@"markers"];
 
-  NSMutableDictionary* markerDict = [NSMutableDictionary new];
+  NSMutableDictionary<RNCNaverMapClusterKey*, NSNull*>* markerDict = [NSMutableDictionary new];
 
   for (NSDictionary* marker : markers) {
     NSString* identifier = marker[@"identifier"];
     double latitude = [marker[@"latitude"] doubleValue];
     double longitude = [marker[@"longitude"] doubleValue];
+    NSDictionary* image = marker[@"image"];
     RNCNaverMapClusterKey* markerKey =
         [RNCNaverMapClusterKey markerKeyWithIdentifier:identifier
-                                              position:NMGLatLngMake(latitude, longitude)];
+                                              position:NMGLatLngMake(latitude, longitude)
+                                                bridge:[self bridge]
+                                                 image:image];
     markerDict[markerKey] = [NSNull null];
   }
 
@@ -340,10 +360,15 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
   builder.minZoom = minZoom;
   builder.maxZoom = maxZoom;
   builder.animate = animate;
-  //  builder.leafMarkerUpdater = [[RNCNaverMapLeafMarkerUpdater alloc] init];
-  //  builder.clusterMarkerUpdater = [[RNCNaverMapClusterMarkerUpdater alloc] init];
+
+  RNCNaverMapClusterMarkerUpdater* clusterMarkerUpdater =
+      [[RNCNaverMapClusterMarkerUpdater alloc] init];
+  RNCNaverMapLeafMarkerUpdater* leafMarkerUpdater = [[RNCNaverMapLeafMarkerUpdater alloc] init];
+  builder.clusterMarkerUpdater = clusterMarkerUpdater;
+  builder.leafMarkerUpdater = leafMarkerUpdater;
 
   NMCClusterer* clusterer = [builder build];
+  leafMarkerUpdater.clusterer = clusterer;
   [clusterer addAll:markerDict];
 
   _clustererRecord[clustererKey] = clusterer;

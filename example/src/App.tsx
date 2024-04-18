@@ -152,19 +152,22 @@ export default function App() {
             screenDistance: 9999,
             markers: [
               {
-                identifier: '123',
+                identifier: '1',
                 latitude: Cameras.Jeju.latitude - 0.31 - 1,
                 longitude: Cameras.Jeju.longitude - 0.31 - 1,
+                image: require('./logo180.png'),
               },
               {
-                identifier: '255',
+                identifier: '2',
                 latitude: Cameras.Jeju.latitude - 0.3 - 1,
                 longitude: Cameras.Jeju.longitude - 0.3 - 1,
+                image: require('./logo180.png'),
               },
               {
-                identifier: '222',
+                identifier: '3',
                 latitude: Cameras.Jeju.latitude - 0.33 - 1,
                 longitude: Cameras.Jeju.longitude - 0.33 - 1,
+                image: { symbol: 'pink' },
               },
             ],
           },
