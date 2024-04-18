@@ -134,8 +134,22 @@
     },
     "plugins": {
       "@release-it/conventional-changelog": {
-        "header": "# Changelog",
-        "preset": "conventionalcommits"
+        "preset": {
+          "name": "conventionalcommits",
+          "types": [
+            {"type": "feat", "section": "Features"},
+            {"type": "fix", "section": "Bug Fixes"},
+            {"type": "chore", "section": "Chores"},
+            {"type": "docs", "section": "Documentation"},
+            {"type": "style", "section": "Style Code"},
+            {"type": "refactor", "section": "Refactor"},
+            {"type": "perf", "section": "Performance Enhance"},
+            {"type": "test", "section": "Tests"}
+          ]
+        },
+        "writerOpts": {
+          "groupBy": "scope"
+        }
       }
     }
   },
