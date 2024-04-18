@@ -77,6 +77,14 @@ Event Coalescing를 통해 Native -> JS 로의 이벤트 중 쓸모없는 이벤
 
 그리고 마커의 성능도 효과적으로 고려되어 설계되었습니다.
 
+
+>[!NOTE]
+>마커 클러스터링을 개발중입니다.
+
+https://github.com/mj-studio-library/react-native-naver-map/assets/33388801/9e762912-c6fa-46ac-8a1d-73efaeb73e4a
+
+
+
 ## Install
 
 ```shell
