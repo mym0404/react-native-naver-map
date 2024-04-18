@@ -94,8 +94,8 @@ export interface NaverMapPathOverlayProps extends BaseOverlayProps {
 export const NaverMapPathOverlay = ({
   zIndex = Const.Z_SHAPE,
   isHidden = false,
-  minZoom = 0,
-  maxZoom = 1000,
+  minZoom = Const.MIN_ZOOM,
+  maxZoom = Const.MAX_ZOOM,
   isMinZoomInclusive = true,
   isMaxZoomInclusive = true,
 

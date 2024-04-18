@@ -179,6 +179,34 @@ using namespace facebook::react;
     }
   }
 
+  if (prev.clusters.key != next.clusters.key) {
+    NSMutableArray* arr = [NSMutableArray new];
+    for (const auto& c : next.clusters.clusters) {
+      NSMutableArray* m = [NSMutableArray new];
+
+      for (const auto& marker : c.markers) {
+        [m addObject:@{
+          @"identifier" : getNsStr(marker.identifier),
+          @"latitude" : @(marker.latitude),
+          @"longitude" : @(marker.longitude),
+        }];
+      }
+
+      [arr addObject:@{
+        @"key" : getNsStr(c.key),
+        @"screenDistance" : @(c.screenDistance),
+        @"minZoom" : @(c.minZoom),
+        @"maxZoom" : @(c.maxZoom),
+        @"animate" : @(c.animate),
+        @"markers" : m,
+      }];
+    }
+    _view.clusters = @{
+      @"key" : getNsStr(next.clusters.key),
+      @"clusters" : arr,
+    };
+  }
+
   [super updateProps:props oldProps:oldProps];
 }
 

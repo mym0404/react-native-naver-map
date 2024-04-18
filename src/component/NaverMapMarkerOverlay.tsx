@@ -59,11 +59,15 @@ export interface CaptionType {
   /**
    * 특정 줌 레벨에서만 캡션이 나타나도록 지정할 수 있습니다.
    * 카메라의 줌 레벨이 minZoom과 maxZoom 범위를 벗어나면 캡션이 숨겨지고 아이콘만 나타납니다.
+   *
+   * @default 0
    */
   minZoom?: Double;
   /**
    * 특정 줌 레벨에서만 캡션이 나타나도록 지정할 수 있습니다.
    * 카메라의 줌 레벨이 minZoom과 maxZoom 범위를 벗어나면 캡션이 숨겨지고 아이콘만 나타납니다.
+   *
+   * @default 21
    */
   maxZoom?: Double;
 }
@@ -101,19 +105,23 @@ export interface SubCaptionType {
   /**
    * 특정 줌 레벨에서만 캡션이 나타나도록 지정할 수 있습니다.
    * 카메라의 줌 레벨이 minZoom과 maxZoom 범위를 벗어나면 캡션이 숨겨지고 아이콘만 나타납니다.
+   *
+   * @default 0
    */
   minZoom?: Double;
   /**
    * 특정 줌 레벨에서만 캡션이 나타나도록 지정할 수 있습니다.
    * 카메라의 줌 레벨이 minZoom과 maxZoom 범위를 벗어나면 캡션이 숨겨지고 아이콘만 나타납니다.
+   *
+   * @default 21
    */
   maxZoom?: Double;
 }
 const defaultCaptionProps = {
   text: '',
   textSize: 12,
-  minZoom: 0,
-  maxZoom: 9999,
+  minZoom: Const.MIN_ZOOM,
+  maxZoom: Const.MAX_ZOOM,
   color: 'black',
   haloColor: 'transparent',
   requestedWidth: 0,
@@ -121,8 +129,8 @@ const defaultCaptionProps = {
 const defaultSubCaptionProps = {
   text: '',
   textSize: 10,
-  minZoom: 0,
-  maxZoom: 9999,
+  minZoom: Const.MIN_ZOOM,
+  maxZoom: Const.MAX_ZOOM,
   color: 'black',
   haloColor: 'transparent',
   requestedWidth: 0,
@@ -312,8 +320,8 @@ export const NaverMapMarkerOverlay = ({
   longitude,
   zIndex = Const.Z_MARKER,
   isHidden = false,
-  minZoom = 0,
-  maxZoom = 1000,
+  minZoom = Const.MIN_ZOOM,
+  maxZoom = Const.MAX_ZOOM,
   isMinZoomInclusive = true,
   isMaxZoomInclusive = true,
 

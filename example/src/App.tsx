@@ -8,17 +8,17 @@ import {
   NaverMapMarkerOverlay,
   NaverMapCircleOverlay,
   NaverMapPolygonOverlay,
-  NaverMapView,
   NaverMapPathOverlay,
+  NaverMapView,
 } from '@mj-studio/react-native-naver-map';
 import { Toggle, Btn, Range } from './component/components';
-import { formatJson } from '@mj-studio/js-util';
 import {
   request,
   PERMISSIONS,
   requestLocationAccuracy,
   requestMultiple,
 } from 'react-native-permissions';
+import { formatJson } from '@mj-studio/js-util';
 
 // const jejuRegion: Region = {
 //   latitude: 33.20530773,
@@ -147,13 +147,29 @@ export default function App() {
         //   console.log(`Camera Changed: ${formatJson(args)}`)
         // }
         onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
+        clusters={[
+          {
+            screenDistance: 9999,
+            markers: [
+              {
+                identifier: '123',
+                latitude: Cameras.Jeju.latitude - 0.31 - 1,
+                longitude: Cameras.Jeju.longitude - 0.31 - 1,
+              },
+              {
+                identifier: '255',
+                latitude: Cameras.Jeju.latitude - 0.3 - 1,
+                longitude: Cameras.Jeju.longitude - 0.3 - 1,
+              },
+              {
+                identifier: '222',
+                latitude: Cameras.Jeju.latitude - 0.33 - 1,
+                longitude: Cameras.Jeju.longitude - 0.33 - 1,
+              },
+            ],
+          },
+        ]}
       >
-        <NaverMapMarkerOverlay
-          latitude={33.1622465837814}
-          longitude={126.277859838727}
-          onTap={() => console.log(1)}
-          anchor={{ x: 0.5, y: 1 }}
-        />
         <NaverMapMarkerOverlay
           latitude={33.4165607356}
           longitude={126.48599018}

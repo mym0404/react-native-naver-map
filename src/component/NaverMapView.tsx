@@ -1,6 +1,8 @@
 import {
   default as NativeNaverMapView,
   Commands,
+  type NativeClustersProp,
+  type NativeClusterProp,
 } from '../spec/RNCNaverMapViewNativeComponent';
 
 import React, {
@@ -8,6 +10,7 @@ import React, {
   type ForwardedRef,
   useImperativeHandle,
   useRef,
+  useMemo,
 } from 'react';
 import { type ViewProps, type NativeSyntheticEvent } from 'react-native';
 import type { MapType } from '../types/MapType';
@@ -27,6 +30,7 @@ import {
 } from '../internal/Util';
 import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
 import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
+import type { ClusterMarkerProp } from '../types/ClusterMarkerProp';
 
 /**
  * @category Hell
@@ -337,6 +341,40 @@ export interface NaverMapViewProps extends ViewProps {
   locale?: string;
 
   /**
+   * 한 화면에 대량의 마커가 노출되면 성능이 저하될 뿐만 아니라 여러 마커가 겹쳐 나타나므로 시인성이 떨어집니다.
+   * 마커의 겹침 처리 기능을 사용하면 시인성을 일부 향상시킬 수 있으나 겹침 처리로 인해 가려진 마커의 정보를 알 수 없으며, 성능도 여전히 저하됩니다.
+   * 마커 클러스터링 기능을 이용하면 카메라의 줌 레벨에 따라 근접한 마커를 클러스터링해 성능과 시인성을 모두 향상시킬 수 있습니다.
+   */
+  clusters?: {
+    markers: ClusterMarkerProp[];
+    screenDistance?: number;
+    /**
+     * 클러스터링할 최소 줌 레벨.
+     *
+     * 카메라의 줌 레벨이 최소 줌 레벨보다 낮다면 두 데이터가 화면상 기준 거리보다 가깝더라도 더 이상 클러스터링되지 않습니다.
+     * 예를 들어, 클러스터링할 최소 줌 레벨이 4라면, 카메라의 줌 레벨을 3레벨 이하로 축소하더라도 4레벨의 클러스터가 더 이상 클러스터링되지 않고 그대로 유지됩니다.
+     *
+     * @default 0
+     */
+    minZoom?: number;
+    /**
+     * 클러스터링할 최대 줌 레벨.
+     *
+     * 카메라의 줌 레벨이 최대 줌 레벨보다 높다면 두 데이터가 화면상 기준 거리보다 가깝더라도 더 이상 클러스터링되지 않습니다.
+     * 예를 들어, 클러스터링할 최대 줌 레벨이 16이라면, 카메라의 줌 레벨을 17레벨 이상으로 확대하면 모든 데이터가 클러스터링되지 않고 낱개로 나타납니다. 따라서 클러스터링할 최대 줌 레벨이 지도의 최대 줌 레벨보다 크거나 같다면 카메라를 최대 줌 레벨로 확대하더라도 일부 데이터는 여전히 클러스터링된 채 더 이상 펼쳐지지 않을 수 있습니다.
+     *
+     * @default 21
+     */
+    maxZoom?: number;
+    /**
+     * 카메라 확대/축소시 클러스터가 펼쳐지는/합쳐지는 애니메이션을 적용할지 여부.
+     *
+     * @default true
+     */
+    animate?: boolean;
+  }[];
+
+  /**
    * 지도 객체가 초기화가 완료된 뒤에 호출됩니다.
    *
    * @group Events
@@ -478,11 +516,48 @@ export const NaverMapView = forwardRef(
       isStopGesturesEnabled = true,
       isUseTextureViewAndroid = false,
       locale,
+      clusters,
 
       ...rest
     }: NaverMapViewProps,
     ref: ForwardedRef<NaverMapViewRef>
   ) => {
+    const _clusters = useMemo<NativeClustersProp>(() => {
+      if (!clusters || clusters.length === 0) {
+        return { key: '', clusters: [] };
+      }
+      let propKey = '';
+      const ret: NativeClusterProp[] = [];
+      for (const {
+        animate = true,
+        markers,
+        // eslint-disable-next-line @typescript-eslint/no-shadow
+        minZoom = Const.MIN_ZOOM,
+        // eslint-disable-next-line @typescript-eslint/no-shadow
+        maxZoom = Const.MAX_ZOOM,
+        screenDistance = Const.DEFAULT_SCREEN_DISTANCE,
+      } of clusters) {
+        const key = `${animate}/${maxZoom}/${minZoom}/${screenDistance}/${JSON.stringify(markers)}`;
+
+        ret.push({
+          key,
+          animate,
+          markers,
+          maxZoom,
+          minZoom,
+          screenDistance,
+        });
+
+        propKey += `${key}---`;
+      }
+
+      console.log(propKey);
+      return {
+        key: propKey,
+        clusters: ret,
+      };
+    }, [clusters]);
+
     const innerRef = useRef<any>(null);
 
     const onCameraChanged = useStableCallback(
@@ -691,6 +766,7 @@ export const NaverMapView = forwardRef(
         isStopGesturesEnabled={isStopGesturesEnabled}
         isUseTextureViewAndroid={isUseTextureViewAndroid}
         locale={locale}
+        clusters={_clusters}
         {...rest}
       />
     );

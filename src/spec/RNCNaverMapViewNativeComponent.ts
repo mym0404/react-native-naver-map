@@ -13,6 +13,13 @@ import React from 'react';
  * [comments](https://github.com/reactwg/react-native-new-architecture/discussions/91#discussioncomment-4282452)
  */
 
+type Coord = {
+  latitude: Double;
+  longitude: Double;
+};
+type ClusterMarker = Coord & {
+  identifier: string;
+};
 type Camera = {
   latitude: Double;
   longitude: Double;
@@ -27,6 +34,18 @@ type Region = {
   longitudeDelta: Double;
 };
 type LogoAlign = 'TopLeft' | 'TopRight' | 'BottomLeft' | 'BottomRight';
+export type NativeClusterProp = {
+  key: string;
+  markers: ClusterMarker[];
+  screenDistance?: Double;
+  minZoom?: Double;
+  maxZoom?: Double;
+  animate?: boolean;
+};
+export type NativeClustersProp = Readonly<{
+  key: string;
+  clusters: ReadonlyArray<NativeClusterProp>;
+}>;
 
 ////////////////////
 
@@ -93,6 +112,8 @@ interface Props extends ViewProps {
   isStopGesturesEnabled?: boolean;
 
   locale?: string;
+
+  clusters?: NativeClustersProp;
 
   onInitialized?: DirectEventHandler<Readonly<{}>>;
   onOptionChanged?: DirectEventHandler<Readonly<{}>>;

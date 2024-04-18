@@ -32,6 +32,9 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
   BOOL _initialCameraSet;
   BOOL _isFirstCameraAnimationRun;
 
+  NSMutableDictionary<NSString*, NMCClusterer*>* _clustererRecord;
+  NSString* _lastClustersPropKey;
+
   // Array to manually track RN subviews
   //
   // AIRMap implicitly creates subviews that aren't regular RN children
@@ -48,6 +51,7 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
     _reactSubviews = [NSMutableArray new];
+    _clustererRecord = [NSMutableDictionary new];
 
     [self.mapView addCameraDelegate:self];
     [self.mapView setTouchDelegate:self];
@@ -262,6 +266,94 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
 - (void)setExtent:(RNCNaverMapRegion*)extent {
   _extent = extent;
   self.mapView.extent = [extent convertToNMGLatLngBounds];
+}
+
+- (void)setClusters:(NSDictionary*)clusters {
+  NSString* propKey = clusters[@"key"];
+
+  if ([_lastClustersPropKey isEqualToString:propKey]) {
+    return;
+  }
+  _lastClustersPropKey = propKey;
+
+  NSArray<NSDictionary*>* value = clusters[@"clusters"];
+
+  // remove previous marker
+  {
+    NSMutableArray* removedKeys = [NSMutableArray new];
+    for (NSString* previousKeys : _clustererRecord) {
+      BOOL isExistInNext = NO;
+      for (NSDictionary* c in value) {
+        NSString* markerKey = c[@"key"];
+        if ([markerKey isEqualToString:previousKeys]) {
+          isExistInNext = YES;
+          break;
+        }
+      }
+      if (!isExistInNext) {
+        [removedKeys addObject:previousKeys];
+      }
+    }
+    for (NSString* removedKey : removedKeys) {
+      [self removeClustererFor:removedKey];
+    }
+  }
+
+  for (NSDictionary* c in value) {
+    NSString* clustererKey = c[@"key"];
+    if ([_clustererRecord objectForKey:clustererKey]) {
+      // todo efficient update
+      [self removeClustererFor:clustererKey];
+    }
+  }
+
+  for (NSDictionary* c in value) {
+    NSString* clustererKey = c[@"key"];
+    [self addClusterer:c];
+  }
+}
+
+- (void)addClusterer:(nonnull NSDictionary*)dict {
+
+  NSString* clustererKey = dict[@"key"];
+  double screenDistance = [dict[@"screenDistance"] doubleValue];
+  double minZoom = [dict[@"minZoom"] doubleValue];
+  double maxZoom = [dict[@"maxZoom"] doubleValue];
+  BOOL animate = [dict[@"animate"] boolValue];
+  NSDictionary* markers = dict[@"markers"];
+
+  NSMutableDictionary* markerDict = [NSMutableDictionary new];
+
+  for (NSDictionary* marker : markers) {
+    NSString* identifier = marker[@"identifier"];
+    double latitude = [marker[@"latitude"] doubleValue];
+    double longitude = [marker[@"longitude"] doubleValue];
+    RNCNaverMapClusterKey* markerKey =
+        [RNCNaverMapClusterKey markerKeyWithIdentifier:identifier
+                                              position:NMGLatLngMake(latitude, longitude)];
+    markerDict[markerKey] = [NSNull null];
+  }
+
+  NMCBuilder* builder = [[NMCBuilder alloc] init];
+  // todo screenDistance not works. idk why
+  //  builder.screenDistance = screenDistance;
+  builder.minZoom = minZoom;
+  builder.maxZoom = maxZoom;
+  builder.animate = animate;
+  //  builder.leafMarkerUpdater = [[RNCNaverMapLeafMarkerUpdater alloc] init];
+  //  builder.clusterMarkerUpdater = [[RNCNaverMapClusterMarkerUpdater alloc] init];
+
+  NMCClusterer* clusterer = [builder build];
+  [clusterer addAll:markerDict];
+
+  _clustererRecord[clustererKey] = clusterer;
+  clusterer.mapView = self.mapView;
+}
+
+- (void)removeClustererFor:(nonnull NSString*)key {
+  NMCClusterer* clusterer = _clustererRecord[key];
+  clusterer.mapView = nil;
+  [_clustererRecord removeObjectForKey:key];
 }
 
 // MARK: - EVENT
