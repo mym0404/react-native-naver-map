@@ -3,7 +3,7 @@
 >
 >If this project has helped you out, please support us with a star 🌟.
 
-# React Native Naver Map
+# React Native Naver Map SDK
 
 [![NPM](http://img.shields.io/npm/v/@mj-studio/react-native-naver-map)](https://npmjs.org/package/@mj-studio/react-native-naver-map)
 ![Android SDK - 3.18.0](https://img.shields.io/badge/Android_SDK-3.18.0-2ea44f)
