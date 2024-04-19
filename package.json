@@ -52,8 +52,9 @@
   },
   "keywords": [
     "react-native",
-    "ios",
-    "android"
+    "naver-map",
+    "naver",
+    "react-native-naver-map"
   ],
   "repository": {
     "type": "git",
