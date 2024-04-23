@@ -31,24 +31,30 @@
     "example": "yarn workspace @mj-studio/react-native-naver-map-example",
     "test": "jest",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "format:clang": "./script/clang-format.sh",
-    "lint:clang": "./script/clang-lint.sh",
-    "t": "yarn lint && yarn typecheck && yarn lint:clang",
+    "lint": "./script/lint.sh",
+    "t": "yarn lint",
+    "lint:js": "eslint \"**/*.{js,ts,tsx}\"",
+    "format:ios": "./script/clang-format.sh",
+    "lint:ios": "./script/clang-lint.sh",
+    "format:android": "./script/ktlint-format.sh",
+    "lint:android": "./script/ktlint-lint.sh",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "husky",
     "release": "./script/release.sh",
     "codegen:android": "cd example/android && ./gradlew generateCodegenArtifactsFromSchema",
     "codegen:ios": "node example/node_modules/react-native/scripts/generate-codegen-artifacts.js --path example/ --outputPath example/ios",
     "codegen": "yarn codegen:android && yarn codegen:ios",
-    "studio": "studio $(pwd)/android",
-    "studio:example": "studio $(pwd)/example/android",
+    "studio": "studio $(pwd)/example/android",
     "xcode": "open $(pwd)/example/ios/NaverMapExample.xcworkspace",
     "pod:old": "cd example/ios && bundle install && bundle exec pod install",
     "pod:new": "cd example/ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install",
     "prepack": "yarn build:expo-config-plugin && yarn build:docs && bob build",
     "build:expo-config-plugin": "tsc --project ./expo-config-plugin",
-    "build:docs": "rm -rf docs && typedoc"
+    "build:docs": "rm -rf docs && typedoc",
+    "old:pod": "./script/arch-convert.sh false true",
+    "new:pod": "./script/arch-convert.sh true true",
+    "old": "./script/arch-convert.sh false false",
+    "new": "./script/arch-convert.sh true false"
   },
   "keywords": [
     "react-native",
@@ -138,14 +144,38 @@
         "preset": {
           "name": "conventionalcommits",
           "types": [
-            {"type": "feat", "section": "Features"},
-            {"type": "fix", "section": "Bug Fixes"},
-            {"type": "chore", "section": "Chores"},
-            {"type": "docs", "section": "Documentation"},
-            {"type": "style", "section": "Style Code"},
-            {"type": "refactor", "section": "Refactor"},
-            {"type": "perf", "section": "Performance Enhance"},
-            {"type": "test", "section": "Tests"}
+            {
+              "type": "feat",
+              "section": "Features"
+            },
+            {
+              "type": "fix",
+              "section": "Bug Fixes"
+            },
+            {
+              "type": "chore",
+              "section": "Chores"
+            },
+            {
+              "type": "docs",
+              "section": "Documentation"
+            },
+            {
+              "type": "style",
+              "section": "Style Code"
+            },
+            {
+              "type": "refactor",
+              "section": "Refactor"
+            },
+            {
+              "type": "perf",
+              "section": "Performance Enhance"
+            },
+            {
+              "type": "test",
+              "section": "Tests"
+            }
           ]
         },
         "writerOpts": {

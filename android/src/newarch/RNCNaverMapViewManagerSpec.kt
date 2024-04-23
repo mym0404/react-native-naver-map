@@ -6,15 +6,16 @@ import com.facebook.react.uimanager.ViewManagerDelegate
 import com.facebook.react.viewmanagers.RNCNaverMapViewManagerDelegate
 import com.facebook.react.viewmanagers.RNCNaverMapViewManagerInterface
 
-abstract class RNCNaverMapViewManagerSpec<T : ViewGroup> : ViewGroupManager<T>(),
-    RNCNaverMapViewManagerInterface<T?> {
-    private val mDelegate: ViewManagerDelegate<T>
+abstract class RNCNaverMapViewManagerSpec<T : ViewGroup> :
+  ViewGroupManager<T>(),
+  RNCNaverMapViewManagerInterface<T?> {
+  private val mDelegate: ViewManagerDelegate<T>
 
-    init {
-        mDelegate = RNCNaverMapViewManagerDelegate(this)
-    }
+  init {
+    mDelegate = RNCNaverMapViewManagerDelegate(this)
+  }
 
-    override fun getDelegate(): ViewManagerDelegate<T>? {
-        return mDelegate
-    }
+  override fun getDelegate(): ViewManagerDelegate<T>? {
+    return mDelegate
+  }
 }

@@ -4,6 +4,50 @@ Contributions are always welcome, no matter how large or small!
 
 We want this community to be friendly and respectful to each other. Please follow it in all your interactions with the project. Before contributing, please read the [code of conduct](./CODE_OF_CONDUCT.md).
 
+### Scripts
+
+The `package.json` file contains various scripts for common tasks:
+
+**Installiation, Build**
+
+- `yarn`: setup project by installing dependencies.
+- `yarn prepack`: build package (including docs, expo config plugin)
+- `yarn build:docs`: build documentation at `./docs`.
+- `yarn build:expo-config-plugin`: build expo config plugin.
+
+**Validation**
+
+- `yarn lint`: lint files with ESLint, ClangFormat, Ktlint, TypeScript
+- `yarn t`: alias for lint
+- `yarn test`: run unit tests with Jest
+- `yarn format:ios`: run formatter with ClangFormat, SwiftFormat for iOS codes
+- `yarn format:android`: run formatter with Ktlint for Android codes
+
+**Example App Build, Manipluations**
+
+- `yarn example start`: start the Metro server for the example app.
+- `yarn example android`: run the example app on Android.
+- `yarn example ios`: run the example app on iOS.
+- `yarn codegen:{android,ios}`: generate codegen output for development typing (this should be clean for running example app, prevetning redelcaration compile error)
+
+**Architecture Convert**
+
+- `new`: convert example project to new architecture
+- `old`: convert example project to old architecture
+- `new:pod`: convert example project to new architecture with pod install
+- `old:pod`: convert example project to old architecture with pod install
+
+**Util**
+
+- `yarn studio`: open android studio for example project
+- `yarn xcode`: open xcode for example project
+
+**Codegen**
+
+- `yarn codegen`: generate codegen spec for all platform
+- `yarn codegen:android`: generate android codegen spec
+- `yarn codegen:ios`: generate ios codegen spec
+
 ## Development workflow
 
 This project is a monorepo managed using [Yarn workspaces](https://yarnpkg.com/features/workspaces). It contains the following packages:
@@ -162,25 +206,6 @@ When changing code, be sure to attach comments in JSDoc Style to functions, vari
 You can check generated docs with `yarn build:docs` command.
 
 The documentation is published on push main branch automatically.
-
-### Scripts
-
-The `package.json` file contains various scripts for common tasks:
-
-- `yarn`: setup project by installing dependencies.
-- `yarn typecheck`: type-check files with TypeScript.
-- `yarn lint`: lint files with ESLint.
-- `yarn format:clang`: format files with clang-format.
-- `yarn lint:clang`: lint files with clang-format.
-- `yarn test`: run unit tests with Jest.
-- `yarn example start`: start the Metro server for the example app.
-- `yarn example android`: run the example app on Android.
-- `yarn example ios`: run the example app on iOS.
-- `yarn codegen:{android,ios}`: generate codegen output for development typing (this should be clean for running example app, prevetning redelcaration compile error)
-- `yarn studio`: open android studio
-- `yarn studio:example`: open android studio for example project
-- `yarn xcode`: open xcode for example project
-- `yarn build:docs`: build documentation at `./docs`.
 
 ### Sending a pull request
 

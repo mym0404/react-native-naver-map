@@ -83,3 +83,5 @@ example/ios/Secret.xcconfig
 .env
 
 docs/
+
+example/.watchman-*

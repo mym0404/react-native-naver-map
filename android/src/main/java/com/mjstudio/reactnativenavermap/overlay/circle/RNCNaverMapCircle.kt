@@ -10,31 +10,31 @@ import com.naver.maps.map.overlay.CircleOverlay
 
 @SuppressLint("ViewConstructor")
 class RNCNaverMapCircle(private val reactContext: ThemedReactContext) :
-    RNCNaverMapOverlay<CircleOverlay>(reactContext) {
-    override val overlay: CircleOverlay by lazy {
-        CircleOverlay().apply {
-            setOnClickListener {
-                reactContext.emitEvent(id) { surfaceId, reactTag ->
-                    NaverMapOverlayTapEvent(
-                        surfaceId,
-                        reactTag
-                    )
-                }
-                true
-            }
+  RNCNaverMapOverlay<CircleOverlay>(reactContext) {
+  override val overlay: CircleOverlay by lazy {
+    CircleOverlay().apply {
+      setOnClickListener {
+        reactContext.emitEvent(id) { surfaceId, reactTag ->
+          NaverMapOverlayTapEvent(
+            surfaceId,
+            reactTag,
+          )
         }
+        true
+      }
     }
+  }
 
-    override fun addToMap(map: NaverMap) {
-        overlay.map = map
-    }
+  override fun addToMap(map: NaverMap) {
+    overlay.map = map
+  }
 
-    override fun removeFromMap(map: NaverMap) {
-        overlay.map = null
-    }
+  override fun removeFromMap(map: NaverMap) {
+    overlay.map = null
+  }
 
-    override fun onDropViewInstance() {
-        overlay.map = null
-        overlay.onClickListener = null
-    }
+  override fun onDropViewInstance() {
+    overlay.map = null
+    overlay.onClickListener = null
+  }
 }
