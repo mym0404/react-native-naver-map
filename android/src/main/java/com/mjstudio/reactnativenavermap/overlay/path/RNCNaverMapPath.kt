@@ -10,31 +10,31 @@ import com.naver.maps.map.overlay.PathOverlay
 
 @SuppressLint("ViewConstructor")
 class RNCNaverMapPath(val reactContext: ThemedReactContext) :
-    RNCNaverMapOverlay<PathOverlay>(reactContext) {
-    override val overlay: PathOverlay by lazy {
-        PathOverlay().apply {
-            setOnClickListener {
-                reactContext.emitEvent(id) { surfaceId, reactTag ->
-                    NaverMapOverlayTapEvent(
-                        surfaceId,
-                        reactTag
-                    )
-                }
-                true
-            }
+  RNCNaverMapOverlay<PathOverlay>(reactContext) {
+  override val overlay: PathOverlay by lazy {
+    PathOverlay().apply {
+      setOnClickListener {
+        reactContext.emitEvent(id) { surfaceId, reactTag ->
+          NaverMapOverlayTapEvent(
+            surfaceId,
+            reactTag,
+          )
         }
+        true
+      }
     }
+  }
 
-    override fun addToMap(map: NaverMap) {
-        overlay.map = map
-    }
+  override fun addToMap(map: NaverMap) {
+    overlay.map = map
+  }
 
-    override fun removeFromMap(map: NaverMap) {
-        overlay.map = null
-    }
+  override fun removeFromMap(map: NaverMap) {
+    overlay.map = null
+  }
 
-    override fun onDropViewInstance() {
-        overlay.map = null
-        overlay.onClickListener = null
-    }
+  override fun onDropViewInstance() {
+    overlay.map = null
+    overlay.onClickListener = null
+  }
 }

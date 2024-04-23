@@ -5,10 +5,10 @@ import com.facebook.react.uimanager.UIManagerHelper
 import com.facebook.react.uimanager.events.Event
 
 internal fun <T : Event<*>> ReactContext.emitEvent(
-    reactTag: Int,
-    callback: (surfaceId: Int, reactTag: Int) -> T
+  reactTag: Int,
+  callback: (surfaceId: Int, reactTag: Int) -> T,
 ) {
-    val surfaceId = UIManagerHelper.getSurfaceId(this)
-    UIManagerHelper.getEventDispatcherForReactTag(this, reactTag)
-        ?.dispatchEvent(callback(surfaceId, reactTag))
+  val surfaceId = UIManagerHelper.getSurfaceId(this)
+  UIManagerHelper.getEventDispatcherForReactTag(this, reactTag)
+    ?.dispatchEvent(callback(surfaceId, reactTag))
 }

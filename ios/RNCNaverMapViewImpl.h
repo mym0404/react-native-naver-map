@@ -12,6 +12,9 @@
 #import "MacroUtil.h"
 #import "RCTConvert+NMFMapView.h"
 #import "RNCNaverMapCircle.h"
+#import "RNCNaverMapClusterKey.h"
+#import "RNCNaverMapClusterMarkerUpdater.h"
+#import "RNCNaverMapLeafMarkerUpdater.h"
 #import "RNCNaverMapMarker.h"
 #import "RNCNaverMapPath.h"
 #import "RNCNaverMapPolygon.h"
@@ -20,13 +23,21 @@
 #import <Foundation/Foundation.h>
 #import <NMapsGeometry/NMGLatLng.h>
 #import <NMapsGeometry/NMGLatLngBounds.h>
+#import <NMapsMap/NMCBuilder.h>
+#import <NMapsMap/NMCCluster.h>
+#import <NMapsMap/NMCClusterer.h>
+#import <NMapsMap/NMCClusteringKey.h>
 #import <NMapsMap/NMFCameraPosition.h>
 #import <NMapsMap/NMFCameraUpdate.h>
+#import <NMapsMap/NMFFoundation.h>
 #import <NMapsMap/NMFMapView.h>
 #import <NMapsMap/NMFMapViewCameraDelegate.h>
 #import <NMapsMap/NMFMapViewOptionDelegate.h>
 #import <NMapsMap/NMFMapViewTouchDelegate.h>
+#import <NMapsMap/NMFMarkerConstants.h>
 #import <NMapsMap/NMFNaverMapView.h>
+#import <NMapsMap/NMFUtils.h>
+#import <React/RCTBridge.h>
 #import <React/RCTConvert.h>
 #import <React/RCTView.h>
 #import <React/UIView+React.h>
@@ -51,6 +62,7 @@ using namespace facebook::react;
 #endif
                        >
 
+@property(nonatomic, weak) RCTBridge* bridge;
 @property(nonatomic, assign) NMFMapType mapType;
 @property(nonatomic, assign) NSInteger layerGroups;
 @property(nonatomic, copy) NSDictionary* camera;
@@ -83,6 +95,7 @@ using namespace facebook::react;
 @property(nonatomic, assign) BOOL isRotateGesturesEnabled;
 @property(nonatomic, assign) BOOL isStopGesturesEnabled;
 @property(nonatomic, strong) NSString* locale;
+@property(nonatomic, strong) NSDictionary* clusters;
 
 @property(nonatomic, copy) RCTDirectEventBlock onInitialized;
 @property(nonatomic, copy) RCTDirectEventBlock onOptionChanged;

@@ -46,8 +46,8 @@ export interface NaverMapPolygonOverlayProps extends BaseOverlayProps {
 export const NaverMapPolygonOverlay = ({
   zIndex = Const.Z_SHAPE,
   isHidden = false,
-  minZoom = 0,
-  maxZoom = 1000,
+  minZoom = Const.MIN_ZOOM,
+  maxZoom = Const.MAX_ZOOM,
   isMinZoomInclusive = true,
   isMaxZoomInclusive = true,
 

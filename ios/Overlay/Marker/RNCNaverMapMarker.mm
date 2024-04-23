@@ -87,8 +87,10 @@ static NSMutableDictionary* _overlayImageHolder;
     _imageCanceller = nil;
   }
   _isImageSetFromSubview = YES;
+  _inner.alpha = 0;
   // prevent default image is set after this logic in old arch
   dispatch_async(dispatch_get_main_queue(), [self, subview]() {
+    self.inner.alpha = 1;
     self.inner.iconImage = [NMFOverlayImage overlayImageWithImage:[self captureView:subview]];
   });
 }
@@ -150,6 +152,7 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
   if (_isImageSetFromSubview) {
     return;
   }
+  _inner.alpha = 0;
 
   // Cancel pending request
   if (_imageCanceller) {
@@ -160,8 +163,10 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
   _imageCanceller = [Utils getImage:[self bridge]
                                json:image
                            callback:^(NMFOverlayImage* image) {
-                             dispatch_async(dispatch_get_main_queue(),
-                                            [self, image]() { self.inner.iconImage = image; });
+                             dispatch_async(dispatch_get_main_queue(), [self, image]() {
+                               self.inner.alpha = 1;
+                               self.inner.iconImage = image;
+                             });
                            }];
 }
 

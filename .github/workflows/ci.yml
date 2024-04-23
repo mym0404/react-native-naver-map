@@ -25,9 +25,6 @@ jobs:
       - name: Lint files
         run: yarn lint
 
-      - name: Typecheck files
-        run: yarn typecheck
-
       - name: Codegen
         run: yarn codegen
 

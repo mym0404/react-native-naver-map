@@ -1,24 +1,25 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 
 import { View, Platform, Text } from 'react-native';
 import {
   type MapType,
   type NaverMapViewRef,
   type Camera,
+  NaverMapView,
+  type ClusterMarkerProp,
+  NaverMapPathOverlay,
   NaverMapMarkerOverlay,
   NaverMapCircleOverlay,
   NaverMapPolygonOverlay,
-  NaverMapView,
-  NaverMapPathOverlay,
 } from '@mj-studio/react-native-naver-map';
 import { Toggle, Btn, Range } from './component/components';
-import { formatJson } from '@mj-studio/js-util';
 import {
   request,
   PERMISSIONS,
   requestLocationAccuracy,
   requestMultiple,
 } from 'react-native-permissions';
+import { formatJson, generateArray } from '@mj-studio/js-util';
 
 // const jejuRegion: Region = {
 //   latitude: 33.20530773,
@@ -105,55 +106,35 @@ export default function App() {
     }
   }, []);
 
-  return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      <NaverMapView
-        camera={camera}
-        // initialCamera={jejuCamera}
-        // region={jejuRegion}
-        // initialRegion={jejuRegion}
-        ref={ref}
-        style={{ flex: 1 }}
-        mapType={mapType}
-        layerGroups={{
-          BUILDING: true,
-          BICYCLE: false,
-          CADASTRAL: false,
-          MOUNTAIN: false,
-          TRAFFIC: false,
-          TRANSIT: false,
-        }}
-        isIndoorEnabled={indoor}
-        symbolScale={symbolScale}
-        lightness={lightness}
-        isNightModeEnabled={nightMode}
-        isShowCompass={compass}
-        isShowIndoorLevelPicker={indoorLevelPicker}
-        isShowScaleBar={scaleBar}
-        isShowZoomControls={zoomControls}
-        isShowLocationButton={myLocation}
-        isExtentBoundedInKorea
-        logoAlign={'TopRight'}
-        locale={'ja'}
-        animationDuration={500}
-        animationEasing={'Fly'}
-        // onInitialized={() => console.log('initialized!')}
-        // onOptionChanged={() => console.log('Option Changed!')}
-        // onCameraChanged={(args) =>
-        //   console.log(`Camera Changed: ${formatJson(args)}`)
-        // }
-        onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
-      >
-        <NaverMapMarkerOverlay
-          latitude={33.1622465837814}
-          longitude={126.277859838727}
-          onTap={() => console.log(1)}
-          anchor={{ x: 0.5, y: 1 }}
-        />
+  const [hash, setHash] = useState(0);
+  const clusterers = useMemo<
+    {
+      markers: ClusterMarkerProp[];
+      screenDistance?: number;
+      minZoom?: number;
+      maxZoom?: number;
+      animate?: boolean;
+    }[]
+  >(() => {
+    return generateArray(6).map((i) => {
+      return {
+        markers: generateArray(50).map<ClusterMarkerProp>((j) => ({
+          image: {
+            httpUri: `https://picsum.photos/seed/${hash}-${i}-${j}/32/32`,
+          },
+          width: 64,
+          height: 64,
+          latitude: Cameras.Jeju.latitude + Math.random(),
+          longitude: Cameras.Jeju.longitude + Math.random(),
+          identifier: `${hash}-${i}-${j}`,
+        })),
+      };
+    });
+  }, [hash]);
+
+  const renderOverlays = () => {
+    return (
+      <>
         <NaverMapMarkerOverlay
           latitude={33.4165607356}
           longitude={126.48599018}
@@ -207,7 +188,7 @@ export default function App() {
         />
         <NaverMapMarkerOverlay
           latitude={33.2565607356}
-          longitude={127.8599018}
+          longitude={126.8599018}
           onTap={() => console.log(1)}
           anchor={{ x: 0.5, y: 1 }}
           caption={{
@@ -218,7 +199,7 @@ export default function App() {
           }}
           width={100}
           height={100}
-          image={{ httpUri: 'https://picsum.photos/100/100' }}
+          image={{ httpUri: 'https://picsum.photos/1000/1201' }}
         />
 
         <NaverMapCircleOverlay
@@ -279,7 +260,51 @@ export default function App() {
           passedColor={'black'}
           outlineWidth={1}
         />
-      </NaverMapView>
+      </>
+    );
+  };
+  console.log(renderOverlays);
+
+  return (
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
+      <NaverMapView
+        camera={camera}
+        // initialCamera={jejuCamera}
+        // region={jejuRegion}
+        // initialRegion={jejuRegion}
+        ref={ref}
+        style={{ flex: 1 }}
+        mapType={mapType}
+        layerGroups={{
+          BUILDING: true,
+          BICYCLE: false,
+          CADASTRAL: false,
+          MOUNTAIN: false,
+          TRAFFIC: false,
+          TRANSIT: false,
+        }}
+        isIndoorEnabled={indoor}
+        symbolScale={symbolScale}
+        lightness={lightness}
+        isNightModeEnabled={nightMode}
+        isShowCompass={compass}
+        isShowIndoorLevelPicker={indoorLevelPicker}
+        isShowScaleBar={scaleBar}
+        isShowZoomControls={zoomControls}
+        isShowLocationButton={myLocation}
+        isExtentBoundedInKorea
+        onInitialized={() => console.log('initialized!')}
+        onOptionChanged={() => console.log('Option Changed!')}
+        // onCameraChanged={(args) =>
+        //   console.log(`Camera Changed: ${formatJson(args)}`)
+        // }
+        onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
+        clusters={clusterers}
+      />
       <View
         style={{
           flexDirection: 'row',
@@ -291,6 +316,7 @@ export default function App() {
           backgroundColor: '#000',
         }}
       >
+        <Btn title={`Refresh Images`} onPress={() => setHash((h) => h + 1)} />
         <Btn
           title={`Type(${mapType})`}
           onPress={() =>

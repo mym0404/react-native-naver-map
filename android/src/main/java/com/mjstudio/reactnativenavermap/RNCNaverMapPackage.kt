@@ -11,20 +11,19 @@ import com.mjstudio.reactnativenavermap.overlay.path.RNCNaverMapPathManager
 import com.mjstudio.reactnativenavermap.overlay.polygon.RNCNaverMapPolygonManager
 import com.mjstudio.reactnativenavermap.overlay.polyline.RNCNaverMapPolylineManager
 
-class NaverMapViewPackage : ReactPackage {
-    override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
-        return mutableListOf<ViewManager<*, *>>().apply {
-            add(RNCNaverMapViewManager())
-            add(RNCNaverMapMarkerManager())
-            add(RNCNaverMapCircleManager())
-            add(RNCNaverMapPolygonManager())
-            add(RNCNaverMapPolylineManager())
-            add(RNCNaverMapPathManager())
-        }
+class RNCNaverMapPackage : ReactPackage {
+  override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
+    return mutableListOf<ViewManager<*, *>>().apply {
+      add(RNCNaverMapViewManager())
+      add(RNCNaverMapMarkerManager())
+      add(RNCNaverMapCircleManager())
+      add(RNCNaverMapPolygonManager())
+      add(RNCNaverMapPolylineManager())
+      add(RNCNaverMapPathManager())
     }
+  }
 
-    override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
-        return emptyList()
-    }
-
+  override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
+    return emptyList()
+  }
 }

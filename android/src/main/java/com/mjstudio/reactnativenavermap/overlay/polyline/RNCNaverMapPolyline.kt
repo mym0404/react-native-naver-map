@@ -10,31 +10,31 @@ import com.naver.maps.map.overlay.PolylineOverlay
 
 @SuppressLint("ViewConstructor")
 class RNCNaverMapPolyline(val reactContext: ThemedReactContext) :
-    RNCNaverMapOverlay<PolylineOverlay>(reactContext) {
-    override val overlay: PolylineOverlay by lazy {
-        PolylineOverlay().apply {
-            setOnClickListener {
-                reactContext.emitEvent(id) { surfaceId, reactTag ->
-                    NaverMapOverlayTapEvent(
-                        surfaceId,
-                        reactTag
-                    )
-                }
-                true
-            }
+  RNCNaverMapOverlay<PolylineOverlay>(reactContext) {
+  override val overlay: PolylineOverlay by lazy {
+    PolylineOverlay().apply {
+      setOnClickListener {
+        reactContext.emitEvent(id) { surfaceId, reactTag ->
+          NaverMapOverlayTapEvent(
+            surfaceId,
+            reactTag,
+          )
         }
+        true
+      }
     }
+  }
 
-    override fun addToMap(map: NaverMap) {
-        overlay.map = map
-    }
+  override fun addToMap(map: NaverMap) {
+    overlay.map = map
+  }
 
-    override fun removeFromMap(map: NaverMap) {
-        overlay.map = null
-    }
+  override fun removeFromMap(map: NaverMap) {
+    overlay.map = null
+  }
 
-    override fun onDropViewInstance() {
-        overlay.map = null
-        overlay.onClickListener = null
-    }
+  override fun onDropViewInstance() {
+    overlay.map = null
+    overlay.onClickListener = null
+  }
 }

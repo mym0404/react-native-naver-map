@@ -7,6 +7,12 @@
 
 #import "RNCNaverMapViewImpl.h"
 
+#ifdef RCT_NEW_ARCH_ENABLED
+@interface RCTBridge (Private)
++ (RCTBridge*)currentBridge;
+@end
+#endif
+
 NMFCameraUpdateAnimation getEasingAnimation(int easing) {
   if (easing == 1) {
     return NMFCameraUpdateAnimationNone;
@@ -32,6 +38,11 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
   BOOL _initialCameraSet;
   BOOL _isFirstCameraAnimationRun;
 
+  NSMutableDictionary<NSString*, NMCClusterer*>* _clustererRecord;
+  NSMutableDictionary<NSString*, NSMutableArray*>* _clustererMarkerIdentifiers;
+  NSMutableDictionary<NSString*, void (^)(void)>* _clusterMarkerImageRequestCancelers;
+  NSString* _lastClustersPropKey;
+
   // Array to manually track RN subviews
   //
   // AIRMap implicitly creates subviews that aren't regular RN children
@@ -43,11 +54,26 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
   // https://github.com/facebook/react-native/blob/v0.16.0/Libraries/Text/RCTTextField.m#L20
   NSMutableArray<UIView*>* _reactSubviews;
 }
+
+/**
+ https://github.com/software-mansion/react-native-screens/blob/a8bb418a8428befbb264ef958a5d7f7ea743048a/ios/RNSScreenStackHeaderSubview.mm#L100
+ */
+- (RCTBridge*)bridge {
+#ifdef RCT_NEW_ARCH_ENABLED
+  return [RCTBridge currentBridge];
+#else
+  return _bridge;
+#endif
+}
+
 // MARK: - INIT & SETUP
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
     _reactSubviews = [NSMutableArray new];
+    _clustererRecord = [NSMutableDictionary new];
+    _clustererMarkerIdentifiers = [NSMutableDictionary new];
+    _clusterMarkerImageRequestCancelers = [NSMutableDictionary new];
 
     [self.mapView addCameraDelegate:self];
     [self.mapView setTouchDelegate:self];
@@ -64,6 +90,22 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
   }
 
   return self;
+}
+
+- (void)dealloc {
+  NSArray* allKeys = [_clustererRecord allKeys];
+  for (id clustererKey in allKeys) {
+    _clustererRecord[clustererKey].mapView = nil;
+    for (id markerIdentifier in _clustererMarkerIdentifiers[clustererKey]) {
+      if (_clusterMarkerImageRequestCancelers[markerIdentifier]) {
+        _clusterMarkerImageRequestCancelers[markerIdentifier]();
+        [_clusterMarkerImageRequestCancelers removeObjectForKey:markerIdentifier];
+      }
+    }
+  }
+  [_clustererMarkerIdentifiers removeAllObjects];
+  [_clustererRecord removeAllObjects];
+  [_reactSubviews removeAllObjects];
 }
 
 //- (NSArray<id<RCTComponent> > *)reactSubviews {
@@ -262,6 +304,95 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
 - (void)setExtent:(RNCNaverMapRegion*)extent {
   _extent = extent;
   self.mapView.extent = [extent convertToNMGLatLngBounds];
+}
+
+- (void)setClusters:(NSDictionary*)clusters {
+  NSString* propKey = clusters[@"key"];
+
+  if ([_lastClustersPropKey isEqualToString:propKey]) {
+    return;
+  }
+  _lastClustersPropKey = propKey;
+
+  NSArray<NSDictionary*>* value = clusters[@"clusters"];
+
+  // removeClustererFor mutates _clusterRecord. So get all keys first.
+  for (id prevKey in [_clustererRecord allKeys]) {
+    [self removeClustererFor:prevKey];
+  }
+  for (NSDictionary* clusterer in value) {
+    [self addClusterer:clusterer];
+  }
+}
+
+- (void)addClusterer:(nonnull NSDictionary*)dict {
+
+  NSString* clustererKey = dict[@"key"];
+  //  double screenDistance = clamp([dict[@"screenDistance"] doubleValue], 1, 69);
+  double minZoom = clamp([dict[@"minZoom"] doubleValue], 1, 20);
+  double maxZoom = clamp([dict[@"maxZoom"] doubleValue], 1, 20);
+  BOOL animate = [dict[@"animate"] boolValue];
+  NSDictionary* markers = dict[@"markers"];
+
+  NSMutableDictionary<RNCNaverMapClusterKey*, NSNull*>* markerDict = [NSMutableDictionary new];
+
+  NSMutableArray* markerIdentifiers = [NSMutableArray new];
+  _clustererMarkerIdentifiers[clustererKey] = markerIdentifiers;
+
+  for (NSDictionary* marker : markers) {
+    NSString* identifier = marker[@"identifier"];
+    double latitude = [marker[@"latitude"] doubleValue];
+    double longitude = [marker[@"longitude"] doubleValue];
+    double width = [marker[@"width"] doubleValue];
+    double height = [marker[@"height"] doubleValue];
+    NSDictionary* image = marker[@"image"];
+    RNCNaverMapClusterKey* markerKey =
+        [RNCNaverMapClusterKey markerKeyWithIdentifier:identifier
+                                              position:NMGLatLngMake(latitude, longitude)
+                                                bridge:[self bridge]
+                                                 image:image
+                                                 width:width
+                                                height:height];
+    markerDict[markerKey] = [NSNull null];
+
+    [markerIdentifiers addObject:identifier];
+  }
+
+  NMCBuilder* builder = [[NMCBuilder alloc] init];
+  // todo screenDistance not works. idk why
+  //  builder.screenDistance = screenDistance;
+  builder.minZoom = minZoom;
+  builder.maxZoom = maxZoom;
+  builder.animate = animate;
+
+  //  RNCNaverMapClusterMarkerUpdater* clusterMarkerUpdater =
+  //      [[RNCNaverMapClusterMarkerUpdater alloc] init];
+  RNCNaverMapLeafMarkerUpdater* leafMarkerUpdater =
+      [[RNCNaverMapLeafMarkerUpdater alloc] init:_clusterMarkerImageRequestCancelers];
+  //  builder.clusterMarkerUpdater = clusterMarkerUpdater;
+  builder.leafMarkerUpdater = leafMarkerUpdater;
+
+  NMCClusterer* clusterer = [builder build];
+  leafMarkerUpdater.clusterer = clusterer;
+  [clusterer addAll:markerDict];
+
+  _clustererRecord[clustererKey] = clusterer;
+  clusterer.mapView = self.mapView;
+}
+
+- (void)removeClustererFor:(nonnull NSString*)key {
+  NMCClusterer* clusterer = _clustererRecord[key];
+  clusterer.mapView = nil;
+
+  for (id markerIdentifier in _clustererMarkerIdentifiers[key]) {
+    if (_clusterMarkerImageRequestCancelers[markerIdentifier]) {
+      _clusterMarkerImageRequestCancelers[markerIdentifier]();
+      [_clusterMarkerImageRequestCancelers removeObjectForKey:markerIdentifier];
+    }
+  }
+
+  [_clustererMarkerIdentifiers removeObjectForKey:key];
+  [_clustererRecord removeObjectForKey:key];
 }
 
 // MARK: - EVENT

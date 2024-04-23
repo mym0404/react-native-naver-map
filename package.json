@@ -29,31 +29,40 @@
   ],
   "scripts": {
     "example": "yarn workspace @mj-studio/react-native-naver-map-example",
+    "dev": "yarn example start",
     "test": "jest",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "format:clang": "./script/clang-format.sh",
-    "lint:clang": "./script/clang-lint.sh",
-    "t": "yarn lint && yarn typecheck && yarn lint:clang",
+    "lint": "./script/lint.sh",
+    "t": "yarn lint",
+    "lint:js": "eslint \"**/*.{js,ts,tsx}\"",
+    "format": "yarn format:android && yarn format:ios",
+    "format:ios": "./script/clang-format.sh",
+    "lint:ios": "./script/clang-lint.sh",
+    "format:android": "./script/ktlint-format.sh",
+    "lint:android": "./script/ktlint-lint.sh",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "husky",
     "release": "./script/release.sh",
     "codegen:android": "cd example/android && ./gradlew generateCodegenArtifactsFromSchema",
     "codegen:ios": "node example/node_modules/react-native/scripts/generate-codegen-artifacts.js --path example/ --outputPath example/ios",
     "codegen": "yarn codegen:android && yarn codegen:ios",
-    "studio": "studio $(pwd)/android",
-    "studio:example": "studio $(pwd)/example/android",
+    "studio": "studio $(pwd)/example/android",
     "xcode": "open $(pwd)/example/ios/NaverMapExample.xcworkspace",
     "pod:old": "cd example/ios && bundle install && bundle exec pod install",
     "pod:new": "cd example/ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install",
     "prepack": "yarn build:expo-config-plugin && yarn build:docs && bob build",
     "build:expo-config-plugin": "tsc --project ./expo-config-plugin",
-    "build:docs": "rm -rf docs && typedoc"
+    "build:docs": "rm -rf docs && typedoc",
+    "old:pod": "./script/arch-convert.sh false true",
+    "new:pod": "./script/arch-convert.sh true true",
+    "old": "./script/arch-convert.sh false false",
+    "new": "./script/arch-convert.sh true false"
   },
   "keywords": [
     "react-native",
-    "ios",
-    "android"
+    "naver-map",
+    "naver",
+    "react-native-naver-map"
   ],
   "repository": {
     "type": "git",
@@ -76,6 +85,7 @@
     "@release-it/conventional-changelog": "^5.0.0",
     "@types/invariant": "^2.2.37",
     "@types/jest": "^29.5.5",
+    "@types/object-hash": "^3",
     "@types/react": "^18.2.44",
     "commitlint": "^17.0.2",
     "del-cli": "^5.1.0",
@@ -134,43 +144,48 @@
     },
     "plugins": {
       "@release-it/conventional-changelog": {
-        "header": "# Changelog",
-        "preset": "conventionalcommits"
+        "preset": {
+          "name": "conventionalcommits",
+          "types": [
+            {
+              "type": "feat",
+              "section": "Features"
+            },
+            {
+              "type": "fix",
+              "section": "Bug Fixes"
+            },
+            {
+              "type": "chore",
+              "section": "Chores"
+            },
+            {
+              "type": "docs",
+              "section": "Documentation"
+            },
+            {
+              "type": "style",
+              "section": "Style Code"
+            },
+            {
+              "type": "refactor",
+              "section": "Refactor"
+            },
+            {
+              "type": "perf",
+              "section": "Performance Enhance"
+            },
+            {
+              "type": "test",
+              "section": "Tests"
+            }
+          ]
+        },
+        "writerOpts": {
+          "groupBy": "scope"
+        }
       }
     }
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "@react-native",
-      "prettier"
-    ],
-    "rules": {
-      "prettier/prettier": [
-        "error",
-        {
-          "quoteProps": "consistent",
-          "singleQuote": true,
-          "tabWidth": 2,
-          "trailingComma": "es5",
-          "useTabs": false
-        }
-      ],
-      "react-native/no-inline-styles": "off"
-    }
-  },
-  "eslintIgnore": [
-    "node_modules/",
-    "lib/",
-    "expo-config-plugin",
-    "docs/"
-  ],
-  "prettier": {
-    "quoteProps": "consistent",
-    "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "es5",
-    "useTabs": false
   },
   "react-native-builder-bob": {
     "source": "src",
@@ -192,6 +207,7 @@
     "jsSrcsDir": "src"
   },
   "dependencies": {
-    "invariant": "^2.2.4"
+    "invariant": "^2.2.4",
+    "object-hash": "^3.0.0"
   }
 }

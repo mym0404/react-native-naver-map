@@ -20,6 +20,9 @@ export const Const = {
   Z_SHAPE: -200000,
   Z_GROUND: -300000,
   Z_BACKGROUND: -400000,
+  MIN_ZOOM: 0,
+  MAX_ZOOM: 21,
+  DEFAULT_SCREEN_DISTANCE: 70,
 } satisfies (Record<string, any> & {}) & {
   DEFAULT_EASING: CameraAnimationEasing;
 };

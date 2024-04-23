@@ -11,6 +11,7 @@
 #import <react/renderer/components/RNCNaverMapSpec/Props.h>
 #import <react/renderer/components/RNCNaverMapSpec/RCTComponentViewHelpers.h>
 
+#import "FnUtil.h"
 #import "RCTFabricComponentsPlugins.h"
 #import "RNCNaverMapViewImpl.h"
 #import "Utils.h"

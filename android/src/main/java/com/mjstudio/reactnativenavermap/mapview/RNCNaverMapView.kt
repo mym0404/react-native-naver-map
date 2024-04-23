@@ -20,159 +20,159 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.NaverMapOptions
 import com.naver.maps.map.util.FusedLocationSource
 
-
 @SuppressLint("ViewConstructor")
 class RNCNaverMapView(
-    private val reactContext: ThemedReactContext,
-    private val mapOptions: NaverMapOptions
+  private val reactContext: ThemedReactContext,
+  private val mapOptions: NaverMapOptions,
 ) :
-    MapView(reactContext, mapOptions) {
+  MapView(reactContext, mapOptions) {
+  private var attacherGroup: ViewAttacherGroup? = null
+  private var map: NaverMap? = null
+  private var isAttached = false
+  val overlays = mutableListOf<RNCNaverMapOverlay<*>>()
 
-    private var attacherGroup: ViewAttacherGroup? = null
-    private var map: NaverMap? = null
-    private var isAttached = false
-    val overlays = mutableListOf<RNCNaverMapOverlay<*>>()
+  private val reactTag: Int
+    get() = RNCNaverMapViewWrapper.getReactTagFromMapView(this)
 
-    private val reactTag: Int
-        get() = RNCNaverMapViewWrapper.getReactTagFromMapView(this)
+  var isInitialCameraOrRegionSet = false
 
-    var isInitialCameraOrRegionSet = false
+  init {
+    getMapAsync {
+      map = it
+      reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
+        NaverMapInitializeEvent(surfaceId, reactTag)
+      }
 
-    init {
-        getMapAsync {
-            map = it
-            reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
-                NaverMapInitializeEvent(surfaceId, reactTag)
-            }
+      it.addOnOptionChangeListener {
+        reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
+          NaverMapOptionChangeEvent(surfaceId, reactTag)
+        }
+      }
 
+      it.addOnCameraChangeListener { reason, animated ->
+        reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
+          NaverMapCameraChangeEvent(
+            surfaceId,
+            reactTag,
+            it.cameraPosition.target.latitude,
+            it.cameraPosition.target.longitude,
+            it.cameraPosition.zoom,
+            it.cameraPosition.tilt,
+            it.cameraPosition.bearing,
+            when (reason) {
+              REASON_GESTURE -> 1
+              REASON_CONTROL -> 2
+              REASON_LOCATION -> 3
+              else -> 0
+            },
+          )
+        }
+      }
 
-            it.addOnOptionChangeListener {
-                reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
-                    NaverMapOptionChangeEvent(surfaceId, reactTag)
-                }
-            }
+      it.setOnMapClickListener { pointF, latLng ->
+        reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
+          NaverMapTapEvent(
+            surfaceId,
+            reactTag,
+            latLng.latitude,
+            latLng.longitude,
+            pointF.x.toDouble(),
+            pointF.y.toDouble(),
+          )
+        }
+      }
+    }
 
-            it.addOnCameraChangeListener { reason, animated ->
-                reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
-                    NaverMapCameraChangeEvent(
-                        surfaceId,
-                        reactTag,
-                        it.cameraPosition.target.latitude,
-                        it.cameraPosition.target.longitude,
-                        it.cameraPosition.zoom,
-                        it.cameraPosition.tilt,
-                        it.cameraPosition.bearing,
-                        when (reason) {
-                            REASON_GESTURE -> 1
-                            REASON_CONTROL -> 2
-                            REASON_LOCATION -> 3
-                            else -> 0
-                        },
-                    )
-                }
-            }
+    // Set up a parent view for triggering visibility in subviews that depend on it.
+    // Mainly ReactImageView depends on Fresco which depends on onVisibilityChanged() event
+    attacherGroup = ViewAttacherGroup(reactContext)
+    val attacherLayoutParams = LayoutParams(0, 0)
+    attacherLayoutParams.width = 0
+    attacherLayoutParams.height = 0
+    attacherLayoutParams.leftMargin = 99999999
+    attacherLayoutParams.topMargin = 99999999
+    attacherGroup!!.setLayoutParams(attacherLayoutParams)
+    addView(attacherGroup)
+  }
 
-            it.setOnMapClickListener { pointF, latLng ->
-                reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
-                    NaverMapTapEvent(
-                        surfaceId,
-                        reactTag,
-                        latLng.latitude,
-                        latLng.longitude,
-                        pointF.x.toDouble(),
-                        pointF.y.toDouble(),
-                    )
-                }
-            }
+  override fun onAttachedToWindow() {
+    super.onAttachedToWindow()
+    isAttached = true
+  }
+
+  override fun onDetachedFromWindow() {
+    isAttached = false
+    super.onDetachedFromWindow()
+  }
+
+  fun withMap(callback: (map: NaverMap) -> Unit) {
+    map?.also(callback) ?: run { getMapAsync(callback) }
+  }
+
+  fun addOverlay(
+    child: View,
+    index: Int,
+  ) = withMap { map ->
+    when (child) {
+      is RNCNaverMapMarker -> {
+        child.addToMap(map)
+        overlays.add(index, child)
+        val visibility: Int = child.visibility
+        child.visibility = INVISIBLE
+        (child.parent as? ViewGroup)?.removeView(child)
+        // Add to the parent group
+        attacherGroup!!.addView(child)
+        child.visibility = visibility
+      }
+
+      is RNCNaverMapOverlay<*> -> {
+        child.addToMap(map)
+        overlays.add(index, child)
+      }
+
+      else -> {
+        addView(child, index)
+      }
+    }
+  }
+
+  override fun onDestroy() {
+    removeAllViews()
+    overlays.forEach {
+      if (map != null) {
+        it.removeFromMap(map!!)
+      }
+    }
+    overlays.clear()
+    map = null
+    attacherGroup = null
+    super.onDestroy()
+  }
+
+  fun removeOverlay(index: Int) =
+    withMap { map ->
+      when (val child = overlays.removeAt(index)) {
+        is RNCNaverMapMarker -> {
+          child.removeFromMap(map)
+          attacherGroup?.removeView(child)
         }
 
-        // Set up a parent view for triggering visibility in subviews that depend on it.
-        // Mainly ReactImageView depends on Fresco which depends on onVisibilityChanged() event
-        attacherGroup = ViewAttacherGroup(reactContext)
-        val attacherLayoutParams = LayoutParams(0, 0)
-        attacherLayoutParams.width = 0
-        attacherLayoutParams.height = 0
-        attacherLayoutParams.leftMargin = 99999999
-        attacherLayoutParams.topMargin = 99999999
-        attacherGroup!!.setLayoutParams(attacherLayoutParams)
-        addView(attacherGroup)
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        isAttached = true
-    }
-
-    override fun onDetachedFromWindow() {
-        isAttached = false
-        super.onDetachedFromWindow()
-    }
-
-    fun withMap(callback: (map: NaverMap) -> Unit) {
-        map?.also(callback) ?: run { getMapAsync(callback) }
-    }
-
-    fun addOverlay(child: View, index: Int) = withMap { map ->
-        when (child) {
-            is RNCNaverMapMarker -> {
-                child.addToMap(map)
-                overlays.add(index, child)
-                val visibility: Int = child.visibility
-                child.visibility = INVISIBLE
-                (child.parent as? ViewGroup)?.removeView(child)
-                // Add to the parent group
-                attacherGroup!!.addView(child)
-                child.visibility = visibility
-            }
-
-            is RNCNaverMapOverlay<*> -> {
-                child.addToMap(map)
-                overlays.add(index, child)
-            }
-
-            else -> {
-                addView(child, index);
-            }
+        is RNCNaverMapOverlay<*> -> {
+          child.removeFromMap(map)
         }
-    }
 
-    override fun onDestroy() {
-        removeAllViews()
-        overlays.forEach {
-            if (map != null) {
-                it.removeFromMap(map!!)
-            }
+        else -> {
+          removeView(child)
         }
-        overlays.clear()
-        map = null
-        attacherGroup = null
-        super.onDestroy()
+      }
     }
 
-
-    fun removeOverlay(index: Int) = withMap { map ->
-        when (val child = overlays.removeAt(index)) {
-            is RNCNaverMapMarker -> {
-                child.removeFromMap(map)
-                attacherGroup?.removeView(child)
-            }
-
-            is RNCNaverMapOverlay<*> -> {
-                child.removeFromMap(map)
-            }
-
-            else -> {
-                removeView(child)
-            }
-        }
+  fun setupLocationSource() {
+    reactContext.currentActivity?.also { activity ->
+      val source = FusedLocationSource(activity, 100)
+      withMap {
+        it.locationSource = source
+      }
     }
-
-    fun setupLocationSource() {
-        reactContext.currentActivity?.also { activity ->
-            val source = FusedLocationSource(activity, 100)
-            withMap {
-                it.locationSource = source
-            }
-        }
-    }
+  }
 }
