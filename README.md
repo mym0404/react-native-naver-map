@@ -25,14 +25,7 @@
 
 <img src="https://raw.githubusercontent.com/mym0404/image-archive/master/202404240329848.gif" width="400" alt="preview">
 
->[!NOTE]
->마커 클러스터링을 개발중입니다.
-
-https://github.com/mj-studio-library/react-native-naver-map/assets/33388801/89838b5b-1fc8-4b05-a0e0-c43b1dedeb62
-
-## 왜 이 라이브러리를 써야하나요?
-
-이 프로젝트는 다음과 같은 목적을 가집니다.
+## Highlights
 
 ### 1. 관리되지 않는 기존 라이브러리 대체
 
