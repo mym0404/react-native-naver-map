@@ -23,7 +23,7 @@
 
 리액트 네이티브 [Naver Map](https://www.ncloud.com/product/applicationService/maps) 컴포넌트입니다.
 
-<img src="https://raw.githubusercontent.com/mym0404/image-archive/master/202404152351235.webp" width="500" alt="preview">
+<img src="https://raw.githubusercontent.com/mym0404/image-archive/master/202404240329848.gif" width="400" alt="preview">
 
 ## 왜 이 라이브러리를 써야하나요?
 
@@ -383,7 +383,7 @@ yarn add react-native-permissions
 ```
 
 `react-native-permission`의 각 플랫폼별 설정 방법은 [사용법](https://github.com/zoontek/react-native-permissions#setup)을 직접 참고해
-`Podfile(iOS)`, `AndroidManifest.xml(Android)` 를 적절히 변경해주시길 바랍니다. 
+`Podfile(iOS)`, `AndroidManifest.xml(Android)` 를 적절히 변경해주시길 바랍니다.
 
 #### iOS
 
@@ -485,7 +485,7 @@ useEffect(() => {
       /**
        * Note: Foreground permissions should be granted before asking for the background permissions
        * (your app can't obtain background permission without foreground permission).
-       */ 
+       */
       if(granted) {
         await Location.requestBackgroundPermissionsAsync();
       }
@@ -532,7 +532,7 @@ useEffect(() => {
 
 > [!TIP]
 > `reuseIdentifier`는 전달하지 않아도 모두 자동으로 캐싱이 됩니다.
-> 
+>
 > 되도록이면 마커는 모두 `width`, `height` prop을 사용해야합니다. 2번 타입의 경우 현재 debug/release 빌드의 크기가 `width`, `height`없이 다르게 나오는 현상이 있습니다.
 > release에서는 제대로 나옵니다.
 
@@ -571,7 +571,7 @@ image={{httpUri: 'https://example.com/image.png'}}
 iOS(new arch)에선 현재 View들에 `collapsable=false`를 설정해야 동작합니다.
 
 > [!TIP]
-> 마커의 생김새를 바꿔야 한다면 그것에 대한 의존성들을 제일 상위 자식의 `key`로 전달해야합니다. 
+> 마커의 생김새를 바꿔야 한다면 그것에 대한 의존성들을 제일 상위 자식의 `key`로 전달해야합니다.
 
 ```tsx
 <NaverMapMarkerOverlay width={width} height={height} ...>
@@ -607,8 +607,6 @@ iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니
 | Prop                     | iOS | Android |
 |--------------------------|-----|---------|
 | isLogoInteractionEnabled | ❌   | ❌       |
-| isUseTextureViewAndroid  | ❌   | ✅       |
-| markerClustering         | 📦  | 📦      |
 | fpsLimit                 | 📦  | 📦      |
 | gestureFrictions         | 📦  | 📦      |
 
@@ -626,7 +624,6 @@ iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니
 |----------------------------|-----|---------|
 | screenToCoordinate         | 📦  | 📦      |
 | coordinateToScreen         | 📦  | 📦      |
-| clusterMarkers             | 📦  | 📦      |
 
 ### Marker Common
 
@@ -672,8 +669,8 @@ iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니
 - [x] Release (23.04.11)
 - [x] Support Expo with config plugin (23.04.12)
 - [x] Docs
-- [ ] Implement Clustering <- 🔥
-- [ ] Implement MutlPath, Arrow, Geometry Overlays 
+- [x] Implement Clustering (23.04.24)
+- [ ] Implement MutlPath, Arrow, Geometry Overlays <- 🔥
 
 ## Contributing
 

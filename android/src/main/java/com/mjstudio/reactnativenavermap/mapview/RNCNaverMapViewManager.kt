@@ -563,11 +563,15 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
           val latitude = marker["latitude"] as Double
           val longitude = marker["longitude"] as Double
           val image = marker["image"] as? Map<*, *>
+          val width = marker["width"] as? Double
+          val height = marker["height"] as? Double
 
           RNCNaverMapClusterKey(
             identifier,
             LatLng(latitude, longitude),
             image,
+            width,
+            height,
             RNCNaverMapLeafMarkerHolder(identifier, reactAppContext),
           ) to null
         }

@@ -62,6 +62,7 @@ using namespace facebook::react;
 #endif
                        >
 
+@property(nonatomic, weak) RCTBridge* bridge;
 @property(nonatomic, assign) NMFMapType mapType;
 @property(nonatomic, assign) NSInteger layerGroups;
 @property(nonatomic, copy) NSDictionary* camera;

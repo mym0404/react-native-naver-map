@@ -39,6 +39,8 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
   BOOL _isFirstCameraAnimationRun;
 
   NSMutableDictionary<NSString*, NMCClusterer*>* _clustererRecord;
+  NSMutableDictionary<NSString*, NSMutableArray*>* _clustererMarkerIdentifiers;
+  NSMutableDictionary<NSString*, void (^)(void)>* _clusterMarkerImageRequestCancelers;
   NSString* _lastClustersPropKey;
 
   // Array to manually track RN subviews
@@ -70,6 +72,8 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
   if (self = [super initWithFrame:frame]) {
     _reactSubviews = [NSMutableArray new];
     _clustererRecord = [NSMutableDictionary new];
+    _clustererMarkerIdentifiers = [NSMutableDictionary new];
+    _clusterMarkerImageRequestCancelers = [NSMutableDictionary new];
 
     [self.mapView addCameraDelegate:self];
     [self.mapView setTouchDelegate:self];
@@ -89,9 +93,17 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
 }
 
 - (void)dealloc {
-  for (id key in _clustererRecord) {
-    _clustererRecord[key].mapView = nil;
+  NSArray* allKeys = [_clustererRecord allKeys];
+  for (id clustererKey in allKeys) {
+    _clustererRecord[clustererKey].mapView = nil;
+    for (id markerIdentifier in _clustererMarkerIdentifiers[clustererKey]) {
+      if (_clusterMarkerImageRequestCancelers[markerIdentifier]) {
+        _clusterMarkerImageRequestCancelers[markerIdentifier]();
+        [_clusterMarkerImageRequestCancelers removeObjectForKey:markerIdentifier];
+      }
+    }
   }
+  [_clustererMarkerIdentifiers removeAllObjects];
   [_clustererRecord removeAllObjects];
   [_reactSubviews removeAllObjects];
 }
@@ -304,44 +316,19 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
 
   NSArray<NSDictionary*>* value = clusters[@"clusters"];
 
-  // remove previous marker
-  {
-    NSMutableArray* removedKeys = [NSMutableArray new];
-    for (NSString* previousKeys : _clustererRecord) {
-      BOOL isExistInNext = NO;
-      for (NSDictionary* c in value) {
-        NSString* markerKey = c[@"key"];
-        if ([markerKey isEqualToString:previousKeys]) {
-          isExistInNext = YES;
-          break;
-        }
-      }
-      if (!isExistInNext) {
-        [removedKeys addObject:previousKeys];
-      }
-    }
-    for (NSString* removedKey : removedKeys) {
-      [self removeClustererFor:removedKey];
-    }
+  // removeClustererFor mutates _clusterRecord. So get all keys first.
+  for (id prevKey in [_clustererRecord allKeys]) {
+    [self removeClustererFor:prevKey];
   }
-
-  for (NSDictionary* c in value) {
-    NSString* clustererKey = c[@"key"];
-    if ([_clustererRecord objectForKey:clustererKey]) {
-      // todo efficient update
-      [self removeClustererFor:clustererKey];
-    }
-  }
-
-  for (NSDictionary* c in value) {
-    [self addClusterer:c];
+  for (NSDictionary* clusterer in value) {
+    [self addClusterer:clusterer];
   }
 }
 
 - (void)addClusterer:(nonnull NSDictionary*)dict {
 
   NSString* clustererKey = dict[@"key"];
-  double screenDistance = clamp([dict[@"screenDistance"] doubleValue], 1, 69);
+  //  double screenDistance = clamp([dict[@"screenDistance"] doubleValue], 1, 69);
   double minZoom = clamp([dict[@"minZoom"] doubleValue], 1, 20);
   double maxZoom = clamp([dict[@"maxZoom"] doubleValue], 1, 20);
   BOOL animate = [dict[@"animate"] boolValue];
@@ -349,17 +336,26 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
 
   NSMutableDictionary<RNCNaverMapClusterKey*, NSNull*>* markerDict = [NSMutableDictionary new];
 
+  NSMutableArray* markerIdentifiers = [NSMutableArray new];
+  _clustererMarkerIdentifiers[clustererKey] = markerIdentifiers;
+
   for (NSDictionary* marker : markers) {
     NSString* identifier = marker[@"identifier"];
     double latitude = [marker[@"latitude"] doubleValue];
     double longitude = [marker[@"longitude"] doubleValue];
+    double width = [marker[@"width"] doubleValue];
+    double height = [marker[@"height"] doubleValue];
     NSDictionary* image = marker[@"image"];
     RNCNaverMapClusterKey* markerKey =
         [RNCNaverMapClusterKey markerKeyWithIdentifier:identifier
                                               position:NMGLatLngMake(latitude, longitude)
                                                 bridge:[self bridge]
-                                                 image:image];
+                                                 image:image
+                                                 width:width
+                                                height:height];
     markerDict[markerKey] = [NSNull null];
+
+    [markerIdentifiers addObject:identifier];
   }
 
   NMCBuilder* builder = [[NMCBuilder alloc] init];
@@ -371,7 +367,8 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
 
   //  RNCNaverMapClusterMarkerUpdater* clusterMarkerUpdater =
   //      [[RNCNaverMapClusterMarkerUpdater alloc] init];
-  RNCNaverMapLeafMarkerUpdater* leafMarkerUpdater = [[RNCNaverMapLeafMarkerUpdater alloc] init];
+  RNCNaverMapLeafMarkerUpdater* leafMarkerUpdater =
+      [[RNCNaverMapLeafMarkerUpdater alloc] init:_clusterMarkerImageRequestCancelers];
   //  builder.clusterMarkerUpdater = clusterMarkerUpdater;
   builder.leafMarkerUpdater = leafMarkerUpdater;
 
@@ -386,6 +383,15 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
 - (void)removeClustererFor:(nonnull NSString*)key {
   NMCClusterer* clusterer = _clustererRecord[key];
   clusterer.mapView = nil;
+
+  for (id markerIdentifier in _clustererMarkerIdentifiers[key]) {
+    if (_clusterMarkerImageRequestCancelers[markerIdentifier]) {
+      _clusterMarkerImageRequestCancelers[markerIdentifier]();
+      [_clusterMarkerImageRequestCancelers removeObjectForKey:markerIdentifier];
+    }
+  }
+
+  [_clustererMarkerIdentifiers removeObjectForKey:key];
   [_clustererRecord removeObjectForKey:key];
 }
 

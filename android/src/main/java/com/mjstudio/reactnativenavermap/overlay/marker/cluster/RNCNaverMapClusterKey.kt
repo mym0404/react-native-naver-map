@@ -7,6 +7,8 @@ internal data class RNCNaverMapClusterKey(
   val identifier: String,
   val latlng: LatLng,
   val image: Map<*, *>? = null,
+  val width: Double?,
+  val height: Double?,
   val holder: RNCNaverMapLeafMarkerHolder,
 ) : ClusteringKey {
   override fun getPosition(): LatLng {

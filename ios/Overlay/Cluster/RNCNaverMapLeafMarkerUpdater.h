@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RNCNaverMapLeafMarkerUpdater : NMCDefaultLeafMarkerUpdater
 @property(nonatomic, weak, nullable) NMCClusterer* clusterer;
+
+- init:(NSMutableDictionary<NSString*, void (^)(void)>*)markerImageRequestCanceler;
 @end
 
 NS_ASSUME_NONNULL_END

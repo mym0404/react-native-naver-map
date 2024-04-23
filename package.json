@@ -85,6 +85,7 @@
     "@release-it/conventional-changelog": "^5.0.0",
     "@types/invariant": "^2.2.37",
     "@types/jest": "^29.5.5",
+    "@types/object-hash": "^3",
     "@types/react": "^18.2.44",
     "commitlint": "^17.0.2",
     "del-cli": "^5.1.0",
@@ -206,6 +207,7 @@
     "jsSrcsDir": "src"
   },
   "dependencies": {
-    "invariant": "^2.2.4"
+    "invariant": "^2.2.4",
+    "object-hash": "^3.0.0"
   }
 }

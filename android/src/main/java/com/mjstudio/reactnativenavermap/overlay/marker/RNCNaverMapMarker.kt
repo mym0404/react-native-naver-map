@@ -87,6 +87,7 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
     ViewChangesTracker.getInstance().addMarker(this)
     customView = view
     updateCustomView()
+    overlay.alpha = 1f
   }
 
   fun removeCustomView(index: Int) {
@@ -142,10 +143,12 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
   fun setImage(image: ReadableMap?) {
     lastImage = image
     if (isImageSetFromSubview) return
+    overlay.alpha = 0f
     imageRequestCanceller?.invoke()
     imageRequestCanceller =
       getOverlayImage(imageHolder!!, context, image?.toHashMap()) {
         setOverlayImage(it)
+        overlay.alpha = 1f
       }
   }
 

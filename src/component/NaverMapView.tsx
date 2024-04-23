@@ -32,6 +32,7 @@ import {
 import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
 import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
 import type { ClusterMarkerProp } from '../types/ClusterMarkerProp';
+import hash from 'object-hash';
 
 /**
  * @category Hell
@@ -467,6 +468,28 @@ function clamp(v: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, v));
 }
 
+const southKoreaExtent: Region = {
+  latitude: 31.43,
+  longitude: 122.37,
+  latitudeDelta: 44.35 - 31.43,
+  longitudeDelta: 132 - 122.37,
+};
+
+const nullRegion: Region = {
+  latitude: Const.NULL_NUMBER,
+  longitude: Const.NULL_NUMBER,
+  latitudeDelta: Const.NULL_NUMBER,
+  longitudeDelta: Const.NULL_NUMBER,
+};
+
+const nullCamera: Camera = {
+  latitude: Const.NULL_NUMBER,
+  longitude: Const.NULL_NUMBER,
+  zoom: Const.NULL_NUMBER,
+  tilt: Const.NULL_NUMBER,
+  bearing: Const.NULL_NUMBER,
+};
+
 export const NaverMapView = forwardRef(
   (
     {
@@ -538,7 +561,7 @@ export const NaverMapView = forwardRef(
         maxZoom = Const.MAX_ZOOM,
         screenDistance = Const.DEFAULT_SCREEN_DISTANCE,
       } of clusters) {
-        const key = `${animate}/${maxZoom}/${minZoom}/${screenDistance}/${JSON.stringify(markers)}`;
+        const key = hash([animate, maxZoom, minZoom, screenDistance, markers]);
 
         ret.push({
           key,
@@ -558,7 +581,7 @@ export const NaverMapView = forwardRef(
       }
 
       return {
-        key: propKey,
+        key: hash(propKey),
         clusters: ret,
       };
     }, [clusters]);
@@ -694,6 +717,7 @@ export const NaverMapView = forwardRef(
       }),
       []
     );
+
     return (
       <NativeNaverMapView
         ref={innerRef}
@@ -710,24 +734,13 @@ export const NaverMapView = forwardRef(
         initialCamera={
           !camera && initialCamera
             ? createCameraInstance(initialCamera)
-            : {
-                latitude: Const.NULL_NUMBER,
-                longitude: Const.NULL_NUMBER,
-                zoom: Const.NULL_NUMBER,
-                tilt: Const.NULL_NUMBER,
-                bearing: Const.NULL_NUMBER,
-              }
+            : nullCamera
         }
         region={!camera && !initialCamera ? region : undefined}
         initialRegion={
           !region && !camera && !initialCamera && initialRegion
             ? initialRegion
-            : {
-                latitude: Const.NULL_NUMBER,
-                longitude: Const.NULL_NUMBER,
-                latitudeDelta: Const.NULL_NUMBER,
-                longitudeDelta: Const.NULL_NUMBER,
-              }
+            : nullRegion
         }
         animationDuration={animationDuration}
         animationEasing={cameraEasingToNumber(animationEasing)}
@@ -754,12 +767,7 @@ export const NaverMapView = forwardRef(
           extent
             ? extent
             : isExtentBoundedInKorea
-              ? {
-                  latitude: 31.43,
-                  longitude: 122.37,
-                  latitudeDelta: 44.35 - 31.43,
-                  longitudeDelta: 132 - 122.37,
-                }
+              ? southKoreaExtent
               : undefined
         }
         logoAlign={logoAlign}

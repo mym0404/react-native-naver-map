@@ -18,6 +18,7 @@ import {
 } from '../internal/Util';
 import type { Point } from '../types/Point';
 import type { MarkerImageProp } from '../types/MarkerImageProp';
+import hash from 'object-hash';
 
 export interface CaptionType {
   /** 캡션으로 표시할 텍스트를 지정할 수 있습니다.
@@ -370,7 +371,7 @@ export const NaverMapMarkerOverlay = ({
     } satisfies Omit<NativeCaptionProp, 'key'>;
 
     return Object.assign(inner, {
-      key: JSON.stringify(inner),
+      key: hash(inner),
     });
   }, [caption]);
 
@@ -387,7 +388,7 @@ export const NaverMapMarkerOverlay = ({
     };
 
     return Object.assign(inner, {
-      key: JSON.stringify(inner),
+      key: hash(inner),
     });
   }, [subCaption]);
 

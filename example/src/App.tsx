@@ -1,12 +1,16 @@
 import React, { useRef, useState, useEffect, useMemo } from 'react';
 
-import { View, Platform } from 'react-native';
+import { View, Platform, Text } from 'react-native';
 import {
   type MapType,
   type NaverMapViewRef,
   type Camera,
   NaverMapView,
   type ClusterMarkerProp,
+  NaverMapPathOverlay,
+  NaverMapMarkerOverlay,
+  NaverMapCircleOverlay,
+  NaverMapPolygonOverlay,
 } from '@mj-studio/react-native-naver-map';
 import { Toggle, Btn, Range } from './component/components';
 import {
@@ -102,6 +106,7 @@ export default function App() {
     }
   }, []);
 
+  const [hash, setHash] = useState(0);
   const clusterers = useMemo<
     {
       markers: ClusterMarkerProp[];
@@ -111,17 +116,154 @@ export default function App() {
       animate?: boolean;
     }[]
   >(() => {
-    return generateArray(10).map((i) => {
+    return generateArray(6).map((i) => {
       return {
         markers: generateArray(50).map<ClusterMarkerProp>((j) => ({
-          image: { httpUri: `https://picsum.photos/seed/${i * j}/256/256` },
+          image: {
+            httpUri: `https://picsum.photos/seed/${hash}-${i}-${j}/32/32`,
+          },
+          width: 64,
+          height: 64,
           latitude: Cameras.Jeju.latitude + Math.random(),
           longitude: Cameras.Jeju.longitude + Math.random(),
-          identifier: `${i}-${j}`,
+          identifier: `${hash}-${i}-${j}`,
         })),
       };
     });
-  }, []);
+  }, [hash]);
+
+  const renderOverlays = () => {
+    return (
+      <>
+        <NaverMapMarkerOverlay
+          latitude={33.4165607356}
+          longitude={126.48599018}
+          onTap={() => console.log(1)}
+          anchor={{ x: 0.5, y: 1 }}
+          width={100}
+          height={100}
+          key={3}
+        >
+          <View
+            style={{
+              width: 100,
+              height: 100,
+              backgroundColor: 'red',
+              alignItems: 'center',
+              alignSelf: 'center',
+            }}
+            collapsable={false}
+            key={5}
+          >
+            <Text>123456</Text>
+          </View>
+        </NaverMapMarkerOverlay>
+        <NaverMapMarkerOverlay
+          latitude={34.1565607356}
+          longitude={126.88599018}
+          onTap={() => console.log(1)}
+          anchor={{ x: 0.5, y: 1 }}
+          caption={{
+            text: 'helloj2',
+          }}
+          subCaption={{
+            text: '123',
+          }}
+          image={require('./logo180.png')}
+        />
+        <NaverMapMarkerOverlay
+          latitude={33.0565607356}
+          longitude={126.88599018}
+          onTap={() => console.log(1)}
+          anchor={{ x: 0.5, y: 1 }}
+          caption={{
+            text: 'helloj2',
+          }}
+          subCaption={{
+            text: '123',
+          }}
+          width={100}
+          height={50}
+          image={{ assetName: 'thumbnail' }}
+        />
+        <NaverMapMarkerOverlay
+          latitude={33.2565607356}
+          longitude={126.8599018}
+          onTap={() => console.log(1)}
+          anchor={{ x: 0.5, y: 1 }}
+          caption={{
+            text: 'hello',
+          }}
+          subCaption={{
+            text: '123',
+          }}
+          width={100}
+          height={100}
+          image={{ httpUri: 'https://picsum.photos/1000/1201' }}
+        />
+
+        <NaverMapCircleOverlay
+          latitude={33.17827398}
+          longitude={126.349895729}
+          radius={50000}
+          color={'#f2f1'}
+          outlineColor={'#aaa'}
+          outlineWidth={2}
+          onTap={() => console.log('hi')}
+        />
+        <NaverMapPolygonOverlay
+          outlineWidth={5}
+          outlineColor={'#f2f2'}
+          color={'#0068'}
+          coords={[
+            { latitude: 33.2249594, longitude: 126.54180047 },
+            { latitude: 33.25683311547, longitude: 126.18193 },
+            { latitude: 33.3332807, longitude: 126.838389399 },
+          ]}
+        />
+        <NaverMapPathOverlay
+          coords={[
+            { latitude: 32.345332063, longitude: 126.24180047 },
+            { latitude: 32.70066, longitude: 126.2719053 },
+            { latitude: 32.360030018, longitude: 126.37221049 },
+            { longitude: 126.4661129593128, latitude: 32.671851556552205 },
+            { longitude: 126.52469300979067, latitude: 32.38556958856244 },
+          ]}
+          width={8}
+          color={'white'}
+          progress={0.5}
+          passedColor={'black'}
+          outlineWidth={1}
+        />
+        <NaverMapPathOverlay
+          coords={[
+            { longitude: 126.62990091699743, latitude: 32.40928161528563 },
+            { longitude: 126.71646354934853, latitude: 32.636702779539824 },
+            { longitude: 126.81191068177424, latitude: 32.41288583990872 },
+          ]}
+          width={8}
+          color={'white'}
+          progress={0.5}
+          passedColor={'black'}
+          outlineWidth={1}
+        />
+        <NaverMapPathOverlay
+          coords={[
+            { longitude: 126.93240597362552, latitude: 32.433509943138404 },
+            { longitude: 126.93474226289788, latitude: 32.6383463419792 },
+            { longitude: 127.07281803100506, latitude: 32.57085962943823 },
+            { longitude: 126.96403036772739, latitude: 32.52862726684933 },
+          ]}
+          width={8}
+          color={'white'}
+          progress={0.5}
+          passedColor={'black'}
+          outlineWidth={1}
+        />
+      </>
+    );
+  };
+  console.log(renderOverlays);
 
   return (
     <View
@@ -157,138 +299,12 @@ export default function App() {
         isExtentBoundedInKorea
         onInitialized={() => console.log('initialized!')}
         onOptionChanged={() => console.log('Option Changed!')}
-        onCameraChanged={(args) =>
-          console.log(`Camera Changed: ${formatJson(args)}`)
-        }
+        // onCameraChanged={(args) =>
+        //   console.log(`Camera Changed: ${formatJson(args)}`)
+        // }
         onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
         clusters={clusterers}
-      >
-        {/*<NaverMapMarkerOverlay*/}
-        {/*  latitude={33.4165607356}*/}
-        {/*  longitude={126.48599018}*/}
-        {/*  onTap={() => console.log(1)}*/}
-        {/*  anchor={{ x: 0.5, y: 1 }}*/}
-        {/*  width={100}*/}
-        {/*  height={100}*/}
-        {/*  key={3}*/}
-        {/*>*/}
-        {/*  <View*/}
-        {/*    style={{*/}
-        {/*      width: 100,*/}
-        {/*      height: 100,*/}
-        {/*      backgroundColor: 'red',*/}
-        {/*      alignItems: 'center',*/}
-        {/*      alignSelf: 'center',*/}
-        {/*    }}*/}
-        {/*    collapsable={false}*/}
-        {/*    key={5}*/}
-        {/*  >*/}
-        {/*    <Text>123456</Text>*/}
-        {/*  </View>*/}
-        {/*</NaverMapMarkerOverlay>*/}
-        {/*<NaverMapMarkerOverlay*/}
-        {/*  latitude={34.1565607356}*/}
-        {/*  longitude={126.88599018}*/}
-        {/*  onTap={() => console.log(1)}*/}
-        {/*  anchor={{ x: 0.5, y: 1 }}*/}
-        {/*  caption={{*/}
-        {/*    text: 'helloj2',*/}
-        {/*  }}*/}
-        {/*  subCaption={{*/}
-        {/*    text: '123',*/}
-        {/*  }}*/}
-        {/*  image={require('./logo180.png')}*/}
-        {/*/>*/}
-        {/*<NaverMapMarkerOverlay*/}
-        {/*  latitude={33.0565607356}*/}
-        {/*  longitude={126.88599018}*/}
-        {/*  onTap={() => console.log(1)}*/}
-        {/*  anchor={{ x: 0.5, y: 1 }}*/}
-        {/*  caption={{*/}
-        {/*    text: 'helloj2',*/}
-        {/*  }}*/}
-        {/*  subCaption={{*/}
-        {/*    text: '123',*/}
-        {/*  }}*/}
-        {/*  width={100}*/}
-        {/*  height={50}*/}
-        {/*  image={{ assetName: 'thumbnail' }}*/}
-        {/*/>*/}
-        {/*<NaverMapMarkerOverlay*/}
-        {/*  latitude={33.2565607356}*/}
-        {/*  longitude={127.8599018}*/}
-        {/*  onTap={() => console.log(1)}*/}
-        {/*  anchor={{ x: 0.5, y: 1 }}*/}
-        {/*  caption={{*/}
-        {/*    text: 'hello',*/}
-        {/*  }}*/}
-        {/*  subCaption={{*/}
-        {/*    text: '123',*/}
-        {/*  }}*/}
-        {/*  width={100}*/}
-        {/*  height={100}*/}
-        {/*  image={{ httpUri: 'https://picsum.photos/100/100' }}*/}
-        {/*/>*/}
-
-        {/*<NaverMapCircleOverlay*/}
-        {/*  latitude={33.17827398}*/}
-        {/*  longitude={126.349895729}*/}
-        {/*  radius={50000}*/}
-        {/*  color={'#f2f1'}*/}
-        {/*  outlineColor={'#aaa'}*/}
-        {/*  outlineWidth={2}*/}
-        {/*  onTap={() => console.log('hi')}*/}
-        {/*/>*/}
-        {/*<NaverMapPolygonOverlay*/}
-        {/*  outlineWidth={5}*/}
-        {/*  outlineColor={'#f2f2'}*/}
-        {/*  color={'#0068'}*/}
-        {/*  coords={[*/}
-        {/*    { latitude: 33.2249594, longitude: 126.54180047 },*/}
-        {/*    { latitude: 33.25683311547, longitude: 126.18193 },*/}
-        {/*    { latitude: 33.3332807, longitude: 126.838389399 },*/}
-        {/*  ]}*/}
-        {/*/>*/}
-        {/*<NaverMapPathOverlay*/}
-        {/*  coords={[*/}
-        {/*    { latitude: 32.345332063, longitude: 126.24180047 },*/}
-        {/*    { latitude: 32.70066, longitude: 126.2719053 },*/}
-        {/*    { latitude: 32.360030018, longitude: 126.37221049 },*/}
-        {/*    { longitude: 126.4661129593128, latitude: 32.671851556552205 },*/}
-        {/*    { longitude: 126.52469300979067, latitude: 32.38556958856244 },*/}
-        {/*  ]}*/}
-        {/*  width={8}*/}
-        {/*  color={'white'}*/}
-        {/*  progress={0.5}*/}
-        {/*  passedColor={'black'}*/}
-        {/*  outlineWidth={1}*/}
-        {/*/>*/}
-        {/*<NaverMapPathOverlay*/}
-        {/*  coords={[*/}
-        {/*    { longitude: 126.62990091699743, latitude: 32.40928161528563 },*/}
-        {/*    { longitude: 126.71646354934853, latitude: 32.636702779539824 },*/}
-        {/*    { longitude: 126.81191068177424, latitude: 32.41288583990872 },*/}
-        {/*  ]}*/}
-        {/*  width={8}*/}
-        {/*  color={'white'}*/}
-        {/*  progress={0.5}*/}
-        {/*  passedColor={'black'}*/}
-        {/*  outlineWidth={1}*/}
-        {/*/>*/}
-        {/*<NaverMapPathOverlay*/}
-        {/*  coords={[*/}
-        {/*    { longitude: 126.93240597362552, latitude: 32.433509943138404 },*/}
-        {/*    { longitude: 126.93474226289788, latitude: 32.6383463419792 },*/}
-        {/*    { longitude: 127.07281803100506, latitude: 32.57085962943823 },*/}
-        {/*    { longitude: 126.96403036772739, latitude: 32.52862726684933 },*/}
-        {/*  ]}*/}
-        {/*  width={8}*/}
-        {/*  color={'white'}*/}
-        {/*  progress={0.5}*/}
-        {/*  passedColor={'black'}*/}
-        {/*  outlineWidth={1}*/}
-        {/*/>*/}
-      </NaverMapView>
+      />
       <View
         style={{
           flexDirection: 'row',
@@ -300,6 +316,7 @@ export default function App() {
           backgroundColor: '#000',
         }}
       >
+        <Btn title={`Refresh Images`} onPress={() => setHash((h) => h + 1)} />
         <Btn
           title={`Type(${mapType})`}
           onPress={() =>

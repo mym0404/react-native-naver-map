@@ -223,6 +223,11 @@ internal interface RNCNaverMapViewManagerInterface<T : ViewGroup?> {
     view: T,
     mode: String?,
   )
+
+  fun setClusters(
+    view: T,
+    value: ReadableMap?,
+  )
 }
 
 abstract class RNCNaverMapViewManagerSpec<T : ViewGroup> :

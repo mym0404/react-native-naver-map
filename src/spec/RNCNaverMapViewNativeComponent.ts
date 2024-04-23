@@ -28,6 +28,8 @@ type NativeImageProp = Readonly<{
 type ClusterMarker = Coord & {
   identifier: string;
   image?: NativeImageProp;
+  width?: Double;
+  height?: Double;
 };
 type Camera = {
   latitude: Double;
