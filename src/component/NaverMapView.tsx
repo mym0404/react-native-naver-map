@@ -557,7 +557,6 @@ export const NaverMapView = forwardRef(
         propKey += `${key}---`;
       }
 
-      console.log(propKey);
       return {
         key: propKey,
         clusters: ret,
