@@ -361,10 +361,10 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
   builder.maxZoom = maxZoom;
   builder.animate = animate;
 
-  RNCNaverMapClusterMarkerUpdater* clusterMarkerUpdater =
-      [[RNCNaverMapClusterMarkerUpdater alloc] init];
+  //  RNCNaverMapClusterMarkerUpdater* clusterMarkerUpdater =
+  //      [[RNCNaverMapClusterMarkerUpdater alloc] init];
   RNCNaverMapLeafMarkerUpdater* leafMarkerUpdater = [[RNCNaverMapLeafMarkerUpdater alloc] init];
-  builder.clusterMarkerUpdater = clusterMarkerUpdater;
+  //  builder.clusterMarkerUpdater = clusterMarkerUpdater;
   builder.leafMarkerUpdater = leafMarkerUpdater;
 
   NMCClusterer* clusterer = [builder build];
