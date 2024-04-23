@@ -58,4 +58,8 @@ static inline BOOL isNotEmptyString(NSString* str) {
   return ![str isKindOfClass:[NSNull class]] && str && str.length > 0;
 }
 
+static inline double clamp(double a, double b, double c) {
+  return MIN(MAX(a, b), c);
+}
+
 #endif /* ifndef FnUtil_h */

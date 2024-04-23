@@ -8,15 +8,14 @@ import android.view.View
 import androidx.core.view.children
 import com.airbnb.android.react.maps.TrackableView
 import com.airbnb.android.react.maps.ViewChangesTracker
-import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.generic.GenericDraweeHierarchy
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 import com.facebook.drawee.view.DraweeHolder
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
 import com.mjstudio.reactnativenavermap.overlay.RNCNaverMapOverlay
 import com.mjstudio.reactnativenavermap.util.ImageRequestCanceller
+import com.mjstudio.reactnativenavermap.util.createDraweeHierarchy
 import com.mjstudio.reactnativenavermap.util.emitEvent
 import com.mjstudio.reactnativenavermap.util.getOverlayImage
 import com.naver.maps.map.NaverMap
@@ -27,19 +26,16 @@ import kotlin.math.max
 @SuppressLint("ViewConstructor")
 class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
   RNCNaverMapOverlay<Marker>(reactContext), TrackableView {
-  private var imageHolder: DraweeHolder<GenericDraweeHierarchy>? = null
+  private val imageHolder: DraweeHolder<GenericDraweeHierarchy>? by lazy {
+    DraweeHolder.create(createDraweeHierarchy(resources), reactContext)?.apply {
+      onAttach()
+    }
+  }
   private var customView: View? = null
   private var customViewBitmap: Bitmap? = null
   private var lastImage: ReadableMap? = null
   private var imageRequestCanceller: ImageRequestCanceller? = null
   private var isImageSetFromSubview = false
-
-  init {
-    imageHolder =
-      DraweeHolder.create(createDraweeHierarchy(), context)?.apply {
-        onAttach()
-      }
-  }
 
   override fun onDetachedFromWindow() {
     imageRequestCanceller?.invoke()
@@ -148,7 +144,7 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
     if (isImageSetFromSubview) return
     imageRequestCanceller?.invoke()
     imageRequestCanceller =
-      getOverlayImage(imageHolder!!, context, image) {
+      getOverlayImage(imageHolder!!, context, image?.toHashMap()) {
         setOverlayImage(it)
       }
   }
@@ -156,12 +152,5 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
   private fun setOverlayImage(image: OverlayImage?) {
     overlay.icon =
       image ?: OverlayImage.fromBitmap(Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888))
-  }
-
-  private fun createDraweeHierarchy(): GenericDraweeHierarchy {
-    return GenericDraweeHierarchyBuilder(resources)
-      .setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
-      .setFadeDuration(0)
-      .build()
   }
 }

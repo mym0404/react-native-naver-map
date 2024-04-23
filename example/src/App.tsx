@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 
 import { View, Platform } from 'react-native';
 import {
@@ -6,6 +6,7 @@ import {
   type NaverMapViewRef,
   type Camera,
   NaverMapView,
+  type ClusterMarkerProp,
 } from '@mj-studio/react-native-naver-map';
 import { Toggle, Btn, Range } from './component/components';
 import {
@@ -14,7 +15,7 @@ import {
   requestLocationAccuracy,
   requestMultiple,
 } from 'react-native-permissions';
-import { formatJson } from '@mj-studio/js-util';
+import { formatJson, generateArray } from '@mj-studio/js-util';
 
 // const jejuRegion: Region = {
 //   latitude: 33.20530773,
@@ -101,6 +102,27 @@ export default function App() {
     }
   }, []);
 
+  const clusterers = useMemo<
+    {
+      markers: ClusterMarkerProp[];
+      screenDistance?: number;
+      minZoom?: number;
+      maxZoom?: number;
+      animate?: boolean;
+    }[]
+  >(() => {
+    return generateArray(10).map((i) => {
+      return {
+        markers: generateArray(50).map<ClusterMarkerProp>((j) => ({
+          image: { httpUri: `https://picsum.photos/seed/${i * j}/256/256` },
+          latitude: Cameras.Jeju.latitude + Math.random(),
+          longitude: Cameras.Jeju.longitude + Math.random(),
+          identifier: `${i}-${j}`,
+        })),
+      };
+    });
+  }, []);
+
   return (
     <View
       style={{
@@ -114,55 +136,32 @@ export default function App() {
         // initialRegion={jejuRegion}
         ref={ref}
         style={{ flex: 1 }}
-        // mapType={mapType}
-        // layerGroups={{
-        //   BUILDING: true,
-        //   BICYCLE: false,
-        //   CADASTRAL: false,
-        //   MOUNTAIN: false,
-        //   TRAFFIC: false,
-        //   TRANSIT: false,
-        // }}
-        // isIndoorEnabled={indoor}
-        // symbolScale={symbolScale}
-        // lightness={lightness}
-        // isNightModeEnabled={nightMode}
-        // isShowCompass={compass}
-        // isShowIndoorLevelPicker={indoorLevelPicker}
-        // isShowScaleBar={scaleBar}
-        // isShowZoomControls={zoomControls}
-        // isShowLocationButton={myLocation}
-        // isExtentBoundedInKorea
-        // onInitialized={() => console.log('initialized!')}
-        // onOptionChanged={() => console.log('Option Changed!')}
-        // onCameraChanged={(args) =>
-        //   console.log(`Camera Changed: ${formatJson(args)}`)
-        // }
+        mapType={mapType}
+        layerGroups={{
+          BUILDING: true,
+          BICYCLE: false,
+          CADASTRAL: false,
+          MOUNTAIN: false,
+          TRAFFIC: false,
+          TRANSIT: false,
+        }}
+        isIndoorEnabled={indoor}
+        symbolScale={symbolScale}
+        lightness={lightness}
+        isNightModeEnabled={nightMode}
+        isShowCompass={compass}
+        isShowIndoorLevelPicker={indoorLevelPicker}
+        isShowScaleBar={scaleBar}
+        isShowZoomControls={zoomControls}
+        isShowLocationButton={myLocation}
+        isExtentBoundedInKorea
+        onInitialized={() => console.log('initialized!')}
+        onOptionChanged={() => console.log('Option Changed!')}
+        onCameraChanged={(args) =>
+          console.log(`Camera Changed: ${formatJson(args)}`)
+        }
         onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
-        clusters={[
-          {
-            markers: [
-              {
-                identifier: 'id1',
-                latitude: Cameras.Jeju.latitude - 0.31 - 1,
-                longitude: Cameras.Jeju.longitude - 0.31 - 1,
-                image: require('./logo180.png'),
-              },
-              {
-                identifier: 'id2',
-                latitude: Cameras.Jeju.latitude - 0.3 - 1,
-                longitude: Cameras.Jeju.longitude - 0.3 - 1,
-                image: require('./logo180.png'),
-              },
-              {
-                identifier: 'id3',
-                latitude: Cameras.Jeju.latitude - 0.33 - 1,
-                longitude: Cameras.Jeju.longitude - 0.33 - 1,
-                image: { symbol: 'pink' },
-              },
-            ],
-          },
-        ]}
+        clusters={clusterers}
       >
         {/*<NaverMapMarkerOverlay*/}
         {/*  latitude={33.4165607356}*/}

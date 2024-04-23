@@ -35,6 +35,7 @@
     "lint": "./script/lint.sh",
     "t": "yarn lint",
     "lint:js": "eslint \"**/*.{js,ts,tsx}\"",
+    "format": "yarn format:android && yarn format:ios",
     "format:ios": "./script/clang-format.sh",
     "lint:ios": "./script/clang-lint.sh",
     "format:android": "./script/ktlint-format.sh",

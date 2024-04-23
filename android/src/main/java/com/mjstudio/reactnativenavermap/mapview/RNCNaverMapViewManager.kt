@@ -4,6 +4,7 @@ import android.graphics.PointF
 import android.view.Gravity
 import android.view.View
 import com.airbnb.android.react.maps.SizeReportingShadowNode
+import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.LayoutShadowNode
 import com.facebook.react.uimanager.ReactStylesDiffMap
@@ -16,9 +17,11 @@ import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterKey
+import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClustererHolder
+import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapLeafMarkerHolder
+import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapLeafMarkerUpdater
 import com.mjstudio.reactnativenavermap.util.CameraAnimationUtil
 import com.mjstudio.reactnativenavermap.util.RectUtil
-import com.mjstudio.reactnativenavermap.util.debugE
 import com.mjstudio.reactnativenavermap.util.getDoubleOrNull
 import com.mjstudio.reactnativenavermap.util.getLatLng
 import com.mjstudio.reactnativenavermap.util.getLatLngBoundsOrNull
@@ -47,6 +50,8 @@ import com.naver.maps.map.NaverMap.MapType.Terrain
 import com.naver.maps.map.NaverMapOptions
 import com.naver.maps.map.clustering.Clusterer
 import java.util.Locale
+import kotlin.math.max
+import kotlin.math.min
 
 class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper>() {
   override fun getName(): String {
@@ -59,7 +64,9 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
   private var isFirstCameraMoving = true
   private var lastClustersPropKey = "NOT_SET"
 
-  private val clustererRecord = mutableMapOf<String, Clusterer<RNCNaverMapClusterKey>>()
+  private val clustererHolders = mutableMapOf<String, RNCNaverMapClustererHolder>()
+
+  private lateinit var reactAppContext: ReactApplicationContext
 
   override fun createViewInstance(
     reactTag: Int,
@@ -67,6 +74,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     initialProps: ReactStylesDiffMap?,
     stateWrapper: StateWrapper?,
   ): RNCNaverMapViewWrapper {
+    reactAppContext = reactContext.reactApplicationContext
     initialMapOptions =
       NaverMapOptions().apply {
         useTextureView(
@@ -86,9 +94,10 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
   }
 
   override fun onDropViewInstance(view: RNCNaverMapViewWrapper) {
-    super.onDropViewInstance(view)
     view.onDropViewInstance()
     view.reactContext.removeLifecycleEventListener(view)
+    clustererHolders.forEach { (_, u) -> u.onDetach() }
+    super.onDropViewInstance(view)
   }
 
   override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> =
@@ -519,10 +528,10 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     lastClustersPropKey = propKey
 
     // remove all at now
-    clustererRecord.forEach { (_, clusterer) ->
-      clusterer.map = null
+    clustererHolders.forEach { (_, clusterer) ->
+      clusterer.onDetach()
     }
-    clustererRecord.clear()
+    clustererHolders.clear()
 
     value.getArray("clusters")?.toArrayList()?.filterIsInstance<Map<String, Any?>>()?.forEach {
       val clustererKey = it["key"] as? String
@@ -532,62 +541,46 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
       val animate = it["animate"] as? Boolean
       val markers = (it["markers"] as? ArrayList<*>)?.filterIsInstance<Map<String, *>>() ?: listOf()
 
-      debugE(clustererKey, screenDistance, minZoom, maxZoom, animate, markers)
-
       val clusterer =
-        Clusterer.Builder<RNCNaverMapClusterKey>().apply {
-//          if (minZoom != null) {
-//            this.minZoom(minZoom.toInt())
-//          }
-//          if (maxZoom != null) {
-//            this.maxZoom(maxZoom.toInt())
-//          }
-//          if (animate != null) {
-//            this.animate(animate)
-//          }
-        }.build()
+        Clusterer.Builder<RNCNaverMapClusterKey>().also { cluster ->
+          if (screenDistance != null) {
+            cluster.screenDistance(screenDistance)
+          }
+          if (minZoom != null) {
+            cluster.minZoom(max(minZoom.toInt(), 1))
+          }
+          if (maxZoom != null) {
+            cluster.maxZoom(min(maxZoom.toInt(), 20))
+          }
+          if (animate != null) {
+            cluster.animate(animate)
+          }
+        }.leafMarkerUpdater(RNCNaverMapLeafMarkerUpdater()).build()
 
-      val keys =
+      val keyPairs =
         markers.associate { marker ->
           val identifier = marker["identifier"] as String
           val latitude = marker["latitude"] as Double
           val longitude = marker["longitude"] as Double
           val image = marker["image"] as? Map<*, *>
 
-          RNCNaverMapClusterKey(identifier, LatLng(latitude, longitude)) to null
+          RNCNaverMapClusterKey(
+            identifier,
+            LatLng(latitude, longitude),
+            image,
+            RNCNaverMapLeafMarkerHolder(identifier, reactAppContext),
+          ) to null
         }
-      debugE(keys)
 
-      clusterer.addAll(keys)
+      clusterer.addAll(keyPairs)
       clusterer.map = map
-      clustererRecord[clustererKey!!] = clusterer
-
-//      val clusterer =
-//        Clusterer.Builder<RNCNaverMapClusterKey>()
-//          .build()
-//          .apply {
-//            val keyTagMap =
-//              buildMap(5000) {
-//                val south = MapConstants.EXTENT_KOREA.southLatitude
-//                val west = MapConstants.EXTENT_KOREA.westLongitude
-//                val height = MapConstants.EXTENT_KOREA.northLatitude - south
-//                val width = MapConstants.EXTENT_KOREA.eastLongitude - west
-//
-//                repeat(5000) { i ->
-//                  put(
-//                    RNCNaverMapClusterKey(
-//                      i.toString(),
-//                      LatLng(height * Math.random() + south, width * Math.random() + west),
-//                    ),
-//                    null,
-//                  )
-//                }
-//              }
-//
-//            addAll(keyTagMap)
-//            this.map = map
-//          }
-//      clustererRecord[clustererKey!!] = clusterer
+      clustererHolders[clustererKey!!] =
+        RNCNaverMapClustererHolder(
+          clustererKey,
+          clusterer,
+          reactAppContext,
+          keyPairs.map { pair -> pair.key.holder },
+        )
     }
   }
 

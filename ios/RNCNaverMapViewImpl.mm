@@ -88,6 +88,14 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
   return self;
 }
 
+- (void)dealloc {
+  for (id key in _clustererRecord) {
+    _clustererRecord[key].mapView = nil;
+  }
+  [_clustererRecord removeAllObjects];
+  [_reactSubviews removeAllObjects];
+}
+
 //- (NSArray<id<RCTComponent> > *)reactSubviews {
 //    return std::dynamic_pointer_cast<NSArray<id<RCTComponent>> *>(_reactSubviews);
 //}
@@ -333,9 +341,9 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
 - (void)addClusterer:(nonnull NSDictionary*)dict {
 
   NSString* clustererKey = dict[@"key"];
-  //  double screenDistance = [dict[@"screenDistance"] doubleValue];
-  double minZoom = [dict[@"minZoom"] doubleValue];
-  double maxZoom = [dict[@"maxZoom"] doubleValue];
+  double screenDistance = clamp([dict[@"screenDistance"] doubleValue], 1, 69);
+  double minZoom = clamp([dict[@"minZoom"] doubleValue], 1, 20);
+  double maxZoom = clamp([dict[@"maxZoom"] doubleValue], 1, 20);
   BOOL animate = [dict[@"animate"] boolValue];
   NSDictionary* markers = dict[@"markers"];
 
