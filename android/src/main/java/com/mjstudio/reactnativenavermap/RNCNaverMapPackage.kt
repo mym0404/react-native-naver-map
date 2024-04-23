@@ -11,7 +11,7 @@ import com.mjstudio.reactnativenavermap.overlay.path.RNCNaverMapPathManager
 import com.mjstudio.reactnativenavermap.overlay.polygon.RNCNaverMapPolygonManager
 import com.mjstudio.reactnativenavermap.overlay.polyline.RNCNaverMapPolylineManager
 
-class NaverMapViewPackage : ReactPackage {
+class RNCNaverMapPackage : ReactPackage {
   override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
     return mutableListOf<ViewManager<*, *>>().apply {
       add(RNCNaverMapViewManager())
