@@ -180,9 +180,6 @@
               "section": "Tests"
             }
           ]
-        },
-        "writerOpts": {
-          "groupBy": "scope"
         }
       }
     }
