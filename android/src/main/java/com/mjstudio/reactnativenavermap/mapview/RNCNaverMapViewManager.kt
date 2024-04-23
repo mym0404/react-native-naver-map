@@ -15,8 +15,10 @@ import com.mjstudio.reactnativenavermap.event.NaverMapCameraChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
+import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterKey
 import com.mjstudio.reactnativenavermap.util.CameraAnimationUtil
 import com.mjstudio.reactnativenavermap.util.RectUtil
+import com.mjstudio.reactnativenavermap.util.debugE
 import com.mjstudio.reactnativenavermap.util.getDoubleOrNull
 import com.mjstudio.reactnativenavermap.util.getLatLng
 import com.mjstudio.reactnativenavermap.util.getLatLngBoundsOrNull
@@ -43,6 +45,7 @@ import com.naver.maps.map.NaverMap.MapType.None
 import com.naver.maps.map.NaverMap.MapType.Satellite
 import com.naver.maps.map.NaverMap.MapType.Terrain
 import com.naver.maps.map.NaverMapOptions
+import com.naver.maps.map.clustering.Clusterer
 import java.util.Locale
 
 class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper>() {
@@ -54,6 +57,9 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
   private var animationDuration = 0
   private var animationEasing = CameraAnimationUtil.numberToCameraAnimationEasing(0)
   private var isFirstCameraMoving = true
+  private var lastClustersPropKey = "NOT_SET"
+
+  private val clustererRecord = mutableMapOf<String, Clusterer<RNCNaverMapClusterKey>>()
 
   override fun createViewInstance(
     reactTag: Int,
@@ -494,6 +500,94 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
   ) = view.withMap {
     if (value != null) {
       it.locale = Locale.forLanguageTag(value)
+    }
+  }
+
+  @ReactProp(name = "clusters")
+  override fun setClusters(
+    view: RNCNaverMapViewWrapper?,
+    value: ReadableMap?,
+  ) = view.withMap { map ->
+    if (value == null) {
+      return@withMap
+    }
+    val propKey = value.getString("key") ?: ""
+
+    if (propKey == lastClustersPropKey) {
+      return@withMap
+    }
+    lastClustersPropKey = propKey
+
+    // remove all at now
+    clustererRecord.forEach { (_, clusterer) ->
+      clusterer.map = null
+    }
+    clustererRecord.clear()
+
+    value.getArray("clusters")?.toArrayList()?.filterIsInstance<Map<String, Any?>>()?.forEach {
+      val clustererKey = it["key"] as? String
+      val screenDistance = it["screenDistance"] as? Double
+      val minZoom = it["minZoom"] as? Double
+      val maxZoom = it["maxZoom"] as? Double
+      val animate = it["animate"] as? Boolean
+      val markers = (it["markers"] as? ArrayList<*>)?.filterIsInstance<Map<String, *>>() ?: listOf()
+
+      debugE(clustererKey, screenDistance, minZoom, maxZoom, animate, markers)
+
+      val clusterer =
+        Clusterer.Builder<RNCNaverMapClusterKey>().apply {
+//          if (minZoom != null) {
+//            this.minZoom(minZoom.toInt())
+//          }
+//          if (maxZoom != null) {
+//            this.maxZoom(maxZoom.toInt())
+//          }
+//          if (animate != null) {
+//            this.animate(animate)
+//          }
+        }.build()
+
+      val keys =
+        markers.associate { marker ->
+          val identifier = marker["identifier"] as String
+          val latitude = marker["latitude"] as Double
+          val longitude = marker["longitude"] as Double
+          val image = marker["image"] as? Map<*, *>
+
+          RNCNaverMapClusterKey(identifier, LatLng(latitude, longitude)) to null
+        }
+      debugE(keys)
+
+      clusterer.addAll(keys)
+      clusterer.map = map
+      clustererRecord[clustererKey!!] = clusterer
+
+//      val clusterer =
+//        Clusterer.Builder<RNCNaverMapClusterKey>()
+//          .build()
+//          .apply {
+//            val keyTagMap =
+//              buildMap(5000) {
+//                val south = MapConstants.EXTENT_KOREA.southLatitude
+//                val west = MapConstants.EXTENT_KOREA.westLongitude
+//                val height = MapConstants.EXTENT_KOREA.northLatitude - south
+//                val width = MapConstants.EXTENT_KOREA.eastLongitude - west
+//
+//                repeat(5000) { i ->
+//                  put(
+//                    RNCNaverMapClusterKey(
+//                      i.toString(),
+//                      LatLng(height * Math.random() + south, width * Math.random() + west),
+//                    ),
+//                    null,
+//                  )
+//                }
+//              }
+//
+//            addAll(keyTagMap)
+//            this.map = map
+//          }
+//      clustererRecord[clustererKey!!] = clusterer
     }
   }
 

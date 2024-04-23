@@ -60,7 +60,6 @@ internal fun getOverlayImage(
   val httpUri = map.getString("httpUri") ?: if (rnAssetUri.startsWith("http")) rnAssetUri else ""
   val assetName = map.getString("assetName") ?: ""
   val reuseIdentifier = map.getString("reuseIdentifier") ?: ""
-  debugE(rnAssetUri, httpUri, assetName, reuseIdentifier)
 
   /**
    * http, https, asset, file all works

@@ -110,7 +110,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "com.naver.maps:map-sdk:${getExtOrDefault("sdkVersion")}"
-    implementation "com.google.android.gms:play-services-location:${getExtOrDefault("locationServviceVersion")}"
+    implementation "com.google.android.gms:play-services-location:${getExtOrDefault("locationServiceVersion")}"
 }
 
 if (isNewArchitectureEnabled()) {

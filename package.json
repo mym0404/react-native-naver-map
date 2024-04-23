@@ -29,6 +29,7 @@
   ],
   "scripts": {
     "example": "yarn workspace @mj-studio/react-native-naver-map-example",
+    "dev": "yarn example start",
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "./script/lint.sh",
