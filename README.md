@@ -1,50 +1,40 @@
->[!TIP]
->This project is ready to use!
->
->If this project has helped you out, please support us with a star 🌟.
+<p align="center">
+  <a href="https://mj-studio-library.github.io/react-native-naver-map/">
+    <img width="160px" src="https://raw.githubusercontent.com/mym0404/image-archive/master/202404241422605.webp"><br/>
+  </a>
+  <h1 align="center">React Native Naver Map</h1>
+  <p align="center">
+  <a href="https://www.npmjs.com/package/@mj-studio/react-native-naver-map"><img src="https://img.shields.io/npm/dm/@mj-studio/react-native-naver-map.svg?style=flat-square" alt="NPM downloads"></a>
+  <a href="https://www.npmjs.com/package/@mj-studio/react-native-naver-map"><img src="https://img.shields.io/npm/v/@mj-studio/react-native-naver-map.svg?style=flat-square" alt="NPM version"></a>
+  <img src="https://img.shields.io/badge/Android_SDK-3.18.0-2ea44f?style=flat-square" alt="Android SDK version">
+  <img src="https://img.shields.io/badge/iOS_SDK-3.18.0-3522ff?style=flat-square" alt="iOS SDK version">
+  <a href="/LICENSE"><img src="https://img.shields.io/npm/l/@mj-studio/react-native-naver-map.svg?style=flat-square" alt="License"></a>
+  <h3 align="center">Bring Naver Map to Your React Fingertips</h3>
+  </p>
+</p>
 
-# React Native Naver Map SDK
 
-[![NPM](http://img.shields.io/npm/v/@mj-studio/react-native-naver-map)](https://npmjs.org/package/@mj-studio/react-native-naver-map)
-![Android SDK - 3.18.0](https://img.shields.io/badge/Android_SDK-3.18.0-2ea44f)
-![iOS SDK - 3.18.0](https://img.shields.io/badge/iOS_SDK-3.18.0-3522ff)
+- [Documentation](https://mj-studio-library.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)
+- [Tutorial 1 - 설치, 키 발급](https://medium.com/mj-studio/%EB%A6%AC%EC%95%A1%ED%8A%B8-%EB%84%A4%EC%9D%B4%ED%8A%B8%EB%B8%8C%EB%A1%9C-%EB%84%A4%EC%9D%B4%EB%B2%84-%EC%A7%80%EB%8F%84-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-1-%EC%84%A4%EC%B9%98%EC%99%80-%ED%82%A4-%EB%B0%9C%EA%B8%89-%EB%B0%9B%EA%B8%B0-f826d8c0644d)
+- [Tutorial 2 - 카메라, 위치 이동](https://medium.com/mj-studio/%EB%A6%AC%EC%95%A1%ED%8A%B8-%EB%84%A4%EC%9D%B4%ED%8A%B8%EB%B8%8C%EB%A1%9C-%EB%84%A4%EC%9D%B4%EB%B2%84-%EC%A7%80%EB%8F%84-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-2-%EC%B9%B4%EB%A9%94%EB%9D%BC-%EC%9C%84%EC%B9%98-%EC%9D%B4%EB%8F%99%ED%95%98%EA%B8%B0-ea39843b31d2)
 
-![weekly download badge](https://img.shields.io/npm/dm/@mj-studio/react-native-naver-map.svg)
-
-
-[API Docs](https://mj-studio-library.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)
-
-- [Guide #1(ko) - 설치, 키 발급](https://medium.com/mj-studio/%EB%A6%AC%EC%95%A1%ED%8A%B8-%EB%84%A4%EC%9D%B4%ED%8A%B8%EB%B8%8C%EB%A1%9C-%EB%84%A4%EC%9D%B4%EB%B2%84-%EC%A7%80%EB%8F%84-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-1-%EC%84%A4%EC%B9%98%EC%99%80-%ED%82%A4-%EB%B0%9C%EA%B8%89-%EB%B0%9B%EA%B8%B0-f826d8c0644d)
-- [Guide #2(ko) - 카메라, 위치 이동](https://medium.com/mj-studio/%EB%A6%AC%EC%95%A1%ED%8A%B8-%EB%84%A4%EC%9D%B4%ED%8A%B8%EB%B8%8C%EB%A1%9C-%EB%84%A4%EC%9D%B4%EB%B2%84-%EC%A7%80%EB%8F%84-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-2-%EC%B9%B4%EB%A9%94%EB%9D%BC-%EC%9C%84%EC%B9%98-%EC%9D%B4%EB%8F%99%ED%95%98%EA%B8%B0-ea39843b31d2)
-
----
-
-![thumbnail](https://raw.githubusercontent.com/mym0404/image-archive/master/202404170109909.webp)
-
-리액트 네이티브 [Naver Map](https://www.ncloud.com/product/applicationService/maps) 컴포넌트입니다.
 
 <img src="https://raw.githubusercontent.com/mym0404/image-archive/master/202404240329848.gif" width="400" alt="preview">
 
 ## Highlights
 
-### 1. 관리되지 않는 기존 라이브러리 대체
-
-기존 라이브러리의 버그나 코드상에서 계산이 잘못되고 있던 부분들을 고치고 새로운 API를 추가하며 계속해서 프로젝트가 관리됩니다.
-
-커스텀 마커들, 마커 클러스터링, 스크린에서의 위치와 지리적 위치간의 손쉬운 변환들이 있습니다.
-
-### 2. New Architecture Fabric 지원
+### 1. New Architecture Fabric
 
 > [!NOTE]
 > Fabric을 지원한다고 Old Architecture를 지원하지 않는 것이 아닌 두 Architecture모두에서 작동하는 컴포넌트를 제작합니다.
 
-### 3. 상세한 API Documentation 지원
+### 2. Detailed API Documentation
 
 거의 모든 타입이 설명되어 있는 [API Docs](https://mj-studio-library.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)를 구성했습니다.
 
 최대한 가독성을 살렸으며 `component` 쪽에서 원하는 컴포넌트의 타입과 `Prop`및 `Ref`로 사용법을 확인 가능합니다.
 
-### 4. Expo 지원
+### 3. Expo Support
 
 [expo config plugin](https://docs.expo.dev/modules/config-plugin-and-native-module-tutorial/)을 사용해
 Expo환경에서도 손쉽게 아키텍쳐에 상관없이 빌드할 수 있습니다.
@@ -53,7 +43,7 @@ Expo Go, Snack에선 사용하지
 못하지만 [development build](https://docs.expo.dev/develop/development-builds/introduction/), production
 환경에서 손쉽게 사용할 수 있습니다.
 
-### 5. 5가지 마커 이미지 타입 및 캐싱 지원
+### 4. Marker Performance + Variants
 
 > [!IMPORTANT]
 > `[iOS, Android] x [new arch, old arch] x [debug, release]`
@@ -65,15 +55,10 @@ Expo Go, Snack에선 사용하지
 - HTTP 네트워크 웹이미지
 - `children`으로 전달하는 React Native Custom View
 
-### 6. 새롭게 만드는 이 라이브러리는 Naver Map SDK의 최신 기능들을 모두 지원합니다
+### 5. Semaless API porting from Native Naver Map SDK
 
-Seamless한 Props와 Command들로 Naver Map을 조작할 수 있습니다.
+최신 버전의 SDK를 지원하며 Props와 Command들로 Naver Map의 최신 기능을 조작할 수 있습니다.
 
-### 7. 성능 최적화
-
-Event Coalescing를 통해 Native -> JS 로의 이벤트 중 쓸모없는 이벤트들을 걸러내 성능이 최적화가 됩니다.
-
-그리고 마커의 성능도 효과적으로 고려되어 설계되었습니다.
 
 ## Install
 
