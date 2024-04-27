@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 if which clang-format >/dev/null; then
   find ios -type f \( -name "*.h" -o -name "*.cpp" -o -name "*.m" -o -name "*.mm" \) -print0 | while read -d $'\0' file; do
     echo "🦋 clang-format $file"

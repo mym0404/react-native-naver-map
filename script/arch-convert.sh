@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -e
 # Gradle property to change
 PROPERTY="newArchEnabled"
 

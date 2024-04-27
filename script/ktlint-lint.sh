@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -e
 if which ktlint >/dev/null; then
   echo "🌊 ktlint android"
   ktlint --relative --color --editorconfig=example/android/.editorconfig android

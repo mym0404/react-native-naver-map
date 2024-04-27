@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 git pull origin main
 yarn t
 yarn codegen
