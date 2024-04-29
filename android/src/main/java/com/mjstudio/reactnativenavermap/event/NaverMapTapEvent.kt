@@ -27,6 +27,6 @@ class NaverMapTapEvent(
     }
 
   companion object {
-    const val EVENT_NAME = "onTapMap"
+    const val EVENT_NAME = "topTapMap"
   }
 }

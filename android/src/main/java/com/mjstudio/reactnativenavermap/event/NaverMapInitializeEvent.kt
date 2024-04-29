@@ -14,6 +14,6 @@ class NaverMapInitializeEvent(surfaceId: Int, viewId: Int) : Event<NaverMapIniti
   override fun getEventData(): WritableMap = Arguments.createMap()
 
   companion object {
-    const val EVENT_NAME = "onInitialized"
+    const val EVENT_NAME = "topInitialized"
   }
 }

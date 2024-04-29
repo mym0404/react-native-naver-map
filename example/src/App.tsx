@@ -299,9 +299,9 @@ export default function App() {
         isExtentBoundedInKorea
         onInitialized={() => console.log('initialized!')}
         onOptionChanged={() => console.log('Option Changed!')}
-        // onCameraChanged={(args) =>
-        //   console.log(`Camera Changed: ${formatJson(args)}`)
-        // }
+        onCameraChanged={(args) =>
+          console.log(`Camera Changed: ${formatJson(args)}`)
+        }
         onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
         clusters={clusterers}
       />

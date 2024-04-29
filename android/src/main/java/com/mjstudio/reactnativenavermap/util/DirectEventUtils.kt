@@ -4,5 +4,5 @@ internal fun registerDirectEvent(
   map: MutableMap<String, Any>,
   name: String,
 ) {
-  map[name] = mapOf("registrationName" to name)
+  map[name] = mapOf("registrationName" to name.replace(Regex("""^top"""), "on"))
 }

@@ -17,6 +17,6 @@ class NaverMapOverlayTapEvent(
   override fun getEventData(): WritableMap = Arguments.createMap()
 
   companion object {
-    const val EVENT_NAME = "onTapOverlay"
+    const val EVENT_NAME = "topTapOverlay"
   }
 }

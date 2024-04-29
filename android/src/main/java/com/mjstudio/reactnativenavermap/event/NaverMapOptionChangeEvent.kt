@@ -14,6 +14,6 @@ class NaverMapOptionChangeEvent(surfaceId: Int, viewId: Int) : Event<NaverMapOpt
   override fun getEventData(): WritableMap = Arguments.createMap()
 
   companion object {
-    const val EVENT_NAME = "onOptionChanged"
+    const val EVENT_NAME = "topOptionChanged"
   }
 }

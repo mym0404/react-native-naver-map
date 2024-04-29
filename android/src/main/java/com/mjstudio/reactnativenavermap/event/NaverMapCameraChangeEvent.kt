@@ -31,6 +31,6 @@ class NaverMapCameraChangeEvent(
     }
 
   companion object {
-    const val EVENT_NAME = "onCameraChanged"
+    const val EVENT_NAME = "topCameraChanged"
   }
 }
