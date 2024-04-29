@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://mj-studio-library.github.io/react-native-naver-map/">
+  <a href="https://mym0404.github.io/react-native-naver-map/">
     <img width="160px" src="https://raw.githubusercontent.com/mym0404/image-archive/master/202404241422605.webp"><br/>
   </a>
   <h1 align="center">React Native Naver Map</h1>
@@ -14,7 +14,7 @@
 </p>
 
 
-- [Documentation](https://mj-studio-library.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)
+- [Documentation](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)
 - [Tutorial 1 - 설치, 키 발급](https://medium.com/mj-studio/%EB%A6%AC%EC%95%A1%ED%8A%B8-%EB%84%A4%EC%9D%B4%ED%8A%B8%EB%B8%8C%EB%A1%9C-%EB%84%A4%EC%9D%B4%EB%B2%84-%EC%A7%80%EB%8F%84-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-1-%EC%84%A4%EC%B9%98%EC%99%80-%ED%82%A4-%EB%B0%9C%EA%B8%89-%EB%B0%9B%EA%B8%B0-f826d8c0644d)
 - [Tutorial 2 - 카메라, 위치 이동](https://medium.com/mj-studio/%EB%A6%AC%EC%95%A1%ED%8A%B8-%EB%84%A4%EC%9D%B4%ED%8A%B8%EB%B8%8C%EB%A1%9C-%EB%84%A4%EC%9D%B4%EB%B2%84-%EC%A7%80%EB%8F%84-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-2-%EC%B9%B4%EB%A9%94%EB%9D%BC-%EC%9C%84%EC%B9%98-%EC%9D%B4%EB%8F%99%ED%95%98%EA%B8%B0-ea39843b31d2)
 
@@ -30,7 +30,7 @@
 
 ### 2. Detailed API Documentation
 
-거의 모든 타입이 설명되어 있는 [API Docs](https://mj-studio-library.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)를 구성했습니다.
+거의 모든 타입이 설명되어 있는 [API Docs](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)를 구성했습니다.
 
 최대한 가독성을 살렸으며 `component` 쪽에서 원하는 컴포넌트의 타입과 `Prop`및 `Ref`로 사용법을 확인 가능합니다.
 
@@ -343,11 +343,11 @@ const jejuRegion: Region = {
 
 ### API Documentation
 
-[Documentation](https://mj-studio-library.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)
+[Documentation](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)
 
 모든 코드엔 JSDoc으로 주석이 삽입되어있으므로 Documentation없이도 개발을 시작할 수 있습니다.
 
-하지만 정확히 어떤 타입들이 있고 어떤 속성을 의미하는지 웹사이트에서 확인하시려면 [Documentation](https://mj-studio-library.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)를 참고해주세요.
+하지만 정확히 어떤 타입들이 있고 어떤 속성을 의미하는지 웹사이트에서 확인하시려면 [Documentation](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)를 참고해주세요.
 
 ### Permission
 
@@ -403,7 +403,7 @@ Xcode에서 앱 타겟의 `Signing & Capabilities` 탭에서 `Background Modes`�
 
 #### Android
 
-Naver Map SDK에서 내부적으로 이용하는 `FusedLocationSource`는 사용자가 [isShowLocationButton prop](https://mj-studio-library.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html#isShowLocationButton)을
+Naver Map SDK에서 내부적으로 이용하는 `FusedLocationSource`는 사용자가 [isShowLocationButton prop](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html#isShowLocationButton)을
 `true`로 설정하는 순간 자동으로 권한 요청을 시행합니다.
 
 Android는 비교적 간단하게 권한을 구현할 수 있습니다.
