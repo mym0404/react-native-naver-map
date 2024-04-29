@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.authors      = package["author"]
 
   s.platforms    = { :ios => min_ios_version_supported }
-  s.source       = { :git => "https://github.com/mj-studio-library/react-native-naver-map.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/mym0404/react-native-naver-map.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm}"
 

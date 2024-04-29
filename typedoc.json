@@ -28,7 +28,7 @@
   },
   "favicon": "public/favicon.png",
   "navigationLinks": {
-    "Github": "https://github.com/mj-studio-library/react-native-naver-map"
+    "Github": "https://github.com/mym0404/react-native-naver-map"
   },
   "customCss": "./public/doc.css"
 }

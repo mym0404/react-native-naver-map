@@ -66,14 +66,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mj-studio-library/react-native-naver-map.git"
+    "url": "git+https://github.com/mym0404/react-native-naver-map.git"
   },
   "author": "MJ Studio <mym0404@gmail.com> (https://mjstudio.net)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mj-studio-library/react-native-naver-map/issues"
+    "url": "https://github.com/mym0404/react-native-naver-map/issues"
   },
-  "homepage": "https://github.com/mj-studio-library/react-native-naver-map#readme",
+  "homepage": "https://github.com/mym0404/react-native-naver-map#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
