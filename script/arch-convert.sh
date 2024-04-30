@@ -20,7 +20,8 @@ FILE="example/android/gradle.properties"
 # cp ${FILE} ${FILE}.bak
 
 # Use 'sed' to replace the property value
-sed -i '' -e "s/${PROPERTY}=.*/${PROPERTY}=${NEW_VALUE}/" ${FILE}
+sed -i.bak -e "s/${PROPERTY}=.*/${PROPERTY}=${NEW_VALUE}/" "${FILE}"
+rm "${FILE}.bak"
 
 if [[ $POD == 'true' ]]; then
   if [[ $NEW_VALUE == 'true' ]]; then
