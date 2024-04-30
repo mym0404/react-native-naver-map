@@ -108,6 +108,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-${{matrix.arch}}-
 
+      - name: Convert Arch
+        run: yarn ${{matrix.arch}}
+
       - name: Build example for Android
         env:
           JAVA_OPTS: "-XX:MaxHeapSize=6g"
@@ -151,13 +154,13 @@ jobs:
         with:
           path: |
             **/ios/Pods
-          key: ${{ runner.os }}-cocoapods-${{ hashFiles('example/ios/Podfile.lock') }}-${{matrix.arch}}
+          key: ${{ runner.os }}-cocoapods-${{ hashFiles('example/ios/Podfile.lock') }}-${{matrix.arch}}-noop
           restore-keys: |
             ${{ runner.os }}-cocoapods-${{matrix.arch}}-
 
       - name: Install cocoapods
         if: env.turbo_cache_hit != 1 && steps.cocoapods-cache.outputs.cache-hit != 'true'
-        run: yarn pod:${{matrix.arch}}
+        run: yarn ${{matrix.arch}}pod
         env:
           NO_FLIPPER: 1
 
