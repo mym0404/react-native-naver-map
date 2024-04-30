@@ -56,7 +56,9 @@
     "old:pod": "./script/arch-convert.sh false true",
     "new:pod": "./script/arch-convert.sh true true",
     "old": "./script/arch-convert.sh false false",
-    "new": "./script/arch-convert.sh true false"
+    "new": "./script/arch-convert.sh true false",
+    "ci:ios": "cd example && npx react-native run-ios --no-packager --simulator=\"iPhone 15\"",
+    "ci:android": "cd example/android && ./gradlew assembleDebug"
   },
   "keywords": [
     "react-native",
@@ -99,7 +101,7 @@
     "react-native": "0.73.6",
     "react-native-builder-bob": "^0.20.0",
     "release-it": "^15.0.0",
-    "turbo": "^1.10.7",
+    "turbo": "^1.13.3",
     "typedoc": "^0.25.13",
     "typedoc-plugin-extras": "^3.0.0",
     "typedoc-theme-hierarchy": "^4.1.2",
