@@ -13,6 +13,7 @@ if [ "${NEW_VALUE}" != "true" ] && [ "${NEW_VALUE}" != "false" ]; then
   exit 1
 fi
 
+pwd
 # Gradle properties file
 FILE="example/android/gradle.properties"
 
