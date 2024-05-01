@@ -13,11 +13,21 @@ pwd
 NEW_ARCH_KEY="newArchEnabled"
 GRADLE="example/android/gradle.properties"
 
+if [[ -z $OS || $OS == 'android' ]]; then
 if grep -q "newArchEnabled=true" $GRADLE; then
   PREV_NEW_ARCH=true
 else
   PREV_NEW_ARCH=false
 fi
+
+else
+  if grep -q "FBReactNativeSpec" example/ios/Podfile.lock; then
+    PREV_NEW_ARCH=true
+  else
+    PREV_NEW_ARCH=false
+  fi
+fi
+
 
 if [[ $PREV_NEW_ARCH == $NEW_ARCH ]]; then
 echo "Architecture is already $( [ "$NEW_ARCH" = 'true' ] && echo 'new' || echo 'old') 🎉"
