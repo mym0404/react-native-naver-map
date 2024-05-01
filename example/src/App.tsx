@@ -9,6 +9,8 @@ import {
   type ClusterMarkerProp,
   NaverMapArrowheadPathOverlay,
   NaverMapPathOverlay,
+  NaverMapGroundOverlay,
+  type Region,
 } from '@mj-studio/react-native-naver-map';
 import { Toggle, Btn, Range } from './component/components';
 import {
@@ -43,6 +45,21 @@ const Cameras = {
     zoom: 8,
   },
 } satisfies Record<string, Camera>;
+
+const Regions = {
+  Seolleung: {
+    latitude: 37.50497126 - 0.025,
+    longitude: 127.04905021 - 0.025,
+    latitudeDelta: 0.05,
+    longitudeDelta: 0.05,
+  },
+  Gangnam: {
+    latitude: 37.498040483 - 0.025,
+    longitude: 127.02758183 - 0.025,
+    latitudeDelta: 0.05,
+    longitudeDelta: 0.05,
+  },
+} satisfies Record<string, Region>;
 
 /**
  * @private
@@ -271,6 +288,11 @@ export default function App() {
           color={'red'}
           outlineColor={'blue'}
           outlineWidth={2}
+        />
+        <NaverMapGroundOverlay
+          image={{ assetName: 'thumbnail' }}
+          region={Regions.Gangnam}
+          onTap={() => console.log(1)}
         />
       </>
     );

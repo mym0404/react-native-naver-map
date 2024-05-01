@@ -135,6 +135,13 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
   } else if ([subview isKindOfClass:[RNCNaverMapArrowheadPath class]]) {
     auto marker = static_cast<RNCNaverMapArrowheadPath*>(subview).inner;
     marker.mapView = self.mapView;
+  } else if ([subview isKindOfClass:[RNCNaverMapGround class]]) {
+    auto marker = static_cast<RNCNaverMapGround*>(subview).inner;
+    if (!marker.overlayImage) {
+      marker.overlayImage = NMF_MARKER_IMAGE_GREEN;
+    }
+    marker.mapView = self.mapView;
+    NSLog(@"2");
   } else {
     NSArray<id<RCTComponent>>* childSubviews = [subview reactSubviews];
     for (int i = 0; i < childSubviews.count; i++) {
@@ -169,6 +176,10 @@ NMFCameraUpdateAnimation getEasingAnimation(int easing) {
     marker.touchHandler = nil;
   } else if ([subview isKindOfClass:[RNCNaverMapArrowheadPath class]]) {
     auto marker = static_cast<RNCNaverMapArrowheadPath*>(subview).inner;
+    marker.mapView = nil;
+    marker.touchHandler = nil;
+  } else if ([subview isKindOfClass:[RNCNaverMapGround class]]) {
+    auto marker = static_cast<RNCNaverMapGround*>(subview).inner;
     marker.mapView = nil;
     marker.touchHandler = nil;
   } else {
