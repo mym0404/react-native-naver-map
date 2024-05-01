@@ -57,7 +57,7 @@
     "new:pod": "./script/arch-convert.sh true true",
     "old": "./script/arch-convert.sh false false",
     "new": "./script/arch-convert.sh true false",
-    "ci:ios": "cd example/ios && xcodebuild -workspace NaverMapExample.xcworkspace -scheme NaverMapExample -configuration Debug -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO",
+    "ci:ios": "cd example/ios && xcodebuild -workspace NaverMapExample.xcworkspace -scheme NaverMapExample -configuration Debug -sdk iphonesimulator -quiet CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO",
     "ci:android": "cd example/android && ./gradlew assembleDebug"
   },
   "keywords": [
