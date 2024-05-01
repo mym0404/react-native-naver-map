@@ -4,7 +4,7 @@ import type { BaseOverlayProps } from '../types/BaseOverlayProps';
 import { type ColorValue, processColor } from 'react-native';
 import { Const } from '../internal/util/Const';
 import type { Coord } from '@mj-studio/react-native-naver-map';
-import invariant from 'invariant';
+import { nAssert } from '../internal/util/Assert';
 
 export interface NaverMapPathOverlayProps extends BaseOverlayProps {
   /**
@@ -92,7 +92,7 @@ export interface NaverMapPathOverlayProps extends BaseOverlayProps {
 }
 
 export const NaverMapPathOverlay = ({
-  zIndex = Const.Z_SHAPE,
+  zIndex = 0,
   isHidden = false,
   minZoom = Const.MIN_ZOOM,
   maxZoom = Const.MAX_ZOOM,
@@ -114,14 +114,13 @@ export const NaverMapPathOverlay = ({
   onTap,
 }: NaverMapPathOverlayProps) => {
   if (coords) {
-    invariant(
+    nAssert(
       coords.length >= 2,
-      '[NaverMapPolylineOverlay] coords length should be equal or greater than 2, is %s.',
-      coords.length
+      `[NaverMapPolylineOverlay] coords length should be equal or greater than 2, is ${coords.length}.`
     );
     if (coords.length < 2) return null;
   }
-  invariant(
+  nAssert(
     progress >= -1 && progress <= 1,
     '[NaverMapPolylineOverlay] progress should be -1 ~ 1'
   );

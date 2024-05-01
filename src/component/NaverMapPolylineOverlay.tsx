@@ -8,7 +8,7 @@ import type {
   CapType,
   JoinType,
 } from '@mj-studio/react-native-naver-map';
-import invariant from 'invariant';
+import { nAssert } from '../internal/util/Assert';
 
 export interface NaverMapPolylineOverlayProps extends BaseOverlayProps {
   coords: Coord[];
@@ -58,7 +58,7 @@ export interface NaverMapPolylineOverlayProps extends BaseOverlayProps {
 }
 
 export const NaverMapPolylineOverlay = ({
-  zIndex = Const.Z_SHAPE,
+  zIndex = 0,
   isHidden = false,
   minZoom = Const.MIN_ZOOM,
   maxZoom = Const.MAX_ZOOM,
@@ -73,12 +73,10 @@ export const NaverMapPolylineOverlay = ({
   onTap,
 }: NaverMapPolylineOverlayProps) => {
   if (coords) {
-    invariant(
+    nAssert(
       coords.length >= 2,
-      '[NaverMapPolylineOverlay] coords length should be equal or greater than 2, is %s.',
-      coords.length
+      `[NaverMapPolylineOverlay] coords length should be equal or greater than 2, is ${coords.length}.`
     );
-    if (coords.length < 2) return null;
   }
   return (
     <NativeNaverMapPolyline

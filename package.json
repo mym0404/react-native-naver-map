@@ -85,7 +85,6 @@
     "@commitlint/config-conventional": "^17.0.2",
     "@react-native/eslint-config": "^0.74.80",
     "@release-it/conventional-changelog": "^5.0.0",
-    "@types/invariant": "^2.2.37",
     "@types/jest": "^29.5.5",
     "@types/object-hash": "^3",
     "@types/react": "^18.2.44",
@@ -165,7 +164,6 @@
     "jsSrcsDir": "src"
   },
   "dependencies": {
-    "invariant": "^2.2.4",
     "object-hash": "^3.0.0"
   }
 }

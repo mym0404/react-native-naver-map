@@ -25,6 +25,10 @@ export {
   NaverMapPathOverlay,
   type NaverMapPathOverlayProps,
 } from './component/NaverMapPathOverlay';
+export {
+  NaverMapArrowheadPathOverlay,
+  type NaverMapArrowheadPathOverlayProps,
+} from './component/NaverMapArrowheadPathOverlay';
 
 export * from './spec/RNCNaverMapViewNativeComponent';
 export * from './types/BaseOverlayProps';

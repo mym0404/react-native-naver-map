@@ -647,7 +647,10 @@ iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니
 - [x] Support Expo with config plugin (23.04.12)
 - [x] Docs
 - [x] Implement Clustering (23.04.24)
-- [ ] Implement MutlPath, Arrow, Geometry Overlays <- 🔥
+- [x] Implement ArrowheadPath Overlay (23.05.01)
+- [ ] Implement Geometry Overlay <- 🔥
+- [ ] Implement Location Overlay Commands <- 🔥
+- [ ] Implement MutlPath Overlay <- 🔥
 
 ## Contributing
 

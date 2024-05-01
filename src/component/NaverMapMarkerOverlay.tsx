@@ -8,7 +8,6 @@ import React, { type PropsWithChildren, Children, useMemo } from 'react';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
 import { type ColorValue, processColor } from 'react-native';
 import { Const } from '../internal/util/Const';
-import invariant from 'invariant';
 import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import { type Align } from '../types/Align';
 import type { Coord } from '../types/Coord';
@@ -19,6 +18,7 @@ import {
 import type { Point } from '../types/Point';
 import type { MarkerImageProp } from '../types/MarkerImageProp';
 import hash from 'object-hash';
+import { nAssert } from '../internal/util/Assert';
 
 export interface CaptionType {
   /** 캡션으로 표시할 텍스트를 지정할 수 있습니다.
@@ -319,7 +319,7 @@ export interface NaverMapMarkerOverlayProps
 export const NaverMapMarkerOverlay = ({
   latitude,
   longitude,
-  zIndex = Const.Z_MARKER,
+  zIndex = 0,
   isHidden = false,
   minZoom = Const.MIN_ZOOM,
   maxZoom = Const.MAX_ZOOM,
@@ -346,10 +346,9 @@ export const NaverMapMarkerOverlay = ({
   subCaption,
   children,
 }: NaverMapMarkerOverlayProps) => {
-  invariant(
+  nAssert(
     Children.count(children) <= 1,
-    '[NaverMapMarkerOverlay] children count should be equal or less than 1, is %s',
-    Children.count(children)
+    `[NaverMapMarkerOverlay] children count should be equal or less than 1, is ${Children.count(children)}`
   );
 
   const coord = useMemo<Coord>(
