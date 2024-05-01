@@ -176,6 +176,10 @@ jobs:
         env:
           NO_FLIPPER: 1
 
+      - name: Run Codegen if new arch
+        if: ${{matrix.arch}} == 'new'
+        run: yarn codegen:ios
+
       - name: Build example for iOS
         run: |
           yarn turbo run ci:ios --single-package --cache-dir="${{ env.TURBO_CACHE_DIR }}" -vvv
