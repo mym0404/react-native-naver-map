@@ -623,7 +623,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
   ) = view.withMap { map ->
     view?.let { wrapper ->
       val coord = map.projection.toScreenLocation(LatLng(latitude, longitude))
-      val isValid = !coord.x.isNaN()
+      val isValid = !coord.x.isNaN() && !coord.y.isNaN()
       wrapper.reactContext.emitEvent(wrapper.id) { surfaceId, reactTag ->
         NaverMapCoordinateToScreenEvent(
           surfaceId,

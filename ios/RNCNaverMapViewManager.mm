@@ -68,6 +68,8 @@ RCT_EXPORT_VIEW_PROPERTY(onInitialized, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onOptionChanged, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onCameraChanged, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onTapMap, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onScreenToCoordinate, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onCoordinateToScreen, RCTDirectEventBlock)
 
 // command
 #if !TARGET_OS_OSX
@@ -148,5 +150,10 @@ QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(animateRegionTo, latitude
                                        : pivotY)
 QUICK_RCT_EXPORT_COMMAND_METHOD(cancelAnimation)
 QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(setLocationTrackingMode, mode : (NSString*)mode, mode)
+QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(screenToCoordinate, x : (double)x y : (double)y, x y : y)
+QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(coordinateToScreen, latitude
+                                       : (double)latitude longitude
+                                       : (double)longitude, latitude longitude
+                                       : longitude)
 
 @end

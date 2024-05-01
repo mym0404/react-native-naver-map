@@ -80,6 +80,32 @@ using namespace facebook::react;
       });
     };
 
+    _view.onScreenToCoordinate = [self](NSDictionary* dict) {
+      if (_eventEmitter == nil) {
+        return;
+      }
+
+      auto emitter = std::static_pointer_cast<RNCNaverMapViewEventEmitter const>(_eventEmitter);
+      emitter->onScreenToCoordinate({
+          .isValid = [dict[@"isValid"] boolValue],
+          .latitude = [dict[@"latitude"] doubleValue],
+          .longitude = [dict[@"longitude"] doubleValue],
+      });
+    };
+
+    _view.onCoordinateToScreen = [self](NSDictionary* dict) {
+      if (_eventEmitter == nil) {
+        return;
+      }
+
+      auto emitter = std::static_pointer_cast<RNCNaverMapViewEventEmitter const>(_eventEmitter);
+      emitter->onCoordinateToScreen({
+          .isValid = [dict[@"isValid"] boolValue],
+          .screenX = [dict[@"screenX"] doubleValue],
+          .screenY = [dict[@"screenY"] doubleValue],
+      });
+    };
+
     self.contentView = _view;
   }
 
@@ -268,6 +294,14 @@ using namespace facebook::react;
 
 - (void)setLocationTrackingMode:(NSString*)mode {
   [_view setLocationTrackingMode:mode];
+}
+
+- (void)screenToCoordinate:(double)x y:(double)y {
+  [_view screenToCoordinate:x y:y];
+}
+
+- (void)coordinateToScreen:(double)latitude longitude:(double)longitude {
+  [_view coordinateToScreen:latitude longitude:longitude];
 }
 
 - (void)handleCommand:(const NSString*)commandName args:(const NSArray*)args {

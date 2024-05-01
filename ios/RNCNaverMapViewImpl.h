@@ -36,6 +36,7 @@
 #import <NMapsMap/NMFMapViewTouchDelegate.h>
 #import <NMapsMap/NMFMarkerConstants.h>
 #import <NMapsMap/NMFNaverMapView.h>
+#import <NMapsMap/NMFProjection.h>
 #import <NMapsMap/NMFUtils.h>
 #import <React/RCTBridge.h>
 #import <React/RCTConvert.h>
@@ -101,6 +102,8 @@ using namespace facebook::react;
 @property(nonatomic, copy) RCTDirectEventBlock onOptionChanged;
 @property(nonatomic, copy) RCTDirectEventBlock onCameraChanged;
 @property(nonatomic, copy) RCTDirectEventBlock onTapMap;
+@property(nonatomic, copy) RCTDirectEventBlock onScreenToCoordinate;
+@property(nonatomic, copy) RCTDirectEventBlock onCoordinateToScreen;
 
 // In new arch, the commands exist in RCTRNCNaverMapViewViewProtocol(conformed in this class)
 #ifndef RCT_NEW_ARCH_ENABLED
@@ -127,6 +130,8 @@ using namespace facebook::react;
                  pivotY:(double)pivotY;
 - (void)cancelAnimation;
 - (void)setLocationTrackingMode:(NSString*)mode;
+- (void)screenToCoordinate:(NSNumber*)x y:(NSNumber*)y;
+- (void)coordinateToScreen:(NSNumber*)latitude longitude:(NSNumber*)longitude;
 #endif /* ifndef RCT_NEW_ARCH_ENABLED */
 
 @end
