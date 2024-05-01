@@ -133,7 +133,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        arch: [ old, new ]
+        arch: [ new ]
     env:
       TURBO_CACHE_DIR: .turbo/ios-${{matrix.arch}}
     steps:
