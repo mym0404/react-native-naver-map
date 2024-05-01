@@ -1,6 +1,16 @@
 export interface BaseOverlayProps {
   /** z index의 위치입니다. 기본값은 오버레이의 타입에 따라 다릅니다.
    *
+   * 주의해야 할 점은 이 zIndex가 높다고 항상 위에 보이는 것이 아니라는 점입니다.
+   *
+   * global zIndex와 보조 zIndex가 존재하며 이 값은 보조 zIndex입니다.
+   *
+   * 보조 zIndex는 global zIndex가 같은 오버레이들 중 겹침 우선순위를 조절하는 옵션입니다.
+   *
+   * global zIndex를 오버레이의 타입별로 조절할 수 있는 기능은 NaverMapView의 setGlobalOverlayZIndex함수를 사용할 수 있습니다.
+   *
+   * 다음은 global zIndex의 값들입니다.
+   *
    * - 정보 창: 400000
    * - 위치 오버레이: 300000
    * - 마커: 200000
@@ -10,6 +20,9 @@ export interface BaseOverlayProps {
    * - 셰이프(폴리곤, 폴리라인, 서클): -200000
    * - 지상 오버레이: -300000
    * - (지도 배경)
+   *
+   * @see {@link NaverMapView}
+   * @default 0
    * */
   zIndex?: number;
   /** 감춰진 여부입니다. */

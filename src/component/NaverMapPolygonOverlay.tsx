@@ -4,7 +4,7 @@ import type { BaseOverlayProps } from '../types/BaseOverlayProps';
 import { type ColorValue, processColor } from 'react-native';
 import { Const } from '../internal/util/Const';
 import type { Coord } from '@mj-studio/react-native-naver-map';
-import invariant from 'invariant';
+import { nAssert } from '../internal/util/Assert';
 
 export interface NaverMapPolygonOverlayProps extends BaseOverlayProps {
   /**
@@ -44,7 +44,7 @@ export interface NaverMapPolygonOverlayProps extends BaseOverlayProps {
 }
 
 export const NaverMapPolygonOverlay = ({
-  zIndex = Const.Z_SHAPE,
+  zIndex = 0,
   isHidden = false,
   minZoom = Const.MIN_ZOOM,
   maxZoom = Const.MAX_ZOOM,
@@ -59,21 +59,17 @@ export const NaverMapPolygonOverlay = ({
   onTap,
 }: NaverMapPolygonOverlayProps) => {
   if (coords) {
-    invariant(
+    nAssert(
       coords.length >= 3,
-      '[NaverMapPolygonOverlay] coords length should be equal or greater than 3, is %s.',
-      coords.length
+      `[NaverMapPolygonOverlay] coords length should be equal or greater than 3, is ${coords.length}.`
     );
-    if (coords.length < 3) return null;
   }
   if (holes) {
     for (const hole of holes) {
-      invariant(
+      nAssert(
         hole.length >= 3,
-        '[NaverMapPolygonOverlay] hole length should be equal or greater than 3, is %s.',
-        hole.length
+        `[NaverMapPolygonOverlay] hole length should be equal or greater than 3, is ${hole.length}.`
       );
-      if (hole.length < 3) return null;
     }
   }
   return (

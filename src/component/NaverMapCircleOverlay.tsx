@@ -31,7 +31,7 @@ export interface NaverMapCircleOverlayProps extends BaseOverlayProps, Coord {
 export const NaverMapCircleOverlay = ({
   latitude,
   longitude,
-  zIndex = Const.Z_SHAPE,
+  zIndex = 0,
   isHidden = false,
   minZoom = Const.MIN_ZOOM,
   maxZoom = Const.MAX_ZOOM,
