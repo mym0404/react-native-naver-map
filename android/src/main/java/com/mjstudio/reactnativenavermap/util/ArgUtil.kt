@@ -105,3 +105,9 @@ internal val Double?.px: Int
   get() = if (this == null) 0 else PixelUtil.toPixelFromDIP(this).toInt()
 internal val Int?.px: Int
   get() = if (this == null) 0 else PixelUtil.toPixelFromDIP(toDouble()).toInt()
+internal val Double?.dp: Int
+  get() = if (this == null) 0 else PixelUtil.toDIPFromPixel(toFloat()).toInt()
+internal val Int?.dp: Int
+  get() = if (this == null) 0 else PixelUtil.toDIPFromPixel(toFloat()).toInt()
+internal val Float?.dp: Int
+  get() = if (this == null) 0 else PixelUtil.toDIPFromPixel(this).toInt()

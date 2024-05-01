@@ -146,6 +146,13 @@ interface Props extends ViewProps {
       y: Double;
     }>
   >;
+
+  onScreenToCoordinate?: DirectEventHandler<
+    Readonly<{ isValid: boolean; latitude: Double; longitude: Double }>
+  >;
+  onCoordinateToScreen?: DirectEventHandler<
+    Readonly<{ isValid: boolean; screenX: Double; screenY: Double }>
+  >;
 }
 
 type ComponentType = HostComponent<Props>;
@@ -158,8 +165,8 @@ interface NaverMapNativeCommands {
   ) => Promise<
     Readonly<{
       isValid: boolean;
-      latitude: number;
-      longitude: number;
+      latitude: Double;
+      longitude: Double;
     }>
   >;
   coordinateToScreen: (
@@ -169,8 +176,8 @@ interface NaverMapNativeCommands {
   ) => Promise<
     Readonly<{
       isValid: boolean;
-      screenX: number;
-      screenY: number;
+      screenX: Double;
+      screenY: Double;
     }>
   >;
   animateCameraTo: (

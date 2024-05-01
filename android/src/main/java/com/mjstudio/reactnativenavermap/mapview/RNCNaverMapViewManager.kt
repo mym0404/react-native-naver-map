@@ -13,8 +13,10 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapViewManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapCameraChangeEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapCoordinateToScreenEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapScreenToCoordinateEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterKey
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClustererHolder
@@ -22,6 +24,8 @@ import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapLeafMa
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapLeafMarkerUpdater
 import com.mjstudio.reactnativenavermap.util.CameraAnimationUtil
 import com.mjstudio.reactnativenavermap.util.RectUtil
+import com.mjstudio.reactnativenavermap.util.dp
+import com.mjstudio.reactnativenavermap.util.emitEvent
 import com.mjstudio.reactnativenavermap.util.getDoubleOrNull
 import com.mjstudio.reactnativenavermap.util.getLatLng
 import com.mjstudio.reactnativenavermap.util.getLatLngBoundsOrNull
@@ -106,6 +110,8 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
       registerDirectEvent(this, NaverMapOptionChangeEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCameraChangeEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapTapEvent.EVENT_NAME)
+      registerDirectEvent(this, NaverMapScreenToCoordinateEvent.EVENT_NAME)
+      registerDirectEvent(this, NaverMapCoordinateToScreenEvent.EVENT_NAME)
     }
 
   private fun RNCNaverMapViewWrapper?.withMapView(callback: (mapView: RNCNaverMapView) -> Unit) {
@@ -595,13 +601,40 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     view: RNCNaverMapViewWrapper?,
     x: Double,
     y: Double,
-  ) = view.withMap {}
+  ) = view.withMap { map ->
+    view?.let { wrapper ->
+      val coord = map.projection.fromScreenLocation(PointF(x.toFloat(), y.toFloat()))
+      wrapper.reactContext.emitEvent(wrapper.id) { surfaceId, reactTag ->
+        NaverMapScreenToCoordinateEvent(
+          surfaceId,
+          reactTag,
+          coord.isValid,
+          if (coord.isValid) coord.latitude else .0,
+          if (coord.isValid) coord.longitude else .0,
+        )
+      }
+    }
+  }
 
   override fun coordinateToScreen(
     view: RNCNaverMapViewWrapper?,
     latitude: Double,
     longitude: Double,
-  ) = view.withMap { }
+  ) = view.withMap { map ->
+    view?.let { wrapper ->
+      val coord = map.projection.toScreenLocation(LatLng(latitude, longitude))
+      val isValid = !coord.x.isNaN()
+      wrapper.reactContext.emitEvent(wrapper.id) { surfaceId, reactTag ->
+        NaverMapCoordinateToScreenEvent(
+          surfaceId,
+          reactTag,
+          isValid,
+          if (isValid) coord.x.dp.toDouble() else .0,
+          if (isValid) coord.y.dp.toDouble() else .0,
+        )
+      }
+    }
+  }
 
   override fun animateCameraTo(
     view: RNCNaverMapViewWrapper?,
