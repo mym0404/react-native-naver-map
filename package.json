@@ -53,12 +53,16 @@
     "prepack": "yarn build:expo-config-plugin && yarn build:docs && bob build",
     "build:expo-config-plugin": "tsc --project ./expo-config-plugin",
     "build:docs": "rm -rf docs && typedoc",
-    "old:pod": "./script/arch-convert.sh false true",
-    "new:pod": "./script/arch-convert.sh true true",
-    "old": "./script/arch-convert.sh false false",
-    "new": "./script/arch-convert.sh true false",
-    "ci:ios": "cd example/ios && xcodebuild -workspace NaverMapExample.xcworkspace -scheme NaverMapExample -configuration Debug -sdk iphonesimulator -quiet CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO ONLY_ACTIVE_ARCH=YES",
-    "ci:android": "cd example/android && ./gradlew assembleDebug"
+    "old": "./script/arch-convert.sh false",
+    "new": "./script/arch-convert.sh true",
+    "ci:ios:old": "cd example/ios && xcodebuild -workspace NaverMapExample.xcworkspace -scheme NaverMapExample -configuration Debug -sdk iphonesimulator -quiet CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO ONLY_ACTIVE_ARCH=YES",
+    "ci:ios:new": "cd example/ios && xcodebuild -workspace NaverMapExample.xcworkspace -scheme NaverMapExample -configuration Debug -sdk iphonesimulator -quiet CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO ONLY_ACTIVE_ARCH=YES",
+    "ci:android:old": "cd example/android && ./gradlew assembleDebug",
+    "ci:android:new": "cd example/android && ./gradlew assembleDebug",
+    "turbo:android:old": "yarn old android && yarn turbo ci:android:old --single-package --cache-dir=\".turbo/android-old\"",
+    "turbo:android:new": "yarn new android && yarn turbo ci:android:new --single-package --cache-dir=\".turbo/android-new\"",
+    "turbo:ios:old": "yarn old ios && yarn turbo ci:ios:old --single-package --cache-dir=\".turbo/ios-old\"",
+    "turbo:ios:new": "yarn new ios && yarn turbo ci:ios:new --single-package --cache-dir=\".turbo/ios-new\""
   },
   "keywords": [
     "react-native",

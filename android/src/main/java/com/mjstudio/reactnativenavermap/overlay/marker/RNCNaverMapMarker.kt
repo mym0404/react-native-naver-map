@@ -37,11 +37,6 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
   private var imageRequestCanceller: ImageRequestCanceller? = null
   private var isImageSetFromSubview = false
 
-  override fun onDetachedFromWindow() {
-    imageRequestCanceller?.invoke()
-    super.onDetachedFromWindow()
-  }
-
   override val overlay: Marker by lazy {
     Marker().apply {
       setOnClickListener {
@@ -68,6 +63,7 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
     overlay.map = null
     overlay.onClickListener = null
     imageHolder?.onDetach()
+    imageRequestCanceller?.invoke()
   }
 
   fun setCustomView(

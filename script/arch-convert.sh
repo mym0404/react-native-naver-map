@@ -1,36 +1,55 @@
 #!/usr/bin/env bash
 set -e
-# Gradle property to change
-PROPERTY="newArchEnabled"
 
-# New value from first command line argument
-NEW_VALUE="$1"
-POD="$2"
+NEW_ARCH="$1"
+OS=$2
 
-# Validate new value is either "true" or "false"
-if [ "${NEW_VALUE}" != "true" ] && [ "${NEW_VALUE}" != "false" ]; then
+if [ "${NEW_ARCH}" != "true" ] && [ "${NEW_ARCH}" != "false" ]; then
   echo "Error: The argument should be either 'true' or 'false'"
   exit 1
 fi
 
 pwd
-# Gradle properties file
-FILE="example/android/gradle.properties"
 
-# Create a backup of the original file
-# cp ${FILE} ${FILE}.bak
+NEW_ARCH_KEY="newArchEnabled"
 
-# Use 'sed' to replace the property value
-sed -i.bak -e "s/${PROPERTY}=.*/${PROPERTY}=${NEW_VALUE}/" "${FILE}"
-rm "${FILE}.bak"
+if grep -q "newArchEnabled=true" example/android/gradle.properties; then
+  PREV_NEW_ARCH_ANDROID=true
+else
+  PREV_NEW_ARCH_ANDROID=false
+fi
 
-if [[ $POD == 'true' ]]; then
-  if [[ $NEW_VALUE == 'true' ]]; then
+if grep -q "FBReactNativeSpec" example/ios/Podfile.lock; then
+  PREV_NEW_ARCH_IOS=false
+else
+  PREV_NEW_ARCH_IOS=true
+fi
+
+if [[ $PREV_NEW_ARCH_ANDROID != $PREV_NEW_ARCH_IOS ]]; then
+  PREV_NEW_ARCH=?
+else
+  PREV_NEW_ARCH=$PREV_NEW_ARCH_ANDROID
+fi
+
+echo "Previous Android : $( [ "$PREV_NEW_ARCH_ANDROID" = 'true' ] && echo 'new' || echo 'old')"
+echo "Previous iOS     : $( [ "$PREV_NEW_ARCH_IOS" = 'true' ] && echo 'new' || echo 'old')"
+
+if [[ $PREV_NEW_ARCH == $NEW_ARCH ]]; then
+  echo "Architecture is already $( [ "$NEW_ARCH" = 'true' ] && echo 'new' || echo 'old') 🎉"
+else
+
+if [[ -z $OS || $OS == 'android' ]]; then
+  sed -i.bak -e "s/${NEW_ARCH_KEY}=.*/${NEW_ARCH_KEY}=${NEW_ARCH}/" "example/android/gradle.properties"
+  rm "example/android/gradle.properties.bak"
+  (cd example/android && rm -rf app/build && rm -rf app/.cxx && ./gradlew clean)
+fi
+
+if [[ -z $OS || $OS == 'ios' ]]; then
+  if [[ $NEW_ARCH == 'true' ]]; then
     yarn pod:new
   else
     yarn pod:old
   fi
 fi
 
-
-
+fi
