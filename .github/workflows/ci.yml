@@ -160,10 +160,13 @@ jobs:
         with:
           path: |
             **/ios/Pods
+            example/ios/build/generated/ios
           key: ${{ runner.os }}-cocoapods-${{ hashFiles('example/ios/Podfile.lock') }}-${{matrix.arch}}-noop
           restore-keys: |
             ${{ runner.os }}-cocoapods-${{matrix.arch}}-
 
+      - name: Install pod for codegen stuffs
+        run: yarn pod:${{matrix.arch}}
       - name: Build example for iOS
         run: yarn turbo:ios:${{matrix.arch}}
 
