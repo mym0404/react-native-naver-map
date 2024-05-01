@@ -464,6 +464,11 @@ export interface NaverMapViewRef {
    */
   setLocationTrackingMode: (mode: LocationTrackingMode) => void;
 
+  /**
+   * 지도에서 특정 부분을 위도 경도값으로 반환합니다.
+   *
+   * `screenX`, `screenY`는 DP, PT 단위입니다.
+   */
   screenToCoordinate: (params: {
     screenX: number;
     screenY: number;
@@ -472,6 +477,12 @@ export interface NaverMapViewRef {
     latitude: number;
     longitude: number;
   }>;
+
+  /**
+   * 지도에서 특정 위도 부분을 화면에서의 특정 위치로 반환합니다.
+   *
+   * `screenX`, `screenY`는 DP, PT 단위입니다.
+   */
   coordinateToScreen: (params: {
     latitude: number;
     longitude: number;
