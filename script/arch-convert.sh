@@ -31,8 +31,8 @@ else
   PREV_NEW_ARCH=$PREV_NEW_ARCH_ANDROID
 fi
 
-echo "Previous Android Arch is New: ${PREV_NEW_ARCH_ANDROID}"
-echo "Previous iOS Arch is New: ${PREV_NEW_ARCH_IOS}"
+echo "Previous Android : $( [ "$PREV_NEW_ARCH_ANDROID" = 'true' ] && echo 'new' || echo 'old')"
+echo "Previous iOS     : $( [ "$PREV_NEW_ARCH_IOS" = 'true' ] && echo 'new' || echo 'old')"
 
 if [[ $PREV_NEW_ARCH == $NEW_ARCH ]]; then
   echo "Architecture is already $( [ "$NEW_ARCH" = 'true' ] && echo 'new' || echo 'old') 🎉"
