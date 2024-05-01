@@ -503,4 +503,28 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
   }
 }
 
+- (void)screenToCoordinate:(double)x y:(double)y {
+  if (_onScreenToCoordinate) {
+    NMFProjection* projection = self.mapView.projection;
+    NMGLatLng* coord = [projection latlngFromPoint:CGPointMake(x, y)];
+    _onScreenToCoordinate(@{
+      @"isValid" : @(coord.isValid),
+      @"latitude" : @(coord.isValid ? coord.lat : .0),
+      @"longitude" : @(coord.isValid ? coord.lng : .0),
+    });
+  }
+}
+- (void)coordinateToScreen:(double)latitude longitude:(double)longitude {
+  if (_onCoordinateToScreen) {
+    NMFProjection* projection = self.mapView.projection;
+    CGPoint point = [projection pointFromLatLng:NMGLatLngMake(latitude, longitude)];
+    BOOL isValid = !isinf(point.x) && !isinf(point.y);
+    _onCoordinateToScreen(@{
+      @"isValid" : @(isValid),
+      @"screenX" : @(isValid ? (int)point.x : 0),
+      @"screenY" : @(isValid ? (int)point.y : 0),
+    });
+  }
+}
+
 @end

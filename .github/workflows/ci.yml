@@ -171,14 +171,10 @@ jobs:
             ${{ runner.os }}-cocoapods-${{matrix.arch}}-
 
       - name: Install cocoapods
-        if: env.turbo_cache_hit != 1 && steps.cocoapods-cache.outputs.cache-hit != 'true'
+#        if: env.turbo_cache_hit != 1 && steps.cocoapods-cache.outputs.cache-hit != 'true'
         run: yarn ${{matrix.arch}}:pod
         env:
           NO_FLIPPER: 1
-
-      - name: Run Codegen if new arch
-        if: ${{matrix.arch}} == 'new'
-        run: yarn codegen:ios
 
       - name: Build example for iOS
         run: |

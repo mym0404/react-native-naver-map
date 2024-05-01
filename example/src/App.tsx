@@ -67,7 +67,6 @@ export default function App() {
   const [nightMode, setNightMode] = useState(false);
   const [indoor, setIndoor] = useState(false);
   const [mapType, setMapType] = useState<MapType>(MapTypes[0]!);
-  const [symbolScale, setSymbolScale] = useState(1);
   const [lightness, setLightness] = useState(0);
   const [compass, setCompass] = useState(true);
   const [scaleBar, setScaleBar] = useState(true);
@@ -116,9 +115,9 @@ export default function App() {
       animate?: boolean;
     }[]
   >(() => {
-    return generateArray(6).map((i) => {
+    return generateArray(3).map((i) => {
       return {
-        markers: generateArray(50).map<ClusterMarkerProp>((j) => ({
+        markers: generateArray(2).map<ClusterMarkerProp>((j) => ({
           image: {
             httpUri: `https://picsum.photos/seed/${hash}-${i}-${j}/32/32`,
           },
@@ -288,7 +287,6 @@ export default function App() {
           TRANSIT: false,
         }}
         isIndoorEnabled={indoor}
-        symbolScale={symbolScale}
         lightness={lightness}
         isNightModeEnabled={nightMode}
         isShowCompass={compass}
@@ -299,9 +297,9 @@ export default function App() {
         isExtentBoundedInKorea
         onInitialized={() => console.log('initialized!')}
         onOptionChanged={() => console.log('Option Changed!')}
-        onCameraChanged={(args) =>
-          console.log(`Camera Changed: ${formatJson(args)}`)
-        }
+        // onCameraChanged={(args) =>
+        //   console.log(`Camera Changed: ${formatJson(args)}`)
+        // }
         onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
         clusters={clusterers}
       />
@@ -386,6 +384,22 @@ export default function App() {
             ref.current?.setLocationTrackingMode('Face');
           }}
         />
+        <Btn
+          title={'Screen -> Coord'}
+          onPress={() => {
+            ref.current
+              ?.screenToCoordinate({ screenX: 0, screenY: 0 })
+              .then(console.log);
+          }}
+        />
+        <Btn
+          title={'Coord -> Screen'}
+          onPress={() => {
+            ref.current
+              ?.coordinateToScreen({ ...Cameras.Jeju })
+              .then(console.log);
+          }}
+        />
 
         <Toggle value={nightMode} onChange={setNightMode} text={'Night'} />
         <Toggle value={indoor} onChange={setIndoor} text={'Indoor'} />
@@ -406,13 +420,13 @@ export default function App() {
           onChange={setIndoorLevelPicker}
           text={'Indoor Level'}
         />
-        <Range
-          min={0}
-          max={1}
-          value={symbolScale}
-          onChange={setSymbolScale}
-          text={'Symbol Scale'}
-        />
+        {/*<Range*/}
+        {/*  min={0}*/}
+        {/*  max={1}*/}
+        {/*  value={symbolScale}*/}
+        {/*  onChange={setSymbolScale}*/}
+        {/*  text={'Symbol Scale'}*/}
+        {/*/>*/}
         <Range
           min={-1}
           max={1}

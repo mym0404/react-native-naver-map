@@ -11,6 +11,7 @@ import React, {
   useImperativeHandle,
   useRef,
   useMemo,
+  useEffect,
 } from 'react';
 import { type ViewProps, type NativeSyntheticEvent } from 'react-native';
 import type { MapType } from '../types/MapType';
@@ -462,6 +463,38 @@ export interface NaverMapViewRef {
    * {@link LocationTrackingMode}
    */
   setLocationTrackingMode: (mode: LocationTrackingMode) => void;
+
+  /**
+   * 지도에서 특정 부분을 위도 경도값으로 반환합니다.
+   *
+   * `screenX`, `screenY`는 DP, PT 단위입니다.
+   *
+   * `isValid`가 `false`이면 항상 `latitude`, `longitude`는 0입니다.
+   */
+  screenToCoordinate: (params: {
+    screenX: number;
+    screenY: number;
+  }) => Promise<{
+    isValid: boolean;
+    latitude: number;
+    longitude: number;
+  }>;
+
+  /**
+   * 지도에서 특정 위도 부분을 화면에서의 특정 위치로 반환합니다.
+   *
+   * `screenX`, `screenY`는 DP, PT 단위입니다.
+   *
+   * `isValid`가 `false`이면 항상 `screenX`, `screenY`는 0입니다.
+   */
+  coordinateToScreen: (params: {
+    latitude: number;
+    longitude: number;
+  }) => Promise<{
+    isValid: boolean;
+    screenX: number;
+    screenY: number;
+  }>;
 }
 
 function clamp(v: number, min: number, max: number): number {
@@ -616,6 +649,63 @@ export const NaverMapView = forwardRef(
       }
     );
 
+    const screenToCoordinatePromise = useRef<{
+      resolve: (params: {
+        isValid: boolean;
+        latitude: number;
+        longitude: number;
+      }) => void;
+      reject: (e: any) => void;
+    }>();
+    const coordinateToScreenPromise = useRef<{
+      resolve: (params: {
+        isValid: boolean;
+        screenX: number;
+        screenY: number;
+      }) => void;
+      reject: (e: any) => void;
+    }>();
+    useEffect(() => {
+      return () => {
+        screenToCoordinatePromise.current?.resolve({
+          isValid: false,
+          latitude: 0,
+          longitude: 0,
+        });
+        screenToCoordinatePromise.current = undefined;
+        coordinateToScreenPromise.current?.resolve({
+          isValid: false,
+          screenX: 0,
+          screenY: 0,
+        });
+        coordinateToScreenPromise.current = undefined;
+      };
+    }, []);
+    const onScreenToCoordinate = useStableCallback(
+      ({
+        nativeEvent,
+      }: NativeSyntheticEvent<{
+        isValid: boolean;
+        latitude: number;
+        longitude: number;
+      }>) => {
+        screenToCoordinatePromise.current?.resolve(nativeEvent);
+        screenToCoordinatePromise.current = undefined;
+      }
+    );
+    const onCoordinateToScreen = useStableCallback(
+      ({
+        nativeEvent,
+      }: NativeSyntheticEvent<{
+        isValid: boolean;
+        screenX: number;
+        screenY: number;
+      }>) => {
+        coordinateToScreenPromise.current?.resolve(nativeEvent);
+        coordinateToScreenPromise.current = undefined;
+      }
+    );
+
     useImperativeHandle(
       ref,
       () => ({
@@ -714,6 +804,44 @@ export const NaverMapView = forwardRef(
             Commands.setLocationTrackingMode(innerRef.current, mode);
           }
         },
+        screenToCoordinate: ({ screenX, screenY }) => {
+          screenToCoordinatePromise.current?.resolve({
+            isValid: false,
+            latitude: 0,
+            longitude: 0,
+          });
+          screenToCoordinatePromise.current = undefined;
+          if (innerRef.current) {
+            const newPromise = new Promise<any>((resolve, reject) => {
+              screenToCoordinatePromise.current = { resolve, reject };
+            });
+            Commands.screenToCoordinate(innerRef.current, screenX, screenY);
+            return newPromise;
+          } else {
+            return new Promise((_, reject) =>
+              reject(new Error('ref not set yet'))
+            );
+          }
+        },
+        coordinateToScreen: ({ latitude, longitude }) => {
+          coordinateToScreenPromise.current?.resolve({
+            isValid: false,
+            screenX: 0,
+            screenY: 0,
+          });
+          coordinateToScreenPromise.current = undefined;
+          if (innerRef.current) {
+            const newPromise = new Promise<any>((resolve, reject) => {
+              coordinateToScreenPromise.current = { resolve, reject };
+            });
+            Commands.coordinateToScreen(innerRef.current, latitude, longitude);
+            return newPromise;
+          } else {
+            return new Promise((_, reject) =>
+              reject(new Error('ref not set yet'))
+            );
+          }
+        },
       }),
       []
     );
@@ -780,6 +908,8 @@ export const NaverMapView = forwardRef(
         isUseTextureViewAndroid={isUseTextureViewAndroid}
         locale={locale}
         clusters={_clusters}
+        onScreenToCoordinate={onScreenToCoordinate}
+        onCoordinateToScreen={onCoordinateToScreen}
         {...rest}
       />
     );
