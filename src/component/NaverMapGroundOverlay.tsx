@@ -9,7 +9,17 @@ import type {
 import { convertJsImagePropToNativeProp } from '../internal/Util';
 
 export interface NaverMapGroundOverlayProps extends BaseOverlayProps {
+  /**
+   * 지상 오버레이의 이미지를 지정할 수 있습니다.
+   *
+   * 이미지는 필수적인 속성으로, 이미지를 지정하지 않은 지상 오버레이는 지도에 추가되지 않습니다.
+   */
   image: MarkerImageProp;
+  /**
+   * 지상 오버레이의 영역을 지정할 수 있습니다.
+   *
+   * 영역은 필수적인 속성으로, 영역을 지정하지 않은 지상 오버레이는 지도에 추가되지 않습니다.
+   */
   region: Region;
 }
 
