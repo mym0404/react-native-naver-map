@@ -130,8 +130,8 @@ using namespace facebook::react;
                  pivotY:(double)pivotY;
 - (void)cancelAnimation;
 - (void)setLocationTrackingMode:(NSString*)mode;
-- (void)screenToCoordinate:(NSNumber*)x y:(NSNumber*)y;
-- (void)coordinateToScreen:(NSNumber*)latitude longitude:(NSNumber*)longitude;
+- (void)screenToCoordinate:(double)x y:(double)y;
+- (void)coordinateToScreen:(double)latitude longitude:(double)longitude;
 #endif /* ifndef RCT_NEW_ARCH_ENABLED */
 
 @end
