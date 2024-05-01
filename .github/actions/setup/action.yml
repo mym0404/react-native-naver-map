@@ -25,3 +25,9 @@ runs:
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn install --immutable
       shell: bash
+
+    - name: Prepare Dummy Secrets
+      shell: bash
+      run: |
+        cat .github/actions/setup/android_dummy_secret.xml > example/nadroid/app/src/main/res/values/secret.xml
+        echo "NAVER_CLIENT_ID = dummy" > example/ios/Secret.xcconfig

@@ -102,7 +102,7 @@ To run the example app on iOS:
 Set your Naver SDK key at `example/ios/Secret.xcconfig`
 
 ```
-NAVER_CLIENT_ID = {{your_key}
+NAVER_CLIENT_ID = {{your_key}}
 ```
 
 ```sh
