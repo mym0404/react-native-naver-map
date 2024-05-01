@@ -10,32 +10,37 @@ if [ "${NEW_ARCH}" != "true" ] && [ "${NEW_ARCH}" != "false" ]; then
 fi
 
 pwd
+
 NEW_ARCH_KEY="newArchEnabled"
-GRADLE="example/android/gradle.properties"
 
-if [[ -z $OS || $OS == 'android' ]]; then
-if grep -q "newArchEnabled=true" $GRADLE; then
-  PREV_NEW_ARCH=true
+if grep -q "newArchEnabled=true" example/android/gradle.properties; then
+  PREV_NEW_ARCH_ANDROID=true
 else
-  PREV_NEW_ARCH=false
+  PREV_NEW_ARCH_ANDROID=false
 fi
 
+if grep -q "FBReactNativeSpec" example/ios/Podfile.lock; then
+  PREV_NEW_ARCH_IOS=false
 else
-  if grep -q "FBReactNativeSpec" example/ios/Podfile.lock; then
-    PREV_NEW_ARCH=true
-  else
-    PREV_NEW_ARCH=false
-  fi
+  PREV_NEW_ARCH_IOS=true
 fi
 
+if [[ $PREV_NEW_ARCH_ANDROID != $PREV_NEW_ARCH_IOS ]]; then
+  PREV_NEW_ARCH=?
+else
+  PREV_NEW_ARCH=$PREV_NEW_ARCH_ANDROID
+fi
+
+echo "Previous Android Arch is New: ${PREV_NEW_ARCH_ANDROID}"
+echo "Previous iOS Arch is New: ${PREV_NEW_ARCH_IOS}"
 
 if [[ $PREV_NEW_ARCH == $NEW_ARCH ]]; then
-echo "Architecture is already $( [ "$NEW_ARCH" = 'true' ] && echo 'new' || echo 'old') 🎉"
+  echo "Architecture is already $( [ "$NEW_ARCH" = 'true' ] && echo 'new' || echo 'old') 🎉"
 else
 
 if [[ -z $OS || $OS == 'android' ]]; then
-  sed -i.bak -e "s/${NEW_ARCH_KEY}=.*/${NEW_ARCH_KEY}=${NEW_ARCH}/" "${GRADLE}"
-  rm "${GRADLE}.bak"
+  sed -i.bak -e "s/${NEW_ARCH_KEY}=.*/${NEW_ARCH_KEY}=${NEW_ARCH}/" "example/android/gradle.properties"
+  rm "example/android/gradle.properties.bak"
   (cd example/android && rm -rf app/build && rm -rf app/.cxx && ./gradlew clean)
 fi
 
@@ -46,12 +51,5 @@ if [[ -z $OS || $OS == 'ios' ]]; then
     yarn pod:old
   fi
 fi
+
 fi
-
-
-
-
-
-
-
-
