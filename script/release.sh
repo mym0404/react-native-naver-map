@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-git pull origin main
 yarn t
 yarn codegen
+yarn prepack
 export $(grep -v '^#' .env | xargs) && release-it $1
