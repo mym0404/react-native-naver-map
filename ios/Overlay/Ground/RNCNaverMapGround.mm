@@ -6,14 +6,11 @@
 //
 
 #import "RNCNaverMapGround.h"
-
+#import <React/RCTBridge+Private.h>
 #ifdef RCT_NEW_ARCH_ENABLED
 using namespace facebook::react;
 @interface RNCNaverMapGround () <RCTRNCNaverMapGroundViewProtocol>
 
-@end
-@interface RCTBridge (Private)
-+ (RCTBridge*)currentBridge;
 @end
 #endif
 
@@ -22,9 +19,6 @@ using namespace facebook::react;
 }
 static NSMutableDictionary* _overlayImageHolder;
 
-/**
- https://github.com/software-mansion/react-native-screens/blob/a8bb418a8428befbb264ef958a5d7f7ea743048a/ios/RNSScreenStackHeaderSubview.mm#L100
- */
 - (RCTBridge*)bridge {
 #ifdef RCT_NEW_ARCH_ENABLED
   return [RCTBridge currentBridge];

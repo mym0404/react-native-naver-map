@@ -32,10 +32,8 @@ The `package.json` file contains various scripts for common tasks:
 
 **Architecture Convert**
 
-- `new`: convert example project to new architecture
-- `old`: convert example project to old architecture
-- `new:pod`: convert example project to new architecture with pod install
-- `old:pod`: convert example project to old architecture with pod install
+- `new`: convert example project to new architecture if needed (gradlew clean, install pod)
+- `old`: convert example project to old architecture if needed (gradlew clean, install pod)
 
 **Util**
 

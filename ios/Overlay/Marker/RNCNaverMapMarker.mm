@@ -6,14 +6,11 @@
 //
 
 #import "RNCNaverMapMarker.h"
-
+#import <React/RCTBridge+Private.h>
 #ifdef RCT_NEW_ARCH_ENABLED
 using namespace facebook::react;
 @interface RNCNaverMapMarker () <RCTRNCNaverMapMarkerViewProtocol>
 
-@end
-@interface RCTBridge (Private)
-+ (RCTBridge*)currentBridge;
 @end
 #endif
 

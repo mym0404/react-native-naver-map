@@ -1,36 +1,43 @@
 #!/usr/bin/env bash
 set -e
-# Gradle property to change
-PROPERTY="newArchEnabled"
 
-# New value from first command line argument
-NEW_VALUE="$1"
-POD="$2"
+NEW_ARCH="$1"
 
-# Validate new value is either "true" or "false"
-if [ "${NEW_VALUE}" != "true" ] && [ "${NEW_VALUE}" != "false" ]; then
+if [ "${NEW_ARCH}" != "true" ] && [ "${NEW_ARCH}" != "false" ]; then
   echo "Error: The argument should be either 'true' or 'false'"
   exit 1
 fi
 
 pwd
-# Gradle properties file
-FILE="example/android/gradle.properties"
+NEW_ARCH_KEY="newArchEnabled"
+GRADLE="example/android/gradle.properties"
 
-# Create a backup of the original file
-# cp ${FILE} ${FILE}.bak
+if grep -q "newArchEnabled=true" $GRADLE; then
+  PREV_NEW_ARCH=true
+else
+  PREV_NEW_ARCH=false
+fi
 
-# Use 'sed' to replace the property value
-sed -i.bak -e "s/${PROPERTY}=.*/${PROPERTY}=${NEW_VALUE}/" "${FILE}"
-rm "${FILE}.bak"
+if [[ $PREV_NEW_ARCH == $NEW_ARCH ]]; then
+echo "Architecture is already $( [ "$NEW_ARCH" = 'true' ] && echo 'new' || echo 'old') 🎉"
+else
 
-if [[ $POD == 'true' ]]; then
-  if [[ $NEW_VALUE == 'true' ]]; then
+sed -i.bak -e "s/${NEW_ARCH_KEY}=.*/${NEW_ARCH_KEY}=${NEW_ARCH}/" "${GRADLE}"
+rm "${GRADLE}.bak"
+
+(cd example/android && rm -rf app/build && rm -rf app/.cxx)
+
+  if [[ $NEW_ARCH == 'true' ]]; then
     yarn pod:new
   else
     yarn pod:old
   fi
 fi
+
+
+
+
+
 
 
 

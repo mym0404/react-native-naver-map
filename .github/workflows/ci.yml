@@ -79,9 +79,6 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Convert Arch
-        run: yarn ${{matrix.arch}}
-
       - name: Cache turborepo for Android
         uses: actions/cache@v4
         with:
@@ -121,13 +118,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-${{matrix.arch}}-
 
-
-
       - name: Build example for Android
         env:
           JAVA_OPTS: "-XX:MaxHeapSize=6g"
-        run: |
-          yarn turbo run ci:android --single-package --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+        run: yarn turbo:android:${{matrix.arch}}
 
   build-ios:
     runs-on: macos-latest
@@ -170,12 +164,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cocoapods-${{matrix.arch}}-
 
-      - name: Install cocoapods
-#        if: env.turbo_cache_hit != 1 && steps.cocoapods-cache.outputs.cache-hit != 'true'
-        run: yarn ${{matrix.arch}}:pod
-        env:
-          NO_FLIPPER: 1
-
       - name: Build example for iOS
-        run: |
-          yarn turbo run ci:ios --single-package --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+        run: yarn turbo:ios:${{matrix.arch}}
+

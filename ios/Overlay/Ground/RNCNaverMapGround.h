@@ -25,9 +25,11 @@
 #import <react/renderer/components/RNCNaverMapSpec/RCTComponentViewHelpers.h>
 @interface RNCNaverMapGround : RCTViewComponentView
 #else
+#import <React/RCTBridge.h>
 @interface RNCNaverMapGround : RCTView
 #endif
 
+@property(nonatomic, weak, nullable) RCTBridge* bridge;
 @property(nonatomic, strong, nullable) NMFGroundOverlay* inner;
 
 @property(nonatomic, assign) NSInteger zIndexValue;

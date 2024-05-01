@@ -25,7 +25,9 @@ RCT_EXPORT_MODULE()
 }
 
 - (UIView*)view {
-  return [RNCNaverMapGround new];
+  RNCNaverMapGround* ret = [RNCNaverMapGround new];
+  ret.bridge = self.bridge;
+  return ret;
 }
 
 // MARK: - COMMON PROPS
