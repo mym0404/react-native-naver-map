@@ -2480,7 +2480,7 @@ __metadata:
     "@react-native-community/slider": "npm:^4.5.0"
     "@react-native/babel-preset": "npm:0.73.21"
     "@react-native/metro-config": "npm:0.74.80"
-    "@react-native/typescript-config": "npm:0.73.1"
+    "@react-native/typescript-config": "npm:0.74.83"
     babel-plugin-module-resolver: "npm:^5.0.0"
     react: "npm:18.2.0"
     react-native: "npm:0.73.6"
@@ -3271,10 +3271,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/typescript-config@npm:0.73.1":
-  version: 0.73.1
-  resolution: "@react-native/typescript-config@npm:0.73.1"
-  checksum: 10/9b66fe369c26758764e782f876241f51b75101b627659a148b2709e3c0548a314f5e98dfb508a72d038379a9a11eef18f5cc3e20b04d4e28210b0e09edd819fe
+"@react-native/typescript-config@npm:0.74.83":
+  version: 0.74.83
+  resolution: "@react-native/typescript-config@npm:0.74.83"
+  checksum: 10/318ef304611bc7e42415327916bce358df1c7bc9e971e129d263166edf1179c42d64e5b91784fa28db13d5218ae2c87dc3e2214582673ba2b0f52e8f8615695b
   languageName: node
   linkType: hard
 
