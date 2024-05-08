@@ -8,16 +8,10 @@ import android.view.View
 import androidx.core.view.children
 import com.airbnb.android.react.maps.TrackableView
 import com.airbnb.android.react.maps.ViewChangesTracker
-import com.facebook.drawee.generic.GenericDraweeHierarchy
-import com.facebook.drawee.view.DraweeHolder
-import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
-import com.mjstudio.reactnativenavermap.overlay.RNCNaverMapOverlay
-import com.mjstudio.reactnativenavermap.util.ImageRequestCanceller
-import com.mjstudio.reactnativenavermap.util.createDraweeHierarchy
+import com.mjstudio.reactnativenavermap.util.RNCNaverMapImageRenderableOverlay
 import com.mjstudio.reactnativenavermap.util.emitEvent
-import com.mjstudio.reactnativenavermap.util.getOverlayImage
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
@@ -25,16 +19,10 @@ import kotlin.math.max
 
 @SuppressLint("ViewConstructor")
 class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
-  RNCNaverMapOverlay<Marker>(reactContext), TrackableView {
-  private val imageHolder: DraweeHolder<GenericDraweeHierarchy>? by lazy {
-    DraweeHolder.create(createDraweeHierarchy(resources), reactContext)?.apply {
-      onAttach()
-    }
-  }
+  RNCNaverMapImageRenderableOverlay<Marker>(reactContext), TrackableView {
   private var customView: View? = null
   private var customViewBitmap: Bitmap? = null
-  private var lastImage: ReadableMap? = null
-  private var imageRequestCanceller: ImageRequestCanceller? = null
+
   private var isImageSetFromSubview = false
 
   override val overlay: Marker by lazy {
@@ -62,8 +50,7 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
   override fun onDropViewInstance() {
     overlay.map = null
     overlay.onClickListener = null
-    imageHolder?.onDetach()
-    imageRequestCanceller?.invoke()
+    super.onDropViewInstance()
   }
 
   fun setCustomView(
@@ -91,7 +78,7 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
     ViewChangesTracker.getInstance().removeMarker(this)
     if (customViewBitmap != null && !customViewBitmap!!.isRecycled) customViewBitmap!!.recycle()
     isImageSetFromSubview = false
-    setImage(lastImage)
+    setImageWithLastImage()
     super.removeView(children.elementAt(index))
   }
 
@@ -125,6 +112,10 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
     }
   }
 
+  override fun skipTryRender(): Boolean {
+    return isImageSetFromSubview
+  }
+
   override fun updateCustomForTracking(): Boolean {
     return true
   }
@@ -136,19 +127,11 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
     updateCustomView()
   }
 
-  fun setImage(image: ReadableMap?) {
-    lastImage = image
-    if (isImageSetFromSubview) return
-    overlay.alpha = 0f
-    imageRequestCanceller?.invoke()
-    imageRequestCanceller =
-      getOverlayImage(imageHolder!!, context, image?.toHashMap()) {
-        setOverlayImage(it)
-        overlay.alpha = 1f
-      }
+  override fun setOverlayAlpha(alpha: Float) {
+    overlay.alpha = alpha
   }
 
-  private fun setOverlayImage(image: OverlayImage?) {
+  override fun setOverlayImage(image: OverlayImage?) {
     overlay.icon =
       image ?: OverlayImage.fromBitmap(Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888))
   }

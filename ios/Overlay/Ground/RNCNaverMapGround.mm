@@ -128,19 +128,7 @@ NMAP_INNER_SETTER(I, i, sMaxZoomInclusive, BOOL)
     }
   }
 
-  {
-    auto p = prev.image, n = next.image;
-    if (p.reuseIdentifier != n.reuseIdentifier || p.assetName != n.assetName ||
-        p.httpUri != n.httpUri || p.rnAssetUri != n.rnAssetUri || p.symbol != n.symbol) {
-      self.image = @{
-        @"reuseIdentifier" : getNsStr(n.reuseIdentifier),
-        @"assetName" : getNsStr(n.assetName),
-        @"httpUri" : getNsStr(n.httpUri),
-        @"rnAssetUri" : getNsStr(n.rnAssetUri),
-        @"symbol" : getNsStr(n.symbol),
-      };
-    }
-  }
+  NMAP_REMAP_IMAGE_PROP(image, self.image)
 
   [super updateProps:props oldProps:oldProps];
 }

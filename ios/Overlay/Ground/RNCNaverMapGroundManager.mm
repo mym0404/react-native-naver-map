@@ -8,7 +8,7 @@
 #import "RCTConvert+NMFMapView.h"
 #import "RNCNaverMapGround.h"
 #import <Foundation/Foundation.h>
-#import <NMapsGeometry/NMGLatLng.h>
+#import <NMapsGeometry/NMapsGeometry.h>
 #import <React/RCTComponent.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTViewManager.h>

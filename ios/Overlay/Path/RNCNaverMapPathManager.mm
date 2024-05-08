@@ -8,8 +8,8 @@
 #import "RCTConvert+NMFMapView.h"
 #import "RNCNaverMapPath.h"
 #import <Foundation/Foundation.h>
-#import <NMapsGeometry/NMGLatLng.h>
-#import <NMapsMap/NMFMarker.h>
+#import <NMapsGeometry/NMapsGeometry.h>
+#import <NMapsMap/NMapsMap.h>
 #import <React/RCTComponent.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTViewManager.h>
@@ -26,7 +26,9 @@ RCT_EXPORT_MODULE()
 }
 
 - (UIView*)view {
-  return [RNCNaverMapPath new];
+  auto ret = [RNCNaverMapPath new];
+  ret.bridge = self.bridge;
+  return ret;
 }
 
 // MARK: - COMMON PROPS
@@ -42,6 +44,7 @@ RCT_EXPORT_VIEW_PROPERTY(onTapOverlay, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(coords, NSArray*)
 RCT_EXPORT_VIEW_PROPERTY(width, double)
 RCT_EXPORT_VIEW_PROPERTY(outlineWidth, double)
+RCT_EXPORT_VIEW_PROPERTY(patternImage, NSDictionary)
 RCT_EXPORT_VIEW_PROPERTY(patternInterval, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(progress, double)
 RCT_EXPORT_VIEW_PROPERTY(color, NSInteger)

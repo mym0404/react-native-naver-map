@@ -18,11 +18,7 @@ using namespace facebook::react;
   void (^_imageCanceller)(void);
   BOOL _isImageSetFromSubview;
 }
-static NSMutableDictionary* _overlayImageHolder;
 
-/**
- https://github.com/software-mansion/react-native-screens/blob/a8bb418a8428befbb264ef958a5d7f7ea743048a/ios/RNSScreenStackHeaderSubview.mm#L100
- */
 - (RCTBridge*)bridge {
 #ifdef RCT_NEW_ARCH_ENABLED
   return [RCTBridge currentBridge];
@@ -30,8 +26,6 @@ static NSMutableDictionary* _overlayImageHolder;
   return _bridge;
 #endif
 }
-
-// static NSMutableDictionary* _overlayImageHolder;
 
 //+ (void)initialize {
 //  _overlayImageHolder = [[NSMutableDictionary alloc] init];
@@ -41,9 +35,6 @@ static NSMutableDictionary* _overlayImageHolder;
   if ((self = [super init])) {
     _inner = [NMFMarker new];
     _isImageSetFromSubview = NO;
-    if (!_overlayImageHolder) {
-      _overlayImageHolder = [NSMutableDictionary new];
-    }
 
 #ifdef RCT_NEW_ARCH_ENABLED
     self.onTapOverlay = [self](NSDictionary* dict) {
@@ -253,19 +244,7 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
   NMAP_REMAP_SELF_PROP(isForceShowIcon);
   NMAP_REMAP_SELF_PROP(tintColor);
 
-  {
-    auto p = prev.image, n = next.image;
-    if (p.reuseIdentifier != n.reuseIdentifier || p.assetName != n.assetName ||
-        p.httpUri != n.httpUri || p.rnAssetUri != n.rnAssetUri || p.symbol != n.symbol) {
-      self.image = @{
-        @"reuseIdentifier" : getNsStr(n.reuseIdentifier),
-        @"assetName" : getNsStr(n.assetName),
-        @"httpUri" : getNsStr(n.httpUri),
-        @"rnAssetUri" : getNsStr(n.rnAssetUri),
-        @"symbol" : getNsStr(n.symbol),
-      };
-    }
-  }
+  NMAP_REMAP_IMAGE_PROP(image, self.image)
 
   if (next.caption.key != prev.caption.key) {
     self.caption = @{

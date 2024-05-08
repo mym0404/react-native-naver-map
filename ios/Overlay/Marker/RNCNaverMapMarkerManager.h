@@ -9,7 +9,7 @@
 #import "RNCNaverMapMarker.h"
 #import <Foundation/Foundation.h>
 #import <NMapsGeometry/NMGLatLng.h>
-#import <NMapsMap/NMFMarker.h>
+#import <NMapsMap/NMapsMap.h>
 #import <React/RCTComponent.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTViewManager.h>

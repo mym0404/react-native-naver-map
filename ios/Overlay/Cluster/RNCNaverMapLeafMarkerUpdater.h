@@ -9,11 +9,7 @@
 #import "RNCNaverMapClusterKey.h"
 #import "Utils.h"
 #import <Foundation/Foundation.h>
-#import <NMapsMap/NMCClusterer.h>
-#import <NMapsMap/NMCDefaultLeafMarkerUpdater.h>
-#import <NMapsMap/NMCLeafMarkerInfo.h>
-#import <NMapsMap/NMFMarker.h>
-#import <NMapsMap/NMFOverlayImage.h>
+#import <NMapsMap/NMapsMap.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -16,6 +16,15 @@ using namespace facebook::react;
 #endif
 
 @implementation RNCNaverMapPath {
+  void (^_imageCanceller)(void);
+}
+
+- (RCTBridge*)bridge {
+#ifdef RCT_NEW_ARCH_ENABLED
+  return [RCTBridge currentBridge];
+#else
+  return _bridge;
+#endif
 }
 
 - (instancetype)init {
@@ -46,6 +55,13 @@ using namespace facebook::react;
   return self;
 }
 
+- (void)dealloc {
+  if (_imageCanceller) {
+    _imageCanceller();
+    _imageCanceller = nil;
+  }
+}
+
 NMAP_SETTER(Z, z, IndexValue, inner.zIndex, NSInteger)
 NMAP_SETTER(I, i, sHidden, inner.hidden, BOOL)
 NMAP_INNER_SETTER(M, m, inZoom, double)
@@ -54,6 +70,27 @@ NMAP_INNER_SETTER(I, i, sMinZoomInclusive, BOOL)
 NMAP_INNER_SETTER(I, i, sMaxZoomInclusive, BOOL)
 
 NMAP_INNER_SETTER(W, w, idth, double)
+
+- (void)setPatternImage:(NSDictionary*)patternImage {
+  _patternImage = patternImage;
+  if (!patternImage) {
+    _inner.patternIcon = nil;
+    return;
+  }
+
+  // Cancel pending request
+  if (_imageCanceller) {
+    _imageCanceller();
+    _imageCanceller = nil;
+  }
+
+  _imageCanceller = [Utils getImage:[self bridge]
+                               json:patternImage
+                           callback:^(NMFOverlayImage* image) {
+                             dispatch_async(dispatch_get_main_queue(),
+                                            [self, image]() { self.inner.patternIcon = image; });
+                           }];
+}
 NMAP_INNER_SETTER(P, p, atternInterval, NSInteger)
 NMAP_INNER_SETTER(P, p, rogress, double)
 
@@ -152,6 +189,7 @@ NMAP_INNER_SETTER(I, i, sHideCollidedCaptions, BOOL)
     }
   }
 
+  NMAP_REMAP_IMAGE_PROP(patternImage, self.patternImage)
   [super updateProps:props oldProps:oldProps];
 }
 

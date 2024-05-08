@@ -23,6 +23,16 @@ type Coord = {
   latitude: Double;
   longitude: Double;
 };
+type NativeImageProp =
+  | undefined
+  | Readonly<{
+      symbol?: string;
+      rnAssetUri?: string;
+      httpUri?: string;
+      assetName?: string;
+      reuseIdentifier?: string;
+    }>;
+
 ////////////////////
 
 interface Props extends BaseOverlay, ViewProps {
@@ -31,6 +41,7 @@ interface Props extends BaseOverlay, ViewProps {
   width?: Double;
   outlineWidth?: Double;
   patternInterval?: Int32;
+  patternImage?: NativeImageProp;
   progress?: Double;
   color?: Int32;
   passedColor?: Int32;

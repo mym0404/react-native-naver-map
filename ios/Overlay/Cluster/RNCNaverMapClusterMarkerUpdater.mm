@@ -6,17 +6,7 @@
 //
 #import "RNCNaverMapClusterMarkerUpdater.h"
 #import "RNCNaverMapClusterKey.h"
-#import <NMapsMap/NMCBuilder.h>
-#import <NMapsMap/NMCCluster.h>
-#import <NMapsMap/NMCClusterMarkerInfo.h>
-#import <NMapsMap/NMCClusterMarkerUpdater.h>
-#import <NMapsMap/NMCClusterer.h>
-#import <NMapsMap/NMCComplexBuilder.h>
-#import <NMapsMap/NMCDefaultClusterMarkerUpdater.h>
-#import <NMapsMap/NMCDefaultLeafMarkerUpdater.h>
-#import <NMapsMap/NMCLeafMarkerInfo.h>
-#import <NMapsMap/NMCLeafMarkerUpdater.h>
-#import <NMapsMap/NMFMarker.h>
+#import <NMapsMap/NMapsMap.h>
 
 @implementation RNCNaverMapClusterMarkerUpdater
 #pragma clang diagnostic push

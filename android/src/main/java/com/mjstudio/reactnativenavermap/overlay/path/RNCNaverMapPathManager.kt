@@ -1,6 +1,7 @@
 package com.mjstudio.reactnativenavermap.overlay.path
 
 import com.facebook.react.bridge.ReadableArray
+import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapPathManagerSpec
@@ -132,7 +133,15 @@ class RNCNaverMapPathManager : RNCNaverMapPathManagerSpec<RNCNaverMapPath>() {
     it.passedColor = value
   }
 
-  @ReactProp(name = "pattern")
+  @ReactProp(name = "patternImage")
+  override fun setPatternImage(
+    view: RNCNaverMapPath?,
+    value: ReadableMap?,
+  ) {
+    view?.setImage(value)
+  }
+
+  @ReactProp(name = "patternInterval")
   override fun setPatternInterval(
     view: RNCNaverMapPath?,
     value: Int,

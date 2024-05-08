@@ -9,11 +9,8 @@
 
 #import "RNCNaverMapRect.h"
 #import "RNCNaverMapRegion.h"
-#import <NMapsGeometry/NMGLatLng.h>
-#import <NMapsMap/NMFCameraPosition.h>
-#import <NMapsMap/NMFCameraUpdate.h>
-#import <NMapsMap/NMFMapView.h>
-#import <NMapsMap/NMFOverlay.h>
+#import <NMapsGeometry/NMapsGeometry.h>
+#import <NMapsMap/NMapsMap.h>
 
 @interface RCTConvert (NMFMapView)
 
