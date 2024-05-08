@@ -125,6 +125,7 @@ interface Props extends ViewProps {
   locale?: string;
 
   clusters?: NativeClustersProp;
+  fpsLimit?: Int32;
 
   onInitialized?: DirectEventHandler<Readonly<{}>>;
   onOptionChanged?: DirectEventHandler<Readonly<{}>>;

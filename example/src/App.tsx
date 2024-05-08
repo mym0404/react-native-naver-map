@@ -321,6 +321,7 @@ export default function App() {
           TRAFFIC: false,
           TRANSIT: false,
         }}
+        fpsLimit={0}
         isIndoorEnabled={indoor}
         lightness={lightness}
         isNightModeEnabled={nightMode}

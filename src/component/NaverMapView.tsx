@@ -378,6 +378,17 @@ export interface NaverMapViewProps extends ViewProps {
   }[];
 
   /**
+   * 지도의 최대 초당 프레임 수(FPS, frames per second)를 지정합니다.
+   *
+   * 지도 객체가 생길때의 초기값만 동작하고 동적으로 바꿀 수 없습니다.
+   *
+   * 기본값은 제한을 두지 않음을 의미하는 0입니다.
+   *
+   * @default 0
+   */
+  fpsLimit?: number;
+
+  /**
    * 지도 객체가 초기화가 완료된 뒤에 호출됩니다.
    *
    * @group Events
@@ -574,6 +585,7 @@ export const NaverMapView = forwardRef(
       isUseTextureViewAndroid = false,
       locale,
       clusters,
+      fpsLimit = 0,
 
       ...rest
     }: NaverMapViewProps,
@@ -910,6 +922,7 @@ export const NaverMapView = forwardRef(
         clusters={_clusters}
         onScreenToCoordinate={onScreenToCoordinate}
         onCoordinateToScreen={onCoordinateToScreen}
+        fpsLimit={fpsLimit}
         {...rest}
       />
     );

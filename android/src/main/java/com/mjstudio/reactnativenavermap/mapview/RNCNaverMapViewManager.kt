@@ -87,6 +87,11 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
         initialProps?.getString("locale")?.also { locale ->
           locale(Locale.forLanguageTag(locale))
         }
+        initialProps?.getInt("fpsLimit", -1)?.also { fps ->
+          if (fps > 0) {
+            fpsLimit(fps)
+          }
+        }
       }
     return super.createViewInstance(reactTag, reactContext, initialProps, stateWrapper)
   }
@@ -592,6 +597,14 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
           keyPairs.map { pair -> pair.key.holder },
         )
     }
+  }
+
+  @ReactProp(name = "fpsLimit")
+  override fun setFpsLimit(
+    view: RNCNaverMapViewWrapper?,
+    value: Int,
+  ) {
+    // noop
   }
 
   // endregion

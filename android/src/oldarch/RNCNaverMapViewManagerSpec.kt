@@ -228,6 +228,11 @@ internal interface RNCNaverMapViewManagerInterface<T : ViewGroup?> {
     view: T,
     value: ReadableMap?,
   )
+
+  fun setFpsLimit(
+    view: T,
+    value: Int,
+  )
 }
 
 abstract class RNCNaverMapViewManagerSpec<T : ViewGroup> :

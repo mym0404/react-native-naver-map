@@ -7,6 +7,7 @@ import com.facebook.react.uimanager.ViewManager
 import com.mjstudio.reactnativenavermap.mapview.RNCNaverMapViewManager
 import com.mjstudio.reactnativenavermap.overlay.arrowheadpath.RNCNaverMapArrowheadPathManager
 import com.mjstudio.reactnativenavermap.overlay.circle.RNCNaverMapCircleManager
+import com.mjstudio.reactnativenavermap.overlay.ground.RNCNaverMapGroundManager
 import com.mjstudio.reactnativenavermap.overlay.marker.RNCNaverMapMarkerManager
 import com.mjstudio.reactnativenavermap.overlay.path.RNCNaverMapPathManager
 import com.mjstudio.reactnativenavermap.overlay.polygon.RNCNaverMapPolygonManager
@@ -22,6 +23,7 @@ class RNCNaverMapPackage : ReactPackage {
       add(RNCNaverMapPolylineManager())
       add(RNCNaverMapPathManager())
       add(RNCNaverMapArrowheadPathManager())
+      add(RNCNaverMapGroundManager())
     }
   }
 
