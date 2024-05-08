@@ -2,47 +2,45 @@ pre-commit:
   parallel: true
   commands:
     lint:js:
-      glob: "src/**/*.{js,ts,jsx,tsx}"
+      glob: "*.{js,ts,jsx,tsx}"
       run: yarn eslint --cache --max-warnings=0 {staged_files}
     lint:objc:
-      glob: "ios/**/*.{h,mm,m,hpp}"
+      glob: "ios/**/*.{h,mm,m,hpp,cpp,c}"
       run: bash ./script/clang-lint.sh {staged_files}
     lint:kotlin:
       glob: "android/**/*.kt"
       run: bash ./script/ktlint-lint.sh {staged_files}
     typecheck:
-      glob: "src/**/*.{ts,tsx}"
+      glob: "*.{ts,tsx}"
       run: yarn tsc --noEmit
 
 format:
   parallel: true
   commands:
     format:objc:
-      glob: "ios/**/*.{h,mm,m,hpp}"
+      glob: "ios/**/*.{h,mm,m,hpp,cpp,c}"
       run: bash ./script/clang-format.sh {all_files}
     format:kotlin:
-      run: bash ./script/ktlint-format.sh android
+      glob: "android/**/*.kt"
+      run: bash ./script/ktlint-format.sh {all_files}
 
 check:
   parallel: true
   commands:
     lint:js:
-      glob: "src/**/*.{js,ts,jsx,tsx}"
+      glob: "*.{js,ts,jsx,tsx}"
       run: yarn eslint --cache --max-warnings=0 {all_files}
     lint:objc:
-      glob: "ios/**/*.{h,mm,m,hpp}"
+      glob: "ios/**/*.{h,mm,m,hpp,cpp,c}"
       run: bash ./script/clang-lint.sh {all_files}
     lint:kotlin:
-      run: bash ./script/ktlint-lint.sh android
+      glob: "android/**/*.kt"
+      run: bash ./script/ktlint-lint.sh {all_files}
     typecheck:
-      glob: "src/**/*.{ts,tsx}"
+      glob: "*.{ts,tsx}"
       run: yarn tsc --noEmit
     build:
       run: yarn prepack
-    codegen:ios:
-      run: yarn codegen:ios
-    codegen:android:
-      run: yarn codegen:android
 
 
 commit-msg:
