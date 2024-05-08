@@ -32,7 +32,7 @@
     "dev": "yarn example start",
     "test": "jest",
     "typecheck": "tsc --noEmit",
-    "lint": "./script/lint.sh",
+    "lint": "yarn t",
     "t": "yarn lefthook run pre-commit",
     "format": "yarn lefthook run format",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",

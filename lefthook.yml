@@ -8,6 +8,7 @@ pre-commit:
       glob: "ios/**/*.{h,mm,m,hpp}"
       run: bash ./script/clang-lint.sh {staged_files}
     lint:kotlin:
+      glob: "android/**/*.kt"
       run: bash ./script/ktlint-lint.sh android
     typecheck:
       glob: "src/**/*.{ts,tsx}"
