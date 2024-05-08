@@ -141,7 +141,7 @@ class RNCNaverMapPathManager : RNCNaverMapPathManagerSpec<RNCNaverMapPath>() {
     view?.setImage(value)
   }
 
-  @ReactProp(name = "pattern")
+  @ReactProp(name = "patternInterval")
   override fun setPatternInterval(
     view: RNCNaverMapPath?,
     value: Int,

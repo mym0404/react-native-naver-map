@@ -273,7 +273,7 @@ export default function App() {
           passedColor={'black'}
           outlineWidth={1}
           zIndex={1}
-          patternInterval={35}
+          patternInterval={100}
           patternImage={{ symbol: 'blue' }}
         />
         {/*<NaverMapArrowheadPathOverlay*/}
