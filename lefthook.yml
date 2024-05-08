@@ -23,6 +23,28 @@ format:
     format:kotlin:
       run: bash ./script/ktlint-format.sh android
 
+check:
+  parallel: true
+  commands:
+    lint:js:
+      glob: "src/**/*.{js,ts,jsx,tsx}"
+      run: yarn eslint --cache --max-warnings=0 {all_files}
+    lint:objc:
+      glob: "ios/**/*.{h,mm,m,hpp}"
+      run: bash ./script/clang-lint.sh {all_files}
+    lint:kotlin:
+      run: bash ./script/ktlint-lint.sh android
+    typecheck:
+      glob: "src/**/*.{ts,tsx}"
+      run: yarn tsc --noEmit
+    build:
+      run: yarn prepack
+    codegen:ios:
+      run: yarn codegen:ios
+    codegen:android:
+      run: yarn codegen:android
+
+
 commit-msg:
   commands:
     commitlint:

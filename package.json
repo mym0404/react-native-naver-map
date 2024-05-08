@@ -33,7 +33,7 @@
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "yarn t",
-    "t": "yarn lefthook run pre-commit",
+    "t": "yarn lefthook run check",
     "format": "yarn lefthook run format",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "husky",
