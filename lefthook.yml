@@ -9,7 +9,7 @@ pre-commit:
       run: bash ./script/clang-lint.sh {staged_files}
     lint:kotlin:
       glob: "android/**/*.kt"
-      run: bash ./script/ktlint-lint.sh android
+      run: bash ./script/ktlint-lint.sh {staged_files}
     typecheck:
       glob: "src/**/*.{ts,tsx}"
       run: yarn tsc --noEmit
