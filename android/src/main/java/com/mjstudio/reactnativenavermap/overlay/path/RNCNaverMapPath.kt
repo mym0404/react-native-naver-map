@@ -3,14 +3,15 @@ package com.mjstudio.reactnativenavermap.overlay.path
 import android.annotation.SuppressLint
 import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
-import com.mjstudio.reactnativenavermap.overlay.RNCNaverMapOverlay
+import com.mjstudio.reactnativenavermap.util.RNCNaverMapImageRenderableOverlay
 import com.mjstudio.reactnativenavermap.util.emitEvent
 import com.naver.maps.map.NaverMap
+import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.overlay.PathOverlay
 
 @SuppressLint("ViewConstructor")
 class RNCNaverMapPath(val reactContext: ThemedReactContext) :
-  RNCNaverMapOverlay<PathOverlay>(reactContext) {
+  RNCNaverMapImageRenderableOverlay<PathOverlay>(reactContext) {
   override val overlay: PathOverlay by lazy {
     PathOverlay().apply {
       setOnClickListener {
@@ -36,5 +37,13 @@ class RNCNaverMapPath(val reactContext: ThemedReactContext) :
   override fun onDropViewInstance() {
     overlay.map = null
     overlay.onClickListener = null
+    super.onDropViewInstance()
+  }
+
+  override fun setOverlayAlpha(alpha: Float) {
+  }
+
+  override fun setOverlayImage(image: OverlayImage?) {
+    overlay.patternImage = image
   }
 }

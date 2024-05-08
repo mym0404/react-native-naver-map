@@ -50,6 +50,11 @@ internal interface RNCNaverMapPathManagerInterface<T : View?> {
     value: Double,
   )
 
+  fun setPatternImage(
+    view: T,
+    value: ReadableMap?,
+  )
+
   fun setPatternInterval(
     view: T,
     value: Int,
