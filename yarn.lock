@@ -2525,8 +2525,8 @@ __metadata:
     eslint: "npm:^8.51.0"
     eslint-config-prettier: "npm:^9.0.0"
     eslint-plugin-prettier: "npm:^5.0.1"
-    husky: "npm:^9.0.11"
     jest: "npm:^29.7.0"
+    lefthook: "npm:^1.6.10"
     object-hash: "npm:^3.0.0"
     prettier: "npm:^3.0.3"
     react: "npm:18.2.0"
@@ -7650,15 +7650,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"husky@npm:^9.0.11":
-  version: 9.0.11
-  resolution: "husky@npm:9.0.11"
-  bin:
-    husky: bin.mjs
-  checksum: 10/8a9b7cb9dc8494b470b3b47b386e65d579608c6206da80d3cc8b71d10e37947264af3dfe00092368dad9673b51d2a5ee87afb4b2291e77ba9e7ec1ac36e56cd1
-  languageName: node
-  linkType: hard
-
 "iconv-lite@npm:^0.4.24":
   version: 0.4.24
   resolution: "iconv-lite@npm:0.4.24"
@@ -9251,6 +9242,97 @@ __metadata:
   dependencies:
     package-json: "npm:^8.1.0"
   checksum: 10/1f0deba00d5a34394cce4463c938811f51bbb539b131674f4bb2062c63f2cc3b80bccd56ecade3bd5932d04a34cf0a5a8a2ccc4ec9e5e6b285a9a7b3e27d0d66
+  languageName: node
+  linkType: hard
+
+"lefthook-darwin-arm64@npm:1.6.10":
+  version: 1.6.10
+  resolution: "lefthook-darwin-arm64@npm:1.6.10"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"lefthook-darwin-x64@npm:1.6.10":
+  version: 1.6.10
+  resolution: "lefthook-darwin-x64@npm:1.6.10"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"lefthook-freebsd-arm64@npm:1.6.10":
+  version: 1.6.10
+  resolution: "lefthook-freebsd-arm64@npm:1.6.10"
+  conditions: os=freebsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"lefthook-freebsd-x64@npm:1.6.10":
+  version: 1.6.10
+  resolution: "lefthook-freebsd-x64@npm:1.6.10"
+  conditions: os=freebsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"lefthook-linux-arm64@npm:1.6.10":
+  version: 1.6.10
+  resolution: "lefthook-linux-arm64@npm:1.6.10"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"lefthook-linux-x64@npm:1.6.10":
+  version: 1.6.10
+  resolution: "lefthook-linux-x64@npm:1.6.10"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"lefthook-windows-arm64@npm:1.6.10":
+  version: 1.6.10
+  resolution: "lefthook-windows-arm64@npm:1.6.10"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"lefthook-windows-x64@npm:1.6.10":
+  version: 1.6.10
+  resolution: "lefthook-windows-x64@npm:1.6.10"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"lefthook@npm:^1.6.10":
+  version: 1.6.10
+  resolution: "lefthook@npm:1.6.10"
+  dependencies:
+    lefthook-darwin-arm64: "npm:1.6.10"
+    lefthook-darwin-x64: "npm:1.6.10"
+    lefthook-freebsd-arm64: "npm:1.6.10"
+    lefthook-freebsd-x64: "npm:1.6.10"
+    lefthook-linux-arm64: "npm:1.6.10"
+    lefthook-linux-x64: "npm:1.6.10"
+    lefthook-windows-arm64: "npm:1.6.10"
+    lefthook-windows-x64: "npm:1.6.10"
+  dependenciesMeta:
+    lefthook-darwin-arm64:
+      optional: true
+    lefthook-darwin-x64:
+      optional: true
+    lefthook-freebsd-arm64:
+      optional: true
+    lefthook-freebsd-x64:
+      optional: true
+    lefthook-linux-arm64:
+      optional: true
+    lefthook-linux-x64:
+      optional: true
+    lefthook-windows-arm64:
+      optional: true
+    lefthook-windows-x64:
+      optional: true
+  bin:
+    lefthook: bin/index.js
+  checksum: 10/0a16473ad7dc3c06e064f31bc766841a1488e11f3536dea2704d21806dae2d7b7f79ec80addb42283a76e9fbd735c3f16430af5434c1ec0dae8fae70a4635d0b
   languageName: node
   linkType: hard
 

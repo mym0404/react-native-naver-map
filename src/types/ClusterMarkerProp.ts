@@ -1,4 +1,5 @@
-import type { Coord, MarkerImageProp } from '@mj-studio/react-native-naver-map';
+import type { Coord } from './Coord';
+import type { MarkerImageProp } from './MarkerImageProp';
 
 export interface ClusterMarkerProp extends Coord {
   identifier: string;

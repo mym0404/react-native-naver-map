@@ -20,8 +20,7 @@ The `package.json` file contains various scripts for common tasks:
 - `yarn lint`: lint files with ESLint, ClangFormat, Ktlint, TypeScript
 - `yarn t`: alias for lint
 - `yarn test`: run unit tests with Jest
-- `yarn format:ios`: run formatter with ClangFormat, SwiftFormat for iOS codes
-- `yarn format:android`: run formatter with Ktlint for Android codes
+- `yarn format`: run formatter with ClangFormat, SwiftFormat for iOS codes and Ktlint for Android codes
 
 **Example App Build, Manipluations**
 
@@ -145,21 +144,7 @@ Note the `"fabric":true` and `"concurrentRoot":true` properties.
 Make sure your code passes TypeScript and ESLint and clang. Run the following to verify:
 
 ```sh
-yarn typecheck
 yarn lint
-yarn lint:clang
-```
-
-To fix formatting errors, run the following:
-
-```sh
-yarn lint --fix
-```
-
-Remember to add tests for your change if possible. Run the unit tests by:
-
-```sh
-yarn test
 ```
 
 ### Formatting for native codes

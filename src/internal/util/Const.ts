@@ -1,4 +1,4 @@
-import type { CameraAnimationEasing } from '@mj-studio/react-native-naver-map';
+import type { CameraAnimationEasing } from '../../types/CameraAnimationEasing';
 
 export const Const = {
   /**

@@ -1,0 +1,33 @@
+#EXAMPLE USAGE:
+
+#   Refer for explanation to following link:
+#   https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md
+
+pre-commit:
+  parallel: true
+  commands:
+    lint:js:
+      glob: "src/**/*.{js,ts,jsx,tsx}"
+      run: yarn eslint --cache --max-warnings=0 {staged_files}
+    lint:objc:
+      glob: "ios/**/*.{h,mm,m,hpp}"
+      run: bash ./script/clang-lint.sh {staged_files}
+    lint:kotlin:
+      run: bash ./script/ktlint-lint.sh android
+    typecheck:
+      glob: "src/**/*.{ts,tsx}"
+      run: yarn tsc --noEmit
+
+format:
+  parallel: true
+  commands:
+    format:objc:
+      glob: "ios/**/*.{h,mm,m,hpp}"
+      run: bash ./script/clang-format.sh {all_files}
+    format:kotlin:
+      run: bash ./script/ktlint-format.sh android
+
+commit-msg:
+  commands:
+    commitlint:
+      run: npx --no-install commitlint --edit
