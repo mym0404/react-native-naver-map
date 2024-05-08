@@ -6,7 +6,7 @@ pre-commit:
       run: yarn eslint --cache --max-warnings=0 {staged_files}
     lint:objc:
       glob: "*.{h,mm,m,hpp,cpp,c}"
-      run: echo {all_files} && bash ./script/clang-lint.sh {staged_files}
+      run: bash ./script/clang-lint.sh {staged_files}
     lint:kotlin:
       glob: "*.kt"
       run: bash ./script/ktlint-lint.sh {staged_files}
@@ -19,7 +19,7 @@ format:
   commands:
     format:objc:
       glob: "*.{h,mm,m,hpp,cpp,c}"
-      run: echo {all_files} && bash ./script/clang-format.sh {all_files}
+      run: bash ./script/clang-format.sh {all_files}
     format:kotlin:
       glob: "*.kt"
       run: bash ./script/ktlint-format.sh {all_files}
