@@ -590,7 +590,6 @@ iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니
 | Prop                     | iOS | Android |
 |--------------------------|-----|---------|
 | isLogoInteractionEnabled | ❌   | ❌       |
-| fpsLimit                 | 📦  | 📦      |
 | gestureFrictions         | 📦  | 📦      |
 
 #### Events
