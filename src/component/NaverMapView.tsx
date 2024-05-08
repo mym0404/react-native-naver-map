@@ -382,6 +382,8 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * 지도 객체가 생길때의 초기값만 동작하고 동적으로 바꿀 수 없습니다.
    *
+   * 안드로이드에서만 동작합니다.
+   *
    * 기본값은 제한을 두지 않음을 의미하는 0입니다.
    *
    * @default 0

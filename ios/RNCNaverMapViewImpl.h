@@ -99,6 +99,7 @@ using namespace facebook::react;
 @property(nonatomic, assign) BOOL isStopGesturesEnabled;
 @property(nonatomic, strong) NSString* locale;
 @property(nonatomic, strong) NSDictionary* clusters;
+@property(nonatomic, assign) NSInteger fpsLimit;
 
 @property(nonatomic, copy) RCTDirectEventBlock onInitialized;
 @property(nonatomic, copy) RCTDirectEventBlock onOptionChanged;

@@ -159,6 +159,7 @@ using namespace facebook::react;
   NMAP_REMAP_PROP(animationDuration)
   NMAP_REMAP_PROP(animationEasing)
   NMAP_REMAP_STR_PROP(locale)
+  NMAP_REMAP_PROP(fpsLimit)
 
   auto c1 = prev.camera, c2 = next.camera;
 

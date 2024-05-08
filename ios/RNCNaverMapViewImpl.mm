@@ -413,6 +413,10 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
   [_clustererRecord removeObjectForKey:key];
 }
 
+- (void)setFpsLimit:(NSInteger)fpsLimit {
+  // noop
+}
+
 // MARK: - EVENT
 
 - (void)mapViewOptionChanged:(NMFMapView*)mapView {
