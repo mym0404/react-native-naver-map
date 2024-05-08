@@ -3,8 +3,9 @@ import React from 'react';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
 import { type ColorValue, processColor } from 'react-native';
 import { Const } from '../internal/util/Const';
-import type { Coord } from '@mj-studio/react-native-naver-map';
+import type { Coord, MarkerImageProp } from '@mj-studio/react-native-naver-map';
 import { nAssert } from '../internal/util/Assert';
+import { convertJsImagePropToNativeProp } from '../internal/Util';
 
 export interface NaverMapPathOverlayProps extends BaseOverlayProps {
   /**
@@ -27,6 +28,7 @@ export interface NaverMapPathOverlayProps extends BaseOverlayProps {
    * @default 0
    */
   outlineWidth?: number;
+  patternImage?: MarkerImageProp;
   /**
    * patternInterval 속성을 사용하면 패턴 이미지 간 간격을 지정할 수 있습니다. 0일 경우 패턴이 그려지지 않습니다.
    *
@@ -109,6 +111,7 @@ export const NaverMapPathOverlay = ({
   outlineWidth = 0,
   passedColor = 'black',
   passedOutlineColor = 'black',
+  patternImage,
   patternInterval = 0,
   progress = 0,
   onTap,
@@ -141,6 +144,9 @@ export const NaverMapPathOverlay = ({
       passedColor={processColor(passedColor) as number}
       passedOutlineColor={processColor(passedOutlineColor) as number}
       outlineColor={processColor(outlineColor) as number}
+      patternImage={
+        patternImage ? convertJsImagePropToNativeProp(patternImage) : undefined
+      }
       patternInterval={patternInterval}
       outlineWidth={outlineWidth}
       progress={progress}

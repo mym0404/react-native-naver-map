@@ -10,10 +10,7 @@
 #import "RCTConvert+NMFMapView.h"
 #import "Utils.h"
 #import <Foundation/Foundation.h>
-#import <NMapsMap/NMFCircleOverlay.h>
-#import <NMapsMap/NMFMarker.h>
-#import <NMapsMap/NMFOverlay.h>
-#import <NMapsMap/NMFOverlayImage.h>
+#import <NMapsMap/NMapsMap.h>
 #import <React/RCTImageLoader.h>
 #import <React/RCTImageLoaderProtocol.h>
 #import <React/RCTUtils.h>

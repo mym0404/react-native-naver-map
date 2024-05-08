@@ -7,7 +7,6 @@ import {
   type Camera,
   NaverMapView,
   type ClusterMarkerProp,
-  NaverMapArrowheadPathOverlay,
   NaverMapPathOverlay,
   NaverMapGroundOverlay,
   type Region,
@@ -274,21 +273,23 @@ export default function App() {
           passedColor={'black'}
           outlineWidth={1}
           zIndex={1}
+          patternInterval={35}
+          patternImage={{ symbol: 'blue' }}
         />
-        <NaverMapArrowheadPathOverlay
-          coords={[
-            { longitude: 126.93240597362552, latitude: 32.433509943138404 },
-            { longitude: 126.93474226289788, latitude: 32.6383463419792 },
-            { longitude: 127.07281803100506, latitude: 32.57085962943823 },
-            { longitude: 126.96403036772739, latitude: 32.52862726684933 },
-          ]}
-          zIndex={0}
-          headSizeRatio={2.5}
-          width={8}
-          color={'red'}
-          outlineColor={'blue'}
-          outlineWidth={2}
-        />
+        {/*<NaverMapArrowheadPathOverlay*/}
+        {/*  coords={[*/}
+        {/*    { longitude: 126.93240597362552, latitude: 32.433509943138404 },*/}
+        {/*    { longitude: 126.93474226289788, latitude: 32.6383463419792 },*/}
+        {/*    { longitude: 127.07281803100506, latitude: 32.57085962943823 },*/}
+        {/*    { longitude: 126.96403036772739, latitude: 32.52862726684933 },*/}
+        {/*  ]}*/}
+        {/*  zIndex={0}*/}
+        {/*  headSizeRatio={2.5}*/}
+        {/*  width={8}*/}
+        {/*  color={'red'}*/}
+        {/*  outlineColor={'blue'}*/}
+        {/*  outlineWidth={2}*/}
+        {/*/>*/}
         <NaverMapGroundOverlay
           image={{ assetName: 'thumbnail' }}
           region={Regions.Gangnam}

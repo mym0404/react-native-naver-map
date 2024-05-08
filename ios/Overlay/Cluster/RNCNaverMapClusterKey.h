@@ -6,8 +6,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <NMapsGeometry/NMGLatLng.h>
-#import <NMapsMap/NMCClusteringKey.h>
+#import <NMapsGeometry/NMapsGeometry.h>
+#import <NMapsMap/NMapsMap.h>
 #import <React/RCTBridge.h>
 
 NS_ASSUME_NONNULL_BEGIN

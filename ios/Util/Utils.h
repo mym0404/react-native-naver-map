@@ -3,8 +3,7 @@
 
 #import "FnUtil.h"
 #import <Foundation/Foundation.h>
-#import <NMapsMap/NMFMarker.h>
-#import <NMapsMap/NMFOverlayImage.h>
+#import <NMapsMap/NMapsMap.h>
 #import <React/RCTBridge.h>
 #import <React/RCTImageLoader.h>
 #import <UIKit/UIKit.h>

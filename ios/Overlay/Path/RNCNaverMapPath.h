@@ -10,8 +10,9 @@
 #import "RCTConvert+NMFMapView.h"
 #import "Utils.h"
 #import <Foundation/Foundation.h>
-#import <NMapsMap/NMFPath.h>
-#import <NMapsMap/NMFPathColor.h>
+#import <NMapsMap/NMapsMap.h>
+#import <React/RCTBridge+Private.h>
+#import <React/RCTBridge.h>
 #import <React/RCTImageLoader.h>
 #import <React/RCTUtils.h>
 #import <React/RCTView.h>
@@ -29,6 +30,8 @@
 @interface RNCNaverMapPath : RCTView
 #endif
 
+@property(nonatomic, weak) RCTBridge* bridge;
+
 @property(nonatomic, strong) NMFPath* inner;
 
 @property(nonatomic, assign) NSInteger zIndexValue;
@@ -42,6 +45,7 @@
 @property(nonatomic, copy) NSArray* coords;
 @property(nonatomic, assign) double width;
 @property(nonatomic, assign) double outlineWidth;
+@property(nonatomic, copy) NSDictionary* patternImage;
 @property(nonatomic, assign) NSInteger patternInterval;
 @property(nonatomic, assign) double progress;
 @property(nonatomic, assign) NSInteger color;
