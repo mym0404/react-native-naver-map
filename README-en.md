@@ -13,10 +13,16 @@
   </p>
 </p>
 
-- [README English](/README-en.md)
-- [Documentation](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)
-- [Tutorial 1 - 설치, 키 발급](https://medium.com/mj-studio/%EB%A6%AC%EC%95%A1%ED%8A%B8-%EB%84%A4%EC%9D%B4%ED%8A%B8%EB%B8%8C%EB%A1%9C-%EB%84%A4%EC%9D%B4%EB%B2%84-%EC%A7%80%EB%8F%84-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-1-%EC%84%A4%EC%B9%98%EC%99%80-%ED%82%A4-%EB%B0%9C%EA%B8%89-%EB%B0%9B%EA%B8%B0-f826d8c0644d)
-- [Tutorial 2 - 카메라, 위치 이동](https://medium.com/mj-studio/%EB%A6%AC%EC%95%A1%ED%8A%B8-%EB%84%A4%EC%9D%B4%ED%8A%B8%EB%B8%8C%EB%A1%9C-%EB%84%A4%EC%9D%B4%EB%B2%84-%EC%A7%80%EB%8F%84-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-2-%EC%B9%B4%EB%A9%94%EB%9D%BC-%EC%9C%84%EC%B9%98-%EC%9D%B4%EB%8F%99%ED%95%98%EA%B8%B0-ea39843b31d2)
+
+- [Documentation(ko)](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)
+- [Tutorial(ko) 1 - Installation, Register Console API](https://medium.com/mj-studio/%EB%A6%AC%EC%95%A1%ED%8A%B8-%EB%84%A4%EC%9D%B4%ED%8A%B8%EB%B8%8C%EB%A1%9C-%EB%84%A4%EC%9D%B4%EB%B2%84-%EC%A7%80%EB%8F%84-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-1-%EC%84%A4%EC%B9%98%EC%99%80-%ED%82%A4-%EB%B0%9C%EA%B8%89-%EB%B0%9B%EA%B8%B0-f826d8c0644d)
+- [Tutorial(ko) 2 - Camrae, Position of Map](https://medium.com/mj-studio/%EB%A6%AC%EC%95%A1%ED%8A%B8-%EB%84%A4%EC%9D%B4%ED%8A%B8%EB%B8%8C%EB%A1%9C-%EB%84%A4%EC%9D%B4%EB%B2%84-%EC%A7%80%EB%8F%84-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-2-%EC%B9%B4%EB%A9%94%EB%9D%BC-%EC%9C%84%EC%B9%98-%EC%9D%B4%EB%8F%99%ED%95%98%EA%B8%B0-ea39843b31d2)
+
+> [!NOTE]
+> The code comments and Documentation are unfortunately all written in Korean.
+> However, you can use a translator or infer the meaning of the props' names and default values to easily understand and use them, even without knowing Korean.
+>
+> Always remember that you can refer to the Naver Map SDK's [English Official Documentation](https://navermaps.github.io/ios-map-sdk/guide-en/1.html) to get a general idea of how to use it.
 
 
 <img src="https://raw.githubusercontent.com/mym0404/image-archive/master/202404240329848.gif" width="400" alt="preview">
@@ -26,38 +32,35 @@
 ### 1. New Architecture Fabric
 
 > [!NOTE]
-> Fabric을 지원한다고 Old Architecture를 지원하지 않는 것이 아닌 두 Architecture모두에서 작동하는 컴포넌트를 제작합니다.
+> Supporting Fabric does not mean that we do not support the Old Architecture; rather, we create components that work in both architectures.
 
 ### 2. Detailed API Documentation
 
-거의 모든 타입이 설명되어 있는 [API Docs](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)를 구성했습니다.
+We have structured the [API Docs](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html) which describe almost all types.
 
-최대한 가독성을 살렸으며 `component` 쪽에서 원하는 컴포넌트의 타입과 `Prop`및 `Ref`로 사용법을 확인 가능합니다.
+We have maximized readability and you can check the usage of the desired component types, `Prop`, and `Ref` on the `component` side.
 
 ### 3. Expo Support
 
-[expo config plugin](https://docs.expo.dev/modules/config-plugin-and-native-module-tutorial/)을 사용해
-Expo환경에서도 손쉽게 아키텍쳐에 상관없이 빌드할 수 있습니다.
+Using the [expo config plugin](https://docs.expo.dev/modules/config-plugin-and-native-module-tutorial/), you can easily build in the Expo environment regardless of the architecture.
 
-Expo Go, Snack에선 사용하지
-못하지만 [development build](https://docs.expo.dev/develop/development-builds/introduction/), production
-환경에서 손쉽게 사용할 수 있습니다.
+While it cannot be used in Expo Go or Snack, it can easily be used in the [development build](https://docs.expo.dev/develop/development-builds/introduction/) and production environments.
 
 ### 4. Marker Performance + Variants
 
 > [!IMPORTANT]
 > `[iOS, Android] x [new arch, old arch] x [debug, release]`
-> **총 8가지 조건에서 모두 정상적으로 렌더링 되는 것을 테스트했습니다.**
+> **We have tested that it renders correctly under all 8 conditions.**
 
-- 네이버 맵 제공 기본 심볼 (`symbol`)
-- React Native프로젝트의 로컬 이미지 리소스
-- 성능 최적화를 위한 네이티브 프로젝트의 로컬 이미지 리소스 - Android(Drawable), iOS(Bundle Asset)
-- HTTP 네트워크 웹이미지
-- `children`으로 전달하는 React Native Custom View
+-  Basic symbols provided by Naver Map (`symbol`)
+-  Local image resources of the React Native project
+-  Local image resources of the native project optimized for performance - Android (Drawable), iOS (Bundle Asset)
+-  HTTP network web images
+-  React Native Custom View passed as `children`
 
-### 5. Semaless API porting from Native Naver Map SDK
+### 5. Seamless API Porting from Native Naver Map SDK
 
-최신 버전의 SDK를 지원하며 Props와 Command들로 Naver Map의 최신 기능을 조작할 수 있습니다.
+We support the latest version of the SDK, and you can manipulate the latest features of Naver Map using Props and Commands.
 
 
 ## Install
@@ -73,11 +76,11 @@ yarn add @mj-studio/react-native-naver-map
 npx expo install @mj-studio/react-native-naver-map
 ```
 
-For ios, you should install pods
+For iOS, you should install pods
 
 ### Android
 
-더 자세한 설정은 [공식 문서](https://navermaps.github.io/android-map-sdk/guide-ko/1.html)를 참고해주세요.
+For more detailed settings, please refer to the [Official Documentation](https://navermaps.github.io/android-map-sdk/guide-ko/1.html).
 
 #### 1. Maven repository import
 
@@ -118,11 +121,11 @@ Currently, this package will request location permission for showing user's curr
 </manifest>
 ```
 
-자세한 권한에 관련된 내용은 [아래](#permission)에 기재되어있습니다.
+Detailed information related to permissions is listed [below](#permission).
 
 ### iOS
 
-더 자세한 설정은 [공식 문서](https://navermaps.github.io/ios-map-sdk/guide-ko/1.html)를 참고해주세요.
+For more detailed settings, please refer to the [Official Documentation](https://navermaps.github.io/ios-map-sdk/guide-ko/1.html).
 
 #### 1. Set Naver SDK key to `info.plist`
 
@@ -157,7 +160,7 @@ Currently, this package will request location permission for showing user's curr
 </plist>
 ```
 
-자세한 권한에 관련된 내용은 [아래](#permission)에 기재되어있습니다.
+Detailed information related to permissions is listed [below](#permission).
 
 ### Expo
 
@@ -209,9 +212,9 @@ npx expo install expo-build-properties
 }
 ```
 
-Expo는 위에서 설명된 Android, iOS의 설정법이 필요하지 않습니다.
+Expo does not require the setup methods for Android and iOS described above.
 
-자세한 권한에 관련된 내용은 [아래](#permission)에 기재되어있습니다.
+Detailed information related to permissions is listed [below](#permission).
 
 ## Example
 
@@ -345,46 +348,45 @@ const jejuRegion: Region = {
 
 [Documentation](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)
 
-모든 코드엔 JSDoc으로 주석이 삽입되어있으므로 Documentation없이도 개발을 시작할 수 있습니다.
+All codes have JSDoc comments inserted, so you can start developing without Documentation.
 
-하지만 정확히 어떤 타입들이 있고 어떤 속성을 의미하는지 웹사이트에서 확인하시려면 [Documentation](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)를 참고해주세요.
+However, if you want to check exactly what types exist and what properties they mean, please refer to the [Documentation](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html).
 
 ### Permission
 
-기본적으로 앱에서 권한은 직접 관리가 되어야 합니다.
+Permissions should be managed directly within the app by default.
 
-이를 관리하기 위해 [react-native-permissions](https://github.com/zoontek/react-native-permissions)라이브러리를 사용하는 예시를 알아보겠습니다.
+We will look at an example of using the [react-native-permissions](https://github.com/zoontek/react-native-permissions) library to manage this.
 
 >[!TIP]
->Expo 사용자라면 [expo-location](https://docs.expo.dev/versions/latest/sdk/location/)를 참고해서 권한을 사용할 예정이다 라고 명시할 수 있습니다.
->따라서 아래 내용들 중 대부분은 필요하지 않고, 필요한 권한이 무엇인지, 어떻게 명시해야 하는지를 살펴보신 다음 [expo-location](https://docs.expo.dev/versions/latest/sdk/location/)에서의 사용법을 따르셔야 합니다.
+>If you are an Expo user, you can indicate that you will be using permissions by referring to [expo-location](https://docs.expo.dev/versions/latest/sdk/location/).
+>Therefore, most of the content below is not necessary, and after examining what permissions are needed and how to specify them, you should follow the usage at [expo-location](https://docs.expo.dev/versions/latest/sdk/location/).
 
-우선 패키지를 설치하고 설정합니다.
+First, install and set up the package:
 
 ```shell
 yarn add react-native-permissions
 ```
 
-`react-native-permission`의 각 플랫폼별 설정 방법은 [사용법](https://github.com/zoontek/react-native-permissions#setup)을 직접 참고해
-`Podfile(iOS)`, `AndroidManifest.xml(Android)` 를 적절히 변경해주시길 바랍니다.
+Please refer to the [Usage](https://github.com/zoontek/react-native-permissions#setup) directly for the platform-specific setup method for `react-native-permission` and properly modify `Podfile(iOS)`, `AndroidManifest.xml(Android)`.
 
 #### iOS
 
-iOS는 다음과 같은 세 가지의 권한이 연관되어있습니다.
+iOS is involved with three types of permissions:
 
-- `NSLocationAlwaysAndWhenInUseUsageDescription(>= iOS 11)`
-  - 앱이 foreground와 background 모두에서 위치 정보에 액세스하는 것을 허용합니다.
-  - iOS 11 이상에서는 ﻿NSLocationAlwaysUsageDescription 대신 이 키를 사용해야 합니다.
-- `NSLocationWhenInUseUsageDescription`
-  - 앱이 foreground에 있을 때 (즉, 사용자가 actively하게 앱을 사용 중일 때) 위치 정보에 액세스하는 것을 허용합니다.
-- `NSLocationTemporaryUsageDescriptionDictionary(>= iOS 14)`
-  - 앱이 임시로 정확한 위치 정보에 액세스할 수 있도록 허용합니다. 이는 앱이 특정 작업을 수행하는 동안에만 정확한 위치가 필요한 경우 사용됩니다.
+-  `NSLocationAlwaysAndWhenInUseUsageDescription(>= iOS 11)`
+   - Allows the app to access location information both in the foreground and the background.
+   - From iOS 11, this key should be used instead of NSLocationAlwaysUsageDescription.
+-  `NSLocationWhenInUseUsageDescription`
+   - Allows the app to access location information when it is in the foreground (i.e., when the user is actively using the app).
+-  `NSLocationTemporaryUsageDescriptionDictionary(>= iOS 14)`
+   - Allows the app temporarily access to precise location data. This is used when the app only needs precise location for certain tasks.
 
 >[!TIP]
->앱이 iOS 11미만의 기기를 지원하고 있지 않다면 `NSLocationAlwaysUsageDescription`을 기재하지 않아도 됩니다.
->만약 지원한다면 같이 설정해주셔야 합니다.
+>If your app does not support devices below iOS 11, you do not need to list `NSLocationAlwaysUsageDescription`.
+>If it does support, then you should set it as well.
 
-그럼 `Podfile`에서 다음과 같은 세 가지의 권한을 허용해줍니다.
+Then, in the `Podfile`, you allow the following three permissions:
 
 ```ruby
 setup_permissions([
@@ -395,35 +397,34 @@ setup_permissions([
 ])
 ```
 
-Xcode에서 앱 타겟의 `Signing & Capabilities` 탭에서 `Background Modes`를 활성화하고 `Location updates`옵션을 선택합니다.
+Activate the `Background Modes` tab in the app target in Xcode and select the `Location updates` option.
 
-이는 백그라운드에서 위치를 받아오기 위해 필요하므로 필요없다면 설정하지 않아도 됩니다.
+This is necessary for receiving location in the background, so it does not need to be set if it is not required.
 
 ![Xcode config result](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161737676.webp)
 
 #### Android
 
-Naver Map SDK에서 내부적으로 이용하는 `FusedLocationSource`는 사용자가 [isShowLocationButton prop](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html#isShowLocationButton)을
-`true`로 설정하는 순간 자동으로 권한 요청을 시행합니다.
+The `FusedLocationSource` used internally by the Naver Map SDK automatically makes a permission request the moment the user sets the [isShowLocationButton prop](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html#isShowLocationButton) to `true`.
 
-Android는 비교적 간단하게 권한을 구현할 수 있습니다.
+Android can implement permissions relatively simply.
 
-아래 권한들만 `AndroidManifest.xml`에 사용한다고 명시하면 됩니다.
+Just specify the following permissions in `AndroidManifest.xml`:
 
-- `android.permission.ACCESS_FINE_LOCATION`
-  - 정확한 위치 정보 권한
-- `android.permission.ACCESS_COARSE_LOCATION`
-  - 대략적인 위치 정보 권한
-- `android.permission.ACCESS_BACKGROUND_LOCATION`
-  - 백그라운드 상태에서 위치 정보 권한
+-  `android.permission.ACCESS_FINE_LOCATION`
+   - Permission for precise location information
+-  `android.permission.ACCESS_COARSE_LOCATION`
+   - Permission for approximate location information
+-  `android.permission.ACCESS_BACKGROUND_LOCATION`
+   - Permission for location information in the background
 
-#### 코드에서의 권한 요청
+#### Code-based Permission Requests
 
-여기까지의 설정이 끝났다면 지도가 필요한 화면에서 다음과 같이 코드로 권한을 요청할 수 있습니다.
+If you have completed the configuration up to this point, you can request permissions in screens that require a map as follows:
 
 For Bare RN Project or ejected Expo (`react-native-permissions`)
 ```tsx
-// useEffect는 단순히 컴포넌트가 mount될 때 호출해주기 위해서 사용되었습니다.
+// useEffect is simply used to be called when the component mounts..
 useEffect(() => {
   if (Platform.OS === 'ios') {
     request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((status) => {
@@ -485,39 +486,39 @@ useEffect(() => {
 ## Components
 
 > [!NOTE]
-> 대부분의 Type들과 Prop들의 설명은 코드의 주석에도 적혀있고 이 프로젝트는 TypeScript를 지원하니 코드에서만 확인해도 사용에 무리가 없을 것입니다.
+> Descriptions for most types and props are also written in the code comments, and this project supports TypeScript, so checking only in the code will suffice for use.
 
-- ✅ Fully Supported
-- ⚠️ Developing, lack of features yet
-- 📦 Planned
+-  ✅ Fully Supported
+-  ⚠️ Developing, lack of features yet
+-  📦 Planned
 
-| Component                                                                                     | iOS | Android | Description   |
-|-----------------------------------------------------------------------------------------------|-----|---------|---------------|
-| [NaverMapView](https://navermaps.github.io/android-map-sdk/guide-ko/2-3.html)                 | ✅   | ✅       | 지도            |
-| [NaverMapMarkerOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-2.html)        | ✅   | ✅       | 마커 오버레이       |
-| [Info Window](https://navermaps.github.io/android-map-sdk/guide-ko/5-3.html)                  | 📦  | 📦      | 오버레이의 콜오버, 툴팁 |
-| [NaverMapCircleOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-4.html)        | ✅   | ✅       | 원 오버레이        |
-| [NaverMapPolylineOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-4.html)      | ✅   | ✅       | 폴리라인 오버레이     |
-| [NaverMapPolygonOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-4.html)       | ✅   | ✅       | 폴리곤           |
-| [NaverMapLocationOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-5.html)      | 📦  | 📦      | 커스텀 위치 오버레이   |
-| [NaverMapGroundOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-6.html)        | ✅  | ✅      | 지상 오버레이       |
-| [NaverMapPathOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-7.html)          | ✅   | ✅       | 경로 오버레이       |
-| [NaverMapMultipartPathOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-7.html) | 📦  | 📦      | 여러개의 경로 오버레이  |
-| [NaverMapArrowPathOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-7.html)     | ✅  | ✅      | 화살표 경로 오버레이   |
+| Component                                                                                     | iOS | Android | Description       |
+|-----------------------------------------------------------------------------------------------|-----|---------|-------------------|
+| [NaverMapView](https://navermaps.github.io/android-map-sdk/guide-ko/2-3.html)                 | ✅   | ✅       | Map               |
+| [NaverMapMarkerOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-2.html)        | ✅   | ✅       | Marker Overlay    |
+| [Info Window](https://navermaps.github.io/android-map-sdk/guide-ko/5-3.html)                  | 📦  | 📦      | Callout Overlay, Tooltip |
+| [NaverMapCircleOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-4.html)        | ✅   | ✅       | Circle Overlay    |
+| [NaverMapPolylineOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-4.html)      | ✅   | ✅       | Polyline Overlay  |
+| [NaverMapPolygonOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-4.html)       | ✅   | ✅       | Polygon           |
+| [NaverMapLocationOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-5.html)      | 📦  | 📦      | Custom Location Overlay |
+| [NaverMapGroundOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-6.html)        | ✅   | ✅       | Ground Overlay    |
+| [NaverMapPathOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-7.html)          | ✅   | ✅       | Path Overlay      |
+| [NaverMapMultipartPathOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-7.html) | 📦  | 📦      | Multipath Overlay |
+| [NaverMapArrowPathOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-7.html)     | ✅   | ✅       | Arrow Path Overlay |
 
-## 마커 이미지의 종류와 성능
+## Marker Image Types and Performance
 
-마커의 종류는 총 5가지입니다.
+There are a total of 5 types of markers.
 
 > [!IMPORTANT]
 > `[iOS, Android] x [new arch, old arch] x [debug, release]`
-> **총 8가지 조건에서 모두 정상적으로 렌더링 되는 것을 테스트했습니다.**
+> **Tested to render correctly under all 8 conditions.**
 
 > [!TIP]
-> `reuseIdentifier`는 전달하지 않아도 모두 자동으로 캐싱이 됩니다.
+> `reuseIdentifier` is automatically cached even if not provided.
 >
-> 되도록이면 마커는 모두 `width`, `height` prop을 사용해야합니다. 2번 타입의 경우 현재 debug/release 빌드의 크기가 `width`, `height`없이 다르게 나오는 현상이 있습니다.
-> release에서는 제대로 나옵니다.
+> Ideally, all markers should use the `width`, `height` prop. Currently, for type 2, the size appears differently in debug/release builds without `width`, `height`.
+> It appears correctly in release.
 
 1. Naver Map Basic Symbol (green, red, gray, ...) (caching ✅)
 
@@ -537,8 +538,8 @@ image={require('./marker.png')}
 image={{assetName: 'asset_image'}}
 ```
 
-- iOS: main bundle의 image asset 이름
-- Android: resources의 drawable 이름
+-  iOS: image asset name in the main bundle
+-  Android: name in the resources' drawable
 
 4. Network Image (caching ✅)
 
@@ -547,14 +548,14 @@ image={{httpUri: 'https://example.com/image.png'}}
 ```
 
 > [!WARNING]
-> 현재 header같은 속성은 지원되지 않습니다.
+> Attributes like header are currently not supported.
 
 5. Custom React View (caching ❌)
 
-iOS(new arch)에선 현재 View들에 `collapsable=false`를 설정해야 동작합니다.
+On iOS(new arch), `collapsable=false` must be set for Views to function.
 
 > [!TIP]
-> 마커의 생김새를 바꿔야 한다면 그것에 대한 의존성들을 제일 상위 자식의 `key`로 전달해야합니다.
+> To change the appearance of a marker, dependencies must be passed as the `key` of the topmost child.
 
 ```tsx
 <NaverMapMarkerOverlay width={width} height={height} ...>
@@ -565,23 +566,22 @@ iOS(new arch)에선 현재 View들에 `collapsable=false`를 설정해야 동작
 ```
 
 > [!IMPORTANT]
-> 이 타입은 많이 생성될 시 성능에 굉장히 영향을 미칠 수 있습니다.
-> 아직은 단순하게만 사용하시거나 되도록이면 이미지를 사용하는 것을 추천드립니다.
+> This type can significantly impact performance when created in large quantities.
+> It is recommended to use images whenever possible or keep usage simple.
 
-현재 이 타입은 Android에선 `react-native-map`의 구현체를 비슷하게 가져와 React Native의 Shadow Node를 조금 커스텀해서 자식의 위치를
-추적한다음 실제 Android의 `View`를 삽입해줍니다.
+Currently, this type tracks the position of children by slightly customizing React Native’s Shadow Node on Android and inserting the actual Android `View`.
 
-iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니다.
+On iOS, simply draw `UIView` to canvas as `UIImage`.
 
-두 방법 모두가 이미지 캐싱이 아직 지원되지 않고(추후에 `reuseableIdentifier`같은 속성으로 지원이 가능할 것으로 보입니다), 마커 하나당 많은 리소스를 차지하게 됩니다.
+Both methods do not yet support image caching (possible in the future with attributes like `reuseableIdentifier`), and each marker consumes a significant amount of resources.
 
 
 ## TODO - Props & Commands
 
-- ✅ Done
-- 📦 Planned
-- ❓ Maybe Planned
-- ❌ Not Planned
+-  ✅ Done
+-  📦 Planned
+-  ❓ Maybe Planned
+-  ❌ Not Planned
 
 ### `NaverMapView`
 
@@ -615,8 +615,8 @@ iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니
 
 | Prop                      | iOS                                                | Android |
 |---------------------------|----------------------------------------------------|---------|
-| caption-fontFamily        | ❓                                                  | ❓       |
-| subcaption-fontFamily     | ❓                                                  | ❓       |
+| caption-fontFamily        | ❓                                                 | ❓       |
+| subcaption-fontFamily     | ❓                                                 | ❓       |
 
 ## Supporting Table - Architecture
 
@@ -627,21 +627,21 @@ iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니
 
 ## Milestone
 
-- [x] Project Started (23.04.01)
-- [x] Project Setup & Component Structure (23.04.03)
-- [x] General Props & Commands (23.04.05)
-- [x] Camera, Region, Commands, Events (23.04.07)
-- [x] Implement Basic Overlays (23.04.10)
-- [x] Location Service (23.04.10)
-- [x] Support Paper(Old Arch) (23.04.11)
-- [x] Release (23.04.11)
-- [x] Support Expo with config plugin (23.04.12)
-- [x] Docs
-- [x] Implement Clustering (23.04.24)
-- [x] Implement ArrowheadPath Overlay (23.05.01)
-- [x] Implement Ground Overlay (23.05.01)
-- [ ] Implement Location Overlay Commands <- 🔥
-- [ ] Implement MutlPath Overlay <- 🔥
+-  [x] Project Started (23.04.01)
+-  [x] Project Setup & Component Structure (23.04.03)
+-  [x] General Props & Commands (23.04.05)
+-  [x] Camera, Region, Commands, Events (23.04.07)
+-  [x] Implement Basic Overlays (23.04.10)
+-  [x] Location Service (23.04.10)
+-  [x] Support Paper(Old Arch) (23.04.11)
+-  [x] Release (23.04.11)
+-  [x] Support Expo with config plugin (23.04.12)
+-  [x] Docs
+-  [x] Implement Clustering (23.04.24)
+-  [x] Implement ArrowheadPath Overlay (23.05.01)
+-  [x] Implement Ground Overlay (23.05.01)
+-  [ ] Implement Location Overlay Commands <- 🔥
+-  [ ] Implement MutlPath Overlay <- 🔥
 
 ## Contributing
 
