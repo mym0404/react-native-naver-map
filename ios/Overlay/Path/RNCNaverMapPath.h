@@ -35,6 +35,7 @@
 @property(nonatomic, strong) NMFPath* inner;
 
 @property(nonatomic, assign) NSInteger zIndexValue;
+@property(nonatomic, assign) NSInteger globalZIndexValue;
 @property(nonatomic, assign) BOOL isHidden;
 @property(nonatomic, assign) double minZoom;
 @property(nonatomic, assign) double maxZoom;

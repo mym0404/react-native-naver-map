@@ -7,9 +7,9 @@ import {
   type Camera,
   NaverMapView,
   type ClusterMarkerProp,
-  NaverMapPathOverlay,
   NaverMapGroundOverlay,
   type Region,
+  NaverMapCircleOverlay,
 } from '@mj-studio/react-native-naver-map';
 import { Toggle, Btn, Range } from './component/components';
 import {
@@ -215,15 +215,16 @@ export default function App() {
         {/*  image={{ httpUri: 'https://picsum.photos/1000/1201' }}*/}
         {/*/>*/}
 
-        {/*<NaverMapCircleOverlay*/}
-        {/*  latitude={33.17827398}*/}
-        {/*  longitude={126.349895729}*/}
-        {/*  radius={50000}*/}
-        {/*  color={'#f2f1'}*/}
-        {/*  outlineColor={'#aaa'}*/}
-        {/*  outlineWidth={2}*/}
-        {/*  onTap={() => console.log('hi')}*/}
-        {/*/>*/}
+        <NaverMapCircleOverlay
+          latitude={33.17827398}
+          longitude={126.349895729}
+          radius={50000}
+          color={'#f2f'}
+          outlineColor={'#aaa'}
+          outlineWidth={2}
+          globalZIndex={1}
+          onTap={() => console.log('hi')}
+        />
         {/*<NaverMapPolygonOverlay*/}
         {/*  outlineWidth={5}*/}
         {/*  outlineColor={'#f2f2'}*/}
@@ -260,22 +261,22 @@ export default function App() {
         {/*  passedColor={'black'}*/}
         {/*  outlineWidth={1}*/}
         {/*/>*/}
-        <NaverMapPathOverlay
-          coords={[
-            { longitude: 126.93240597362552, latitude: 32.433509943138404 },
-            { longitude: 126.93474226289788, latitude: 32.6383463419792 },
-            { longitude: 127.07281803100506, latitude: 32.57085962943823 },
-            { longitude: 126.96403036772739, latitude: 32.52862726684933 },
-          ]}
-          width={8}
-          color={'white'}
-          progress={0.5}
-          passedColor={'black'}
-          outlineWidth={1}
-          zIndex={1}
-          patternInterval={100}
-          patternImage={{ symbol: 'blue' }}
-        />
+        {/*<NaverMapPathOverlay*/}
+        {/*  coords={[*/}
+        {/*    { longitude: 126.93240597362552, latitude: 32.433509943138404 },*/}
+        {/*    { longitude: 126.93474226289788, latitude: 32.6383463419792 },*/}
+        {/*    { longitude: 127.07281803100506, latitude: 32.57085962943823 },*/}
+        {/*    { longitude: 126.96403036772739, latitude: 32.52862726684933 },*/}
+        {/*  ]}*/}
+        {/*  width={8}*/}
+        {/*  color={'white'}*/}
+        {/*  progress={0.5}*/}
+        {/*  passedColor={'black'}*/}
+        {/*  outlineWidth={1}*/}
+        {/*  zIndex={1}*/}
+        {/*  patternInterval={100}*/}
+        {/*  patternImage={{ symbol: 'blue' }}*/}
+        {/*/>*/}
         {/*<NaverMapArrowheadPathOverlay*/}
         {/*  coords={[*/}
         {/*    { longitude: 126.93240597362552, latitude: 32.433509943138404 },*/}

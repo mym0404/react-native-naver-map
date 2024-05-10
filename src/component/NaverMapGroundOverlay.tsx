@@ -25,6 +25,7 @@ export interface NaverMapGroundOverlayProps extends BaseOverlayProps {
 
 export const NaverMapGroundOverlay = ({
   zIndex = 0,
+  globalZIndex = Const.NULL_NUMBER,
   isHidden = false,
   minZoom = Const.MIN_ZOOM,
   maxZoom = Const.MAX_ZOOM,
@@ -37,6 +38,7 @@ export const NaverMapGroundOverlay = ({
   return (
     <NativeNaverMapGround
       zIndexValue={zIndex}
+      globalZIndexValue={globalZIndex}
       isHidden={isHidden}
       minZoom={minZoom}
       maxZoom={maxZoom}

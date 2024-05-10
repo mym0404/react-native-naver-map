@@ -13,6 +13,7 @@ import type { ViewProps } from 'react-native';
 
 interface BaseOverlay {
   zIndexValue: Int32;
+  globalZIndexValue: Int32;
   isHidden: boolean;
   minZoom: Double;
   maxZoom: Double;

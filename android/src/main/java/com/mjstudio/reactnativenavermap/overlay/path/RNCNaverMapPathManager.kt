@@ -7,6 +7,7 @@ import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapPathManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
 import com.mjstudio.reactnativenavermap.util.getLatLng
+import com.mjstudio.reactnativenavermap.util.isValidNumber
 import com.mjstudio.reactnativenavermap.util.px
 import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.PathOverlay
@@ -40,6 +41,16 @@ class RNCNaverMapPathManager : RNCNaverMapPathManagerSpec<RNCNaverMapPath>() {
     value: Int,
   ) = view.withOverlay {
     it.zIndex = value
+  }
+
+  @ReactProp(name = "globalZIndexValue")
+  override fun setGlobalZIndexValue(
+    view: RNCNaverMapPath?,
+    value: Int,
+  ) = view.withOverlay {
+    if (isValidNumber(value)) {
+      it.globalZIndex = value
+    }
   }
 
   @ReactProp(name = "isHidden")

@@ -104,6 +104,11 @@ using namespace facebook::react;
 
 NMAP_SETTER(C, c, oord, inner.position, NMGLatLng*)
 NMAP_SETTER(Z, z, IndexValue, inner.zIndex, NSInteger)
+- (void)setGlobalZIndexValue:(NSInteger)globalZIndexValue {
+  _globalZIndexValue = globalZIndexValue;
+  if (isValidNumber(globalZIndexValue))
+    self.inner.globalZIndex = globalZIndexValue;
+}
 NMAP_SETTER(I, i, sHidden, inner.hidden, BOOL)
 NMAP_INNER_SETTER(M, m, inZoom, double)
 NMAP_INNER_SETTER(M, m, axZoom, double)
@@ -222,6 +227,7 @@ NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
   }
 
   NMAP_REMAP_SELF_PROP(zIndexValue);
+  NMAP_REMAP_SELF_PROP(globalZIndexValue);
   NMAP_REMAP_SELF_PROP(isHidden);
   NMAP_REMAP_SELF_PROP(minZoom);
   NMAP_REMAP_SELF_PROP(maxZoom);

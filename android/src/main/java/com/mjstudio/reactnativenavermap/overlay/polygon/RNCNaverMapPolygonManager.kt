@@ -6,6 +6,7 @@ import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapPolygonManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
 import com.mjstudio.reactnativenavermap.util.getLatLng
+import com.mjstudio.reactnativenavermap.util.isValidNumber
 import com.mjstudio.reactnativenavermap.util.px
 import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.PolygonOverlay
@@ -39,6 +40,16 @@ class RNCNaverMapPolygonManager : RNCNaverMapPolygonManagerSpec<RNCNaverMapPolyg
     value: Int,
   ) = view.withOverlay {
     it.zIndex = value
+  }
+
+  @ReactProp(name = "globalZIndexValue")
+  override fun setGlobalZIndexValue(
+    view: RNCNaverMapPolygon?,
+    value: Int,
+  ) = view.withOverlay {
+    if (isValidNumber(value)) {
+      it.globalZIndex = value
+    }
   }
 
   @ReactProp(name = "isHidden")
