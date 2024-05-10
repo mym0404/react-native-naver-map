@@ -59,6 +59,7 @@ export interface NaverMapPolylineOverlayProps extends BaseOverlayProps {
 
 export const NaverMapPolylineOverlay = ({
   zIndex = 0,
+  globalZIndex = Const.NULL_NUMBER,
   isHidden = false,
   minZoom = Const.MIN_ZOOM,
   maxZoom = Const.MAX_ZOOM,
@@ -81,6 +82,7 @@ export const NaverMapPolylineOverlay = ({
   return (
     <NativeNaverMapPolyline
       zIndexValue={zIndex}
+      globalZIndexValue={globalZIndex}
       isHidden={isHidden}
       minZoom={minZoom}
       maxZoom={maxZoom}

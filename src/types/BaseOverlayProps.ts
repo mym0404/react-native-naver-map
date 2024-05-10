@@ -1,5 +1,5 @@
 export interface BaseOverlayProps {
-  /** z index의 위치입니다. 기본값은 오버레이의 타입에 따라 다릅니다.
+  /** z index의 위치입니다. 기본값은 0입니다.
    *
    * 주의해야 할 점은 이 zIndex가 높다고 항상 위에 보이는 것이 아니라는 점입니다.
    *
@@ -7,7 +7,15 @@ export interface BaseOverlayProps {
    *
    * 보조 zIndex는 global zIndex가 같은 오버레이들 중 겹침 우선순위를 조절하는 옵션입니다.
    *
-   * global zIndex를 오버레이의 타입별로 조절할 수 있는 기능은 NaverMapView의 setGlobalOverlayZIndex함수를 사용할 수 있습니다.
+   * @see {@link globalZIndex}
+   * @default 0
+   * */
+  zIndex?: number;
+  /** 지도에서 global z index의 위치입니다. 기본값은 오버레이의 타입에 따라 다릅니다.
+   *
+   * 전역 Z 인덱스. 여러 오버레이가 화면에서 겹쳐지면 전역 Z 인덱스가 큰 오버레이가 작은 오버레이를 덮습니다.
+   *
+   * 또한 값이 0 이상이면 오버레이가 심벌 위에, 0 미만이면 심벌 아래에 그려집니다.
    *
    * 다음은 global zIndex의 값들입니다.
    *
@@ -21,10 +29,10 @@ export interface BaseOverlayProps {
    * - 지상 오버레이: -300000
    * - (지도 배경)
    *
-   * @see {@link NaverMapView}
-   * @default 0
+   * @see {@link zIndex}
+   * @default null
    * */
-  zIndex?: number;
+  globalZIndex?: number;
   /** 감춰진 여부입니다. */
   isHidden?: boolean;
   /**

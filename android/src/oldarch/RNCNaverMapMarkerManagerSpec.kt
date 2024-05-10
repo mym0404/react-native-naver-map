@@ -15,6 +15,11 @@ internal interface RNCNaverMapMarkerManagerInterface<T : ViewGroup?> {
     value: Int,
   )
 
+  fun setGlobalZIndexValue(
+    view: T,
+    value: Int,
+  )
+
   fun setIsHidden(
     view: T,
     value: Boolean,

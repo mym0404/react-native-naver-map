@@ -1,3 +1,5 @@
+import { NaverMapUtil } from './util/NaverMapUtil';
+
 export {
   NaverMapView,
   type NaverMapViewProps,
@@ -53,3 +55,5 @@ export * from './types/LocationTrackingMode';
 export * from './types/CameraMoveBaseParams';
 export * from './types/Point';
 export * from './types/ClusterMarkerProp';
+
+export { NaverMapUtil };

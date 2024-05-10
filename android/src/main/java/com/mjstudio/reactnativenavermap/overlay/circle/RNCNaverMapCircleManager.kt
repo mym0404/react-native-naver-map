@@ -6,6 +6,7 @@ import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapCircleManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
 import com.mjstudio.reactnativenavermap.util.getLatLng
+import com.mjstudio.reactnativenavermap.util.isValidNumber
 import com.mjstudio.reactnativenavermap.util.px
 import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.CircleOverlay
@@ -49,6 +50,16 @@ class RNCNaverMapCircleManager : RNCNaverMapCircleManagerSpec<RNCNaverMapCircle>
     value: Int,
   ) = view.withOverlay {
     it.zIndex = value
+  }
+
+  @ReactProp(name = "globalZIndexValue")
+  override fun setGlobalZIndexValue(
+    view: RNCNaverMapCircle?,
+    value: Int,
+  ) = view.withOverlay {
+    if (isValidNumber(value)) {
+      it.globalZIndex = value
+    }
   }
 
   @ReactProp(name = "isHidden")

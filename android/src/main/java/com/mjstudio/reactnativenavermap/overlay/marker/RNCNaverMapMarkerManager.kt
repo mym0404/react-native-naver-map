@@ -77,6 +77,16 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
     it.zIndex = value
   }
 
+  @ReactProp(name = "globalZIndexValue")
+  override fun setGlobalZIndexValue(
+    view: RNCNaverMapMarker?,
+    value: Int,
+  ) = view.withOverlay {
+    if (isValidNumber(value)) {
+      it.globalZIndex = value
+    }
+  }
+
   @ReactProp(name = "isHidden")
   override fun setIsHidden(
     view: RNCNaverMapMarker?,

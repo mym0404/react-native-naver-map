@@ -10,6 +10,11 @@ internal interface RNCNaverMapPolygonManagerInterface<T : View?> {
     value: Int,
   )
 
+  fun setGlobalZIndexValue(
+    view: T,
+    value: Int,
+  )
+
   fun setIsHidden(
     view: T,
     value: Boolean,
