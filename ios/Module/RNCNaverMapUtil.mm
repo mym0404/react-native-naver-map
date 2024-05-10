@@ -7,6 +7,7 @@
 
 #import "RNCNaverMapUtil.h"
 #import <Foundation/Foundation.h>
+#import <string>
 
 @implementation RNCNaverMapUtil
 
