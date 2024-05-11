@@ -36,7 +36,6 @@
     "t": "yarn lefthook run check",
     "format": "yarn lefthook run format",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "husky",
     "release": "./script/release.sh",
     "codegen:android": "cd example/android && ./gradlew generateCodegenArtifactsFromSchema",
     "codegen:ios": "node example/node_modules/react-native/scripts/generate-codegen-artifacts.js --path example/ --outputPath example/ios",
