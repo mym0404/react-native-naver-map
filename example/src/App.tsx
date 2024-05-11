@@ -9,7 +9,6 @@ import {
   type ClusterMarkerProp,
   NaverMapGroundOverlay,
   type Region,
-  NaverMapCircleOverlay,
 } from '@mj-studio/react-native-naver-map';
 import { Toggle, Btn, Range } from './component/components';
 import {
@@ -120,7 +119,7 @@ export default function App() {
   }, []);
 
   const [hash, setHash] = useState(0);
-  const clusterers = useMemo<
+  const clusters = useMemo<
     {
       markers: ClusterMarkerProp[];
       screenDistance?: number;
@@ -129,7 +128,7 @@ export default function App() {
       animate?: boolean;
     }[]
   >(() => {
-    return generateArray(3).map((i) => {
+    return generateArray(8).map((i) => {
       return {
         markers: generateArray(2).map<ClusterMarkerProp>((j) => ({
           image: {
@@ -215,16 +214,16 @@ export default function App() {
         {/*  image={{ httpUri: 'https://picsum.photos/1000/1201' }}*/}
         {/*/>*/}
 
-        <NaverMapCircleOverlay
-          latitude={33.17827398}
-          longitude={126.349895729}
-          radius={50000}
-          color={'#f2f'}
-          outlineColor={'#aaa'}
-          outlineWidth={2}
-          globalZIndex={1}
-          onTap={() => console.log('hi')}
-        />
+        {/*<NaverMapCircleOverlay*/}
+        {/*  latitude={33.17827398}*/}
+        {/*  longitude={126.349895729}*/}
+        {/*  radius={50000}*/}
+        {/*  color={'#f2f'}*/}
+        {/*  outlineColor={'#aaa'}*/}
+        {/*  outlineWidth={2}*/}
+        {/*  globalZIndex={1}*/}
+        {/*  onTap={() => console.log('hi')}*/}
+        {/*/>*/}
         {/*<NaverMapPolygonOverlay*/}
         {/*  outlineWidth={5}*/}
         {/*  outlineColor={'#f2f2'}*/}
@@ -339,7 +338,12 @@ export default function App() {
         //   console.log(`Camera Changed: ${formatJson(args)}`)
         // }
         onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
-        clusters={clusterers}
+        clusters={clusters}
+        locationOverlay={{
+          isVisible: true,
+          position: Cameras.Jeju,
+          image: { httpUri: 'https://picsum.photos/100/100' },
+        }}
       >
         {renderOverlays()}
       </NaverMapView>

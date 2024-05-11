@@ -3,6 +3,7 @@ import {
   Commands,
   type NativeClustersProp,
   type NativeClusterProp,
+  type NativeLocationOverlayProp,
 } from '../spec/RNCNaverMapViewNativeComponent';
 
 import React, {
@@ -13,7 +14,12 @@ import React, {
   useMemo,
   useEffect,
 } from 'react';
-import { type ViewProps, type NativeSyntheticEvent } from 'react-native';
+import {
+  type ViewProps,
+  type NativeSyntheticEvent,
+  type ColorValue,
+  processColor,
+} from 'react-native';
 import type { MapType } from '../types/MapType';
 import type { Camera } from '../types/Camera';
 import type { Region } from '../types/Region';
@@ -34,6 +40,8 @@ import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
 import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
 import type { ClusterMarkerProp } from '../types/ClusterMarkerProp';
 import hash from 'object-hash';
+import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
+import type { MarkerImageProp } from '../types/MarkerImageProp';
 
 /**
  * @category Hell
@@ -390,6 +398,24 @@ export interface NaverMapViewProps extends ViewProps {
    */
   fpsLimit?: number;
 
+  locationOverlay?: {
+    isVisible?: boolean;
+    position?: Coord;
+    bearing?: Double;
+    image?: MarkerImageProp;
+    imageWidth?: Double;
+    imageHeight?: Double;
+    anchor?: Readonly<{ x: Double; y: Double }>;
+    subImage?: MarkerImageProp;
+    subImageWidth?: Double;
+    subImageHeight?: Double;
+    subAnchor?: Readonly<{ x: Double; y: Double }>;
+    circleRadius?: Double;
+    circleColor?: ColorValue;
+    circleOutlineWidth?: Double;
+    circleOutlineColor?: ColorValue;
+  };
+
   /**
    * 지도 객체가 초기화가 완료된 뒤에 호출됩니다.
    *
@@ -588,11 +614,13 @@ export const NaverMapView = forwardRef(
       locale,
       clusters,
       fpsLimit = 0,
+      locationOverlay,
 
       ...rest
     }: NaverMapViewProps,
     ref: ForwardedRef<NaverMapViewRef>
   ) => {
+    const innerRef = useRef<any>(null);
     const _clusters = useMemo<NativeClustersProp>(() => {
       if (!clusters || clusters.length === 0) {
         return { key: '', clusters: [] };
@@ -633,7 +661,35 @@ export const NaverMapView = forwardRef(
       };
     }, [clusters]);
 
-    const innerRef = useRef<any>(null);
+    const _locationOverlay: NativeLocationOverlayProp | undefined =
+      useMemo(() => {
+        if (!locationOverlay) return undefined;
+        return {
+          isVisible: locationOverlay.isVisible,
+          position: locationOverlay.position,
+          bearing: locationOverlay.bearing,
+          image: locationOverlay.image
+            ? convertJsImagePropToNativeProp(locationOverlay.image)
+            : undefined,
+          imageWidth: locationOverlay.imageWidth,
+          imageHeight: locationOverlay.imageHeight,
+          anchor: locationOverlay.anchor,
+          subImage: locationOverlay.subImage
+            ? convertJsImagePropToNativeProp(locationOverlay.subImage)
+            : undefined,
+          subImageWidth: locationOverlay.subImageWidth,
+          subImageHeight: locationOverlay.subImageHeight,
+          subAnchor: locationOverlay.subAnchor,
+          circleRadius: locationOverlay.circleRadius,
+          circleColor: locationOverlay.circleColor
+            ? (processColor(locationOverlay.circleColor) as number)
+            : undefined,
+          circleOutlineWidth: locationOverlay.circleOutlineWidth,
+          circleOutlineColor: locationOverlay.circleOutlineColor
+            ? (processColor(locationOverlay.circleOutlineColor) as number)
+            : undefined,
+        } satisfies NativeLocationOverlayProp;
+      }, [locationOverlay]);
 
     const onCameraChanged = useStableCallback(
       ({
@@ -925,6 +981,7 @@ export const NaverMapView = forwardRef(
         onScreenToCoordinate={onScreenToCoordinate}
         onCoordinateToScreen={onCoordinateToScreen}
         fpsLimit={fpsLimit}
+        locationOverlay={_locationOverlay}
         {...rest}
       />
     );

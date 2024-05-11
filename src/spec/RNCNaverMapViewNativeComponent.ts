@@ -57,6 +57,23 @@ export type NativeClustersProp = Readonly<{
   key: string;
   clusters: ReadonlyArray<NativeClusterProp>;
 }>;
+export type NativeLocationOverlayProp = {
+  isVisible?: boolean;
+  position?: Coord;
+  bearing?: Double;
+  image?: NativeImageProp;
+  imageWidth?: Double;
+  imageHeight?: Double;
+  anchor?: Readonly<{ x: Double; y: Double }>;
+  subImage?: NativeImageProp;
+  subImageWidth?: Double;
+  subImageHeight?: Double;
+  subAnchor?: Readonly<{ x: Double; y: Double }>;
+  circleRadius?: Double;
+  circleColor?: Int32;
+  circleOutlineWidth?: Double;
+  circleOutlineColor?: Int32;
+};
 
 ////////////////////
 
@@ -126,6 +143,7 @@ interface Props extends ViewProps {
 
   clusters?: NativeClustersProp;
   fpsLimit?: Int32;
+  locationOverlay?: Readonly<NativeLocationOverlayProp>;
 
   onInitialized?: DirectEventHandler<Readonly<{}>>;
   onOptionChanged?: DirectEventHandler<Readonly<{}>>;

@@ -3,7 +3,7 @@ package com.mjstudio.reactnativenavermap.overlay.marker.cluster
 import com.facebook.drawee.generic.GenericDraweeHierarchy
 import com.facebook.drawee.view.DraweeHolder
 import com.facebook.react.bridge.ReactApplicationContext
-import com.mjstudio.reactnativenavermap.util.createDraweeHierarchy
+import com.mjstudio.reactnativenavermap.util.image.createDraweeHierarchy
 import com.naver.maps.map.clustering.Clusterer
 
 internal data class RNCNaverMapClustererHolder internal constructor(

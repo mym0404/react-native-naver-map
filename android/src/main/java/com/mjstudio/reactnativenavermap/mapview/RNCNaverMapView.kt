@@ -1,9 +1,11 @@
 package com.mjstudio.reactnativenavermap.mapview
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.view.View
 import android.view.ViewGroup
 import com.airbnb.android.react.maps.ViewAttacherGroup
+import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.NaverMapCameraChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
@@ -12,12 +14,14 @@ import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
 import com.mjstudio.reactnativenavermap.overlay.RNCNaverMapOverlay
 import com.mjstudio.reactnativenavermap.overlay.marker.RNCNaverMapMarker
 import com.mjstudio.reactnativenavermap.util.emitEvent
+import com.mjstudio.reactnativenavermap.util.image.RNCNaverMapTaggedImageRenderer
 import com.naver.maps.map.CameraUpdate.REASON_CONTROL
 import com.naver.maps.map.CameraUpdate.REASON_GESTURE
 import com.naver.maps.map.CameraUpdate.REASON_LOCATION
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.NaverMapOptions
+import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 
 @SuppressLint("ViewConstructor")
@@ -28,8 +32,14 @@ class RNCNaverMapView(
   MapView(reactContext, mapOptions) {
   private var attacherGroup: ViewAttacherGroup? = null
   private var map: NaverMap? = null
-  private var isAttached = false
   val overlays = mutableListOf<RNCNaverMapOverlay<*>>()
+
+  private val locationOverlayImageRenderer by lazy {
+    RNCNaverMapTaggedImageRenderer(context)
+  }
+  private val locationOverlaySubImageRenderer by lazy {
+    RNCNaverMapTaggedImageRenderer(context)
+  }
 
   private val reactTag: Int
     get() = RNCNaverMapViewWrapper.getReactTagFromMapView(this)
@@ -97,11 +107,13 @@ class RNCNaverMapView(
 
   override fun onAttachedToWindow() {
     super.onAttachedToWindow()
-    isAttached = true
+    locationOverlayImageRenderer.onAttach()
+    locationOverlaySubImageRenderer.onAttach()
   }
 
   override fun onDetachedFromWindow() {
-    isAttached = false
+    locationOverlayImageRenderer.onDetach()
+    locationOverlaySubImageRenderer.onDetach()
     super.onDetachedFromWindow()
   }
 
@@ -172,6 +184,26 @@ class RNCNaverMapView(
       val source = FusedLocationSource(activity, 100)
       withMap {
         it.locationSource = source
+      }
+    }
+  }
+
+  fun setLocationOverlayImage(image: ReadableMap?) {
+    locationOverlayImageRenderer.setImage(image) { overlayImage ->
+      withMap {
+        it.locationOverlay.icon = overlayImage ?: OverlayImage.fromBitmap(
+          Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888),
+        )
+      }
+    }
+  }
+
+  fun setLocationOverlaySubImage(image: ReadableMap?) {
+    locationOverlaySubImageRenderer.setImage(image) { overlayImage ->
+      withMap {
+        it.locationOverlay.icon = overlayImage ?: OverlayImage.fromBitmap(
+          Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888),
+        )
       }
     }
   }
