@@ -140,7 +140,7 @@ export default function App() {
       animate?: boolean;
     }[]
   >(() => {
-    return generateArray(50).map((i) => {
+    return generateArray(10).map((i) => {
       return {
         markers: generateArray(10).map<ClusterMarkerProp>((j) => ({
           image: {

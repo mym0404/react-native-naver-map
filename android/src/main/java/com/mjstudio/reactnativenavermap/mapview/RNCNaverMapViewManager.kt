@@ -107,6 +107,9 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     view.onDropViewInstance()
     view.reactContext.removeLifecycleEventListener(view)
     clustererHolders.forEach { (_, u) -> u.onDetach() }
+    clustererHolders.clear()
+    lastClustersPropKey = "NOT_SET"
+    isFirstCameraMoving = true
     super.onDropViewInstance(view)
   }
 

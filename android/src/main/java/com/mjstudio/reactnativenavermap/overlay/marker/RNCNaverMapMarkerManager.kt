@@ -31,8 +31,10 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
   }
 
   override fun onDropViewInstance(view: RNCNaverMapMarker) {
-    super.onDropViewInstance(view)
     view.onDropViewInstance()
+    captionKey = DEFAULT_CAPTION_KEY
+    subCaptionKey = DEFAULT_CAPTION_KEY
+    super.onDropViewInstance(view)
   }
 
   override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> =
