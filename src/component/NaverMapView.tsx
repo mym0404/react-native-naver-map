@@ -19,6 +19,7 @@ import {
   type NativeSyntheticEvent,
   type ColorValue,
   processColor,
+  Platform,
 } from 'react-native';
 import type { MapType } from '../types/MapType';
 import type { Camera } from '../types/Camera';
@@ -663,7 +664,10 @@ export const NaverMapView = forwardRef(
 
     const _locationOverlay: NativeLocationOverlayProp | undefined =
       useMemo(() => {
-        if (!locationOverlay) return undefined;
+        if (!locationOverlay)
+          return Platform.OS === 'ios'
+            ? { circleOutlineWidth: Const.NULL_NUMBER }
+            : undefined;
         return {
           isVisible: locationOverlay.isVisible,
           position: locationOverlay.position,

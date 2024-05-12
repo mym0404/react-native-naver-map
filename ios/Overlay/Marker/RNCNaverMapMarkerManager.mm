@@ -5,7 +5,17 @@
 //  Created by mj on 4/6/24.
 //
 
-#import "RNCNaverMapMarkerManager.h"
+#import "RNCNaverMapMarker.h"
+#import <Foundation/Foundation.h>
+#import <NMapsGeometry/NMGLatLng.h>
+#import <NMapsMap/NMapsMap.h>
+#import <React/RCTComponent.h>
+#import <React/RCTUIManager.h>
+#import <React/RCTViewManager.h>
+
+@interface RNCNaverMapMarkerManager : RCTViewManager
+
+@end
 
 @implementation RNCNaverMapMarkerManager
 
@@ -15,16 +25,8 @@ RCT_EXPORT_MODULE()
   return YES;
 }
 
-#ifndef RCT_NEW_ARCH_ENABLED
-- (UIView*)view {
-  auto marker = [RNCNaverMapMarker new];
-  marker.bridge = self.bridge;
-  return marker;
-}
-#endif
-
 // MARK: - COMMON PROPS
-RCT_EXPORT_VIEW_PROPERTY(coord, NMGLatLng)
+RCT_EXPORT_VIEW_PROPERTY(coord, NSDictionary)
 RCT_EXPORT_VIEW_PROPERTY(zIndexValue, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(globalZIndexValue, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(isHidden, BOOL)

@@ -8,12 +8,12 @@
 #import "RNCNaverMapLeafMarkerUpdater.h"
 
 @implementation RNCNaverMapLeafMarkerUpdater {
-  __weak NSMutableDictionary<NSString*, void (^)()>* _markerImageRequestCanceler;
+  std::unordered_map<std::string, RNCNaverMapImageCanceller>* _imgRequests;
 }
 
-- (id)init:(nonnull NSMutableDictionary<NSString*, void (^)()>*)markerImageRequestCanceler {
+- (id)init:(std::unordered_map<std::string, RNCNaverMapImageCanceller>*)markerImageRequestCanceler {
   if (self = [super init]) {
-    _markerImageRequestCanceler = markerImageRequestCanceler;
+    _imgRequests = markerImageRequestCanceler;
   }
   return self;
 }
@@ -26,7 +26,7 @@
   RNCNaverMapClusterKey* key = (RNCNaverMapClusterKey*)info.key;
 
   NSString* identifier = key.identifier;
-  NSDictionary* image = key.image;
+  facebook::react::RNCNaverMapViewClustersClustersMarkersImageStruct image = key.image;
 
   __weak NMFMarker* weakMarker = marker;
 
@@ -37,24 +37,24 @@
     marker.height = key.height;
   }
 
+  std::string idStr = [identifier UTF8String];
+
   if (key.bridge) {
     marker.alpha = 0;
-    if (_markerImageRequestCanceler[identifier]) {
-      _markerImageRequestCanceler[identifier]();
-      _markerImageRequestCanceler[identifier] = nil;
+    if (_imgRequests->find(idStr) != _imgRequests->end()) {
+      (*_imgRequests)[idStr]();
+      _imgRequests->erase(idStr);
     }
-    _markerImageRequestCanceler[identifier] =
-        [Utils getImage:key.bridge
-                   json:image
-               callback:^(NMFOverlayImage* overlayImage) {
-                 dispatch_async(dispatch_get_main_queue(), ^() {
-                   if (weakMarker) {
-                     weakMarker.alpha = 1;
-                     weakMarker.iconImage = !overlayImage ? NMF_MARKER_IMAGE_GREEN : overlayImage;
-                   }
-                   [_markerImageRequestCanceler removeObjectForKey:identifier];
-                 });
-               }];
+    (*_imgRequests)[idStr] =
+        nmap::getImage(key.bridge, image, ^(NMFOverlayImage* _Nullable overlayImage) {
+          dispatch_async(dispatch_get_main_queue(), ^{
+            if (weakMarker) {
+              weakMarker.alpha = 1;
+              weakMarker.iconImage = !overlayImage ? NMF_MARKER_IMAGE_GREEN : overlayImage;
+            }
+            self->_imgRequests->erase(idStr);
+          });
+        });
   }
 }
 #pragma clang diagnostic pop

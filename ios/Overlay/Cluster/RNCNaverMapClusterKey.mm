@@ -9,12 +9,14 @@
 
 @implementation RNCNaverMapClusterKey
 
-+ (instancetype)markerKeyWithIdentifier:(NSString*)identifier
-                               position:(NMGLatLng*)position
-                                 bridge:(RCTBridge*)bridge
-                                  image:(NSDictionary*)image
-                                  width:(double)width
-                                 height:(double)height {
++ (instancetype)
+    markerKeyWithIdentifier:(NSString*)identifier
+                   position:(NMGLatLng*)position
+                     bridge:(RCTBridge*)bridge
+                      image:
+                          (facebook::react::RNCNaverMapViewClustersClustersMarkersImageStruct)image
+                      width:(double)width
+                     height:(double)height {
   return [[RNCNaverMapClusterKey alloc] initWithIdentifier:identifier
                                                   position:position
                                                     bridge:bridge
@@ -23,12 +25,13 @@
                                                     height:height];
 }
 
-- (instancetype)initWithIdentifier:(nonnull NSString*)identifier
-                          position:(nonnull NMGLatLng*)position
-                            bridge:(RCTBridge*)bridge
-                             image:(nonnull NSDictionary*)image
-                             width:(double)width
-                            height:(double)height {
+- (instancetype)
+    initWithIdentifier:(nonnull NSString*)identifier
+              position:(nonnull NMGLatLng*)position
+                bridge:(RCTBridge*)bridge
+                 image:(facebook::react::RNCNaverMapViewClustersClustersMarkersImageStruct)image
+                 width:(double)width
+                height:(double)height {
   if (self = [super init]) {
     _identifier = identifier;
     _position = position;
@@ -62,7 +65,7 @@
   return [[[self class] alloc] initWithIdentifier:[self.identifier copy]
                                          position:[self.position copy]
                                            bridge:self.bridge
-                                            image:[self.image copy]
+                                            image:self.image
                                             width:self.width
                                            height:self.height];
 }

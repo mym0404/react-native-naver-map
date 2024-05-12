@@ -2,23 +2,22 @@ import {
   default as NativeNaverMapMarker,
   type NativeCaptionProp,
   type NativeSubCaptionProp,
-  type NativeImageProp,
 } from '../spec/RNCNaverMapMarkerNativeComponent';
-import React, { type PropsWithChildren, Children, useMemo } from 'react';
+import React, { type PropsWithChildren, Children } from 'react';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
 import { type ColorValue, processColor } from 'react-native';
 import { Const } from '../internal/util/Const';
 import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import { type Align } from '../types/Align';
 import type { Coord } from '../types/Coord';
-import {
-  getAlignIntValue,
-  convertJsImagePropToNativeProp,
-} from '../internal/Util';
 import type { Point } from '../types/Point';
 import type { MarkerImageProp } from '../types/MarkerImageProp';
-import hash from 'object-hash';
+import {
+  convertJsImagePropToNativeProp,
+  getAlignIntValue,
+} from '../internal/Util';
 import { nAssert } from '../internal/util/Assert';
+import hash from 'object-hash';
 
 export interface CaptionType {
   /** 캡션으로 표시할 텍스트를 지정할 수 있습니다.
@@ -352,12 +351,7 @@ export const NaverMapMarkerOverlay = ({
     `[NaverMapMarkerOverlay] children count should be equal or less than 1, is ${Children.count(children)}`
   );
 
-  const coord = useMemo<Coord>(
-    () => ({ latitude, longitude }),
-    [latitude, longitude]
-  );
-
-  const _caption = useMemo<NativeCaptionProp>(() => {
+  const _caption: NativeCaptionProp = (() => {
     const inner = {
       ...defaultCaptionProps,
       ...caption,
@@ -369,13 +363,10 @@ export const NaverMapMarkerOverlay = ({
         caption?.haloColor ?? defaultCaptionProps.haloColor
       ) as number,
     } satisfies Omit<NativeCaptionProp, 'key'>;
+    return { ...inner, key: hash(inner) };
+  })();
 
-    return Object.assign(inner, {
-      key: hash(inner),
-    });
-  }, [caption]);
-
-  const _subCaption = useMemo<NativeSubCaptionProp>(() => {
+  const _subCaption: NativeSubCaptionProp = (() => {
     const inner = {
       ...defaultSubCaptionProps,
       ...subCaption,
@@ -387,19 +378,12 @@ export const NaverMapMarkerOverlay = ({
       ) as number,
     };
 
-    return Object.assign(inner, {
-      key: hash(inner),
-    });
-  }, [subCaption]);
-
-  const _image = useMemo<NativeImageProp>(
-    () => convertJsImagePropToNativeProp(image),
-    [image]
-  );
+    return { ...inner, key: hash(inner) };
+  })();
 
   return (
     <NativeNaverMapMarker
-      coord={coord}
+      coord={{ latitude, longitude }}
       zIndexValue={zIndex}
       globalZIndexValue={globalZIndex}
       isHidden={isHidden}
@@ -419,7 +403,7 @@ export const NaverMapMarkerOverlay = ({
       isHideCollidedSymbols={isHideCollidedSymbols}
       isIconPerspectiveEnabled={isIconPerspectiveEnabled}
       tintColor={processColor(tintColor) as number}
-      image={_image}
+      image={convertJsImagePropToNativeProp(image)}
       onTapOverlay={onTap}
       caption={_caption}
       subCaption={_subCaption}

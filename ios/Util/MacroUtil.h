@@ -4,6 +4,8 @@
 //
 //  Created by mj on 4/7/24.
 //
+#import "FnUtil.h"
+#import <type_traits>
 
 #ifndef MacroUtil_h
 #define MacroUtil_h
@@ -43,19 +45,6 @@
       prev.name.bottom != next.name.bottom || prev.name.left != next.name.left) {                  \
     _view.name =                                                                                   \
         RNCNaverMapRectMake(next.name.top, next.name.right, next.name.bottom, next.name.left);     \
-  }
-
-#define NMAP_REMAP_IMAGE_PROP(name, setter)                                                        \
-  auto p = prev.name, n = next.name;                                                               \
-  if (p.reuseIdentifier != n.reuseIdentifier || p.assetName != n.assetName ||                      \
-      p.httpUri != n.httpUri || p.rnAssetUri != n.rnAssetUri || p.symbol != n.symbol) {            \
-    setter = @{                                                                                    \
-      @"reuseIdentifier" : getNsStr(n.reuseIdentifier),                                            \
-      @"assetName" : getNsStr(n.assetName),                                                        \
-      @"httpUri" : getNsStr(n.httpUri),                                                            \
-      @"rnAssetUri" : getNsStr(n.rnAssetUri),                                                      \
-      @"symbol" : getNsStr(n.symbol),                                                              \
-    };                                                                                             \
   }
 
 #endif /* MacroUtil_h */

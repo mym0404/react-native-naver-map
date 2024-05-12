@@ -7,36 +7,27 @@
 
 #import "RNCNaverMapPolyline.h"
 
-#ifdef RCT_NEW_ARCH_ENABLED
 using namespace facebook::react;
 @interface RNCNaverMapPolyline () <RCTRNCNaverMapPolylineViewProtocol>
 
 @end
 
-#endif
+@implementation RNCNaverMapPolyline
 
-@implementation RNCNaverMapPolyline {
+- (std::shared_ptr<RNCNaverMapPolylineEventEmitter const>)emitter {
+  if (!_eventEmitter)
+    return nullptr;
+  return std::static_pointer_cast<RNCNaverMapPolylineEventEmitter const>(_eventEmitter);
 }
 
 - (instancetype)init {
   if ((self = [super init])) {
     _inner = [NMFPolylineOverlay new];
 
-#ifdef RCT_NEW_ARCH_ENABLED
-    self.onTapOverlay = [self](NSDictionary* dict) {
-      if (_eventEmitter == nil) {
-        return;
-      }
-
-      auto emitter = std::static_pointer_cast<RNCNaverMapPolylineEventEmitter const>(_eventEmitter);
-      emitter->onTapOverlay({});
-    };
-#endif
-
     _inner.touchHandler = [self](NMFOverlay* overlay) -> BOOL {
       // In New Arch, this always returns YES at now. should be fixed.
-      if (self.onTapOverlay) {
-        self.onTapOverlay(@{});
+      if (self.emitter) {
+        self.emitter->onTapOverlay({});
         return YES;
       }
       return NO;
@@ -44,50 +35,6 @@ using namespace facebook::react;
   }
 
   return self;
-}
-
-NMAP_SETTER(Z, z, IndexValue, inner.zIndex, NSInteger)
-- (void)setGlobalZIndexValue:(NSInteger)globalZIndexValue {
-  _globalZIndexValue = globalZIndexValue;
-  if (isValidNumber(globalZIndexValue))
-    self.inner.globalZIndex = globalZIndexValue;
-}
-NMAP_SETTER(I, i, sHidden, inner.hidden, BOOL)
-NMAP_INNER_SETTER(M, m, inZoom, double)
-NMAP_INNER_SETTER(M, m, axZoom, double)
-NMAP_INNER_SETTER(I, i, sMinZoomInclusive, BOOL)
-NMAP_INNER_SETTER(I, i, sMaxZoomInclusive, BOOL)
-
-NMAP_INNER_SETTER(W, w, idth, double)
-NMAP_INNER_SETTER(C, c, apType, NMFOverlayLineCap)
-NMAP_INNER_SETTER(J, j, oinType, NMFOverlayLineJoin)
-
-- (void)setColor:(NSInteger)color {
-  _color = color;
-  _inner.color = [Utils intToColor:color];
-}
-
-- (void)setCoords:(NSArray*)coords {
-  _coords = coords;
-  auto arr = [NSMutableArray arrayWithCapacity:coords.count];
-
-  for (NSDictionary* coord in coords) {
-    [arr addObject:NMGLatLngMake([coord[@"latitude"] doubleValue],
-                                 [coord[@"longitude"] doubleValue])];
-  }
-
-  self.inner.line = [NMGLineString lineStringWithPoints:arr];
-}
-
-- (void)setPattern:(NSArray*)pattern {
-  _pattern = pattern;
-  self.inner.pattern = pattern;
-}
-
-#ifdef RCT_NEW_ARCH_ENABLED
-
-+ (ComponentDescriptorProvider)componentDescriptorProvider {
-  return concreteComponentDescriptorProvider<RNCNaverMapPolylineComponentDescriptor>();
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -103,45 +50,44 @@ NMAP_INNER_SETTER(J, j, oinType, NMFOverlayLineJoin)
   const auto& prev = *std::static_pointer_cast<RNCNaverMapPolylineProps const>(_props);
   const auto& next = *std::static_pointer_cast<RNCNaverMapPolylineProps const>(props);
 
-  NMAP_REMAP_SELF_PROP(zIndexValue);
-  NMAP_REMAP_SELF_PROP(globalZIndexValue);
-  NMAP_REMAP_SELF_PROP(isHidden);
-  NMAP_REMAP_SELF_PROP(minZoom);
-  NMAP_REMAP_SELF_PROP(maxZoom);
-  NMAP_REMAP_SELF_PROP(isMinZoomInclusive);
-  NMAP_REMAP_SELF_PROP(isMaxZoomInclusive);
+  if (prev.zIndexValue != next.zIndexValue)
+    _inner.zIndex = next.zIndexValue;
+  if (prev.globalZIndexValue != next.globalZIndexValue && isValidNumber(next.globalZIndexValue))
+    _inner.globalZIndex = next.globalZIndexValue;
+  if (prev.isHidden != next.isHidden)
+    _inner.hidden = next.isHidden;
+  if (prev.minZoom != next.minZoom)
+    _inner.minZoom = next.minZoom;
+  if (prev.maxZoom != next.maxZoom)
+    _inner.maxZoom = next.maxZoom;
+  if (prev.isMinZoomInclusive != next.isMinZoomInclusive)
+    _inner.isMinZoomInclusive = next.isMinZoomInclusive;
+  if (prev.isMaxZoomInclusive != next.isMaxZoomInclusive)
+    _inner.isMaxZoomInclusive = next.isMaxZoomInclusive;
 
-  NMAP_REMAP_SELF_PROP(width);
-  NMAP_REMAP_SELF_PROP(color);
+  if (prev.width != next.width)
+    _inner.width = next.width;
+  if (prev.color != next.color)
+    _inner.color = nmap::intToColor(next.color);
 
   // capType
-  {
-    if (prev.capType != next.capType) {
-      if (next.capType == RNCNaverMapPolylineCapType::Butt) {
-        self.capType = NMFOverlayLineCapButt;
-      }
-      if (next.capType == RNCNaverMapPolylineCapType::Square) {
-        self.capType = NMFOverlayLineCapSquare;
-      }
-      if (next.capType == RNCNaverMapPolylineCapType::Round) {
-        self.capType = NMFOverlayLineCapRound;
-      }
-    }
+  if (prev.capType != next.capType) {
+    if (next.capType == RNCNaverMapPolylineCapType::Butt)
+      _inner.capType = NMFOverlayLineCapButt;
+    if (next.capType == RNCNaverMapPolylineCapType::Square)
+      _inner.capType = NMFOverlayLineCapSquare;
+    if (next.capType == RNCNaverMapPolylineCapType::Round)
+      _inner.capType = NMFOverlayLineCapRound;
   }
 
   // joinType
-  {
-    if (prev.joinType != next.joinType) {
-      if (next.joinType == RNCNaverMapPolylineJoinType::Bevel) {
-        self.joinType = NMFOverlayLineJoinBevel;
-      }
-      if (next.joinType == RNCNaverMapPolylineJoinType::Miter) {
-        self.joinType = NMFOverlayLineJoinMiter;
-      }
-      if (next.joinType == RNCNaverMapPolylineJoinType::Round) {
-        self.joinType = NMFOverlayLineJoinRound;
-      }
-    }
+  if (prev.joinType != next.joinType) {
+    if (next.joinType == RNCNaverMapPolylineJoinType::Bevel)
+      _inner.joinType = NMFOverlayLineJoinBevel;
+    if (next.joinType == RNCNaverMapPolylineJoinType::Miter)
+      _inner.joinType = NMFOverlayLineJoinMiter;
+    if (next.joinType == RNCNaverMapPolylineJoinType::Round)
+      _inner.joinType = NMFOverlayLineJoinRound;
   }
 
   // coords
@@ -157,10 +103,12 @@ NMAP_INNER_SETTER(J, j, oinType, NMFOverlayLineJoin)
     }
     if (!isSame) {
       auto arr = [NSMutableArray arrayWithCapacity:next.coords.size()];
-      for (const auto& [latitude, longitude] : next.coords) {
-        [arr addObject:@{@"latitude" : @(latitude), @"longitude" : @(longitude)}];
+
+      for (const auto& coord : next.coords) {
+        [arr addObject:nmap::createLatLng(coord)];
       }
-      self.coords = arr;
+
+      self.inner.line = [NMGLineString lineStringWithPoints:arr];
     }
   }
 
@@ -169,7 +117,7 @@ NMAP_INNER_SETTER(J, j, oinType, NMFOverlayLineJoin)
     auto arr = [NSMutableArray arrayWithCapacity:next.pattern.size()];
     for (int p : next.pattern)
       [arr addObject:@(p)];
-    self.pattern = arr;
+    _inner.pattern = arr;
   }
 
   [super updateProps:props oldProps:oldProps];
@@ -179,6 +127,7 @@ Class<RCTComponentViewProtocol> RNCNaverMapPolylineCls(void) {
   return RNCNaverMapPolyline.class;
 }
 
-#endif
-
++ (ComponentDescriptorProvider)componentDescriptorProvider {
+  return concreteComponentDescriptorProvider<RNCNaverMapPolylineComponentDescriptor>();
+}
 @end

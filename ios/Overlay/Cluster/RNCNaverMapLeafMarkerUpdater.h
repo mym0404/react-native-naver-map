@@ -6,8 +6,8 @@
 //
 
 #import "FnUtil.h"
+#import "ImageUtil.h"
 #import "RNCNaverMapClusterKey.h"
-#import "Utils.h"
 #import <Foundation/Foundation.h>
 #import <NMapsMap/NMapsMap.h>
 
@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface RNCNaverMapLeafMarkerUpdater : NMCDefaultLeafMarkerUpdater
 @property(nonatomic, weak, nullable) NMCClusterer* clusterer;
 
-- init:(NSMutableDictionary<NSString*, void (^)(void)>*)markerImageRequestCanceler;
+- init:(std::unordered_map<std::string, RNCNaverMapImageCanceller>*)markerImageRequestCanceler;
 @end
 
 NS_ASSUME_NONNULL_END

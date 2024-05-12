@@ -5,7 +5,6 @@
 //  Created by mj on 5/1/24.
 //
 
-#import "RCTConvert+NMFMapView.h"
 #import "RNCNaverMapGround.h"
 #import <Foundation/Foundation.h>
 #import <NMapsGeometry/NMapsGeometry.h>
@@ -22,12 +21,6 @@ RCT_EXPORT_MODULE()
 
 + (BOOL)requiresMainQueueSetup {
   return YES;
-}
-
-- (UIView*)view {
-  RNCNaverMapGround* ret = [RNCNaverMapGround new];
-  ret.bridge = self.bridge;
-  return ret;
 }
 
 // MARK: - COMMON PROPS

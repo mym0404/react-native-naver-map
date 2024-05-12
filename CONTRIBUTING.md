@@ -29,11 +29,6 @@ The `package.json` file contains various scripts for common tasks:
 - `yarn example ios`: run the example app on iOS.
 - `yarn codegen:{android,ios}`: generate codegen output for development typing (this should be clean for running example app, prevetning redelcaration compile error)
 
-**Architecture Convert**
-
-- `new`: convert example project to new architecture if needed (gradlew clean, install pod)
-- `old`: convert example project to old architecture if needed (gradlew clean, install pod)
-
 **Util**
 
 - `yarn studio`: open android studio for example project
@@ -103,41 +98,9 @@ NAVER_CLIENT_ID = {{your_key}}
 ```
 
 ```sh
-yarn pod:{old, new}
+yarn pod
 yarn example ios
 ```
-
-### Architecture Type Change
-
-To change the example with the architecture type, you can do the following:
-
-1. For Android, change:
-
-`example/android/gradle.properties`
-
-```
-newArchEnabled=true or false
-```
-
-2. For iOS, run:
-
-```sh
-yarn pod:new or yarn pod:old
-```
-
-If you are building for a different architecture than your previous build, make sure to remove the build folders first. You can run the following command to cleanup all build folders:
-
-```sh
-yarn clean
-```
-
-To confirm that the app is running with the new architecture, you can check the Metro logs for a message like this:
-
-```sh
-Running "NaverMapExample" with {"fabric":true,"initialProps":{"concurrentRoot":true},"rootTag":1}
-```
-
-Note the `"fabric":true` and `"concurrentRoot":true` properties.
 
 ### Type Check & Lint
 
