@@ -48,8 +48,8 @@
     "build:docs": "rm -rf docs && typedoc",
     "ci:ios": "cd example/ios && xcodebuild -workspace NaverMapExample.xcworkspace -scheme NaverMapExample -configuration Debug -sdk iphonesimulator -quiet CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO ONLY_ACTIVE_ARCH=YES",
     "ci:android": "cd example/android && ./gradlew assembleDebug",
-    "turbo:android": "yarn new android && yarn turbo ci:android:new --single-package --cache-dir=\".turbo/android-new\"",
-    "turbo:ios": "yarn new ios && yarn turbo ci:ios:new --single-package --cache-dir=\".turbo/ios-new\""
+    "turbo:android": "yarn turbo ci:android --single-package --cache-dir=\".turbo/android\"",
+    "turbo:ios": "yarn turbo ci:ios --single-package --cache-dir=\".turbo/ios\""
   },
   "keywords": [
     "react-native",
