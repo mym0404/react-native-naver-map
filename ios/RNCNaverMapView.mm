@@ -86,7 +86,6 @@ using namespace facebook::react;
 }
 
 - (void)updateProps:(Props::Shared const&)props oldProps:(Props::Shared const&)oldProps {
-  NSLog(@"update");
   const auto& prev = *std::static_pointer_cast<RNCNaverMapViewProps const>(_props);
   const auto& next = *std::static_pointer_cast<RNCNaverMapViewProps const>(props);
 

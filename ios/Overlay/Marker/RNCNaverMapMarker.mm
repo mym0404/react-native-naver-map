@@ -122,7 +122,6 @@ using namespace facebook::react;
 }
 
 - (UIImage*)captureView:(UIView*)view {
-  NSLog(@"captureView");
   UIGraphicsImageRenderer* renderer =
       [[UIGraphicsImageRenderer alloc] initWithSize:view.bounds.size];
   auto ret =

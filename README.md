@@ -26,7 +26,9 @@
 ### 1. New Architecture Fabric
 
 > [!NOTE]
-> Fabric을 지원한다고 Old Architecture를 지원하지 않는 것이 아닌 두 Architecture모두에서 작동하는 컴포넌트를 제작합니다.
+> `1.x` 버전은 Old Architecture(Bridge)를 지원하지만 `2.x`버전부터 그에 대한 지원을 중단합니다. 만약 프로젝트가 New Architecture로 이전하지 않았다면 [`1.x` 버전](https://github.com/mym0404/react-native-naver-map/tree/v1.5.6)을 이용해주세요.
+>
+> 여전히 `1.x` 버전에서도 Naver Map을 쓰기 위해서 부족한 기능이 거의 없는 Prop과 Command들을 제공하며 무리없이 지도를 활용하는 대부분의 usecase를 만족하는 앱을 구축하실 수 있습니다.
 
 ### 2. Detailed API Documentation
 
@@ -616,13 +618,6 @@ iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니
 |---------------------------|----------------------------------------------------|---------|
 | caption-fontFamily        | ❓                                                  | ❓       |
 | subcaption-fontFamily     | ❓                                                  | ❓       |
-
-## Supporting Table - Architecture
-
-|        | iOS | Android |
-|--------|-----|---------|
-| Bridge | ✅   | ✅       |
-| Fabric | ✅️  | ✅️      |
 
 ## Milestone
 
