@@ -26,7 +26,7 @@ class RNCNaverMapArrowheadPathManager : RNCNaverMapArrowheadPathManagerSpec<RNCN
   }
 
   override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> =
-    (super.getExportedCustomDirectEventTypeConstants()?.toMutableMap() ?: mutableMapOf()).apply {
+    (super.getExportedCustomDirectEventTypeConstants() ?: mutableMapOf()).apply {
       registerDirectEvent(this, NaverMapOverlayTapEvent.EVENT_NAME)
     }
 
