@@ -110,7 +110,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
   }
 
   override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> =
-    (super.getExportedCustomDirectEventTypeConstants() ?: mutableMapOf()).apply {
+    (super.getExportedCustomDirectEventTypeConstants()?.toMutableMap() ?: mutableMapOf()).apply {
       registerDirectEvent(this, NaverMapInitializeEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapOptionChangeEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCameraChangeEvent.EVENT_NAME)

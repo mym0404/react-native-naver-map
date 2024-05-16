@@ -26,7 +26,7 @@ class RNCNaverMapCircleManager : RNCNaverMapCircleManagerSpec<RNCNaverMapCircle>
   }
 
   override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> =
-    (super.getExportedCustomDirectEventTypeConstants() ?: mutableMapOf()).apply {
+    (super.getExportedCustomDirectEventTypeConstants()?.toMutableMap() ?: mutableMapOf()).apply {
       registerDirectEvent(this, NaverMapOverlayTapEvent.EVENT_NAME)
     }
 

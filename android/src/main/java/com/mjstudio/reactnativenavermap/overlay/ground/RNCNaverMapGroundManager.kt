@@ -25,7 +25,7 @@ class RNCNaverMapGroundManager : RNCNaverMapGroundManagerSpec<RNCNaverMapGround>
   }
 
   override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> =
-    (super.getExportedCustomDirectEventTypeConstants() ?: mutableMapOf()).apply {
+    (super.getExportedCustomDirectEventTypeConstants()?.toMutableMap() ?: mutableMapOf()).apply {
       registerDirectEvent(this, NaverMapOverlayTapEvent.EVENT_NAME)
     }
 
