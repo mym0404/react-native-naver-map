@@ -61,7 +61,7 @@ RCT_EXPORT_VIEW_PROPERTY(isTiltGesturesEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(isRotateGesturesEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(isStopGesturesEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(locale, NSString)
-RCT_EXPORT_VIEW_PROPERTY(clusters, NSArray)
+RCT_EXPORT_VIEW_PROPERTY(clusters, NSDictionary)
 RCT_EXPORT_VIEW_PROPERTY(fpsLimit, NSInteger)
 
 // event
