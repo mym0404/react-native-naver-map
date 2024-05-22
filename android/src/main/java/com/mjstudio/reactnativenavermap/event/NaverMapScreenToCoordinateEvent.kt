@@ -8,8 +8,8 @@ class NaverMapScreenToCoordinateEvent(
   surfaceId: Int,
   viewId: Int,
   private val isValid: Boolean,
-  private val longitude: Double,
   private val latitude: Double,
+  private val longitude: Double,
 ) : Event<NaverMapScreenToCoordinateEvent>(surfaceId, viewId) {
   override fun getEventName(): String = EVENT_NAME
 

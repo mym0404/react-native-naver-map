@@ -220,9 +220,10 @@ export default function App() {
           longitude={126.349895729}
           radius={50000}
           color={'#f2f'}
+          isHidden
           outlineColor={'#aaa'}
           outlineWidth={2}
-          globalZIndex={1}
+          globalZIndex={-1}
           onTap={() => console.log('hi')}
         />
         {/*<NaverMapPolygonOverlay*/}
