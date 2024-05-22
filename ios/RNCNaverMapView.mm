@@ -31,7 +31,6 @@ using namespace facebook::react;
   if (!_eventEmitter) {
     return nullptr;
   }
-  return nullptr;
   return std::static_pointer_cast<RNCNaverMapViewEventEmitter const>(_eventEmitter);
 }
 
@@ -257,14 +256,15 @@ using namespace facebook::react;
     _clusterMarkerImageRequestCancelers.clear();
 
     for (const auto& clusterer : next.clusters.clusters) {
-      [self addClusterer:clusterer];
+      [self addClusterer:clusterer isLeafTapCallbackExist:next.clusters.isLeafTapCallbackExist];
     }
   }
 
   [super updateProps:props oldProps:oldProps];
   _isRecycled = NO;
 }
-- (void)addClusterer:(const RNCNaverMapViewClustersClustersStruct)dict {
+- (void)addClusterer:(const RNCNaverMapViewClustersClustersStruct)dict
+    isLeafTapCallbackExist:(BOOL)isLeafTapCallbackExist {
 
   std::string clustererKey = dict.key;
   //  double screenDistance = clamp([dict[@"screenDistance"] doubleValue], 1, 69);
@@ -280,13 +280,26 @@ using namespace facebook::react;
 
   for (const auto& marker : markers) {
     markerIdentifiers.push_back(marker.identifier);
+
+    OnTapLeafMarker _Nullable onTapLeafMarker;
+    std::string identifier = marker.identifier;
+    if (isLeafTapCallbackExist) {
+      __weak __typeof__(self) ws = self;
+      onTapLeafMarker = ^{
+        __strong __typeof__(self) ss = ws;
+        if (ss && [ss emitter]) {
+          [ss emitter]->onTapClusterLeaf({.markerIdentifier = identifier});
+        }
+      };
+    }
+
     RNCNaverMapClusterKey* markerKey = [RNCNaverMapClusterKey
         markerKeyWithIdentifier:getNsStr(marker.identifier)
                        position:NMGLatLngMake(marker.latitude, marker.longitude)
-                         bridge:[self bridge]
                           image:marker.image
                           width:marker.width
-                         height:marker.height];
+                         height:marker.height
+                onTapLeafMarker:onTapLeafMarker];
     markerDict[markerKey] = [NSNull null];
   }
 

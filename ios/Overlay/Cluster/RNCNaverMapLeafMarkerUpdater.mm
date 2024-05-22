@@ -6,6 +6,8 @@
 //
 
 #import "RNCNaverMapLeafMarkerUpdater.h"
+#import <React/RCTBridge+Private.h>
+#import <React/RCTBridge.h>
 
 @implementation RNCNaverMapLeafMarkerUpdater {
   std::unordered_map<std::string, RNCNaverMapImageCanceller>* _imgRequests;
@@ -39,14 +41,15 @@
 
   std::string idStr = [identifier UTF8String];
 
-  if (key.bridge) {
+  RCTBridge* bridge = [RCTBridge currentBridge];
+  if (bridge) {
     marker.alpha = 0;
     if (_imgRequests->find(idStr) != _imgRequests->end()) {
       (*_imgRequests)[idStr]();
       _imgRequests->erase(idStr);
     }
     (*_imgRequests)[idStr] =
-        nmap::getImage(key.bridge, image, ^(NMFOverlayImage* _Nullable overlayImage) {
+        nmap::getImage(bridge, image, ^(NMFOverlayImage* _Nullable overlayImage) {
           dispatch_async(dispatch_get_main_queue(), ^{
             if (weakMarker) {
               weakMarker.alpha = 1;
@@ -56,6 +59,14 @@
           });
         });
   }
+
+  [marker setTouchHandler:^BOOL(NMFOverlay* __weak overlay) {
+    if (key.onTapLeafMarker) {
+      key.onTapLeafMarker();
+      return YES;
+    }
+    return NO;
+  }];
 }
 #pragma clang diagnostic pop
 
