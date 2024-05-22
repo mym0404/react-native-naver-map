@@ -245,6 +245,7 @@ export default function App() {
           longitude={126.349895729}
           radius={10000}
           color={'#f2f'}
+          isHidden
           outlineColor={'#aaa'}
           outlineWidth={2}
           globalZIndex={-1}
