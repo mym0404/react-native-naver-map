@@ -8,6 +8,7 @@ import com.mjstudio.reactnativenavermap.util.image.createDraweeHierarchy
 internal data class RNCNaverMapLeafMarkerHolder(
   val identifier: String,
   val context: ReactApplicationContext,
+  val onTapLeaf: (() -> Unit)?,
 ) {
   val imageHolder: DraweeHolder<GenericDraweeHierarchy> by lazy {
     DraweeHolder.create(createDraweeHierarchy(context.resources), context).apply {

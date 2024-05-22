@@ -13,6 +13,7 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapViewManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapCameraChangeEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapClusterLeafTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapCoordinateToScreenEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
@@ -121,6 +122,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
       registerDirectEvent(this, NaverMapTapEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapScreenToCoordinateEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCoordinateToScreenEvent.EVENT_NAME)
+      registerDirectEvent(this, NaverMapClusterLeafTapEvent.EVENT_NAME)
     }
 
   private fun RNCNaverMapViewWrapper?.withMapView(callback: (mapView: RNCNaverMapView) -> Unit) {
@@ -550,6 +552,8 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     }
     clustererHolders.clear()
 
+    val isLeafTapCallbackExist = value.getBoolean("isLeafTapCallbackExist")
+
     value.getArray("clusters")?.toArrayList()?.filterIsInstance<Map<String, Any?>>()?.forEach {
       val clustererKey = it["key"] as? String
       val screenDistance = it["screenDistance"] as? Double
@@ -589,7 +593,26 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
             image,
             width,
             height,
-            RNCNaverMapLeafMarkerHolder(identifier, reactAppContext),
+            RNCNaverMapLeafMarkerHolder(
+              identifier,
+              reactAppContext,
+              onTapLeaf =
+                if (isLeafTapCallbackExist) {
+                  {
+                    view?.let { wrapper ->
+                      wrapper.reactContext.emitEvent(wrapper.id) { surfaceId, reactTag ->
+                        NaverMapClusterLeafTapEvent(
+                          surfaceId,
+                          reactTag,
+                          identifier,
+                        )
+                      }
+                    }
+                  }
+                } else {
+                  null
+                },
+            ),
           ) to null
         }
 

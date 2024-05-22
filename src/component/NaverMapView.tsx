@@ -457,6 +457,13 @@ export interface NaverMapViewProps extends ViewProps {
    * @event
    */
   onTapMap?: (params: Coord & { x: number; y: number }) => void;
+
+  /**
+   * 클러스터 Leaf 마커를 클릭했을 때 발생하는 이벤트입니다.
+   *
+   * @event
+   */
+  onTapClusterLeaf?: (params: { markerIdentifier: string }) => void;
 }
 
 export interface NaverMapViewRef {
@@ -616,15 +623,18 @@ export const NaverMapView = forwardRef(
       clusters,
       fpsLimit = 0,
       locationOverlay,
+      onTapClusterLeaf,
 
       ...rest
     }: NaverMapViewProps,
     ref: ForwardedRef<NaverMapViewRef>
   ) => {
     const innerRef = useRef<any>(null);
+
+    const isLeafTapCallbackExist: boolean = !!onTapClusterLeaf;
     const _clusters = useMemo<NativeClustersProp>(() => {
       if (!clusters || clusters.length === 0) {
-        return { key: '', clusters: [] };
+        return { key: '', clusters: [], isLeafTapCallbackExist };
       }
       let propKey = '';
       const ret: NativeClusterProp[] = [];
@@ -659,8 +669,9 @@ export const NaverMapView = forwardRef(
       return {
         key: hash(propKey),
         clusters: ret,
+        isLeafTapCallbackExist,
       };
-    }, [clusters]);
+    }, [clusters, isLeafTapCallbackExist]);
 
     const _locationOverlay: NativeLocationOverlayProp | undefined =
       useMemo(() => {
@@ -986,6 +997,12 @@ export const NaverMapView = forwardRef(
         onCoordinateToScreen={onCoordinateToScreen}
         fpsLimit={fpsLimit}
         locationOverlay={_locationOverlay}
+        onTapClusterLeaf={
+          onTapClusterLeaf
+            ? ({ nativeEvent: { markerIdentifier } }) =>
+                onTapClusterLeaf({ markerIdentifier })
+            : undefined
+        }
         {...rest}
       />
     );

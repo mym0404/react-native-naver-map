@@ -56,6 +56,7 @@ export type NativeClusterProp = {
 export type NativeClustersProp = Readonly<{
   key: string;
   clusters: ReadonlyArray<NativeClusterProp>;
+  isLeafTapCallbackExist: boolean;
 }>;
 export type NativeLocationOverlayProp = {
   isVisible?: boolean;
@@ -165,6 +166,7 @@ interface Props extends ViewProps {
       y: Double;
     }>
   >;
+  onTapClusterLeaf?: DirectEventHandler<Readonly<{ markerIdentifier: string }>>;
 
   onScreenToCoordinate?: DirectEventHandler<
     Readonly<{ isValid: boolean; latitude: Double; longitude: Double }>

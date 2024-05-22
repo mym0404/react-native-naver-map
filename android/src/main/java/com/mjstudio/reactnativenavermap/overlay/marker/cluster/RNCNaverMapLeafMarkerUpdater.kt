@@ -35,6 +35,14 @@ internal class RNCNaverMapLeafMarkerUpdater : DefaultLeafMarkerUpdater() {
       } else {
         marker.alpha = 1f
       }
+
+      marker.setOnClickListener {
+        if (holder.onTapLeaf == null) {
+          return@setOnClickListener false
+        }
+        holder.onTapLeaf.invoke()
+        true
+      }
     }
   }
 }

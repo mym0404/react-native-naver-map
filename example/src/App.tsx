@@ -140,9 +140,9 @@ export default function App() {
       animate?: boolean;
     }[]
   >(() => {
-    return generateArray(10).map((i) => {
+    return generateArray(5).map((i) => {
       return {
-        markers: generateArray(10).map<ClusterMarkerProp>((j) => ({
+        markers: generateArray(3).map<ClusterMarkerProp>((j) => ({
           image: {
             httpUri: `https://picsum.photos/seed/${hash}-${i}-${j}/32/32`,
           },
@@ -336,6 +336,9 @@ export default function App() {
           //   isVisible: true,
           //   position: Cameras.Jeju,
           // }}
+          onTapClusterLeaf={({ markerIdentifier }) => {
+            console.log('onTapClusterLeaf', markerIdentifier);
+          }}
         >
           {renderOverlays()}
         </NaverMapView>
