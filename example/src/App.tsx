@@ -422,9 +422,27 @@ export default function App() {
           }}
         />
         <Btn
-          title={'Location Tracking Mode'}
+          title={'Face'}
           onPress={() => {
             ref.current?.setLocationTrackingMode('Face');
+          }}
+        />
+        <Btn
+          title={'Follow'}
+          onPress={() => {
+            ref.current?.setLocationTrackingMode('Follow');
+          }}
+        />
+        <Btn
+          title={'NoFollow'}
+          onPress={() => {
+            ref.current?.setLocationTrackingMode('NoFollow');
+          }}
+        />
+        <Btn
+          title={'None'}
+          onPress={() => {
+            ref.current?.setLocationTrackingMode('None');
           }}
         />
         <Btn
