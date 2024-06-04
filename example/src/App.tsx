@@ -1,4 +1,10 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react';
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useMemo,
+  useTransition,
+} from 'react';
 
 import { View, Platform, Text } from 'react-native';
 import {
@@ -24,6 +30,7 @@ import {
   requestMultiple,
 } from 'react-native-permissions';
 import { generateArray, formatJson } from '@mj-studio/js-util';
+import { type City } from './db/CityDatabase';
 
 // const jejuRegion: Region = {
 //   latitude: 33.20530773,
@@ -294,6 +301,9 @@ export default function App() {
   };
   const [rerenderKey, setRerenderKey] = useState(0);
 
+  const [cities, setCities] = useState<City[]>([]);
+  const [, startTransition] = useTransition();
+
   return (
     <View
       style={{
@@ -328,9 +338,14 @@ export default function App() {
           // isExtentBoundedInKorea
           onInitialized={() => console.log('initialized!')}
           // onOptionChanged={() => console.log('Option Changed!')}
-          onCameraChanged={({ region, latitude, longitude }) => {
-            console.log(`Region: ${formatJson(region)}`);
-            console.log(`Camera: ${formatJson({ latitude, longitude })}`);
+          onCameraChanged={({ region }) => {
+            // console.log(`Camera: ${formatJson({ latitude, longitude })}`);
+
+            startTransition(() => {
+              console.log(`Region: ${formatJson(region)}`);
+              console.log(cities.length);
+              setCities(cities);
+            });
           }}
           onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
           clusters={clusters}
@@ -346,6 +361,17 @@ export default function App() {
           }}
         >
           {renderOverlays()}
+          {cities.map((city, i) => (
+            <NaverMapMarkerOverlay
+              key={`${city.region}-${city.lat}-${i}`}
+              latitude={city.lat}
+              longitude={city.lng}
+              angle={45}
+              image={require('./logo180.png')}
+              width={24}
+              height={24}
+            />
+          ))}
         </NaverMapView>
       ) : (
         <View style={{ flex: 1 }} />
