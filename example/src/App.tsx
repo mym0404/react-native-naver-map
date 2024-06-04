@@ -30,7 +30,7 @@ import {
   requestMultiple,
 } from 'react-native-permissions';
 import { generateArray, formatJson } from '@mj-studio/js-util';
-import { type City } from './db/CityDatabase';
+import { getCitiesByRegion, type City } from './db/CityDatabase';
 
 // const jejuRegion: Region = {
 //   latitude: 33.20530773,
@@ -343,6 +343,8 @@ export default function App() {
 
             startTransition(() => {
               console.log(`Region: ${formatJson(region)}`);
+              // eslint-disable-next-line @typescript-eslint/no-shadow
+              const cities = getCitiesByRegion(region);
               console.log(cities.length);
               setCities(cities);
             });
