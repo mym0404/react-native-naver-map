@@ -156,6 +156,10 @@ interface Props extends ViewProps {
       tilt: Double;
       bearing: Double;
       reason: Int32 /* CameraChangeReason */;
+      regionLatitude: Double;
+      regionLongitude: Double;
+      regionLatitudeDelta: Double;
+      regionLongitudeDelta: Double;
     }>
   >;
   onTapMap?: DirectEventHandler<

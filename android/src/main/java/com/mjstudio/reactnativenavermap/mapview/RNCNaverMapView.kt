@@ -61,6 +61,9 @@ class RNCNaverMapView(
 
       it.addOnCameraChangeListener { reason, animated ->
         reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
+
+          val bounds = it.coveringBounds
+
           NaverMapCameraChangeEvent(
             surfaceId,
             reactTag,
@@ -75,6 +78,10 @@ class RNCNaverMapView(
               REASON_LOCATION -> 3
               else -> 0
             },
+            bounds.southLatitude,
+            bounds.westLongitude,
+            bounds.northLatitude - bounds.southLatitude,
+            bounds.eastLongitude - bounds.westLongitude,
           )
         }
       }

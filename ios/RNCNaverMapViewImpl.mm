@@ -234,17 +234,24 @@
   if (!_rncParent.emitter)
     return;
   NMFCameraPosition* pos = mapView.cameraPosition;
+  NMGLatLngBounds* bounds = mapView.coveringBounds;
 
-  _rncParent.emitter->onCameraChanged({.latitude = pos.target.lat,
-                                       .longitude = pos.target.lng,
-                                       .zoom = pos.zoom,
-                                       .tilt = pos.tilt,
-                                       .bearing = pos.heading,
-                                       .reason = reason == NMFMapChangedByDeveloper  ? 0
-                                                 : reason == NMFMapChangedByGesture  ? 1
-                                                 : reason == NMFMapChangedByControl  ? 2
-                                                 : reason == NMFMapChangedByLocation ? 3
-                                                                                     : 0});
+  _rncParent.emitter->onCameraChanged({
+      .latitude = pos.target.lat,
+      .longitude = pos.target.lng,
+      .zoom = pos.zoom,
+      .tilt = pos.tilt,
+      .bearing = pos.heading,
+      .reason = reason == NMFMapChangedByDeveloper  ? 0
+                : reason == NMFMapChangedByGesture  ? 1
+                : reason == NMFMapChangedByControl  ? 2
+                : reason == NMFMapChangedByLocation ? 3
+                                                    : 0,
+      .regionLatitude = bounds.southWestLat,
+      .regionLongitude = bounds.southWestLng,
+      .regionLatitudeDelta = bounds.northEastLat - bounds.southWestLat,
+      .regionLongitudeDelta = bounds.northEastLng - bounds.southWestLng,
+  });
 }
 
 - (void)mapView:(NMFMapView*)mapView didTapMap:(NMGLatLng*)latlng point:(CGPoint)point {

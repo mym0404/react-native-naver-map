@@ -13,6 +13,10 @@ class NaverMapCameraChangeEvent(
   private val tilt: Double,
   private val bearing: Double,
   private val reason: Int,
+  private val regionLatitude: Double,
+  private val regionLongitude: Double,
+  private val regionLatitudeDelta: Double,
+  private val regionLongitudeDelta: Double,
 ) : Event<NaverMapCameraChangeEvent>(surfaceId, viewId) {
   override fun getEventName(): String = EVENT_NAME
 
@@ -28,6 +32,10 @@ class NaverMapCameraChangeEvent(
       putDouble("tilt", tilt)
       putDouble("bearing", bearing)
       putInt("reason", reason)
+      putDouble("regionLatitude", regionLatitude)
+      putDouble("regionLongitude", regionLongitude)
+      putDouble("regionLatitudeDelta", regionLatitudeDelta)
+      putDouble("regionLongitudeDelta", regionLongitudeDelta)
     }
 
   companion object {

@@ -328,14 +328,18 @@ export default function App() {
           // isExtentBoundedInKorea
           onInitialized={() => console.log('initialized!')}
           // onOptionChanged={() => console.log('Option Changed!')}
-          // onCameraChanged={(args) =>
-          //   console.log(`Camera Changed: ${formatJson(args)}`)
-          // }
+          onCameraChanged={({ region, latitude, longitude }) => {
+            console.log(`Region: ${formatJson(region)}`);
+            console.log(`Camera: ${formatJson({ latitude, longitude })}`);
+          }}
           onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
           clusters={clusters}
           // locationOverlay={{
           //   isVisible: true,
           //   position: Cameras.Jeju,
+          //   circleRadius: 100,
+          //   circleOutlineWidth: 10,
+          //   circleOutlineColor: 'blue',
           // }}
           onTapClusterLeaf={({ markerIdentifier }) => {
             console.log('onTapClusterLeaf', markerIdentifier);
