@@ -25,6 +25,9 @@
 
 ### 1. New Architecture Fabric
 
+> [!IMPORTANT]
+> `2.x`버전부턴 New Architecture에서만 동작합니다. Fabric을 활성화하지 않은 프로젝트에서는 `1.x` 버전을 사용하시면 됩니다. 자잘한 기능 말고 차이나는 부분은 없고 `1.x`버전에서도 충분히 필요한 기능들로 지도앱을 구축할 수 있습니다.
+
 ### 2. Detailed API Documentation
 
 거의 모든 타입이 설명되어 있는 [API Docs](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)를 구성했습니다.
