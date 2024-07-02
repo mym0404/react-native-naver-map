@@ -94,14 +94,14 @@ body:
       label: Relevant log output
       description: Please copy and paste any relevant log output, if any.
       render: shell
-  #  - type: input
-  #    id: sample
-  #    attributes:
-  #      label: Reproducible Sample Repository
-  #      description: Repository url of reproducible sample
-  #      placeholder: ex. https://github.com/user/repo
-  #    validations:
-  #      required: true
+  - type: input
+    id: sample
+    attributes:
+      label: Reproducible Sample Repository
+      description: Repository url of reproducible sample
+      placeholder: ex. https://github.com/user/repo
+    validations:
+      required: true
   - type: checkboxes
     id: terms
     attributes:
