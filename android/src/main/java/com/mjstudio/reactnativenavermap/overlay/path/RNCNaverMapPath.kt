@@ -10,8 +10,9 @@ import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.overlay.PathOverlay
 
 @SuppressLint("ViewConstructor")
-class RNCNaverMapPath(val reactContext: ThemedReactContext) :
-  RNCNaverMapImageRenderableOverlay<PathOverlay>(reactContext) {
+class RNCNaverMapPath(
+  val reactContext: ThemedReactContext,
+) : RNCNaverMapImageRenderableOverlay<PathOverlay>(reactContext) {
   override val overlay: PathOverlay by lazy {
     PathOverlay().apply {
       setOnClickListener {

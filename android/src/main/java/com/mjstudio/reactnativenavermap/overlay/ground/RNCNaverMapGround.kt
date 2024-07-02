@@ -12,8 +12,9 @@ import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.MarkerIcons
 
 @SuppressLint("ViewConstructor")
-class RNCNaverMapGround(private val reactContext: ThemedReactContext) :
-  RNCNaverMapImageRenderableOverlay<GroundOverlay>(reactContext) {
+class RNCNaverMapGround(
+  private val reactContext: ThemedReactContext,
+) : RNCNaverMapImageRenderableOverlay<GroundOverlay>(reactContext) {
   private var isImageSet = false
 
   override val overlay: GroundOverlay by lazy {

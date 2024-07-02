@@ -6,7 +6,9 @@ import com.facebook.drawee.view.DraweeHolder
 import com.facebook.react.bridge.ReadableMap
 import com.naver.maps.map.overlay.OverlayImage
 
-internal class RNCNaverMapTaggedImageRenderer(private val context: Context) {
+internal class RNCNaverMapTaggedImageRenderer(
+  private val context: Context,
+) {
   private var imageHolder: DraweeHolder<GenericDraweeHierarchy>? = null
   private var lastImage: ReadableMap? = null
 

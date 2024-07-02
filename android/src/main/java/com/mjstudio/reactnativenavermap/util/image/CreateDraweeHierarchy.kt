@@ -5,9 +5,8 @@ import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.generic.GenericDraweeHierarchy
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 
-internal fun createDraweeHierarchy(resources: Resources): GenericDraweeHierarchy {
-  return GenericDraweeHierarchyBuilder(resources)
+internal fun createDraweeHierarchy(resources: Resources): GenericDraweeHierarchy =
+  GenericDraweeHierarchyBuilder(resources)
     .setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
     .setFadeDuration(0)
     .build()
-}

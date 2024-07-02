@@ -13,13 +13,9 @@ import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.PathOverlay
 
 class RNCNaverMapPathManager : RNCNaverMapPathManagerSpec<RNCNaverMapPath>() {
-  override fun getName(): String {
-    return NAME
-  }
+  override fun getName(): String = NAME
 
-  override fun createViewInstance(context: ThemedReactContext): RNCNaverMapPath {
-    return RNCNaverMapPath(context)
-  }
+  override fun createViewInstance(context: ThemedReactContext): RNCNaverMapPath = RNCNaverMapPath(context)
 
   override fun onDropViewInstance(view: RNCNaverMapPath) {
     super.onDropViewInstance(view)

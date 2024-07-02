@@ -28,8 +28,7 @@ import com.naver.maps.map.util.FusedLocationSource
 class RNCNaverMapView(
   private val reactContext: ThemedReactContext,
   private val mapOptions: NaverMapOptions,
-) :
-  MapView(reactContext, mapOptions) {
+) : MapView(reactContext, mapOptions) {
   private var attacherGroup: ViewAttacherGroup? = null
   private var map: NaverMap? = null
   val overlays = mutableListOf<RNCNaverMapOverlay<*>>()

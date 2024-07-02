@@ -9,8 +9,9 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.CircleOverlay
 
 @SuppressLint("ViewConstructor")
-class RNCNaverMapCircle(private val reactContext: ThemedReactContext) :
-  RNCNaverMapOverlay<CircleOverlay>(reactContext) {
+class RNCNaverMapCircle(
+  private val reactContext: ThemedReactContext,
+) : RNCNaverMapOverlay<CircleOverlay>(reactContext) {
   override val overlay: CircleOverlay by lazy {
     CircleOverlay().apply {
       setOnClickListener {

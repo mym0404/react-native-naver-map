@@ -12,13 +12,9 @@ import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.ArrowheadPathOverlay
 
 class RNCNaverMapArrowheadPathManager : RNCNaverMapArrowheadPathManagerSpec<RNCNaverMapArrowheadPath>() {
-  override fun getName(): String {
-    return NAME
-  }
+  override fun getName(): String = NAME
 
-  override fun createViewInstance(context: ThemedReactContext): RNCNaverMapArrowheadPath {
-    return RNCNaverMapArrowheadPath(context)
-  }
+  override fun createViewInstance(context: ThemedReactContext): RNCNaverMapArrowheadPath = RNCNaverMapArrowheadPath(context)
 
   override fun onDropViewInstance(view: RNCNaverMapArrowheadPath) {
     super.onDropViewInstance(view)

@@ -11,13 +11,9 @@ import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.GroundOverlay
 
 class RNCNaverMapGroundManager : RNCNaverMapGroundManagerSpec<RNCNaverMapGround>() {
-  override fun getName(): String {
-    return NAME
-  }
+  override fun getName(): String = NAME
 
-  override fun createViewInstance(context: ThemedReactContext): RNCNaverMapGround {
-    return RNCNaverMapGround(context)
-  }
+  override fun createViewInstance(context: ThemedReactContext): RNCNaverMapGround = RNCNaverMapGround(context)
 
   override fun onDropViewInstance(view: RNCNaverMapGround) {
     super.onDropViewInstance(view)
