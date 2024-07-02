@@ -15,46 +15,45 @@ using namespace facebook::react;
 #endif
 
 @implementation RNCNaverMapMarker {
-  void (^_imageCanceller)(void);
+  RNCNaverMapImageCanceller _imageCanceller;
   BOOL _isImageSetFromSubview;
 }
 
-- (RCTBridge*)bridge {
-#ifdef RCT_NEW_ARCH_ENABLED
-  return [RCTBridge currentBridge];
-#else
-  return _bridge;
-#endif
++ (bool)shouldBeRecycled {
+  return NO;
 }
 
-//+ (void)initialize {
-//  _overlayImageHolder = [[NSMutableDictionary alloc] init];
-//}
+- (RCTBridge*)bridge {
+  return [RCTBridge currentBridge];
+}
+
+- (std::shared_ptr<RNCNaverMapMarkerEventEmitter const>)emitter {
+  if (!_eventEmitter)
+    return nullptr;
+  return std::static_pointer_cast<RNCNaverMapMarkerEventEmitter const>(_eventEmitter);
+}
 
 - (instancetype)init {
   if ((self = [super init])) {
     _inner = [NMFMarker new];
     _isImageSetFromSubview = NO;
 
-#ifdef RCT_NEW_ARCH_ENABLED
-    self.onTapOverlay = [self](NSDictionary* dict) {
-      if (_eventEmitter == nil) {
-        return;
-      }
-
-      auto emitter = std::static_pointer_cast<RNCNaverMapMarkerEventEmitter const>(_eventEmitter);
-      emitter->onTapOverlay({});
-    };
-#endif
-
     _inner.touchHandler = [self](NMFOverlay* overlay) -> BOOL {
-      // In New Arch, this always returns YES at now. should be fixed.
-      if (self.onTapOverlay) {
-        self.onTapOverlay(@{});
+      if (self.emitter) {
+        self.emitter->onTapOverlay({});
         return YES;
       }
       return NO;
     };
+  }
+
+  return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame {
+  if (self = [super initWithFrame:frame]) {
+    static const auto defaultProps = std::make_shared<const RNCNaverMapMarkerProps>();
+    _props = defaultProps;
   }
 
   return self;
@@ -67,8 +66,40 @@ using namespace facebook::react;
   }
 }
 
+- (void)setImage:(facebook::react::RNCNaverMapMarkerImageStruct)image {
+  _image = image;
+  // If subview exists for custom marker, then skip image
+  if (_isImageSetFromSubview) {
+    return;
+  }
+  _inner.alpha = 0;
+
+  // Cancel pending request
+  if (_imageCanceller) {
+    _imageCanceller();
+    _imageCanceller = nil;
+  }
+
+  _imageCanceller = nmap::getImage([self bridge], image, ^(NMFOverlayImage* _Nullable image) {
+    dispatch_async(dispatch_get_main_queue(), [self, image]() {
+      self.inner.alpha = 1;
+      self.inner.iconImage = image;
+      self->_imageCanceller = nil;
+    });
+  });
+}
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-missing-super-calls"
+- (void)mountChildComponentView:(UIView<RCTComponentViewProtocol>*)childComponentView
+                          index:(NSInteger)index {
+  [self insertReactSubview:childComponentView atIndex:index];
+}
+- (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol>*)childComponentView
+                            index:(NSInteger)index {
+  [self removeReactSubview:childComponentView];
+}
+
 - (void)insertReactSubview:(UIView*)subview atIndex:(NSInteger)atIndex {
   if (_imageCanceller) {
     _imageCanceller();
@@ -102,182 +133,80 @@ using namespace facebook::react;
 
 #pragma clang diagnostic pop
 
-NMAP_SETTER(C, c, oord, inner.position, NMGLatLng*)
-NMAP_SETTER(Z, z, IndexValue, inner.zIndex, NSInteger)
-- (void)setGlobalZIndexValue:(NSInteger)globalZIndexValue {
-  _globalZIndexValue = globalZIndexValue;
-  if (isValidNumber(globalZIndexValue))
-    self.inner.globalZIndex = globalZIndexValue;
-}
-NMAP_SETTER(I, i, sHidden, inner.hidden, BOOL)
-NMAP_INNER_SETTER(M, m, inZoom, double)
-NMAP_INNER_SETTER(M, m, axZoom, double)
-NMAP_INNER_SETTER(I, i, sMinZoomInclusive, BOOL)
-NMAP_INNER_SETTER(I, i, sMaxZoomInclusive, BOOL)
-
-NMAP_INNER_SETTER(A, a, nchor, CGPoint)
-NMAP_INNER_SETTER(A, a, ngle, double)
-NMAP_SETTER(I, i, sFlatEnabled, inner.flat, BOOL)
-NMAP_SETTER(I, i, sIconPerspectiveEnabled, inner.iconPerspectiveEnabled, BOOL)
-NMAP_INNER_SETTER(A, a, lpha, double)
-NMAP_INNER_SETTER(I, i, sHideCollidedSymbols, BOOL)
-NMAP_INNER_SETTER(I, i, sHideCollidedMarkers, BOOL)
-NMAP_INNER_SETTER(I, i, sHideCollidedCaptions, BOOL)
-NMAP_INNER_SETTER(I, i, sForceShowIcon, BOOL)
-- (void)setTintColor:(NSInteger)tintColor {
-  _tintColor = tintColor;
-  _inner.iconTintColor = [Utils intToColor:tintColor];
-}
-
-- (void)setWidth:(double)width {
-  _width = width;
-  _inner.width = getDoubleOrDefault(width, NMF_MARKER_SIZE_AUTO);
-}
-
-- (void)setHeight:(double)height {
-  _height = height;
-  _inner.height = getDoubleOrDefault(height, NMF_MARKER_SIZE_AUTO);
-}
-
-- (void)setImage:(NSDictionary*)image {
-  _image = image;
-  // If subview exists for custom marker, then skip image
-  if (_isImageSetFromSubview) {
-    return;
-  }
-  _inner.alpha = 0;
-
-  // Cancel pending request
-  if (_imageCanceller) {
-    _imageCanceller();
-    _imageCanceller = nil;
-  }
-
-  _imageCanceller = [Utils getImage:[self bridge]
-                               json:image
-                           callback:^(NMFOverlayImage* image) {
-                             dispatch_async(dispatch_get_main_queue(), [self, image]() {
-                               self.inner.alpha = 1;
-                               self.inner.iconImage = image;
-                             });
-                           }];
-}
-
-- (void)setCaption:(NSDictionary*)value {
-  if ([_caption[@"key"] isEqualToString:value[@"key"]]) {
-    return;
-  }
-  _caption = value;
-
-  _inner.captionText = value[@"text"];
-  _inner.captionRequestedWidth = [value[@"requestedWidth"] floatValue];
-  _inner.captionAligns = @[ [RCTConvert NMFAlignType:value[@"align"]] ];
-  _inner.captionOffset = [value[@"offset"] floatValue];
-  _inner.captionColor = [Utils intToColor:[value[@"color"] intValue]];
-  _inner.captionHaloColor = [Utils intToColor:[value[@"haloColor"] intValue]];
-  _inner.captionTextSize = [value[@"textSize"] floatValue];
-  _inner.captionMinZoom = [value[@"minZoom"] doubleValue];
-  _inner.captionMaxZoom = [value[@"maxZoom"] doubleValue];
-}
-- (void)setSubCaption:(NSDictionary*)value {
-  if ([_subCaption[@"key"] isEqualToString:value[@"key"]]) {
-    return;
-  }
-  _subCaption = value;
-
-  _inner.subCaptionText = value[@"text"];
-  _inner.subCaptionRequestedWidth = [value[@"requestedWidth"] floatValue];
-  _inner.subCaptionColor = [Utils intToColor:[value[@"color"] intValue]];
-  _inner.subCaptionHaloColor = [Utils intToColor:[value[@"haloColor"] intValue]];
-  _inner.subCaptionTextSize = [value[@"textSize"] floatValue];
-  _inner.subCaptionMinZoom = [value[@"minZoom"] doubleValue];
-  _inner.subCaptionMaxZoom = [value[@"maxZoom"] doubleValue];
-}
-
-#ifdef RCT_NEW_ARCH_ENABLED
-
-+ (ComponentDescriptorProvider)componentDescriptorProvider {
-  return concreteComponentDescriptorProvider<RNCNaverMapMarkerComponentDescriptor>();
-}
-
-- (instancetype)initWithFrame:(CGRect)frame {
-  if (self = [super initWithFrame:frame]) {
-    static const auto defaultProps = std::make_shared<const RNCNaverMapMarkerProps>();
-    _props = defaultProps;
-  }
-
-  return self;
-}
-
-- (void)mountChildComponentView:(UIView<RCTComponentViewProtocol>*)childComponentView
-                          index:(NSInteger)index {
-  [self insertReactSubview:childComponentView atIndex:index];
-}
-- (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol>*)childComponentView
-                            index:(NSInteger)index {
-  [self removeReactSubview:childComponentView];
-}
-
 - (void)updateProps:(Props::Shared const&)props oldProps:(Props::Shared const&)oldProps {
   const auto& prev = *std::static_pointer_cast<RNCNaverMapMarkerProps const>(_props);
   const auto& next = *std::static_pointer_cast<RNCNaverMapMarkerProps const>(props);
 
-  if (prev.coord.latitude != next.coord.latitude || prev.coord.longitude != next.coord.longitude) {
-    self.coord = NMGLatLngMake(next.coord.latitude, next.coord.longitude);
-  }
+  if (!nmap::isCoordEqual(prev.coord, next.coord))
+    _inner.position = nmap::createLatLng(next.coord);
 
-  NMAP_REMAP_SELF_PROP(zIndexValue);
-  NMAP_REMAP_SELF_PROP(globalZIndexValue);
-  NMAP_REMAP_SELF_PROP(isHidden);
-  NMAP_REMAP_SELF_PROP(minZoom);
-  NMAP_REMAP_SELF_PROP(maxZoom);
-  NMAP_REMAP_SELF_PROP(isMinZoomInclusive);
-  NMAP_REMAP_SELF_PROP(isMaxZoomInclusive);
+  if (prev.zIndexValue != next.zIndexValue)
+    _inner.zIndex = next.zIndexValue;
+  if (prev.globalZIndexValue != next.globalZIndexValue && isValidNumber(next.globalZIndexValue))
+    _inner.globalZIndex = next.globalZIndexValue;
+  if (prev.isHidden != next.isHidden)
+    _inner.hidden = next.isHidden;
+  if (prev.minZoom != next.minZoom)
+    _inner.minZoom = next.minZoom;
+  if (prev.maxZoom != next.maxZoom)
+    _inner.maxZoom = next.maxZoom;
+  if (prev.isMinZoomInclusive != next.isMinZoomInclusive)
+    _inner.isMinZoomInclusive = next.isMinZoomInclusive;
+  if (prev.isMaxZoomInclusive != next.isMaxZoomInclusive)
+    _inner.isMaxZoomInclusive = next.isMaxZoomInclusive;
 
-  NMAP_REMAP_SELF_PROP(width);
-  NMAP_REMAP_SELF_PROP(height);
+  if (prev.width != next.width && isValidNumber(next.width))
+    _inner.width = next.width;
+  if (prev.height != next.height && isValidNumber(next.height))
+    _inner.height = next.height;
 
-  if (prev.anchor.x != next.anchor.x || prev.anchor.y != next.anchor.y) {
-    self.anchor = CGPointMake(next.anchor.x, next.anchor.y);
-  }
-  NMAP_REMAP_SELF_PROP(angle);
-  NMAP_REMAP_SELF_PROP(isFlatEnabled);
-  NMAP_REMAP_SELF_PROP(isIconPerspectiveEnabled);
-  NMAP_REMAP_SELF_PROP(alpha);
-  NMAP_REMAP_SELF_PROP(isHideCollidedSymbols);
-  NMAP_REMAP_SELF_PROP(isHideCollidedMarkers);
-  NMAP_REMAP_SELF_PROP(isHideCollidedCaptions);
-  NMAP_REMAP_SELF_PROP(isForceShowIcon);
-  NMAP_REMAP_SELF_PROP(tintColor);
+  if (!nmap::isAnchorEqual(prev.anchor, next.anchor))
+    _inner.anchor = nmap::createAnchorCGPoint(next.anchor);
 
-  NMAP_REMAP_IMAGE_PROP(image, self.image)
+  if (prev.angle != next.angle)
+    _inner.angle = next.angle;
+  if (prev.isFlatEnabled != next.isFlatEnabled)
+    [_inner setFlat:next.isFlatEnabled];
+  if (prev.isIconPerspectiveEnabled != next.isIconPerspectiveEnabled)
+    [_inner setIconPerspectiveEnabled:next.isIconPerspectiveEnabled];
+  if (prev.alpha != next.alpha)
+    [_inner setAlpha:next.alpha];
+  if (prev.isHideCollidedSymbols != next.isHideCollidedSymbols)
+    [_inner setIsHideCollidedSymbols:next.isHideCollidedSymbols];
+  if (prev.isHideCollidedMarkers != next.isHideCollidedMarkers)
+    [_inner setIsHideCollidedMarkers:next.isHideCollidedMarkers];
+  if (prev.isHideCollidedCaptions != next.isHideCollidedCaptions)
+    [_inner setIsHideCollidedCaptions:next.isHideCollidedCaptions];
+  if (prev.isForceShowIcon != next.isForceShowIcon)
+    [_inner setIsForceShowIcon:next.isForceShowIcon];
+  if (prev.tintColor != next.tintColor)
+    [_inner setIconTintColor:nmap::intToColor(next.tintColor)];
+
+  if (!nmap::isImageEqual(prev.image, next.image))
+    self.image = next.image;
 
   if (next.caption.key != prev.caption.key) {
-    self.caption = @{
-      @"key" : getNsStr(next.caption.key),
-      @"text" : getNsStr(next.caption.text),
-      @"requestedWidth" : @(next.caption.requestedWidth),
-      @"align" : @(next.caption.align),
-      @"offset" : @(next.caption.offset),
-      @"color" : @(next.caption.color),
-      @"haloColor" : @(next.caption.haloColor),
-      @"textSize" : @(next.caption.textSize),
-      @"minZoom" : @(next.caption.minZoom),
-      @"maxZoom" : @(next.caption.maxZoom)
-    };
+    auto caption = next.caption;
+    _inner.captionText = getNsStr(caption.text);
+    _inner.captionRequestedWidth = caption.requestedWidth;
+    _inner.captionAligns = @[ nmap::createAlign(caption.align) ];
+    _inner.captionOffset = caption.offset;
+    _inner.captionColor = nmap::intToColor(caption.color);
+    _inner.captionHaloColor = nmap::intToColor(caption.haloColor);
+    _inner.captionTextSize = caption.textSize;
+    _inner.captionMinZoom = caption.minZoom;
+    _inner.captionMaxZoom = caption.maxZoom;
   }
 
   if (next.subCaption.key != prev.subCaption.key) {
-    self.subCaption = @{
-      @"key" : getNsStr(next.subCaption.key),
-      @"text" : getNsStr(next.subCaption.text),
-      @"requestedWidth" : @(next.subCaption.requestedWidth),
-      @"color" : @(next.subCaption.color),
-      @"haloColor" : @(next.subCaption.haloColor),
-      @"textSize" : @(next.subCaption.textSize),
-      @"minZoom" : @(next.subCaption.minZoom),
-      @"maxZoom" : @(next.subCaption.maxZoom)
-    };
+    auto caption = next.subCaption;
+    _inner.subCaptionText = getNsStr(caption.text);
+    _inner.subCaptionRequestedWidth = caption.requestedWidth;
+    _inner.subCaptionColor = nmap::intToColor(caption.color);
+    _inner.subCaptionHaloColor = nmap::intToColor(caption.haloColor);
+    _inner.subCaptionTextSize = caption.textSize;
+    _inner.subCaptionMinZoom = caption.minZoom;
+    _inner.subCaptionMaxZoom = caption.maxZoom;
   }
 
   [super updateProps:props oldProps:oldProps];
@@ -287,6 +216,8 @@ Class<RCTComponentViewProtocol> RNCNaverMapMarkerCls(void) {
   return RNCNaverMapMarker.class;
 }
 
-#endif
++ (ComponentDescriptorProvider)componentDescriptorProvider {
+  return concreteComponentDescriptorProvider<RNCNaverMapMarkerComponentDescriptor>();
+}
 
 @end

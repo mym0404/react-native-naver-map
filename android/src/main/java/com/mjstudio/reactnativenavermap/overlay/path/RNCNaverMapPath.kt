@@ -3,8 +3,8 @@ package com.mjstudio.reactnativenavermap.overlay.path
 import android.annotation.SuppressLint
 import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
-import com.mjstudio.reactnativenavermap.util.RNCNaverMapImageRenderableOverlay
 import com.mjstudio.reactnativenavermap.util.emitEvent
+import com.mjstudio.reactnativenavermap.util.image.RNCNaverMapImageRenderableOverlay
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.overlay.PathOverlay

@@ -56,7 +56,25 @@ export type NativeClusterProp = {
 export type NativeClustersProp = Readonly<{
   key: string;
   clusters: ReadonlyArray<NativeClusterProp>;
+  isLeafTapCallbackExist: boolean;
 }>;
+export type NativeLocationOverlayProp = {
+  isVisible?: boolean;
+  position?: Coord;
+  bearing?: Double;
+  image?: NativeImageProp;
+  imageWidth?: Double;
+  imageHeight?: Double;
+  anchor?: Readonly<{ x: Double; y: Double }>;
+  subImage?: NativeImageProp;
+  subImageWidth?: Double;
+  subImageHeight?: Double;
+  subAnchor?: Readonly<{ x: Double; y: Double }>;
+  circleRadius?: Double;
+  circleColor?: Int32;
+  circleOutlineWidth?: Double;
+  circleOutlineColor?: Int32;
+};
 
 ////////////////////
 
@@ -126,6 +144,7 @@ interface Props extends ViewProps {
 
   clusters?: NativeClustersProp;
   fpsLimit?: Int32;
+  locationOverlay?: Readonly<NativeLocationOverlayProp>;
 
   onInitialized?: DirectEventHandler<Readonly<{}>>;
   onOptionChanged?: DirectEventHandler<Readonly<{}>>;
@@ -137,6 +156,10 @@ interface Props extends ViewProps {
       tilt: Double;
       bearing: Double;
       reason: Int32 /* CameraChangeReason */;
+      regionLatitude: Double;
+      regionLongitude: Double;
+      regionLatitudeDelta: Double;
+      regionLongitudeDelta: Double;
     }>
   >;
   onTapMap?: DirectEventHandler<
@@ -147,6 +170,7 @@ interface Props extends ViewProps {
       y: Double;
     }>
   >;
+  onTapClusterLeaf?: DirectEventHandler<Readonly<{ markerIdentifier: string }>>;
 
   onScreenToCoordinate?: DirectEventHandler<
     Readonly<{ isValid: boolean; latitude: Double; longitude: Double }>

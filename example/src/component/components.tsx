@@ -63,8 +63,8 @@ export const Range = ({
   max,
   min,
 }: {
-  value: number;
-  onChange: (value: number) => void;
+  value?: number;
+  onChange?: (value: number) => void;
   text: string;
   min?: number;
   max?: number;

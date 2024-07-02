@@ -34,6 +34,7 @@ import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
 import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
 import type { ClusterMarkerProp } from '../types/ClusterMarkerProp';
 import hash from 'object-hash';
+import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 
 /**
  * @category Hell
@@ -390,6 +391,24 @@ export interface NaverMapViewProps extends ViewProps {
    */
   fpsLimit?: number;
 
+  // locationOverlay?: {
+  //   isVisible?: boolean;
+  //   position?: Coord;
+  //   bearing?: Double;
+  //   image?: MarkerImageProp;
+  //   imageWidth?: Double;
+  //   imageHeight?: Double;
+  //   anchor?: Readonly<{ x: Double; y: Double }>;
+  //   subImage?: MarkerImageProp;
+  //   subImageWidth?: Double;
+  //   subImageHeight?: Double;
+  //   subAnchor?: Readonly<{ x: Double; y: Double }>;
+  //   circleRadius?: Double;
+  //   circleColor?: ColorValue;
+  //   circleOutlineWidth?: Double;
+  //   circleOutlineColor?: ColorValue;
+  // };
+
   /**
    * 지도 객체가 초기화가 완료된 뒤에 호출됩니다.
    *
@@ -413,6 +432,8 @@ export interface NaverMapViewProps extends ViewProps {
    * reason은 이벤트를 발생시킨 카메라 이동의 원인입니다.
    * reason을 이용해 카메라 이동의 원인을 지정할 수 있으며, 이벤트 리스너 내에서 이 값을 이용해 어떤 원인에 의해 발생한 이벤트인지 판단할 수 있습니다.
    *
+   * latitude, longitude, zoom, tilt, bearing은 카메라와 관련된 속성이며, 카메라 변경 이벤트에 대한 Region을 이벤트로 받으려면 region인자를 사용할 수 있습니다.
+   *
    * @see {@link CameraChangeReason}
    * @see {@link Camera}
    * @event
@@ -420,6 +441,7 @@ export interface NaverMapViewProps extends ViewProps {
   onCameraChanged?: (
     params: Camera & {
       reason: CameraChangeReason;
+      region: Region;
     }
   ) => void;
 
@@ -430,6 +452,13 @@ export interface NaverMapViewProps extends ViewProps {
    * @event
    */
   onTapMap?: (params: Coord & { x: number; y: number }) => void;
+
+  /**
+   * 클러스터 Leaf 마커를 클릭했을 때 발생하는 이벤트입니다.
+   *
+   * @event
+   */
+  onTapClusterLeaf?: (params: { markerIdentifier: string }) => void;
 }
 
 export interface NaverMapViewRef {
@@ -588,14 +617,19 @@ export const NaverMapView = forwardRef(
       locale,
       clusters,
       fpsLimit = 0,
+      // locationOverlay,
+      onTapClusterLeaf,
 
       ...rest
     }: NaverMapViewProps,
     ref: ForwardedRef<NaverMapViewRef>
   ) => {
+    const innerRef = useRef<any>(null);
+
+    const isLeafTapCallbackExist: boolean = !!onTapClusterLeaf;
     const _clusters = useMemo<NativeClustersProp>(() => {
       if (!clusters || clusters.length === 0) {
-        return { key: '', clusters: [] };
+        return { key: '', clusters: [], isLeafTapCallbackExist };
       }
       let propKey = '';
       const ret: NativeClusterProp[] = [];
@@ -630,15 +664,66 @@ export const NaverMapView = forwardRef(
       return {
         key: hash(propKey),
         clusters: ret,
+        isLeafTapCallbackExist,
       };
-    }, [clusters]);
+    }, [clusters, isLeafTapCallbackExist]);
 
-    const innerRef = useRef<any>(null);
+    // const _locationOverlay: NativeLocationOverlayProp | undefined =
+    //   useMemo(() => {
+    //     if (!locationOverlay)
+    //       return Platform.OS === 'ios'
+    //         ? { circleOutlineWidth: Const.NULL_NUMBER }
+    //         : undefined;
+    //     return {
+    //       isVisible: locationOverlay.isVisible,
+    //       position: locationOverlay.position,
+    //       bearing: locationOverlay.bearing,
+    //       image: locationOverlay.image
+    //         ? convertJsImagePropToNativeProp(locationOverlay.image)
+    //         : undefined,
+    //       imageWidth: locationOverlay.imageWidth,
+    //       imageHeight: locationOverlay.imageHeight,
+    //       anchor: locationOverlay.anchor,
+    //       subImage: locationOverlay.subImage
+    //         ? convertJsImagePropToNativeProp(locationOverlay.subImage)
+    //         : undefined,
+    //       subImageWidth: locationOverlay.subImageWidth,
+    //       subImageHeight: locationOverlay.subImageHeight,
+    //       subAnchor: locationOverlay.subAnchor,
+    //       circleRadius: locationOverlay.circleRadius,
+    //       circleColor: locationOverlay.circleColor
+    //         ? (processColor(locationOverlay.circleColor) as number)
+    //         : undefined,
+    //       circleOutlineWidth: locationOverlay.circleOutlineWidth,
+    //       circleOutlineColor: locationOverlay.circleOutlineColor
+    //         ? (processColor(locationOverlay.circleOutlineColor) as number)
+    //         : undefined,
+    //     } satisfies NativeLocationOverlayProp;
+    //   }, [locationOverlay]);
 
     const onCameraChanged = useStableCallback(
       ({
-        nativeEvent: { bearing, latitude, longitude, reason, tilt, zoom },
-      }: NativeSyntheticEvent<Camera & { reason: number }>) => {
+        nativeEvent: {
+          bearing,
+          latitude,
+          longitude,
+          reason,
+          tilt,
+          zoom,
+          regionLatitude,
+          regionLatitudeDelta,
+          regionLongitude,
+          regionLongitudeDelta,
+        },
+      }: NativeSyntheticEvent<
+        Camera & {
+          reason: number;
+          regionLatitude: Double;
+          regionLongitude: Double;
+          regionLatitudeDelta: Double;
+          regionLongitudeDelta: Double;
+        }
+      >) => {
         onCameraChangedProp?.({
           zoom,
           tilt,
@@ -646,6 +731,12 @@ export const NaverMapView = forwardRef(
           latitude,
           longitude,
           bearing,
+          region: {
+            latitude: regionLatitude,
+            longitude: regionLongitude,
+            latitudeDelta: regionLatitudeDelta,
+            longitudeDelta: regionLongitudeDelta,
+          },
         });
       }
     );
@@ -925,6 +1016,13 @@ export const NaverMapView = forwardRef(
         onScreenToCoordinate={onScreenToCoordinate}
         onCoordinateToScreen={onCoordinateToScreen}
         fpsLimit={fpsLimit}
+        // locationOverlay={_locationOverlay}
+        onTapClusterLeaf={
+          onTapClusterLeaf
+            ? ({ nativeEvent: { markerIdentifier } }) =>
+                onTapClusterLeaf({ markerIdentifier })
+            : undefined
+        }
         {...rest}
       />
     );

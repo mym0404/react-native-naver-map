@@ -5,10 +5,9 @@
 //  Created by mj on 5/1/24.
 //
 
+#import "ColorUtil.h"
 #import "FnUtil.h"
 #import "MacroUtil.h"
-#import "RCTConvert+NMFMapView.h"
-#import "Utils.h"
 #import <Foundation/Foundation.h>
 #import <NMapsMap/NMapsMap.h>
 #import <React/RCTImageLoader.h>
@@ -16,7 +15,6 @@
 #import <React/RCTView.h>
 #import <UIKit/UIKit.h>
 
-#ifdef RCT_NEW_ARCH_ENABLED
 #import "RCTFabricComponentsPlugins.h"
 #import <React/RCTViewComponentView.h>
 #import <react/renderer/components/RNCNaverMapSpec/ComponentDescriptors.h>
@@ -24,9 +22,6 @@
 #import <react/renderer/components/RNCNaverMapSpec/Props.h>
 #import <react/renderer/components/RNCNaverMapSpec/RCTComponentViewHelpers.h>
 @interface RNCNaverMapArrowheadPath : RCTViewComponentView
-#else
-@interface RNCNaverMapArrowheadPath : RCTView
-#endif
 
 @property(nonatomic, strong) NMFArrowheadPath* inner;
 

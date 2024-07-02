@@ -18,25 +18,19 @@ using namespace facebook::react;
 @implementation RNCNaverMapPolygon {
 }
 
+- (std::shared_ptr<RNCNaverMapPolygonEventEmitter const>)emitter {
+  if (!_eventEmitter)
+    return nullptr;
+  return std::static_pointer_cast<RNCNaverMapPolygonEventEmitter const>(_eventEmitter);
+}
+
 - (instancetype)init {
   if ((self = [super init])) {
     _inner = [NMFPolygonOverlay new];
 
-#ifdef RCT_NEW_ARCH_ENABLED
-    self.onTapOverlay = [self](NSDictionary* dict) {
-      if (_eventEmitter == nil) {
-        return;
-      }
-
-      auto emitter = std::static_pointer_cast<RNCNaverMapPolygonEventEmitter const>(_eventEmitter);
-      emitter->onTapOverlay({});
-    };
-#endif
-
     _inner.touchHandler = [self](NMFOverlay* overlay) -> BOOL {
-      // In New Arch, this always returns YES at now. should be fixed.
-      if (self.onTapOverlay) {
-        self.onTapOverlay(@{});
+      if (self.emitter) {
+        self.emitter->onTapOverlay({});
         return YES;
       }
       return NO;
@@ -44,61 +38,6 @@ using namespace facebook::react;
   }
 
   return self;
-}
-
-NMAP_SETTER(Z, z, IndexValue, inner.zIndex, NSInteger)
-- (void)setGlobalZIndexValue:(NSInteger)globalZIndexValue {
-  _globalZIndexValue = globalZIndexValue;
-  if (isValidNumber(globalZIndexValue))
-    self.inner.globalZIndex = globalZIndexValue;
-}
-NMAP_SETTER(I, i, sHidden, inner.hidden, BOOL)
-NMAP_INNER_SETTER(M, m, inZoom, double)
-NMAP_INNER_SETTER(M, m, axZoom, double)
-NMAP_INNER_SETTER(I, i, sMinZoomInclusive, BOOL)
-NMAP_INNER_SETTER(I, i, sMaxZoomInclusive, BOOL)
-
-- (void)setGeometries:(NSDictionary*)geometries {
-  _geometries = geometries;
-  NSDictionary* dic = [RCTConvert NSDictionary:geometries];
-
-  // process exterior ring
-  NSArray* exteriorRing = [RCTConvert NSArray:dic[@"coords"]];
-  NSUInteger size = exteriorRing.count;
-  NSMutableArray<NMGLatLng*>* points = [NSMutableArray arrayWithCapacity:size];
-  for (int i = 0; i < size; i++) {
-    [points addObject:[RCTConvert NMGLatLng:exteriorRing[i]]];
-  }
-  NMGLineString* exRing = [NMGLineString lineStringWithPoints:points];
-
-  // process interior rings
-  NSArray<NSArray*>* interiorRings = [RCTConvert NSArrayArray:dic[@"holes"]];
-  NSMutableArray<NMGLineString*>* inRings = [[NSMutableArray alloc] init];
-  for (NSArray* interiorRing in interiorRings) {
-    NSMutableArray<NMGLatLng*>* ring = [[NSMutableArray alloc] init];
-    for (id coord in interiorRing) {
-      [ring addObject:[RCTConvert NMGLatLng:coord]];
-    }
-    [inRings addObject:[NMGLineString lineStringWithPoints:ring]];
-  }
-
-  self.inner.polygon = [NMGPolygon polygonWithRing:exRing interiorRings:inRings];
-}
-
-- (void)setColor:(NSInteger)color {
-  _color = color;
-  _inner.fillColor = [Utils intToColor:color];
-}
-- (void)setOutlineColor:(NSInteger)outlineColor {
-  _outlineColor = outlineColor;
-  _inner.outlineColor = [Utils intToColor:outlineColor];
-}
-NMAP_INNER_SETTER(O, o, utlineWidth, double)
-
-#ifdef RCT_NEW_ARCH_ENABLED
-
-+ (ComponentDescriptorProvider)componentDescriptorProvider {
-  return concreteComponentDescriptorProvider<RNCNaverMapPolygonComponentDescriptor>();
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -114,16 +53,27 @@ NMAP_INNER_SETTER(O, o, utlineWidth, double)
   const auto& prev = *std::static_pointer_cast<RNCNaverMapPolygonProps const>(_props);
   const auto& next = *std::static_pointer_cast<RNCNaverMapPolygonProps const>(props);
 
-  NMAP_REMAP_SELF_PROP(zIndexValue);
-  NMAP_REMAP_SELF_PROP(globalZIndexValue);
-  NMAP_REMAP_SELF_PROP(isHidden);
-  NMAP_REMAP_SELF_PROP(minZoom);
-  NMAP_REMAP_SELF_PROP(maxZoom);
-  NMAP_REMAP_SELF_PROP(isMinZoomInclusive);
-  NMAP_REMAP_SELF_PROP(isMaxZoomInclusive);
-  NMAP_REMAP_SELF_PROP(outlineWidth);
-  NMAP_REMAP_SELF_PROP(color);
-  NMAP_REMAP_SELF_PROP(outlineColor);
+  if (prev.zIndexValue != next.zIndexValue)
+    _inner.zIndex = next.zIndexValue;
+  if (prev.globalZIndexValue != next.globalZIndexValue && isValidNumber(next.globalZIndexValue))
+    _inner.globalZIndex = next.globalZIndexValue;
+  if (prev.isHidden != next.isHidden)
+    _inner.hidden = next.isHidden;
+  if (prev.minZoom != next.minZoom)
+    _inner.minZoom = next.minZoom;
+  if (prev.maxZoom != next.maxZoom)
+    _inner.maxZoom = next.maxZoom;
+  if (prev.isMinZoomInclusive != next.isMinZoomInclusive)
+    _inner.isMinZoomInclusive = next.isMinZoomInclusive;
+  if (prev.isMaxZoomInclusive != next.isMaxZoomInclusive)
+    _inner.isMaxZoomInclusive = next.isMaxZoomInclusive;
+
+  if (prev.outlineWidth != next.outlineWidth)
+    _inner.outlineWidth = next.outlineWidth;
+  if (prev.color != next.color)
+    _inner.fillColor = nmap::intToColor(next.color);
+  if (prev.outlineColor != next.outlineColor)
+    _inner.outlineColor = nmap::intToColor(next.outlineColor);
 
   bool isSame = false;
   if (prev.geometries.coords.size() == next.geometries.coords.size() &&
@@ -155,30 +105,38 @@ NMAP_INNER_SETTER(O, o, utlineWidth, double)
   }
 
   if (!isSame) {
-    auto coords = [NSMutableArray arrayWithCapacity:next.geometries.coords.size()];
-    for (auto& coord : next.geometries.coords) {
-      [coords addObject:@{@"latitude" : @(coord.latitude), @"longitude" : @(coord.longitude)}];
-    }
+    const auto& coords = next.geometries.coords;
+    const auto& holes = next.geometries.holes;
 
-    auto holesArray = [NSMutableArray arrayWithCapacity:std::size(next.geometries.holes)];
-    for (auto& hole : next.geometries.holes) {
-      auto innerArr = [NSMutableArray arrayWithCapacity:std::size(hole)];
-      for (const auto& [lat, lng] : hole) {
-        [innerArr addObject:@{@"latitude" : @(lat), @"longitude" : @(lng)}];
+    // process exterior ring
+    NSMutableArray<NMGLatLng*>* points = [NSMutableArray arrayWithCapacity:coords.size()];
+    for (const auto& coord : coords) {
+      [points addObject:nmap::createLatLng(coord)];
+    }
+    NMGLineString* exRing = [NMGLineString lineStringWithPoints:points];
+
+    // process interior rings
+    NSMutableArray<NMGLineString*>* inRings = [[NSMutableArray alloc] init];
+    for (const auto& hole : holes) {
+      NSMutableArray<NMGLatLng*>* points = [[NSMutableArray alloc] init];
+      for (const auto& p : hole) {
+        [points addObject:nmap::createLatLng(p)];
       }
-      [holesArray addObject:innerArr];
+      [inRings addObject:[NMGLineString lineStringWithPoints:points]];
     }
 
-    self.geometries = @{@"coords" : coords, @"holes" : holesArray};
+    self.inner.polygon = [NMGPolygon polygonWithRing:exRing interiorRings:inRings];
   }
 
   [super updateProps:props oldProps:oldProps];
 }
 
++ (ComponentDescriptorProvider)componentDescriptorProvider {
+  return concreteComponentDescriptorProvider<RNCNaverMapPolygonComponentDescriptor>();
+}
+
 Class<RCTComponentViewProtocol> RNCNaverMapPolygonCls(void) {
   return RNCNaverMapPolygon.class;
 }
-
-#endif
 
 @end

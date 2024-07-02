@@ -5,7 +5,6 @@
 //  Created by mj on 5/1/24.
 //
 
-#import "RCTConvert+NMFMapView.h"
 #import "RNCNaverMapArrowheadPath.h"
 #import <Foundation/Foundation.h>
 #import <NMapsGeometry/NMapsGeometry.h>
@@ -23,10 +22,6 @@ RCT_EXPORT_MODULE()
 
 + (BOOL)requiresMainQueueSetup {
   return YES;
-}
-
-- (UIView*)view {
-  return [RNCNaverMapArrowheadPath new];
 }
 
 // MARK: - COMMON PROPS

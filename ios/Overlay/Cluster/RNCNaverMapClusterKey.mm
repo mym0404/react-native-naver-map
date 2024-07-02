@@ -9,36 +9,43 @@
 
 @implementation RNCNaverMapClusterKey
 
-+ (instancetype)markerKeyWithIdentifier:(NSString*)identifier
-                               position:(NMGLatLng*)position
-                                 bridge:(RCTBridge*)bridge
-                                  image:(NSDictionary*)image
-                                  width:(double)width
-                                 height:(double)height {
++ (instancetype)
+    markerKeyWithIdentifier:(NSString*)identifier
+                   position:(NMGLatLng*)position
+                      image:
+                          (facebook::react::RNCNaverMapViewClustersClustersMarkersImageStruct)image
+                      width:(double)width
+                     height:(double)height
+            onTapLeafMarker:(OnTapLeafMarker _Nullable)onTapLeafMarerk {
   return [[RNCNaverMapClusterKey alloc] initWithIdentifier:identifier
                                                   position:position
-                                                    bridge:bridge
                                                      image:image
                                                      width:width
-                                                    height:height];
+                                                    height:height
+                                           onTapLeafMarker:onTapLeafMarerk];
 }
 
-- (instancetype)initWithIdentifier:(nonnull NSString*)identifier
-                          position:(nonnull NMGLatLng*)position
-                            bridge:(RCTBridge*)bridge
-                             image:(nonnull NSDictionary*)image
-                             width:(double)width
-                            height:(double)height {
+- (instancetype)
+    initWithIdentifier:(nonnull NSString*)identifier
+              position:(nonnull NMGLatLng*)position
+                 image:(facebook::react::RNCNaverMapViewClustersClustersMarkersImageStruct)image
+                 width:(double)width
+                height:(double)height
+       onTapLeafMarker:(OnTapLeafMarker)onTapLeafMarker {
   if (self = [super init]) {
     _identifier = identifier;
     _position = position;
-    _bridge = bridge;
     _image = image;
     _width = width;
     _height = height;
+    _onTapLeafMarker = onTapLeafMarker;
   }
 
   return self;
+}
+
+- (void)dealloc {
+  _onTapLeafMarker = nil;
 }
 
 - (BOOL)isEqual:(id)object {
@@ -61,10 +68,10 @@
 - (nonnull id)copyWithZone:(NSZone*)zone {
   return [[[self class] alloc] initWithIdentifier:[self.identifier copy]
                                          position:[self.position copy]
-                                           bridge:self.bridge
-                                            image:[self.image copy]
+                                            image:self.image
                                             width:self.width
-                                           height:self.height];
+                                           height:self.height
+                                  onTapLeafMarker:self.onTapLeafMarker];
 }
 
 @end

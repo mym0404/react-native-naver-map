@@ -499,7 +499,6 @@ useEffect(() => {
 | [NaverMapCircleOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-4.html)        | ✅   | ✅       | 원 오버레이        |
 | [NaverMapPolylineOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-4.html)      | ✅   | ✅       | 폴리라인 오버레이     |
 | [NaverMapPolygonOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-4.html)       | ✅   | ✅       | 폴리곤           |
-| [NaverMapLocationOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-5.html)      | 📦  | 📦      | 커스텀 위치 오버레이   |
 | [NaverMapGroundOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-6.html)        | ✅  | ✅      | 지상 오버레이       |
 | [NaverMapPathOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-7.html)          | ✅   | ✅       | 경로 오버레이       |
 | [NaverMapMultipartPathOverlay](https://navermaps.github.io/android-map-sdk/guide-ko/5-7.html) | 📦  | 📦      | 여러개의 경로 오버레이  |
@@ -618,15 +617,6 @@ iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니
 | caption-fontFamily        | ❓                                                  | ❓       |
 | subcaption-fontFamily     | ❓                                                  | ❓       |
 
-## Supporting Table - Architecture
-
-|        | iOS | Android |
-|--------|-----|---------|
-| Bridge | ✅   | ✅       |
-| Fabric | ✅️  | ✅️      |
-
-> [!NOTE]
-> 2.x 버전은 이전 아키텍처를 지원하지 않습니다. 여전히 1.x버전으로 네이버 맵을 구동할 수 있으며 대부분의 기능이 갖추어져 있습니다. 현재 2.x은 성능적인 개선일 뿐입니다.
 
 ## Milestone
 

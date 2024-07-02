@@ -1,5 +1,3 @@
-// This guard prevent this file to be compiled in the old architecture.
-#ifdef RCT_NEW_ARCH_ENABLED
 #ifndef NaverMapViewNativeComponent_h
 #define NaverMapViewNativeComponent_h
 
@@ -11,20 +9,16 @@
 #import <react/renderer/components/RNCNaverMapSpec/Props.h>
 #import <react/renderer/components/RNCNaverMapSpec/RCTComponentViewHelpers.h>
 
+#import "EasingAnimationUtil.h"
 #import "FnUtil.h"
 #import "RCTFabricComponentsPlugins.h"
 #import "RNCNaverMapViewImpl.h"
 #import "Utils.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-/**
-   Extern Module only for New Architecture inherit `RCTViewComponentView`
- */
 @interface RNCNaverMapView : RCTViewComponentView
+
+- (std::shared_ptr<facebook::react::RNCNaverMapViewEventEmitter const>)emitter;
+
 @end
 
-NS_ASSUME_NONNULL_END
-
 #endif /* NaverMapViewNativeComponent_h */
-#endif /* RCT_NEW_ARCH_ENABLED */

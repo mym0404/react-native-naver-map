@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
-import com.mjstudio.reactnativenavermap.util.RNCNaverMapImageRenderableOverlay
 import com.mjstudio.reactnativenavermap.util.emitEvent
+import com.mjstudio.reactnativenavermap.util.image.RNCNaverMapImageRenderableOverlay
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.GroundOverlay
 import com.naver.maps.map.overlay.OverlayImage

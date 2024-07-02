@@ -5,9 +5,9 @@
 //  Created by mj on 4/6/24.
 //
 
+#import "ColorUtil.h"
 #import "FnUtil.h"
 #import "MacroUtil.h"
-#import "RCTConvert+NMFMapView.h"
 #import "Utils.h"
 #import <Foundation/Foundation.h>
 #import <NMapsMap/NMapsMap.h>
@@ -16,7 +16,6 @@
 #import <React/RCTView.h>
 #import <UIKit/UIKit.h>
 
-#ifdef RCT_NEW_ARCH_ENABLED
 #import "RCTFabricComponentsPlugins.h"
 #import <React/RCTViewComponentView.h>
 #import <react/renderer/components/RNCNaverMapSpec/ComponentDescriptors.h>
@@ -24,25 +23,5 @@
 #import <react/renderer/components/RNCNaverMapSpec/Props.h>
 #import <react/renderer/components/RNCNaverMapSpec/RCTComponentViewHelpers.h>
 @interface RNCNaverMapPolyline : RCTViewComponentView
-#else
-@interface RNCNaverMapPolyline : RCTView
-#endif
-
 @property(nonatomic, strong) NMFPolylineOverlay* inner;
-
-@property(nonatomic, assign) NSInteger zIndexValue;
-@property(nonatomic, assign) NSInteger globalZIndexValue;
-@property(nonatomic, assign) BOOL isHidden;
-@property(nonatomic, assign) double minZoom;
-@property(nonatomic, assign) double maxZoom;
-@property(nonatomic, assign) BOOL isMinZoomInclusive;
-@property(nonatomic, assign) BOOL isMaxZoomInclusive;
-@property(nonatomic, copy) RCTDirectEventBlock onTapOverlay;
-
-@property(nonatomic, copy) NSArray* coords;
-@property(nonatomic, assign) double width;
-@property(nonatomic, assign) NSInteger color;
-@property(nonatomic, copy) NSArray* pattern;
-@property(nonatomic, assign) NMFOverlayLineCap capType;
-@property(nonatomic, assign) NMFOverlayLineJoin joinType;
 @end

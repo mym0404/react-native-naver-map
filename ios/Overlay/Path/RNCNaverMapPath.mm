@@ -7,45 +7,32 @@
 
 #import "RNCNaverMapPath.h"
 
-#ifdef RCT_NEW_ARCH_ENABLED
 using namespace facebook::react;
 @interface RNCNaverMapPath () <RCTRNCNaverMapPathViewProtocol>
 
 @end
 
-#endif
-
 @implementation RNCNaverMapPath {
-  void (^_imageCanceller)(void);
+  RNCNaverMapImageCanceller _imageCanceller;
 }
 
 - (RCTBridge*)bridge {
-#ifdef RCT_NEW_ARCH_ENABLED
   return [RCTBridge currentBridge];
-#else
-  return _bridge;
-#endif
+}
+
+- (std::shared_ptr<RNCNaverMapPathEventEmitter const>)emitter {
+  if (!_eventEmitter)
+    return nullptr;
+  return std::static_pointer_cast<RNCNaverMapPathEventEmitter const>(_eventEmitter);
 }
 
 - (instancetype)init {
   if ((self = [super init])) {
     _inner = [NMFPath new];
 
-#ifdef RCT_NEW_ARCH_ENABLED
-    self.onTapOverlay = [self](NSDictionary* dict) {
-      if (_eventEmitter == nil) {
-        return;
-      }
-
-      auto emitter = std::static_pointer_cast<RNCNaverMapPathEventEmitter const>(_eventEmitter);
-      emitter->onTapOverlay({});
-    };
-#endif
-
     _inner.touchHandler = [self](NMFOverlay* overlay) -> BOOL {
-      // In New Arch, this always returns YES at now. should be fixed.
-      if (self.onTapOverlay) {
-        self.onTapOverlay(@{});
+      if (self.emitter) {
+        self.emitter->onTapOverlay({});
         return YES;
       }
       return NO;
@@ -62,85 +49,7 @@ using namespace facebook::react;
   }
 }
 
-NMAP_SETTER(Z, z, IndexValue, inner.zIndex, NSInteger)
-- (void)setGlobalZIndexValue:(NSInteger)globalZIndexValue {
-  _globalZIndexValue = globalZIndexValue;
-  if (isValidNumber(globalZIndexValue))
-    self.inner.globalZIndex = globalZIndexValue;
-}
-NMAP_SETTER(I, i, sHidden, inner.hidden, BOOL)
-NMAP_INNER_SETTER(M, m, inZoom, double)
-NMAP_INNER_SETTER(M, m, axZoom, double)
-NMAP_INNER_SETTER(I, i, sMinZoomInclusive, BOOL)
-NMAP_INNER_SETTER(I, i, sMaxZoomInclusive, BOOL)
-
-NMAP_INNER_SETTER(W, w, idth, double)
-
-- (void)setPatternImage:(NSDictionary*)patternImage {
-  _patternImage = patternImage;
-  if (!patternImage) {
-    _inner.patternIcon = nil;
-    return;
-  }
-
-  // Cancel pending request
-  if (_imageCanceller) {
-    _imageCanceller();
-    _imageCanceller = nil;
-  }
-
-  _imageCanceller = [Utils getImage:[self bridge]
-                               json:patternImage
-                           callback:^(NMFOverlayImage* image) {
-                             dispatch_async(dispatch_get_main_queue(),
-                                            [self, image]() { self.inner.patternIcon = image; });
-                           }];
-}
-NMAP_INNER_SETTER(P, p, atternInterval, NSInteger)
-NMAP_INNER_SETTER(P, p, rogress, double)
-
-- (void)setColor:(NSInteger)color {
-  _color = color;
-  _inner.color = [Utils intToColor:color];
-}
-- (void)setPassedColor:(NSInteger)passedColor {
-  _passedColor = passedColor;
-  _inner.passedColor = [Utils intToColor:passedColor];
-}
-- (void)setOutlineColor:(NSInteger)outlineColor {
-  _outlineColor = outlineColor;
-  _inner.outlineColor = [Utils intToColor:outlineColor];
-}
-- (void)setPassedOutlineColor:(NSInteger)passedOutlineColor {
-  _passedOutlineColor = passedOutlineColor;
-  _inner.passedOutlineColor = [Utils intToColor:passedOutlineColor];
-}
-- (void)setOutlineWidth:(double)outlineWidth {
-  _outlineWidth = outlineWidth;
-  _inner.outlineWidth = outlineWidth;
-}
-
-NMAP_INNER_SETTER(I, i, sHideCollidedSymbols, BOOL)
-NMAP_INNER_SETTER(I, i, sHideCollidedMarkers, BOOL)
-NMAP_INNER_SETTER(I, i, sHideCollidedCaptions, BOOL)
-
-- (void)setCoords:(NSArray*)coords {
-  _coords = coords;
-  auto arr = [NSMutableArray arrayWithCapacity:coords.count];
-
-  for (NSDictionary* coord in coords) {
-    [arr addObject:NMGLatLngMake([coord[@"latitude"] doubleValue],
-                                 [coord[@"longitude"] doubleValue])];
-  }
-
-  self.inner.path = [NMGLineString lineStringWithPoints:arr];
-}
-
 #ifdef RCT_NEW_ARCH_ENABLED
-
-+ (ComponentDescriptorProvider)componentDescriptorProvider {
-  return concreteComponentDescriptorProvider<RNCNaverMapPathComponentDescriptor>();
-}
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
@@ -155,25 +64,54 @@ NMAP_INNER_SETTER(I, i, sHideCollidedCaptions, BOOL)
   const auto& prev = *std::static_pointer_cast<RNCNaverMapPathProps const>(_props);
   const auto& next = *std::static_pointer_cast<RNCNaverMapPathProps const>(props);
 
-  NMAP_REMAP_SELF_PROP(zIndexValue);
-  NMAP_REMAP_SELF_PROP(globalZIndexValue);
-  NMAP_REMAP_SELF_PROP(isHidden);
-  NMAP_REMAP_SELF_PROP(minZoom);
-  NMAP_REMAP_SELF_PROP(maxZoom);
-  NMAP_REMAP_SELF_PROP(isMinZoomInclusive);
-  NMAP_REMAP_SELF_PROP(isMaxZoomInclusive);
+  if (prev.zIndexValue != next.zIndexValue)
+    _inner.zIndex = next.zIndexValue;
+  if (prev.globalZIndexValue != next.globalZIndexValue && isValidNumber(next.globalZIndexValue))
+    _inner.globalZIndex = next.globalZIndexValue;
+  if (prev.isHidden != next.isHidden)
+    _inner.hidden = next.isHidden;
+  if (prev.minZoom != next.minZoom)
+    _inner.minZoom = next.minZoom;
+  if (prev.maxZoom != next.maxZoom)
+    _inner.maxZoom = next.maxZoom;
+  if (prev.isMinZoomInclusive != next.isMinZoomInclusive)
+    _inner.isMinZoomInclusive = next.isMinZoomInclusive;
+  if (prev.isMaxZoomInclusive != next.isMaxZoomInclusive)
+    _inner.isMaxZoomInclusive = next.isMaxZoomInclusive;
 
-  NMAP_REMAP_SELF_PROP(width);
-  NMAP_REMAP_SELF_PROP(outlineWidth);
-  NMAP_REMAP_SELF_PROP(patternInterval);
-  NMAP_REMAP_SELF_PROP(progress);
-  NMAP_REMAP_SELF_PROP(color);
-  NMAP_REMAP_SELF_PROP(passedColor);
-  NMAP_REMAP_SELF_PROP(outlineColor);
-  NMAP_REMAP_SELF_PROP(passedOutlineColor);
-  NMAP_REMAP_SELF_PROP(isHideCollidedSymbols);
-  NMAP_REMAP_SELF_PROP(isHideCollidedMarkers);
-  NMAP_REMAP_SELF_PROP(isHideCollidedCaptions);
+  if (prev.width != next.width)
+    _inner.width = next.width;
+  if (prev.outlineWidth != next.outlineWidth)
+    _inner.outlineWidth = next.outlineWidth;
+  if (!nmap::isImageEqual(prev.patternImage, next.patternImage)) {
+    if (_imageCanceller) {
+      _imageCanceller();
+      _imageCanceller = nil;
+    }
+
+    _imageCanceller =
+        nmap::getImage([self bridge], next.patternImage, ^(NMFOverlayImage* _Nullable image) {
+          dispatch_async(dispatch_get_main_queue(),
+                         [self, image]() { self.inner.patternIcon = image; });
+        });
+  }
+
+  if (prev.progress != next.progress)
+    _inner.progress = next.progress;
+  if (prev.color != next.color)
+    _inner.color = nmap::intToColor(next.color);
+  if (prev.passedColor != next.passedColor)
+    _inner.passedColor = nmap::intToColor(next.passedColor);
+  if (prev.outlineColor != next.outlineColor)
+    _inner.outlineColor = nmap::intToColor(next.outlineColor);
+  if (prev.passedOutlineColor != next.passedOutlineColor)
+    _inner.passedOutlineColor = nmap::intToColor(next.passedOutlineColor);
+  if (prev.isHideCollidedSymbols != next.isHideCollidedSymbols)
+    [_inner setIsHideCollidedSymbols:next.isHideCollidedSymbols];
+  if (prev.isHideCollidedMarkers != next.isHideCollidedMarkers)
+    [_inner setIsHideCollidedMarkers:next.isHideCollidedMarkers];
+  if (prev.isHideCollidedCaptions != next.isHideCollidedCaptions)
+    [_inner setIsHideCollidedCaptions:next.isHideCollidedCaptions];
 
   // coords
   {
@@ -188,19 +126,22 @@ NMAP_INNER_SETTER(I, i, sHideCollidedCaptions, BOOL)
     }
     if (!isSame) {
       auto arr = [NSMutableArray arrayWithCapacity:next.coords.size()];
-      for (const auto& [latitude, longitude] : next.coords) {
-        [arr addObject:@{@"latitude" : @(latitude), @"longitude" : @(longitude)}];
+      for (const auto& coord : next.coords) {
+        [arr addObject:nmap::createLatLng(coord)];
       }
-      self.coords = arr;
+      self.inner.path = [NMGLineString lineStringWithPoints:arr];
     }
   }
 
-  NMAP_REMAP_IMAGE_PROP(patternImage, self.patternImage)
   [super updateProps:props oldProps:oldProps];
 }
 
 Class<RCTComponentViewProtocol> RNCNaverMapPathCls(void) {
   return RNCNaverMapPath.class;
+}
+
++ (ComponentDescriptorProvider)componentDescriptorProvider {
+  return concreteComponentDescriptorProvider<RNCNaverMapPathComponentDescriptor>();
 }
 
 #endif

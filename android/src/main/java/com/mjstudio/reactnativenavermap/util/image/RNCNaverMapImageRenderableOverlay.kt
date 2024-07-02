@@ -1,4 +1,4 @@
-package com.mjstudio.reactnativenavermap.util
+package com.mjstudio.reactnativenavermap.util.image
 
 import android.content.Context
 import androidx.annotation.CallSuper
@@ -15,13 +15,11 @@ abstract class RNCNaverMapImageRenderableOverlay<T : Overlay>(private val contex
       onAttach()
     }
   }
-  private var imageRequestCanceller: ImageRequestCanceller? = null
   private var lastImage: ReadableMap? = null
 
   @CallSuper
   override fun onDropViewInstance() {
     imageHolder?.onDetach()
-    imageRequestCanceller?.invoke()
   }
 
   protected abstract fun setOverlayAlpha(alpha: Float)
@@ -38,11 +36,9 @@ abstract class RNCNaverMapImageRenderableOverlay<T : Overlay>(private val contex
     lastImage = image
     if (skipTryRender()) return
     setOverlayAlpha(0f)
-    imageRequestCanceller?.invoke()
-    imageRequestCanceller =
-      getOverlayImage(imageHolder!!, context, image?.toHashMap()) {
-        setOverlayImage(it)
-        setOverlayAlpha(1f)
-      }
+    getOverlayImage(imageHolder!!, context, image?.toHashMap()) {
+      setOverlayImage(it)
+      setOverlayAlpha(1f)
+    }
   }
 }

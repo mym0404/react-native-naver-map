@@ -13,6 +13,7 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapViewManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapCameraChangeEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapClusterLeafTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapCoordinateToScreenEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
@@ -27,6 +28,7 @@ import com.mjstudio.reactnativenavermap.util.RectUtil
 import com.mjstudio.reactnativenavermap.util.dp
 import com.mjstudio.reactnativenavermap.util.emitEvent
 import com.mjstudio.reactnativenavermap.util.getDoubleOrNull
+import com.mjstudio.reactnativenavermap.util.getIntOrNull
 import com.mjstudio.reactnativenavermap.util.getLatLng
 import com.mjstudio.reactnativenavermap.util.getLatLngBoundsOrNull
 import com.mjstudio.reactnativenavermap.util.isValidNumber
@@ -106,6 +108,9 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     view.onDropViewInstance()
     view.reactContext.removeLifecycleEventListener(view)
     clustererHolders.forEach { (_, u) -> u.onDetach() }
+    clustererHolders.clear()
+    lastClustersPropKey = "NOT_SET"
+    isFirstCameraMoving = true
     super.onDropViewInstance(view)
   }
 
@@ -117,6 +122,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
       registerDirectEvent(this, NaverMapTapEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapScreenToCoordinateEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCoordinateToScreenEvent.EVENT_NAME)
+      registerDirectEvent(this, NaverMapClusterLeafTapEvent.EVENT_NAME)
     }
 
   private fun RNCNaverMapViewWrapper?.withMapView(callback: (mapView: RNCNaverMapView) -> Unit) {
@@ -433,7 +439,9 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     view: RNCNaverMapViewWrapper?,
     value: Boolean,
   ) = view.withMapView {
-    it.setupLocationSource()
+    if (value) {
+      it.setupLocationSource()
+    }
     it.withMap { map ->
       map.uiSettings.isLocationButtonEnabled = value
     }
@@ -544,6 +552,8 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     }
     clustererHolders.clear()
 
+    val isLeafTapCallbackExist = value.getBoolean("isLeafTapCallbackExist")
+
     value.getArray("clusters")?.toArrayList()?.filterIsInstance<Map<String, Any?>>()?.forEach {
       val clustererKey = it["key"] as? String
       val screenDistance = it["screenDistance"] as? Double
@@ -583,7 +593,26 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
             image,
             width,
             height,
-            RNCNaverMapLeafMarkerHolder(identifier, reactAppContext),
+            RNCNaverMapLeafMarkerHolder(
+              identifier,
+              reactAppContext,
+              onTapLeaf =
+                if (isLeafTapCallbackExist) {
+                  {
+                    view?.let { wrapper ->
+                      wrapper.reactContext.emitEvent(wrapper.id) { surfaceId, reactTag ->
+                        NaverMapClusterLeafTapEvent(
+                          surfaceId,
+                          reactTag,
+                          identifier,
+                        )
+                      }
+                    }
+                  }
+                } else {
+                  null
+                },
+            ),
           ) to null
         }
 
@@ -605,6 +634,33 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     value: Int,
   ) {
     // noop
+  }
+
+  @ReactProp(name = "locationOverlay")
+  override fun setLocationOverlay(
+    view: RNCNaverMapViewWrapper?,
+    value: ReadableMap?,
+  ) = view.withMapView { mapView ->
+    mapView.withMap {
+      value?.let { v ->
+        val o = it.locationOverlay
+        o.isVisible = v.getBoolean("isVisible")
+        v.getMap("position")?.getLatLng()?.let { o.position = it }
+        v.getDoubleOrNull("bearing")?.let { o.bearing = it.toFloat() }
+        v.getMap("image")?.let { mapView.setLocationOverlayImage(it) }
+        v.getDoubleOrNull("imageWidth")?.let { o.iconWidth = it.px }
+        v.getDoubleOrNull("imageHeight")?.let { o.iconHeight = it.px }
+        v.getMap("anchor")?.let { o.anchor = PointF(it.getDouble("x").toFloat(), it.getDouble("y").toFloat()) }
+        v.getMap("subImage")?.let { mapView.setLocationOverlaySubImage(it) }
+        v.getDoubleOrNull("subImageWidth")?.let { o.subIconWidth = it.px }
+        v.getDoubleOrNull("subImageHeight")?.let { o.subIconHeight = it.px }
+        v.getMap("subAnchor")?.let { o.subAnchor = PointF(it.getDouble("x").toFloat(), it.getDouble("y").toFloat()) }
+        v.getDoubleOrNull("circleRadius")?.let { o.circleRadius = it.px }
+        v.getIntOrNull("circleColor")?.let { o.circleColor = it }
+        v.getDoubleOrNull("circleOutlineWidth")?.let { o.circleOutlineWidth = it.px }
+        v.getIntOrNull("circleOutlineColor")?.let { o.circleOutlineColor = it }
+      }
+    }
   }
 
   // endregion

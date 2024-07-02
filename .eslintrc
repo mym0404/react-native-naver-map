@@ -15,6 +15,7 @@
         "useTabs": false
       }
     ],
-    "react-native/no-inline-styles": "off"
+    "react-native/no-inline-styles": "off",
+    "@typescript-eslint/no-unused-vars": "off"
   }
 }

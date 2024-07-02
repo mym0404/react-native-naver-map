@@ -7,49 +7,46 @@
 
 #import "RNCNaverMapGround.h"
 #import <React/RCTBridge+Private.h>
-#ifdef RCT_NEW_ARCH_ENABLED
 using namespace facebook::react;
 @interface RNCNaverMapGround () <RCTRNCNaverMapGroundViewProtocol>
 
 @end
-#endif
 
 @implementation RNCNaverMapGround {
-  void (^_imageCanceller)(void);
+  RNCNaverMapImageCanceller _imageCanceller;
 }
 static NSMutableDictionary* _overlayImageHolder;
 
 - (RCTBridge*)bridge {
-#ifdef RCT_NEW_ARCH_ENABLED
   return [RCTBridge currentBridge];
-#else
-  return _bridge;
-#endif
+}
+
+- (std::shared_ptr<RNCNaverMapGroundEventEmitter const>)emitter {
+  if (!_eventEmitter)
+    return nullptr;
+  return std::static_pointer_cast<RNCNaverMapGroundEventEmitter const>(_eventEmitter);
 }
 
 - (instancetype)init {
   if ((self = [super init])) {
     _inner = [NMFGroundOverlay new];
-
-#ifdef RCT_NEW_ARCH_ENABLED
-    self.onTapOverlay = [self](NSDictionary* dict) {
-      if (_eventEmitter == nil) {
-        return;
-      }
-
-      auto emitter = std::static_pointer_cast<RNCNaverMapGroundEventEmitter const>(_eventEmitter);
-      emitter->onTapOverlay({});
-    };
-#endif
-
     _inner.touchHandler = [self](NMFOverlay* overlay) -> BOOL {
       // In New Arch, this always returns YES at now. should be fixed.
-      if (self.onTapOverlay) {
-        self.onTapOverlay(@{});
+      if (self.emitter) {
+        self.emitter->onTapOverlay({});
         return YES;
       }
       return NO;
     };
+  }
+
+  return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame {
+  if (self = [super initWithFrame:frame]) {
+    static const auto defaultProps = std::make_shared<const RNCNaverMapGroundProps>();
+    _props = defaultProps;
   }
 
   return self;
@@ -62,79 +59,43 @@ static NSMutableDictionary* _overlayImageHolder;
   }
 }
 
-NMAP_SETTER(Z, z, IndexValue, inner.zIndex, NSInteger)
-- (void)setGlobalZIndexValue:(NSInteger)globalZIndexValue {
-  _globalZIndexValue = globalZIndexValue;
-  if (isValidNumber(globalZIndexValue))
-    self.inner.globalZIndex = globalZIndexValue;
-}
-NMAP_SETTER(I, i, sHidden, inner.hidden, BOOL)
-NMAP_INNER_SETTER(M, m, inZoom, double)
-NMAP_INNER_SETTER(M, m, axZoom, double)
-NMAP_INNER_SETTER(I, i, sMinZoomInclusive, BOOL)
-NMAP_INNER_SETTER(I, i, sMaxZoomInclusive, BOOL)
-
-- (void)setRegion:(RNCNaverMapRegion*)region {
-  _region = region;
-  _inner.bounds = [region convertToNMGLatLngBounds];
-}
-
-- (void)setImage:(NSDictionary*)image {
-  _image = image;
-  _inner.alpha = 0;
-  // Cancel pending request
-  if (_imageCanceller) {
-    _imageCanceller();
-    _imageCanceller = nil;
-  }
-
-  _imageCanceller = [Utils getImage:[self bridge]
-                               json:image
-                           callback:^(NMFOverlayImage* image) {
-                             dispatch_async(dispatch_get_main_queue(), [self, image]() {
-                               self.inner.alpha = 1;
-                               self.inner.overlayImage = image;
-                             });
-                           }];
-}
-
-#ifdef RCT_NEW_ARCH_ENABLED
-
-+ (ComponentDescriptorProvider)componentDescriptorProvider {
-  return concreteComponentDescriptorProvider<RNCNaverMapGroundComponentDescriptor>();
-}
-
-- (instancetype)initWithFrame:(CGRect)frame {
-  if (self = [super initWithFrame:frame]) {
-    static const auto defaultProps = std::make_shared<const RNCNaverMapGroundProps>();
-    _props = defaultProps;
-  }
-
-  return self;
-}
-
 - (void)updateProps:(Props::Shared const&)props oldProps:(Props::Shared const&)oldProps {
   const auto& prev = *std::static_pointer_cast<RNCNaverMapGroundProps const>(_props);
   const auto& next = *std::static_pointer_cast<RNCNaverMapGroundProps const>(props);
 
-  NMAP_REMAP_SELF_PROP(zIndexValue);
-  NMAP_REMAP_SELF_PROP(globalZIndexValue);
-  NMAP_REMAP_SELF_PROP(isHidden);
-  NMAP_REMAP_SELF_PROP(minZoom);
-  NMAP_REMAP_SELF_PROP(maxZoom);
-  NMAP_REMAP_SELF_PROP(isMinZoomInclusive);
-  NMAP_REMAP_SELF_PROP(isMaxZoomInclusive);
+  if (prev.zIndexValue != next.zIndexValue)
+    _inner.zIndex = next.zIndexValue;
+  if (prev.globalZIndexValue != next.globalZIndexValue && isValidNumber(next.globalZIndexValue))
+    _inner.globalZIndex = next.globalZIndexValue;
+  if (prev.isHidden != next.isHidden)
+    _inner.hidden = next.isHidden;
+  if (prev.minZoom != next.minZoom)
+    _inner.minZoom = next.minZoom;
+  if (prev.maxZoom != next.maxZoom)
+    _inner.maxZoom = next.maxZoom;
+  if (prev.isMinZoomInclusive != next.isMinZoomInclusive)
+    _inner.isMinZoomInclusive = next.isMinZoomInclusive;
+  if (prev.isMaxZoomInclusive != next.isMaxZoomInclusive)
+    _inner.isMaxZoomInclusive = next.isMaxZoomInclusive;
 
-  {
-    auto r1 = prev.region, r2 = next.region;
-    if (r1.latitude != r2.latitude || r1.longitude != r2.longitude ||
-        r1.latitudeDelta != r2.latitudeDelta || r1.longitudeDelta != r2.longitudeDelta) {
-      self.region =
-          RNCNaverMapRegionMake(r2.latitude, r2.longitude, r2.latitudeDelta, r2.longitudeDelta);
+  if (!nmap::isRegionEqual(prev.region, next.region))
+    _inner.bounds = nmap::createLatLngBounds(next.region);
+
+  if (!nmap::isImageEqual(prev.image, next.image)) {
+    _inner.alpha = 0;
+    if (_imageCanceller) {
+      _imageCanceller();
+      _imageCanceller = nil;
     }
-  }
 
-  NMAP_REMAP_IMAGE_PROP(image, self.image)
+    _imageCanceller = nmap::getImage([self bridge], next.image, ^(NMFOverlayImage* image) {
+      dispatch_async(dispatch_get_main_queue(), [self, image]() {
+        self.inner.alpha = 1;
+        self.inner.overlayImage = image;
+        self->_imageCanceller = nil;
+      });
+    });
+  }
 
   [super updateProps:props oldProps:oldProps];
 }
@@ -143,6 +104,8 @@ Class<RCTComponentViewProtocol> RNCNaverMapGroundCls(void) {
   return RNCNaverMapGround.class;
 }
 
-#endif
++ (ComponentDescriptorProvider)componentDescriptorProvider {
+  return concreteComponentDescriptorProvider<RNCNaverMapGroundComponentDescriptor>();
+}
 
 @end
