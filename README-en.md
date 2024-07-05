@@ -31,12 +31,17 @@
 
 ### 1. New Architecture Fabric
 
+Support Table
+
+| React Native Naver Map | React Native                        | Note                                                                                                                                                                          |
+|------------------------|-------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| &ge;`2.1.0`            | &ge; `0.74`                         | Drop Bridge Support & `0.74` required                                                                                                                                         |
+| &ge;`2.x`              | New Architecture Only               | Drop Old Architecture Support, [**You should turn off bridgeless if want to render http web image marker**](https://github.com/mym0404/react-native-naver-map/discussions/72) |
+| &lt;`2.x`              | Old Architecture + New Architecture |                                                                                                                                                                               |
+
+
 > [!IMPORTANT]
 > The `1.x` version supports the Old Architecture (Bridge), but starting from the `2.x` version, support for it will be discontinued. If your project has not transitioned to the New Architecture, please use the [`1.x` version](https://github.com/mym0404/react-native-naver-map/tree/v1.5.6).
->
-> The `1.x` version tried to maintain compatibility with both Old/New Architecture, but particularly in iOS, changes in the way Fabric props are passed, returning to a Bridge-compatible method, created performance issues. Moreover, the numerous boilerplates necessary for compatibility with Old Architecture, and the increased maintenance costs and slower development cycle, have ultimately been deemed detrimental to the project's progression.
->
-> Still, in the `1.x` version, it continues to provide Props and Commands that lack almost nothing, allowing for the construction of apps that can efficiently utilize the map and satisfy most use cases without any trouble.
 
 ### 2. Detailed API Documentation
 
