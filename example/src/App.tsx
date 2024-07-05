@@ -342,12 +342,15 @@ export default function App() {
             // console.log(`Camera: ${formatJson({ latitude, longitude })}`);
 
             startTransition(() => {
-              console.log(`Region: ${formatJson(region)}`);
+              // console.log(`Region: ${formatJson(region)}`);
               // eslint-disable-next-line @typescript-eslint/no-shadow
               const cities = getCitiesByRegion(region);
-              console.log(cities.length);
+              // console.log(cities.length);
               setCities(cities);
             });
+          }}
+          onCameraIdle={({ region }) => {
+            console.log('idle', region);
           }}
           onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
           clusters={clusters}
