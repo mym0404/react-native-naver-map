@@ -25,6 +25,15 @@
 
 ### 1. New Architecture Fabric
 
+Support Table
+
+| React Native Naver Map | React Native                        | Note                                                                                                                                                                          |
+|------------------------|-------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| &ge;`2.1.0`            | &ge; `0.74`                         | Drop Bridge Support & `0.74` required                                                                                                                                         |
+| &ge;`2.x`              | New Architecture Only               | Drop Old Architecture Support, [**You should turn off bridgeless if want to render http web image marker**](https://github.com/mym0404/react-native-naver-map/discussions/72) |
+| &lt;`2.x`              | Old Architecture + New Architecture |                                                                                                                                                                               |
+
+
 > [!IMPORTANT]
 > `2.x`버전부턴 New Architecture에서만 동작합니다. Fabric을 활성화하지 않은 프로젝트에서는 `1.x` 버전을 사용하시면 됩니다. 자잘한 기능 말고 차이나는 부분은 없고 `1.x`버전에서도 충분히 필요한 기능들로 지도앱을 구축할 수 있습니다.
 
