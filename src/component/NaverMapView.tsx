@@ -446,6 +446,20 @@ export interface NaverMapViewProps extends ViewProps {
   ) => void;
 
   /**
+   * 카메라의 움직임이 끝나 대기 상태가 되면 카메라 대기 이벤트가 발생합니다.
+   *
+   * 카메라는 다음과 같은 시점에 대기 상태가 된 것으로 간주되어 이벤트가 발생합니다.
+   *
+   * - 카메라가 애니메이션 없이 움직일 때. 단, 사용자가 제스처로 지도를 움직이는 경우 제스처가 완전히 끝날 때까지는 연속적인 이동으로 간주되어 이벤트가 발생하지 않습니다.
+   * - 카메라 애니메이션이 완료될 때.
+   * - NaverMap.cancelTransitions()가 호출되어 카메라 애니메이션이 명시적으로 취소될 때.
+   * @see {@link Camera}
+   * @see {@link Region}
+   * @event
+   */
+  onCameraIdle?: (params: Camera & { region: Region }) => void;
+
+  /**
    * 맵을 클릭했을 때 발생하는 이벤트입니다.
    *
    * @see {@link Coord}
@@ -605,6 +619,7 @@ export const NaverMapView = forwardRef(
       logoMargin,
 
       onCameraChanged: onCameraChangedProp,
+      onCameraIdle: onCameraIdleProp,
       onTapMap: onTapMapProp,
       onInitialized,
       onOptionChanged,
@@ -728,6 +743,43 @@ export const NaverMapView = forwardRef(
           zoom,
           tilt,
           reason: cameraChangeReasonFromNumber(reason),
+          latitude,
+          longitude,
+          bearing,
+          region: {
+            latitude: regionLatitude,
+            longitude: regionLongitude,
+            latitudeDelta: regionLatitudeDelta,
+            longitudeDelta: regionLongitudeDelta,
+          },
+        });
+      }
+    );
+
+    const onCameraIdle = useStableCallback(
+      ({
+        nativeEvent: {
+          bearing,
+          latitude,
+          longitude,
+          tilt,
+          zoom,
+          regionLatitude,
+          regionLatitudeDelta,
+          regionLongitude,
+          regionLongitudeDelta,
+        },
+      }: NativeSyntheticEvent<
+        Camera & {
+          regionLatitude: Double;
+          regionLongitude: Double;
+          regionLatitudeDelta: Double;
+          regionLongitudeDelta: Double;
+        }
+      >) => {
+        onCameraIdleProp?.({
+          zoom,
+          tilt,
           latitude,
           longitude,
           bearing,
@@ -986,6 +1038,7 @@ export const NaverMapView = forwardRef(
         symbolPerspectiveRatio={clamp(symbolPerspectiveRatio, 0, 1)}
         onInitialized={onInitialized}
         onCameraChanged={onCameraChangedProp ? onCameraChanged : undefined}
+        onCameraIdle={onCameraIdleProp ? onCameraIdle : undefined}
         onTapMap={onTapMapProp ? onTapMap : undefined}
         onOptionChanged={onOptionChanged}
         mapPadding={mapPadding}

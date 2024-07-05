@@ -162,6 +162,19 @@ interface Props extends ViewProps {
       regionLongitudeDelta: Double;
     }>
   >;
+  onCameraIdle?: DirectEventHandler<
+    Readonly<{
+      latitude: Double;
+      longitude: Double;
+      zoom: Double;
+      tilt: Double;
+      bearing: Double;
+      regionLatitude: Double;
+      regionLongitude: Double;
+      regionLatitudeDelta: Double;
+      regionLongitudeDelta: Double;
+    }>
+  >;
   onTapMap?: DirectEventHandler<
     Readonly<{
       latitude: Double;

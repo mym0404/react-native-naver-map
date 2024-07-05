@@ -8,6 +8,7 @@ import com.airbnb.android.react.maps.ViewAttacherGroup
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.NaverMapCameraChangeEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapCameraIdleEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
@@ -60,9 +61,7 @@ class RNCNaverMapView(
 
       it.addOnCameraChangeListener { reason, animated ->
         reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
-
           val bounds = it.coveringBounds
-
           NaverMapCameraChangeEvent(
             surfaceId,
             reactTag,
@@ -77,6 +76,25 @@ class RNCNaverMapView(
               REASON_LOCATION -> 3
               else -> 0
             },
+            bounds.southLatitude,
+            bounds.westLongitude,
+            bounds.northLatitude - bounds.southLatitude,
+            bounds.eastLongitude - bounds.westLongitude,
+          )
+        }
+      }
+
+      it.addOnCameraIdleListener {
+        reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
+          val bounds = it.coveringBounds
+          NaverMapCameraIdleEvent(
+            surfaceId,
+            reactTag,
+            it.cameraPosition.target.latitude,
+            it.cameraPosition.target.longitude,
+            it.cameraPosition.zoom,
+            it.cameraPosition.tilt,
+            it.cameraPosition.bearing,
             bounds.southLatitude,
             bounds.westLongitude,
             bounds.northLatitude - bounds.southLatitude,
