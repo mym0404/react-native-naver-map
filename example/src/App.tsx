@@ -349,8 +349,8 @@ export default function App() {
               setCities(cities);
             });
           }}
-          onCameraIdle={({ region }) => {
-            console.log('idle', region);
+          onCameraIdle={() => {
+            // console.log('idle', region);
           }}
           onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
           clusters={clusters}

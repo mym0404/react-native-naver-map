@@ -26,4 +26,8 @@
 #endif
 }
 
+- (BOOL)bridgelessEnabled {
+  return YES;
+}
+
 @end
