@@ -1,5 +1,5 @@
 name: Bug Report
-description: File a bug report, (Feature Request should be filed in discussion)
+description: File a bug report, (Feature Request, Q&A should be filed in discussion)
 title: '[BUG]: '
 labels: ['bug']
 body:
