@@ -2504,7 +2504,7 @@ __metadata:
     prettier: "npm:^3.0.3"
     react: "npm:18.2.0"
     react-native: "npm:0.73.6"
-    react-native-builder-bob: "npm:^0.20.0"
+    react-native-builder-bob: "npm:^0.25.0"
     release-it: "npm:^15.0.0"
     turbo: "npm:^1.13.3"
     typedoc: "npm:^0.25.13"
@@ -9259,17 +9259,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jetifier@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "jetifier@npm:2.0.0"
-  bin:
-    jetifier: bin/jetify
-    jetifier-standalone: bin/jetifier-standalone
-    jetify: bin/jetify
-  checksum: 10/93692d98b6e8a512737b96ddd6e0264e157c821a24bbca494f149f2918e2b4c70894d12d3a3fcda61c309bc65b509d5a4eea93131054824833f972398dc98a94
-  languageName: node
-  linkType: hard
-
 "joi@npm:^17.2.1":
   version: 17.12.2
   resolution: "joi@npm:17.12.2"
@@ -11717,9 +11706,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-builder-bob@npm:^0.20.0":
-  version: 0.20.4
-  resolution: "react-native-builder-bob@npm:0.20.4"
+"react-native-builder-bob@npm:^0.25.0":
+  version: 0.25.0
+  resolution: "react-native-builder-bob@npm:0.25.0"
   dependencies:
     "@babel/core": "npm:^7.18.5"
     "@babel/plugin-proposal-class-properties": "npm:^7.17.12"
@@ -11735,18 +11724,14 @@ __metadata:
     fs-extra: "npm:^10.1.0"
     glob: "npm:^8.0.3"
     is-git-dirty: "npm:^2.0.1"
-    jetifier: "npm:^2.0.0"
     json5: "npm:^2.2.1"
     kleur: "npm:^4.1.4"
     prompts: "npm:^2.4.2"
     which: "npm:^2.0.2"
     yargs: "npm:^17.5.1"
-  dependenciesMeta:
-    jetifier:
-      optional: true
   bin:
     bob: bin/bob
-  checksum: 10/20f28c400906627acd7e4b8d2bd20ea68b0e8c8a7ce7ed7ca6f0f4785358307153b4ac347a1169cc0d1485202b1d056a1703756cb642259ea949f2476789c542
+  checksum: 10/580ef14d8e029a7cf89350947ee0eed632a7871a50a3b2c3169805df8a58521c275c8b62484a514931f1e16244c4e93da3484a5b1bd03f43522fd1aa93009ec0
   languageName: node
   linkType: hard
 
