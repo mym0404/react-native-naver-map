@@ -13721,13 +13721,13 @@ __metadata:
   linkType: hard
 
 "typedoc-theme-hierarchy@npm:^4.1.2":
-  version: 4.1.2
-  resolution: "typedoc-theme-hierarchy@npm:4.1.2"
+  version: 4.1.3
+  resolution: "typedoc-theme-hierarchy@npm:4.1.3"
   dependencies:
     fs-extra: "npm:11.1.1"
   peerDependencies:
-    typedoc: ^0.24.0 || ^0.25.0
-  checksum: 10/f674124d2cf8cfb1dd9768fde5efd3d09f1ce9bea0a8e8878acc635e1c769b7fd377aa7408b2d07bdd6415cf8be9f2712e8bf848cdd77fc6652cd077453c34c3
+    typedoc: ^0.24.0 || ^0.25.0 || ^0.26.0
+  checksum: 10/0afd971719d44fabfdbe2a394a94a99b3209cd28ef04e4d8e7c8f2fd15cf30525ed0f44b6b96fce800bb38d92ec560bcedc202b28b74e5416a2488b262fa71d4
   languageName: node
   linkType: hard
 
