@@ -14,12 +14,9 @@ internal class RNCNaverMapLeafMarkerUpdater : DefaultLeafMarkerUpdater() {
   ) {
     super.updateLeafMarker(info, marker)
 
-    (info.key as? RNCNaverMapClusterKey)?.let {
-        (
-          id, _,
-          image, width, height, holder,
-        ),
-      ->
+    (info.key as? RNCNaverMapClusterKey)?.let { (holder) ->
+      val (_, _, _, image, width, height) = holder
+
       if (width != null) {
         marker.width = width.px
       }

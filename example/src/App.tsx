@@ -149,16 +149,19 @@ export default function App() {
   >(() => {
     return generateArray(5).map((i) => {
       return {
-        markers: generateArray(3).map<ClusterMarkerProp>((j) => ({
-          image: {
-            httpUri: `https://picsum.photos/seed/${hash}-${i}-${j}/32/32`,
-          },
-          width: 64,
-          height: 64,
-          latitude: Cameras.Jeju.latitude + Math.random() + 1.5,
-          longitude: Cameras.Jeju.longitude + Math.random() + 1.5,
-          identifier: `${hash}-${i}-${j}`,
-        })),
+        markers: generateArray(3).map<ClusterMarkerProp>(
+          (j) =>
+            ({
+              image: {
+                httpUri: `https://picsum.photos/seed/${hash}-${i}-${j}/32/32`,
+              },
+              width: 200,
+              height: 200,
+              latitude: Cameras.Jeju.latitude + Math.random() + 1.5,
+              longitude: Cameras.Jeju.longitude + Math.random() + 1.5,
+              identifier: `${hash}-${i}-${j}`,
+            }) satisfies ClusterMarkerProp
+        ),
       };
     });
   }, [hash]);
@@ -372,6 +375,7 @@ export default function App() {
               latitude={city.lat}
               longitude={city.lng}
               angle={45}
+              alpha={0.2}
               image={require('./logo180.png')}
               width={24}
               height={24}

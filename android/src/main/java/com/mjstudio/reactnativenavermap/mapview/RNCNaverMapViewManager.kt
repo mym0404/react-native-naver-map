@@ -587,14 +587,13 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
           val height = marker["height"] as? Double
 
           RNCNaverMapClusterKey(
-            identifier,
-            LatLng(latitude, longitude),
-            image,
-            width,
-            height,
             RNCNaverMapLeafMarkerHolder(
               identifier,
-              reactAppContext,
+              latlng = LatLng(latitude, longitude),
+              context = reactAppContext,
+              image,
+              width,
+              height,
               onTapLeaf =
                 if (isLeafTapCallbackExist) {
                   {
