@@ -20,8 +20,10 @@ import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapScreenToCoordinateEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
+import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterDataHolder
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterKey
-import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClustererHolder
+import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterMarkerUpdater
+import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapLeafDataHolder
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapLeafMarkerHolder
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapLeafMarkerUpdater
 import com.mjstudio.reactnativenavermap.util.CameraAnimationUtil
@@ -69,7 +71,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
   private var isFirstCameraMoving = true
   private var lastClustersPropKey = "NOT_SET"
 
-  private val clustererHolders = mutableMapOf<String, RNCNaverMapClustererHolder>()
+  private val clustererHolders = mutableMapOf<String, RNCNaverMapLeafDataHolder>()
 
   private lateinit var reactAppContext: ReactApplicationContext
 
@@ -552,6 +554,8 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
 
     value.getArray("clusters")?.toArrayList()?.filterIsInstance<Map<String, Any?>>()?.forEach {
       val clustererKey = it["key"] as? String
+      val clusterWidth = it["width"] as? Double
+      val clusterHeight = it["height"] as? Double
       val screenDistance = it["screenDistance"] as? Double
       val minZoom = it["minZoom"] as? Double
       val maxZoom = it["maxZoom"] as? Double
@@ -561,6 +565,8 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
       val clusterer =
         Clusterer
           .Builder<RNCNaverMapClusterKey>()
+          .clusterMarkerUpdater(RNCNaverMapClusterMarkerUpdater(RNCNaverMapClusterDataHolder(clusterWidth, clusterHeight)))
+          .leafMarkerUpdater(RNCNaverMapLeafMarkerUpdater())
           .also { cluster ->
             if (screenDistance != null) {
               cluster.screenDistance(screenDistance)
@@ -574,8 +580,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
             if (animate != null) {
               cluster.animate(animate)
             }
-          }.leafMarkerUpdater(RNCNaverMapLeafMarkerUpdater())
-          .build()
+          }.build()
 
       val keyPairs =
         markers.associate { marker ->
@@ -617,7 +622,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
       clusterer.addAll(keyPairs)
       clusterer.map = map
       clustererHolders[clustererKey!!] =
-        RNCNaverMapClustererHolder(
+        RNCNaverMapLeafDataHolder(
           clustererKey,
           clusterer,
           reactAppContext,

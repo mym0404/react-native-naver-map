@@ -145,18 +145,22 @@ export default function App() {
       minZoom?: number;
       maxZoom?: number;
       animate?: boolean;
+      width?: number;
+      height?: number;
     }[]
   >(() => {
     return generateArray(5).map((i) => {
       return {
+        width: 200,
+        height: 200,
         markers: generateArray(3).map<ClusterMarkerProp>(
           (j) =>
             ({
               image: {
                 httpUri: `https://picsum.photos/seed/${hash}-${i}-${j}/32/32`,
               },
-              width: 200,
-              height: 200,
+              width: 100,
+              height: 100,
               latitude: Cameras.Jeju.latitude + Math.random() + 1.5,
               longitude: Cameras.Jeju.longitude + Math.random() + 1.5,
               identifier: `${hash}-${i}-${j}`,
@@ -374,11 +378,10 @@ export default function App() {
               key={`${city.region}-${city.lat}-${i}`}
               latitude={city.lat}
               longitude={city.lng}
-              angle={45}
               alpha={0.2}
               image={require('./logo180.png')}
-              width={24}
-              height={24}
+              width={1}
+              height={1}
             />
           ))}
         </NaverMapView>

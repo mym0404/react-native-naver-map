@@ -6,7 +6,7 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.mjstudio.reactnativenavermap.util.image.createDraweeHierarchy
 import com.naver.maps.map.clustering.Clusterer
 
-internal data class RNCNaverMapClustererHolder internal constructor(
+internal data class RNCNaverMapLeafDataHolder internal constructor(
   val identifier: String,
   val clusterer: Clusterer<RNCNaverMapClusterKey>,
   val context: ReactApplicationContext,

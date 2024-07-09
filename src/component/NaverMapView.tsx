@@ -350,6 +350,14 @@ export interface NaverMapViewProps extends ViewProps {
    * 마커 클러스터링 기능을 이용하면 카메라의 줌 레벨에 따라 근접한 마커를 클러스터링해 성능과 시인성을 모두 향상시킬 수 있습니다.
    */
   clusters?: {
+    /**
+     * 클러스터 마커의 넓이
+     */
+    width?: number;
+    /**
+     * 클러스터 마커의 높이
+     */
+    height?: number;
     markers: ClusterMarkerProp[];
     screenDistance?: number;
     /**
@@ -656,8 +664,18 @@ export const NaverMapView = forwardRef(
         // eslint-disable-next-line @typescript-eslint/no-shadow
         maxZoom = Const.MAX_ZOOM,
         screenDistance = Const.DEFAULT_SCREEN_DISTANCE,
+        width,
+        height,
       } of clusters) {
-        const key = hash([animate, maxZoom, minZoom, screenDistance, markers]);
+        const key = hash([
+          animate,
+          maxZoom,
+          minZoom,
+          screenDistance,
+          markers,
+          width,
+          height,
+        ]);
 
         ret.push({
           key,
@@ -671,6 +689,8 @@ export const NaverMapView = forwardRef(
           maxZoom,
           minZoom,
           screenDistance,
+          width,
+          height,
         });
 
         propKey += `${key}---`;
