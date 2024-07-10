@@ -34,9 +34,13 @@
 
   if (key.width > 0 && isValidNumber(key.width)) {
     marker.width = key.width;
+  } else {
+    marker.width = NMF_MARKER_SIZE_AUTO;
   }
   if (key.height > 0 && isValidNumber(key.height)) {
     marker.height = key.height;
+  } else {
+    marker.height = NMF_MARKER_SIZE_AUTO;
   }
 
   std::string idStr = [identifier UTF8String];

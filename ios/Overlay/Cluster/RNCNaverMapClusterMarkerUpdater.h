@@ -8,4 +8,12 @@
 #import <NMapsMap/NMapsMap.h>
 
 @interface RNCNaverMapClusterMarkerUpdater : NMCDefaultClusterMarkerUpdater
+
+// invalid number means undefined in js
+@property(nonatomic, assign) double width;
+// invalid number means undefined in js
+@property(nonatomic, assign) double height;
+
+- (instancetype)initWith:(double)width height:(double)height;
+
 @end
