@@ -43,6 +43,7 @@
     "studio": "studio $(pwd)/example/android",
     "xcode": "open $(pwd)/example/ios/NaverMapExample.xcworkspace",
     "pod": "cd example/ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install",
+    "pod:update": "cd example/ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod update",
     "prepack": "yarn build:expo-config-plugin && yarn build:docs && bob build",
     "build:expo-config-plugin": "tsc --project ./expo-config-plugin",
     "build:docs": "rm -rf docs && typedoc",
