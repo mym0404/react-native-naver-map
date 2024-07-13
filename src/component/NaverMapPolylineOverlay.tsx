@@ -1,5 +1,4 @@
 import { default as NativeNaverMapPolyline } from '../spec/RNCNaverMapPolylineNativeComponent';
-import React from 'react';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
 import { type ColorValue, processColor } from 'react-native';
 import { Const } from '../internal/util/Const';
@@ -9,6 +8,7 @@ import type {
   JoinType,
 } from '@mj-studio/react-native-naver-map';
 import { nAssert } from '../internal/util/Assert';
+import React from 'react';
 
 export interface NaverMapPolylineOverlayProps extends BaseOverlayProps {
   coords: Coord[];
