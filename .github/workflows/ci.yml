@@ -160,7 +160,7 @@ jobs:
             ${{ runner.os }}-cocoapods-
 
       - name: Install pod for codegen stuffs
-        run: yarn pod
+        run: yarn pod:update
       - name: Build example for iOS
         run: yarn turbo:ios
 

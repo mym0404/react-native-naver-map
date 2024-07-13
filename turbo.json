@@ -15,6 +15,7 @@
         "example/android",
         "!example/android/.gradle",
         "!example/android/build",
+        "!example/android/app/.cxx",
         "!example/android/app/build"
       ],
       "outputs": []
