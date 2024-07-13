@@ -104,6 +104,9 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Display ANDROID_HOME
+        run: echo $ANDROID_HOME
+
       - name: Cache Gradle
         if: env.turbo_cache_hit != 1
         uses: actions/cache@v4
