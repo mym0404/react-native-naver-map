@@ -1,6 +1,6 @@
 import { TouchableOpacity, Text, View, Switch } from 'react-native';
 import Slider from '@react-native-community/slider';
-import * as React from 'react';
+import React from 'react';
 
 export const Btn = ({
   onPress,

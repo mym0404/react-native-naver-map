@@ -318,11 +318,11 @@ using namespace facebook::react;
   builder.maxZoom = maxZoom;
   builder.animate = animate;
 
-  //  RNCNaverMapClusterMarkerUpdater* clusterMarkerUpdater =
-  //      [[RNCNaverMapClusterMarkerUpdater alloc] init];
+  RNCNaverMapClusterMarkerUpdater* clusterMarkerUpdater =
+      [[RNCNaverMapClusterMarkerUpdater alloc] initWith:dict.width height:dict.height];
   RNCNaverMapLeafMarkerUpdater* leafMarkerUpdater =
       [[RNCNaverMapLeafMarkerUpdater alloc] init:&_clusterMarkerImageRequestCancelers];
-  //  builder.clusterMarkerUpdater = clusterMarkerUpdater;
+  builder.clusterMarkerUpdater = clusterMarkerUpdater;
   builder.leafMarkerUpdater = leafMarkerUpdater;
 
   NMCClusterer* clusterer = [builder build];

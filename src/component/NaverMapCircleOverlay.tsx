@@ -1,9 +1,9 @@
 import { default as NativeNaverMapCircle } from '../spec/RNCNaverMapCircleNativeComponent';
-import React from 'react';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
 import { type ColorValue, processColor } from 'react-native';
 import { Const } from '../internal/util/Const';
 import type { Coord } from '../types/Coord';
+import React from 'react';
 
 export interface NaverMapCircleOverlayProps extends BaseOverlayProps, Coord {
   /** 지도에 원의 반지름을 미터 단위로 표시합니다. */

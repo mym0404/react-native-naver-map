@@ -1,11 +1,11 @@
 import { default as NativeNaverMapPath } from '../spec/RNCNaverMapPathNativeComponent';
-import React from 'react';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
 import { type ColorValue, processColor } from 'react-native';
 import { Const } from '../internal/util/Const';
 import type { Coord, MarkerImageProp } from '@mj-studio/react-native-naver-map';
 import { nAssert } from '../internal/util/Assert';
 import { convertJsImagePropToNativeProp } from '../internal/Util';
+import React from 'react';
 
 export interface NaverMapPathOverlayProps extends BaseOverlayProps {
   /**

@@ -1,5 +1,4 @@
 import { default as NativeNaverMapGround } from '../spec/RNCNaverMapGroundNativeComponent';
-import React from 'react';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
 import { Const } from '../internal/util/Const';
 import type {
@@ -7,6 +6,7 @@ import type {
   Region,
 } from '@mj-studio/react-native-naver-map';
 import { convertJsImagePropToNativeProp } from '../internal/Util';
+import React from 'react';
 
 export interface NaverMapGroundOverlayProps extends BaseOverlayProps {
   /**
