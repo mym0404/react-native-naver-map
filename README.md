@@ -64,7 +64,7 @@ Expo Go, Snack에선 사용하지
 - HTTP 네트워크 웹이미지
 - `children`으로 전달하는 React Native Custom View
 
-### 5. Semaless API porting from Native Naver Map SDK
+### 5. Seamless API porting from Native Naver Map SDK
 
 최신 버전의 SDK를 지원하며 Props와 Command들로 Naver Map의 최신 기능을 조작할 수 있습니다.
 
