@@ -45,18 +45,18 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
   }
 
   override fun addView(
-    parent: RNCNaverMapMarker?,
+    parent: RNCNaverMapMarker,
     child: View,
     index: Int,
   ) {
-    parent?.setCustomView(child, index)
+    parent.setCustomView(child, index)
   }
 
   override fun removeViewAt(
-    parent: RNCNaverMapMarker?,
+    parent: RNCNaverMapMarker,
     index: Int,
   ) {
-    parent?.removeCustomView(index)
+    parent.removeCustomView(index)
   }
 
   @ReactProp(name = "coord")
