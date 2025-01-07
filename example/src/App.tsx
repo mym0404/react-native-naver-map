@@ -341,8 +341,11 @@ export default function App() {
         // }
         onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
         clusters={clusterers}
-        onCameraIdle={(region) => {
-          console.log('idle', region);
+        onCameraIdle={(args) => {
+          console.log('onCameraIdle', args);
+        }}
+        onCameraChanged={(args) => {
+          console.log('onCameraChanged', args);
         }}
       >
         {renderOverlays()}
@@ -364,7 +367,7 @@ export default function App() {
           onPress={() =>
             setMapType(
               MapTypes[
-                (MapTypes.findIndex((v) => v === mapType) + 1) % MapTypes.length
+              (MapTypes.findIndex((v) => v === mapType) + 1) % MapTypes.length
               ]!
             )
           }
