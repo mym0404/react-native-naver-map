@@ -443,6 +443,25 @@ NMAP_MAP_SETTER(L, l, ocale, NSString*)
   });
 }
 
+- (void)mapViewCameraIdle:(NMFMapView*)mapView {
+  if (!self.onCameraIdle)
+    return;
+  NMFCameraPosition* pos = mapView.cameraPosition;
+  NMGLatLngBounds* bounds = mapView.coveringBounds;
+
+  self.onCameraIdle(@{
+    @"latitude" : @(pos.target.lat),
+    @"longitude" : @(pos.target.lng),
+    @"zoom" : @(pos.zoom),
+    @"tilt" : @(pos.tilt),
+    @"bearing" : @(pos.heading),
+    @"regionLatitude" : @(bounds.southWestLat),
+    @"regionLongitude" : @(bounds.southWestLng),
+    @"regionLatitudeDelta" : @(bounds.northEastLat - bounds.southWestLat),
+    @"regionLongitudeDelta" : @(bounds.northEastLng - bounds.southWestLng),
+  });
+}
+
 - (void)mapView:(NMFMapView*)mapView didTapMap:(NMGLatLng*)latlng point:(CGPoint)point {
   if (self.onTapMap) {
     self.onTapMap(@{
