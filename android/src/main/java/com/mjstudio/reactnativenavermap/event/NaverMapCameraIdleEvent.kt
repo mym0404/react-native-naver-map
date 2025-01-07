@@ -12,10 +12,6 @@ class NaverMapCameraIdleEvent(
   private val zoom: Double,
   private val tilt: Double,
   private val bearing: Double,
-  private val regionLatitude: Double,
-  private val regionLongitude: Double,
-  private val regionLatitudeDelta: Double,
-  private val regionLongitudeDelta: Double,
 ) : Event<NaverMapCameraIdleEvent>(surfaceId, viewId) {
   override fun getEventName(): String = EVENT_NAME
 
@@ -30,10 +26,6 @@ class NaverMapCameraIdleEvent(
       putDouble("zoom", zoom)
       putDouble("tilt", tilt)
       putDouble("bearing", bearing)
-      putDouble("regionLatitude", regionLatitude)
-      putDouble("regionLongitude", regionLongitude)
-      putDouble("regionLatitudeDelta", regionLatitudeDelta)
-      putDouble("regionLongitudeDelta", regionLongitudeDelta)
     }
 
   companion object {
