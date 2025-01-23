@@ -37,26 +37,7 @@ using namespace facebook::react;
   if ((self = [super init])) {
     _inner = [NMFMarker new];
     _isImageSetFromSubview = NO;
-
-    __weak RNCNaverMapMarker *weakSelf = self;
-    _inner.touchHandler = ^BOOL(NMFOverlay* overlay) {
-      RNCNaverMapMarker *strongSelf = weakSelf;
-      if (!strongSelf || !strongSelf->_inner || !strongSelf->_inner.mapView) {
-        return NO;
-      }
-
-      if (strongSelf->_inner.hidden || strongSelf->_inner.alpha <= 0) {
-        return NO;
-      }
-
-      dispatch_async(dispatch_get_main_queue(), ^{
-        if (strongSelf && strongSelf.emitter) {
-          strongSelf.emitter->onTapOverlay({});
-        }
-      });
-
-      return YES;
-    };
+    [self setupTouchHandler];
   }
   return self;
 }
@@ -83,7 +64,6 @@ using namespace facebook::react;
   if (_isImageSetFromSubview) {
     return;
   }
-  _inner.alpha = 0;
 
   // Cancel pending request
   if (_imageCanceller) {
@@ -93,11 +73,35 @@ using namespace facebook::react;
 
   _imageCanceller = nmap::getImage([self bridge], image, ^(NMFOverlayImage* _Nullable image) {
     dispatch_async(dispatch_get_main_queue(), [self, image]() {
-      self.inner.alpha = 1;
-      self.inner.iconImage = image;
+      if (self.inner) {
+        self.inner.iconImage = image;
+        [self setupTouchHandler];
+      }
       self->_imageCanceller = nil;
     });
   });
+}
+
+- (void)setupTouchHandler {
+  __weak RNCNaverMapMarker *weakSelf = self;
+  _inner.touchHandler = ^BOOL(NMFOverlay* overlay) {
+    RNCNaverMapMarker *strongSelf = weakSelf;
+    if (!strongSelf || !strongSelf->_inner || !strongSelf->_inner.mapView) {
+      return NO;
+    }
+
+    if (strongSelf->_inner.hidden || strongSelf->_inner.alpha <= 0) {
+      return NO;
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if (strongSelf && strongSelf.emitter) {
+        strongSelf.emitter->onTapOverlay({});
+      }
+    });
+    
+    return YES;
+  };
 }
 
 #pragma clang diagnostic push
@@ -219,6 +223,8 @@ using namespace facebook::react;
     _inner.subCaptionMinZoom = caption.minZoom;
     _inner.subCaptionMaxZoom = caption.maxZoom;
   }
+
+  [self setupTouchHandler];
 
   [super updateProps:props oldProps:oldProps];
 }
