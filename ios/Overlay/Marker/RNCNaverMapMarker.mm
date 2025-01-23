@@ -38,15 +38,26 @@ using namespace facebook::react;
     _inner = [NMFMarker new];
     _isImageSetFromSubview = NO;
 
-    _inner.touchHandler = [self](NMFOverlay* overlay) -> BOOL {
-      if (self.emitter) {
-        self.emitter->onTapOverlay({});
-        return YES;
+    __weak RNCNaverMapMarker *weakSelf = self;
+    _inner.touchHandler = ^BOOL(NMFOverlay* overlay) {
+      RNCNaverMapMarker *strongSelf = weakSelf;
+      if (!strongSelf || !strongSelf->_inner || !strongSelf->_inner.mapView) {
+        return NO;
       }
-      return NO;
+
+      if (strongSelf->_inner.hidden || strongSelf->_inner.alpha <= 0) {
+        return NO;
+      }
+
+      dispatch_async(dispatch_get_main_queue(), ^{
+        if (strongSelf && strongSelf.emitter) {
+          strongSelf.emitter->onTapOverlay({});
+        }
+      });
+
+      return YES;
     };
   }
-
   return self;
 }
 
