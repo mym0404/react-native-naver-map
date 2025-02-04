@@ -34,10 +34,7 @@ import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
 import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
 import type { ClusterMarkerProp } from '../types/ClusterMarkerProp';
 import hash from 'object-hash';
-import type {
-  Double,
-  WithDefault,
-} from 'react-native/Libraries/Types/CodegenTypes';
+import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 
 /**
  * @category Hell
@@ -241,7 +238,7 @@ export interface NaverMapViewProps extends ViewProps {
   /**
    * 줌 버튼: 탭하면 지도의 줌 레벨을 1씩 증가 또는 감소합니다.
    */
-  isShowZoomControls?: WithDefault<boolean, true>;
+  isShowZoomControls?: boolean;
   /**
    * 실내지도 층 피커: 노출 중인 실내지도 구역의 층 정보를 표현합니다
    * 층을 선택하면 해당 층의 실내지도가 노출됩니다.
