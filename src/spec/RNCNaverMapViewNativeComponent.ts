@@ -125,7 +125,7 @@ interface Props extends ViewProps {
 
   isShowCompass?: boolean;
   isShowScaleBar?: boolean;
-  isShowZoomControls?: boolean;
+  isShowZoomControls?: WithDefault<boolean, true>;
   isShowIndoorLevelPicker?: boolean;
   isShowLocationButton?: boolean;
 
