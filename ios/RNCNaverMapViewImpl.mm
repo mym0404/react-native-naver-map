@@ -7,6 +7,7 @@
 
 #import "RNCNaverMapViewImpl.h"
 #import "RNCNaverMapView.h"
+#import "OverlayImageManager.h"
 
 @implementation RNCNaverMapViewImpl {
   BOOL _initialRegionSet;
@@ -70,6 +71,12 @@
   // This is where we intercept them and do the appropriate underlying mapview action.
   if ([subview isKindOfClass:[RNCNaverMapMarker class]]) {
     auto marker = static_cast<RNCNaverMapMarker*>(subview).inner;
+    
+    if(marker.iconImage == NMF_MARKER_IMAGE_GREEN){
+      NMFOverlayImage *transparentImage = [OverlayImageManager sharedManager].transparentOverlayImage;
+      marker.iconImage = transparentImage;
+    }
+    
     marker.mapView = self.mapView;
   } else if ([subview isKindOfClass:[RNCNaverMapCircle class]]) {
     auto marker = static_cast<RNCNaverMapCircle*>(subview).inner;
