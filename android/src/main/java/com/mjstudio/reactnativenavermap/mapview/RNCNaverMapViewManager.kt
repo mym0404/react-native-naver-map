@@ -796,14 +796,17 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
   override fun setLocationTrackingMode(
     view: RNCNaverMapViewWrapper?,
     mode: String?,
-  ) = view.withMap {
-    it.locationTrackingMode =
-      when (mode) {
-        "NoFollow" -> LocationTrackingMode.NoFollow
-        "Follow" -> LocationTrackingMode.Follow
-        "Face" -> LocationTrackingMode.Face
-        else -> LocationTrackingMode.None
-      }
+  ) = view.withMapView {
+    mapView -> mapView.setupLocationSource()
+    mapView.withMap {
+      it.locationTrackingMode =
+        when (mode) {
+          "NoFollow" -> LocationTrackingMode.NoFollow
+          "Follow" -> LocationTrackingMode.Follow
+          "Face" -> LocationTrackingMode.Face
+          else -> LocationTrackingMode.None
+        }
+    }
   }
 
   companion object {
