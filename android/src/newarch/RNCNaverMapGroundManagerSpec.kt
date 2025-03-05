@@ -15,7 +15,5 @@ abstract class RNCNaverMapGroundManagerSpec<T : View> :
     mDelegate = RNCNaverMapGroundManagerDelegate(this)
   }
 
-  override fun getDelegate(): ViewManagerDelegate<T>? {
-    return mDelegate
-  }
+  override fun getDelegate(): ViewManagerDelegate<T>? = mDelegate
 }

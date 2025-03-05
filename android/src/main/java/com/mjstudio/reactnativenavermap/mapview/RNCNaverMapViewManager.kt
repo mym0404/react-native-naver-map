@@ -59,9 +59,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper>() {
-  override fun getName(): String {
-    return NAME
-  }
+  override fun getName(): String = NAME
 
   private var initialMapOptions: NaverMapOptions? = null
   private var animationDuration = 0
@@ -97,11 +95,10 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     return super.createViewInstance(reactTag, reactContext, initialProps, stateWrapper)
   }
 
-  override fun createViewInstance(reactContext: ThemedReactContext): RNCNaverMapViewWrapper {
-    return RNCNaverMapViewWrapper(reactContext, initialMapOptions ?: NaverMapOptions()).also {
+  override fun createViewInstance(reactContext: ThemedReactContext): RNCNaverMapViewWrapper =
+    RNCNaverMapViewWrapper(reactContext, initialMapOptions ?: NaverMapOptions()).also {
       reactContext.addLifecycleEventListener(it)
     }
-  }
 
   override fun onDropViewInstance(view: RNCNaverMapViewWrapper) {
     view.onDropViewInstance()
@@ -141,9 +138,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     }
   }
 
-  override fun getChildCount(parent: RNCNaverMapViewWrapper): Int {
-    return parent.mapView?.overlays?.size ?: 0
-  }
+  override fun getChildCount(parent: RNCNaverMapViewWrapper): Int = parent.mapView?.overlays?.size ?: 0
 
   override fun getChildAt(
     parent: RNCNaverMapViewWrapper,
@@ -247,18 +242,19 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
       val bearing = value.getDoubleOrNull("bearing") ?: it.cameraPosition.bearing
 
       it.moveCamera(
-        CameraUpdate.toCameraPosition(
-          CameraPosition(
-            latlng,
-            zoom,
-            tilt,
-            bearing,
-          ),
-        ).apply {
-          if (animationDuration > 0 && !isFirstCameraMoving) {
-            animate(animationEasing, animationDuration.toLong())
-          }
-        },
+        CameraUpdate
+          .toCameraPosition(
+            CameraPosition(
+              latlng,
+              zoom,
+              tilt,
+              bearing,
+            ),
+          ).apply {
+            if (animationDuration > 0 && !isFirstCameraMoving) {
+              animate(animationEasing, animationDuration.toLong())
+            }
+          },
       )
       isFirstCameraMoving = false
     }
@@ -553,20 +549,23 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
       val markers = (it["markers"] as? ArrayList<*>)?.filterIsInstance<Map<String, *>>() ?: listOf()
 
       val clusterer =
-        Clusterer.Builder<RNCNaverMapClusterKey>().also { cluster ->
-          if (screenDistance != null) {
-            cluster.screenDistance(screenDistance)
-          }
-          if (minZoom != null) {
-            cluster.minZoom(max(minZoom.toInt(), 1))
-          }
-          if (maxZoom != null) {
-            cluster.maxZoom(min(maxZoom.toInt(), 20))
-          }
-          if (animate != null) {
-            cluster.animate(animate)
-          }
-        }.leafMarkerUpdater(RNCNaverMapLeafMarkerUpdater()).build()
+        Clusterer
+          .Builder<RNCNaverMapClusterKey>()
+          .also { cluster ->
+            if (screenDistance != null) {
+              cluster.screenDistance(screenDistance)
+            }
+            if (minZoom != null) {
+              cluster.minZoom(max(minZoom.toInt(), 1))
+            }
+            if (maxZoom != null) {
+              cluster.maxZoom(min(maxZoom.toInt(), 20))
+            }
+            if (animate != null) {
+              cluster.animate(animate)
+            }
+          }.leafMarkerUpdater(RNCNaverMapLeafMarkerUpdater())
+          .build()
 
       val keyPairs =
         markers.associate { marker ->
@@ -690,12 +689,13 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     pivotX: Double,
     pivotY: Double,
   ) = view.withMap {
-    CameraUpdate.scrollBy(
-      PointF(
-        x.px.toFloat(),
-        y.px.toFloat(),
-      ),
-    ).animate(CameraAnimationUtil.numberToCameraAnimationEasing(easing), duration.toLong())
+    CameraUpdate
+      .scrollBy(
+        PointF(
+          x.px.toFloat(),
+          y.px.toFloat(),
+        ),
+      ).animate(CameraAnimationUtil.numberToCameraAnimationEasing(easing), duration.toLong())
       .pivot(
         PointF(pivotX.toFloat(), pivotY.toFloat()),
       ).run {
@@ -714,12 +714,13 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     pivotX: Double,
     pivotY: Double,
   ) = view.withMap {
-    CameraUpdate.fitBounds(
-      LatLngBounds(
-        LatLng(latitude, longitude),
-        LatLng(latitude + latitudeDelta, longitude + longitudeDelta),
-      ),
-    ).animate(CameraAnimationUtil.numberToCameraAnimationEasing(easing), duration.toLong())
+    CameraUpdate
+      .fitBounds(
+        LatLngBounds(
+          LatLng(latitude, longitude),
+          LatLng(latitude + latitudeDelta, longitude + longitudeDelta),
+        ),
+      ).animate(CameraAnimationUtil.numberToCameraAnimationEasing(easing), duration.toLong())
       .pivot(
         PointF(pivotX.toFloat(), pivotY.toFloat()),
       ).run {

@@ -12,13 +12,9 @@ import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.CircleOverlay
 
 class RNCNaverMapCircleManager : RNCNaverMapCircleManagerSpec<RNCNaverMapCircle>() {
-  override fun getName(): String {
-    return NAME
-  }
+  override fun getName(): String = NAME
 
-  override fun createViewInstance(context: ThemedReactContext): RNCNaverMapCircle {
-    return RNCNaverMapCircle(context)
-  }
+  override fun createViewInstance(context: ThemedReactContext): RNCNaverMapCircle = RNCNaverMapCircle(context)
 
   override fun onDropViewInstance(view: RNCNaverMapCircle) {
     super.onDropViewInstance(view)

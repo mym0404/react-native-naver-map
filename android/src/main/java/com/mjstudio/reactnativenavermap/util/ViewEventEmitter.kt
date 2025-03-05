@@ -9,6 +9,7 @@ internal fun <T : Event<*>> ReactContext.emitEvent(
   callback: (surfaceId: Int, reactTag: Int) -> T,
 ) {
   val surfaceId = UIManagerHelper.getSurfaceId(this)
-  UIManagerHelper.getEventDispatcherForReactTag(this, reactTag)
+  UIManagerHelper
+    .getEventDispatcherForReactTag(this, reactTag)
     ?.dispatchEvent(callback(surfaceId, reactTag))
 }

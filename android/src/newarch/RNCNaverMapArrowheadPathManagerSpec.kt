@@ -15,7 +15,5 @@ abstract class RNCNaverMapArrowheadPathManagerSpec<T : View> :
     mDelegate = RNCNaverMapArrowheadPathManagerDelegate(this)
   }
 
-  override fun getDelegate(): ViewManagerDelegate<T>? {
-    return mDelegate
-  }
+  override fun getDelegate(): ViewManagerDelegate<T>? = mDelegate
 }

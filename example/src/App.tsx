@@ -367,7 +367,7 @@ export default function App() {
           onPress={() =>
             setMapType(
               MapTypes[
-              (MapTypes.findIndex((v) => v === mapType) + 1) % MapTypes.length
+                (MapTypes.findIndex((v) => v === mapType) + 1) % MapTypes.length
               ]!
             )
           }

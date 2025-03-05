@@ -56,12 +56,12 @@ internal fun ReadableMap.getAlign(key: String): Align {
   }
 }
 
-internal fun ReadableMap?.getLatLngBoundsOrNull(): LatLngBounds? {
-  return getRegion()?.convertToBounds()
-}
+internal fun ReadableMap?.getLatLngBoundsOrNull(): LatLngBounds? = getRegion()?.convertToBounds()
 
 internal fun ReadableMap?.getRegion(): RNCNaverMapRegion? {
-  if (this?.hasKey("latitude") == true && this.hasKey("longitude") && this.hasKey("latitudeDelta") &&
+  if (this?.hasKey("latitude") == true &&
+    this.hasKey("longitude") &&
+    this.hasKey("latitudeDelta") &&
     this.hasKey(
       "longitudeDelta",
     )

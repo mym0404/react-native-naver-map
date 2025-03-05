@@ -108,54 +108,30 @@ RCT_EXPORT_VIEW_PROPERTY(onCoordinateToScreen, RCTDirectEventBlock)
         }];                                                                                        \
   }
 
-QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(animateCameraTo, latitude
-                                       : (double)latitude longitude
-                                       : (double)longitude duration
-                                       : (NSInteger)duration easing
-                                       : (NSInteger)easing pivotX
-                                       : (double)pivotX pivotY
-                                       : (double)pivotY zoom
-                                       : (double)zoom, latitude longitude
-                                       : longitude duration
-                                       : duration easing
-                                       : easing pivotX
-                                       : pivotX pivotY
-                                       : pivotY zoom
-                                       : zoom)
-QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(animateCameraBy, x
-                                       : (double)x y
-                                       : (double)y duration
-                                       : (NSInteger)duration easing
-                                       : (NSInteger)easing pivotX
-                                       : (double)pivotX pivotY
-                                       : (double)pivotY, x y
-                                       : y duration
-                                       : duration easing
-                                       : easing pivotX
-                                       : pivotX pivotY
-                                       : pivotY)
-QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(animateRegionTo, latitude
-                                       : (double)latitude longitude
-                                       : (double)longitude latitudeDelta
-                                       : (double)latitudeDelta longitudeDelta
-                                       : (double)longitudeDelta duration
-                                       : (NSInteger)duration easing
-                                       : (NSInteger)easing pivotX
-                                       : (double)pivotX pivotY
-                                       : (double)pivotY, latitude longitude
-                                       : longitude latitudeDelta
-                                       : latitudeDelta longitudeDelta
-                                       : longitudeDelta duration
-                                       : duration easing
-                                       : easing pivotX
-                                       : pivotX pivotY
-                                       : pivotY)
+QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(
+    animateCameraTo,
+    latitude : (double)latitude longitude : (double)longitude duration : (NSInteger)
+        duration easing : (NSInteger)easing pivotX : (double)pivotX pivotY : (double)
+            pivotY zoom : (double)zoom,
+    latitude longitude : longitude duration : duration easing : easing pivotX : pivotX
+        pivotY : pivotY zoom : zoom)
+QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(
+    animateCameraBy,
+    x : (double)x y : (double)y duration : (NSInteger)duration easing : (NSInteger)
+        easing pivotX : (double)pivotX pivotY : (double)pivotY,
+    x y : y duration : duration easing : easing pivotX : pivotX pivotY : pivotY)
+QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(
+    animateRegionTo,
+    latitude : (double)latitude longitude : (double)longitude latitudeDelta : (double)
+        latitudeDelta longitudeDelta : (double)longitudeDelta duration : (NSInteger)
+            duration easing : (NSInteger)easing pivotX : (double)pivotX pivotY : (double)pivotY,
+    latitude longitude : longitude latitudeDelta : latitudeDelta longitudeDelta : longitudeDelta
+        duration : duration easing : easing pivotX : pivotX pivotY : pivotY)
 QUICK_RCT_EXPORT_COMMAND_METHOD(cancelAnimation)
 QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(setLocationTrackingMode, mode : (NSString*)mode, mode)
 QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(screenToCoordinate, x : (double)x y : (double)y, x y : y)
-QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(coordinateToScreen, latitude
-                                       : (double)latitude longitude
-                                       : (double)longitude, latitude longitude
-                                       : longitude)
+QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(coordinateToScreen,
+                                       latitude : (double)latitude longitude : (double)longitude,
+                                       latitude longitude : longitude)
 
 @end
