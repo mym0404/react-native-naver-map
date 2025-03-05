@@ -12,13 +12,9 @@ import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.PolylineOverlay
 
 class RNCNaverMapPolylineManager : RNCNaverMapPolylineManagerSpec<RNCNaverMapPolyline>() {
-  override fun getName(): String {
-    return NAME
-  }
+  override fun getName(): String = NAME
 
-  override fun createViewInstance(context: ThemedReactContext): RNCNaverMapPolyline {
-    return RNCNaverMapPolyline(context)
-  }
+  override fun createViewInstance(context: ThemedReactContext): RNCNaverMapPolyline = RNCNaverMapPolyline(context)
 
   override fun onDropViewInstance(view: RNCNaverMapPolyline) {
     super.onDropViewInstance(view)

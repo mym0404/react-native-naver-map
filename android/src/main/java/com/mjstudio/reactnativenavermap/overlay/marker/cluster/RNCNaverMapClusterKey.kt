@@ -11,7 +11,5 @@ internal data class RNCNaverMapClusterKey(
   val height: Double?,
   val holder: RNCNaverMapLeafMarkerHolder,
 ) : ClusteringKey {
-  override fun getPosition(): LatLng {
-    return latlng
-  }
+  override fun getPosition(): LatLng = latlng
 }

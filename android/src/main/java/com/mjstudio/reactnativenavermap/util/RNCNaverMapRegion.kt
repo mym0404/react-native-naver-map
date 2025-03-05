@@ -9,13 +9,12 @@ internal data class RNCNaverMapRegion(
   val latitudeDelta: Double,
   val longitudeDelta: Double,
 ) {
-  fun convertToBounds(): LatLngBounds {
-    return LatLngBounds(
+  fun convertToBounds(): LatLngBounds =
+    LatLngBounds(
       LatLng(latitude, longitude),
       LatLng(
         latitude + latitudeDelta,
         longitude + longitudeDelta,
       ),
     )
-  }
 }

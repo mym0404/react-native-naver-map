@@ -22,13 +22,9 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
   private var captionKey = DEFAULT_CAPTION_KEY
   private var subCaptionKey = DEFAULT_CAPTION_KEY
 
-  override fun getName(): String {
-    return NAME
-  }
+  override fun getName(): String = NAME
 
-  override fun createViewInstance(context: ThemedReactContext): RNCNaverMapMarker {
-    return RNCNaverMapMarker(context)
-  }
+  override fun createViewInstance(context: ThemedReactContext): RNCNaverMapMarker = RNCNaverMapMarker(context)
 
   override fun onDropViewInstance(view: RNCNaverMapMarker) {
     super.onDropViewInstance(view)

@@ -341,6 +341,12 @@ export default function App() {
         // }
         onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
         clusters={clusterers}
+        onCameraIdle={(args) => {
+          console.log('onCameraIdle', args);
+        }}
+        onCameraChanged={(args) => {
+          console.log('onCameraChanged', args);
+        }}
       >
         {renderOverlays()}
       </NaverMapView>

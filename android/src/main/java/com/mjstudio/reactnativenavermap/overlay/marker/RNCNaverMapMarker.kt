@@ -18,8 +18,10 @@ import com.naver.maps.map.overlay.OverlayImage
 import kotlin.math.max
 
 @SuppressLint("ViewConstructor")
-class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
-  RNCNaverMapImageRenderableOverlay<Marker>(reactContext), TrackableView {
+class RNCNaverMapMarker(
+  val reactContext: ThemedReactContext,
+) : RNCNaverMapImageRenderableOverlay<Marker>(reactContext),
+  TrackableView {
   private var customView: View? = null
   private var customViewBitmap: Bitmap? = null
 
@@ -91,7 +93,8 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
   }
 
   private fun updateCustomView() {
-    if (customViewBitmap == null || customViewBitmap!!.isRecycled ||
+    if (customViewBitmap == null ||
+      customViewBitmap!!.isRecycled ||
       customViewBitmap?.getWidth() != overlay.width ||
       customViewBitmap?.getHeight() != overlay.height
     ) {
@@ -112,13 +115,9 @@ class RNCNaverMapMarker(val reactContext: ThemedReactContext) :
     }
   }
 
-  override fun skipTryRender(): Boolean {
-    return isImageSetFromSubview
-  }
+  override fun skipTryRender(): Boolean = isImageSetFromSubview
 
-  override fun updateCustomForTracking(): Boolean {
-    return true
-  }
+  override fun updateCustomForTracking(): Boolean = true
 
   override fun update(
     width: Int,

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.airbnb.android.react.maps.ViewAttacherGroup
 import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.NaverMapCameraChangeEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapCameraIdleEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
@@ -24,8 +25,7 @@ import com.naver.maps.map.util.FusedLocationSource
 class RNCNaverMapView(
   private val reactContext: ThemedReactContext,
   private val mapOptions: NaverMapOptions,
-) :
-  MapView(reactContext, mapOptions) {
+) : MapView(reactContext, mapOptions) {
   private var attacherGroup: ViewAttacherGroup? = null
   private var map: NaverMap? = null
   private var isAttached = false
@@ -65,6 +65,20 @@ class RNCNaverMapView(
               REASON_LOCATION -> 3
               else -> 0
             },
+          )
+        }
+      }
+
+      it.addOnCameraIdleListener {
+        reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
+          NaverMapCameraIdleEvent(
+            surfaceId,
+            reactTag,
+            it.cameraPosition.target.latitude,
+            it.cameraPosition.target.longitude,
+            it.cameraPosition.zoom,
+            it.cameraPosition.tilt,
+            it.cameraPosition.bearing,
           )
         }
       }

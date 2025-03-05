@@ -13,7 +13,5 @@ object OverlayImages {
     store[uri] = image
   }
 
-  operator fun get(uri: String): OverlayImage? {
-    return store[uri]
-  }
+  operator fun get(uri: String): OverlayImage? = store[uri]
 }

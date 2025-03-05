@@ -19,10 +19,10 @@ internal class RNCNaverMapLeafMarkerUpdater : DefaultLeafMarkerUpdater() {
 
     imageRequestCanceller?.invoke()
     (info.key as? RNCNaverMapClusterKey)?.let {
-        (
-          id, _,
-          image, width, height, holder,
-        ),
+      (
+        id, _,
+        image, width, height, holder,
+      ),
       ->
       if (width != null) {
         marker.width = width.px

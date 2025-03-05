@@ -9,8 +9,9 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.PolylineOverlay
 
 @SuppressLint("ViewConstructor")
-class RNCNaverMapPolyline(val reactContext: ThemedReactContext) :
-  RNCNaverMapOverlay<PolylineOverlay>(reactContext) {
+class RNCNaverMapPolyline(
+  val reactContext: ThemedReactContext,
+) : RNCNaverMapOverlay<PolylineOverlay>(reactContext) {
   override val overlay: PolylineOverlay by lazy {
     PolylineOverlay().apply {
       setOnClickListener {

@@ -15,8 +15,8 @@ import com.naver.maps.map.NaverMapOptions
 class RNCNaverMapViewWrapper(
   val reactContext: ThemedReactContext,
   private val mapOptions: NaverMapOptions,
-) :
-  FrameLayout(reactContext), LifecycleEventListener {
+) : FrameLayout(reactContext),
+  LifecycleEventListener {
   var mapView: RNCNaverMapView? = null
     private set
   private var savedState: Bundle? = Bundle()
@@ -65,7 +65,8 @@ class RNCNaverMapViewWrapper(
           manuallyLayoutChildren()
           getViewTreeObserver().dispatchOnGlobalLayout()
           if (isAttachedToWindow) {
-            Choreographer.getInstance()
+            Choreographer
+              .getInstance()
               .postFrameCallbackDelayed(this, 500)
           }
         }

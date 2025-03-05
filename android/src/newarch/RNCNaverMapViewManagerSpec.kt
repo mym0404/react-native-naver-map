@@ -15,7 +15,5 @@ abstract class RNCNaverMapViewManagerSpec<T : ViewGroup> :
     mDelegate = RNCNaverMapViewManagerDelegate(this)
   }
 
-  override fun getDelegate(): ViewManagerDelegate<T>? {
-    return mDelegate
-  }
+  override fun getDelegate(): ViewManagerDelegate<T>? = mDelegate
 }

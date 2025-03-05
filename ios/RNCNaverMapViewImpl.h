@@ -89,6 +89,7 @@ using namespace facebook::react;
 @property(nonatomic, copy) RCTDirectEventBlock onInitialized;
 @property(nonatomic, copy) RCTDirectEventBlock onOptionChanged;
 @property(nonatomic, copy) RCTDirectEventBlock onCameraChanged;
+@property(nonatomic, copy) RCTDirectEventBlock onCameraIdle;
 @property(nonatomic, copy) RCTDirectEventBlock onTapMap;
 @property(nonatomic, copy) RCTDirectEventBlock onScreenToCoordinate;
 @property(nonatomic, copy) RCTDirectEventBlock onCoordinateToScreen;

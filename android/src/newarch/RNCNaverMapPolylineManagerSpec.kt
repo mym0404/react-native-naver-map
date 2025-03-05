@@ -15,7 +15,5 @@ abstract class RNCNaverMapPolylineManagerSpec<T : View> :
     mDelegate = RNCNaverMapPolylineManagerDelegate(this)
   }
 
-  override fun getDelegate(): ViewManagerDelegate<T>? {
-    return mDelegate
-  }
+  override fun getDelegate(): ViewManagerDelegate<T>? = mDelegate
 }

@@ -9,8 +9,9 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.ArrowheadPathOverlay
 
 @SuppressLint("ViewConstructor")
-class RNCNaverMapArrowheadPath(val reactContext: ThemedReactContext) :
-  RNCNaverMapOverlay<ArrowheadPathOverlay>(reactContext) {
+class RNCNaverMapArrowheadPath(
+  val reactContext: ThemedReactContext,
+) : RNCNaverMapOverlay<ArrowheadPathOverlay>(reactContext) {
   override val overlay: ArrowheadPathOverlay by lazy {
     ArrowheadPathOverlay().apply {
       setOnClickListener {

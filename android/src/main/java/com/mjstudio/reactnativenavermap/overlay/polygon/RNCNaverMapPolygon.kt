@@ -9,8 +9,9 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.PolygonOverlay
 
 @SuppressLint("ViewConstructor")
-class RNCNaverMapPolygon(val reactContext: ThemedReactContext) :
-  RNCNaverMapOverlay<PolygonOverlay>(reactContext) {
+class RNCNaverMapPolygon(
+  val reactContext: ThemedReactContext,
+) : RNCNaverMapOverlay<PolygonOverlay>(reactContext) {
   override val overlay: PolygonOverlay by lazy {
     PolygonOverlay().apply {
       setOnClickListener {

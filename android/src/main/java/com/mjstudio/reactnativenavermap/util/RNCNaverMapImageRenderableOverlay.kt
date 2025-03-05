@@ -9,7 +9,9 @@ import com.mjstudio.reactnativenavermap.overlay.RNCNaverMapOverlay
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
 
-abstract class RNCNaverMapImageRenderableOverlay<T : Overlay>(private val context: Context) : RNCNaverMapOverlay<T>(context) {
+abstract class RNCNaverMapImageRenderableOverlay<T : Overlay>(
+  private val context: Context,
+) : RNCNaverMapOverlay<T>(context) {
   private val imageHolder: DraweeHolder<GenericDraweeHierarchy>? by lazy {
     DraweeHolder.create(createDraweeHierarchy(resources), context)?.apply {
       onAttach()

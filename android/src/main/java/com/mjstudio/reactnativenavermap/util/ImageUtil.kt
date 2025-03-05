@@ -73,10 +73,12 @@ internal fun getOverlayImage(
         .newBuilderWithSource(Uri.parse(httpUri))
         .build()
     val dataSource =
-      Fresco.getImagePipeline()
+      Fresco
+        .getImagePipeline()
         .fetchDecodedImage(imageRequest, context)
     val controller =
-      Fresco.newDraweeControllerBuilder()
+      Fresco
+        .newDraweeControllerBuilder()
         .setImageRequest(imageRequest)
         .setControllerListener(
           object : BaseControllerListener<ImageInfo?>() {
@@ -109,8 +111,7 @@ internal fun getOverlayImage(
               }
             }
           },
-        )
-        .setOldController(imageHolder.controller)
+        ).setOldController(imageHolder.controller)
         .build()
     imageHolder.setController(controller)
     return controller::onDetach
@@ -135,13 +136,10 @@ internal fun getOverlayImage(
 internal fun getDrawableWithName(
   context: Context,
   name: String,
-): Int {
-  return context.resources.getIdentifier(name, "drawable", context.packageName)
-}
+): Int = context.resources.getIdentifier(name, "drawable", context.packageName)
 
-internal fun createDraweeHierarchy(resources: Resources): GenericDraweeHierarchy {
-  return GenericDraweeHierarchyBuilder(resources)
+internal fun createDraweeHierarchy(resources: Resources): GenericDraweeHierarchy =
+  GenericDraweeHierarchyBuilder(resources)
     .setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
     .setFadeDuration(0)
     .build()
-}

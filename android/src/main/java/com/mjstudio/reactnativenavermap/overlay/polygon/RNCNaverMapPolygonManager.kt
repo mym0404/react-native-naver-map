@@ -12,13 +12,9 @@ import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.PolygonOverlay
 
 class RNCNaverMapPolygonManager : RNCNaverMapPolygonManagerSpec<RNCNaverMapPolygon>() {
-  override fun getName(): String {
-    return NAME
-  }
+  override fun getName(): String = NAME
 
-  override fun createViewInstance(context: ThemedReactContext): RNCNaverMapPolygon {
-    return RNCNaverMapPolygon(context)
-  }
+  override fun createViewInstance(context: ThemedReactContext): RNCNaverMapPolygon = RNCNaverMapPolygon(context)
 
   override fun onDropViewInstance(view: RNCNaverMapPolygon) {
     super.onDropViewInstance(view)
@@ -104,13 +100,14 @@ class RNCNaverMapPolygonManager : RNCNaverMapPolygonManagerSpec<RNCNaverMapPolyg
 
     value?.getArray("holes")?.toArrayList()?.run {
       it.holes =
-        this.filter { hole ->
-          (hole is List<*>) && hole.size >= 3
-        }.map { hole ->
-          (hole as List<*>).map { coord ->
-            (coord as Map<String, *>).getLatLng()
+        this
+          .filter { hole ->
+            (hole is List<*>) && hole.size >= 3
+          }.map { hole ->
+            (hole as List<*>).map { coord ->
+              (coord as Map<String, *>).getLatLng()
+            }
           }
-        }
     }
   }
 
