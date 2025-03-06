@@ -8,7 +8,7 @@ import com.facebook.react.viewmanagers.RNCNaverMapCircleManagerInterface
 
 abstract class RNCNaverMapCircleManagerSpec<T : View> :
   SimpleViewManager<T>(),
-  RNCNaverMapCircleManagerInterface<T?> {
+  RNCNaverMapCircleManagerInterface<T> {
   private val mDelegate: ViewManagerDelegate<T>
 
   init {
