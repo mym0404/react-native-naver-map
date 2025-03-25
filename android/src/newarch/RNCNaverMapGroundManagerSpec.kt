@@ -8,7 +8,7 @@ import com.facebook.react.viewmanagers.RNCNaverMapGroundManagerInterface
 
 abstract class RNCNaverMapGroundManagerSpec<T : View> :
   SimpleViewManager<T>(),
-  RNCNaverMapGroundManagerInterface<T?> {
+  RNCNaverMapGroundManagerInterface<T> {
   private val mDelegate: ViewManagerDelegate<T>
 
   init {

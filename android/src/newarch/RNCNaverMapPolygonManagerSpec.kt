@@ -8,7 +8,7 @@ import com.facebook.react.viewmanagers.RNCNaverMapPolygonManagerInterface
 
 abstract class RNCNaverMapPolygonManagerSpec<T : View> :
   SimpleViewManager<T>(),
-  RNCNaverMapPolygonManagerInterface<T?> {
+  RNCNaverMapPolygonManagerInterface<T> {
   private val mDelegate: ViewManagerDelegate<T>
 
   init {
