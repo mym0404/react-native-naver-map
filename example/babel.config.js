@@ -9,6 +9,7 @@ module.exports = {
       {
         extensions: ['.tsx', '.ts', '.js', '.json'],
         alias: {
+          // eslint-disable-next-line no-undef
           [pak.name]: path.join(__dirname, '..', pak.source),
         },
       },

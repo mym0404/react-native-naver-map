@@ -6,7 +6,7 @@ import React, {
   useTransition,
 } from 'react';
 
-import { View, Platform, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import {
   type MapType,
   type NaverMapViewRef,
@@ -23,12 +23,8 @@ import {
   NaverMapMarkerOverlay,
 } from '@mj-studio/react-native-naver-map';
 import { Toggle, Btn, Range } from './component/components';
-import {
-  request,
-  PERMISSIONS,
-  requestLocationAccuracy,
-  requestMultiple,
-} from 'react-native-permissions';
+import * as Location from 'expo-location';
+
 import { generateArray, formatJson } from '@mj-studio/js-util';
 import { getCitiesByRegion, type City } from './db/CityDatabase';
 
@@ -107,34 +103,20 @@ export default function App() {
   const [myLocation, setMyLocation] = useState(true);
 
   useEffect(() => {
-    if (Platform.OS === 'ios') {
-      request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((status) => {
-        console.log(`Location request status: ${status}`);
-        if (status === 'granted') {
-          requestLocationAccuracy({
-            purposeKey: 'common-purpose', // replace your purposeKey of Info.plist
-          })
-            .then((accuracy) => {
-              console.log(`Location accuracy is: ${accuracy}`);
-            })
-            .catch((e) => {
-              console.error(`Location accuracy request has been failed: ${e}`);
-            });
+    (async () => {
+      try {
+        const { granted } = await Location.requestForegroundPermissionsAsync();
+        /**
+         * Note: Foreground permissions should be granted before asking for the background permissions
+         * (your app can't obtain background permission without foreground permission).
+         */
+        if (granted) {
+          await Location.requestBackgroundPermissionsAsync();
         }
-      });
-    }
-    if (Platform.OS === 'android') {
-      requestMultiple([
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
-      ])
-        .then((status) => {
-          console.log(`Location request status: ${status}`);
-        })
-        .catch((e) => {
-          console.error(`Location request has been failed: ${e}`);
-        });
-    }
+      } catch (e) {
+        console.error(`Location request has been failed: ${e}`);
+      }
+    })();
   }, []);
 
   const [hash, setHash] = useState(0);

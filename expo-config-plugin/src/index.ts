@@ -4,7 +4,7 @@ import {
   withAndroidManifest,
   AndroidConfig,
   type ConfigPlugin,
-} from '@expo/config-plugins';
+} from 'expo/config-plugins';
 
 const withNaverMap: ConfigPlugin<{
   client_id: string;
