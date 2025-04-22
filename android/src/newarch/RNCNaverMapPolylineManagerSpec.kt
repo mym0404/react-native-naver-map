@@ -8,7 +8,7 @@ import com.facebook.react.viewmanagers.RNCNaverMapPolylineManagerInterface
 
 abstract class RNCNaverMapPolylineManagerSpec<T : View> :
   SimpleViewManager<T>(),
-  RNCNaverMapPolylineManagerInterface<T?> {
+  RNCNaverMapPolylineManagerInterface<T> {
   private val mDelegate: ViewManagerDelegate<T>
 
   init {
