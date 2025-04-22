@@ -23,7 +23,7 @@ const withNaverMap: ConfigPlugin<{
   };
 }> = (config, { client_id, android = {}, ios = {} }) => {
   config = withInfoPlist(config, (config) => {
-    config.modResults.NMFClientId = client_id;
+    config.modResults.NMFNcpKeyId = client_id;
     if (ios.NSLocationAlwaysAndWhenInUseUsageDescription) {
       config.modResults.NSLocationAlwaysAndWhenInUseUsageDescription =
         ios.NSLocationAlwaysAndWhenInUseUsageDescription;
@@ -49,7 +49,7 @@ const withNaverMap: ConfigPlugin<{
 
     AndroidConfig.Manifest.addMetaDataItemToMainApplication(
       mainApplication,
-      'com.naver.maps.map.CLIENT_ID',
+      'com.naver.maps.map.NCP_KEY_ID',
       client_id
     );
 

@@ -108,7 +108,7 @@ allprojects {
 <manifest>
     <application>
         <meta-data
-            android:name="com.naver.maps.map.CLIENT_ID"
+            android:name="com.naver.maps.map.NCP_KEY_ID"
             android:value="YOUR_CLIENT_ID_HERE" />
     </application>
 </manifest>
@@ -140,7 +140,7 @@ Currently, this package will request location permission for showing user's curr
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>NMFClientId</key>
+  <key>NMFNcpKeyId</key>
   <string>YOUR_CLIENT_ID_HERE</string>
 <dict>
 <plist>
