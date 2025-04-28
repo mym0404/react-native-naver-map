@@ -21,7 +21,7 @@
 
 <img src="https://raw.githubusercontent.com/mym0404/image-archive/master/202404240329848.gif" width="400" alt="preview">
 
-![IMPORTANT]
+> ![IMPORTANT]
 > `2.4.x` 버전부터 [AI NAVER API에서 제공되던 지도 API가 아닌 새롭게 출시된 Maps 단독 상품](https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1)이 지원됩니다.
 
 ## Highlights
