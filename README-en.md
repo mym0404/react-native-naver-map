@@ -27,7 +27,7 @@
 
 <img src="https://raw.githubusercontent.com/mym0404/image-archive/master/202404240329848.gif" width="400" alt="preview">
 
-![IMPORTANT]
+> ![IMPORTANT]
 > Since version `2.4.x`, [New released Maps Naver API](https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1) has been supported.
 
 
