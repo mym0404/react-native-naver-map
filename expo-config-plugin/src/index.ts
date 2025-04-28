@@ -23,7 +23,8 @@ const withNaverMap: ConfigPlugin<{
   };
 }> = (config, { client_id, android = {}, ios = {} }) => {
   config = withInfoPlist(config, (config) => {
-    config.modResults.NMFClientId = client_id;
+    config.modResults.NMFNcpKeyId = client_id;
+    config.modResults.NMFClientId = client_id; // For legacy AI Naver API, https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1
     if (ios.NSLocationAlwaysAndWhenInUseUsageDescription) {
       config.modResults.NSLocationAlwaysAndWhenInUseUsageDescription =
         ios.NSLocationAlwaysAndWhenInUseUsageDescription;
@@ -47,11 +48,18 @@ const withNaverMap: ConfigPlugin<{
       config.modResults
     );
 
-    AndroidConfig.Manifest.addMetaDataItemToMainApplication(
-      mainApplication,
-      'com.naver.maps.map.CLIENT_ID',
-      client_id
-    );
+    const clientIdMetadataKeys = [
+      'com.naver.maps.map.NCP_KEY_ID',
+      'com.naver.maps.map.CLIENT_ID', // For legacy AI Naver API, https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1
+    ];
+
+    clientIdMetadataKeys.forEach((metadataKey) => {
+      AndroidConfig.Manifest.addMetaDataItemToMainApplication(
+        mainApplication,
+        metadataKey,
+        client_id
+      );
+    });
 
     return config;
   });

@@ -27,6 +27,10 @@
 
 <img src="https://raw.githubusercontent.com/mym0404/image-archive/master/202404240329848.gif" width="400" alt="preview">
 
+![IMPORTANT]
+> Since version `2.4.x`, [New released Maps Naver API](https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1) has been supported.
+
+
 ## Highlights
 
 ### 1. New Architecture Fabric
@@ -111,8 +115,13 @@ allprojects {
 <manifest>
     <application>
         <meta-data
-            android:name="com.naver.maps.map.CLIENT_ID"
+            android:name="com.naver.maps.map.NCP_KEY_ID"
             android:value="YOUR_CLIENT_ID_HERE" />
+      <!-- (legacy) For map API customers who used the AI NAVER API before 2025.04.17 -->
+      <!-- https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1 -->
+      <meta-data
+        android:name="com.naver.maps.map.CLIENT_ID"
+        android:value="YOUR_CLIENT_ID_HERE" />
     </application>
 </manifest>
 ```
@@ -143,6 +152,10 @@ For more detailed settings, please refer to the [Official Documentation](https:/
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+  <key>NMFNcpKeyId</key>
+  <string>YOUR_CLIENT_ID_HERE</string>
+  <!-- (legacy) For map API customers who used the AI NAVER API before 2025.04.17 -->
+  <!-- https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1 -->
   <key>NMFClientId</key>
   <string>YOUR_CLIENT_ID_HERE</string>
 <dict>
