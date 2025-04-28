@@ -113,6 +113,11 @@ allprojects {
         <meta-data
             android:name="com.naver.maps.map.NCP_KEY_ID"
             android:value="YOUR_CLIENT_ID_HERE" />
+      <!-- (legacy) For map API customers who used the AI NAVER API before 2025.04.17 -->
+      <!-- https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1 -->
+      <meta-data
+        android:name="com.naver.maps.map.CLIENT_ID"
+        android:value="YOUR_CLIENT_ID_HERE" />
     </application>
 </manifest>
 ```
@@ -143,6 +148,10 @@ For more detailed settings, please refer to the [Official Documentation](https:/
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+  <key>NMFNcpKeyId</key>
+  <string>YOUR_CLIENT_ID_HERE</string>
+  <!-- (legacy) For map API customers who used the AI NAVER API before 2025.04.17 -->
+  <!-- https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1 -->
   <key>NMFNcpKeyId</key>
   <string>YOUR_CLIENT_ID_HERE</string>
 <dict>
