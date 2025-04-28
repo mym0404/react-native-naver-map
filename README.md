@@ -152,7 +152,7 @@ Currently, this package will request location permission for showing user's curr
   <string>YOUR_CLIENT_ID_HERE</string>
   <!-- (legacy) 2025.04.17 이전에 AI NAVER API를 사용하던 지도 API 고객 전용 -->
   <!-- https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1 -->
-  <key>NMFNcpKeyId</key>
+  <key>NMFClientId</key>
   <string>YOUR_CLIENT_ID_HERE</string>
 <dict>
 <plist>

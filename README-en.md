@@ -152,7 +152,7 @@ For more detailed settings, please refer to the [Official Documentation](https:/
   <string>YOUR_CLIENT_ID_HERE</string>
   <!-- (legacy) For map API customers who used the AI NAVER API before 2025.04.17 -->
   <!-- https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1 -->
-  <key>NMFNcpKeyId</key>
+  <key>NMFClientId</key>
   <string>YOUR_CLIENT_ID_HERE</string>
 <dict>
 <plist>
