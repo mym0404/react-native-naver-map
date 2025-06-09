@@ -12,16 +12,20 @@ public class ViewChangesTracker {
     private LinkedList<TrackableView> markers = new LinkedList<>();
     private boolean hasScheduledFrame = false;
     private Runnable updateRunnable;
-    private final long fps = 2; // FIXME flickering custom view
+    private final long fps = 40;
 
     private ViewChangesTracker() {
-        handler = new Handler(Looper.myLooper());
-        updateRunnable = () -> {
-            hasScheduledFrame = false;
-            update();
+        handler = new Handler(Looper.getMainLooper());
+        updateRunnable = new Runnable() {
+            @Override
+            public void run() {
+                update();
 
-            if (markers.size() > 0) {
-                handler.postDelayed(updateRunnable, 1000 / fps);
+                if (!markers.isEmpty()) {
+                    handler.postDelayed(updateRunnable, fps);
+                } else {
+                    hasScheduledFrame = false;
+                }
             }
         };
     }
@@ -65,7 +69,7 @@ public class ViewChangesTracker {
         }
 
         // Remove markers that are not active anymore
-        if (markersToRemove.size() > 0) {
+        if (!markersToRemove.isEmpty()) {
             markers.removeAll(markersToRemove);
             markersToRemove.clear();
         }
