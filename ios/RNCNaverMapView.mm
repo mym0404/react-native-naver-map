@@ -135,12 +135,20 @@ using namespace facebook::react;
     }
   }
 
-  if (prev.isIndoorEnabled != next.isIndoorEnabled)
+  // Boolean 값들에 대해 강제로 설정하도록 수정
+  // 첫 번째 렌더링이거나 값이 다를 때 모두 적용
+  if (_isRecycled || prev.isIndoorEnabled != next.isIndoorEnabled) {
     [self.map setIndoorMapEnabled:next.isIndoorEnabled];
-  if (prev.isNightModeEnabled != next.isNightModeEnabled)
+  }
+  
+  if (_isRecycled || prev.isNightModeEnabled != next.isNightModeEnabled) {
     [self.map setNightModeEnabled:next.isNightModeEnabled];
-  if (prev.isLiteModeEnabled != next.isLiteModeEnabled)
+  }
+  
+  if (_isRecycled || prev.isLiteModeEnabled != next.isLiteModeEnabled) {
     [self.map setLiteModeEnabled:next.isLiteModeEnabled];
+  }
+  
   if (prev.lightness != next.lightness)
     [self.map setLightness:next.lightness];
   if (prev.buildingHeight != next.buildingHeight)
@@ -149,16 +157,26 @@ using namespace facebook::react;
     [self.map setSymbolScale:next.symbolScale];
   if (prev.symbolPerspectiveRatio != next.symbolPerspectiveRatio)
     [self.map setSymbolPerspectiveRatio:next.symbolPerspectiveRatio];
-  if (prev.isShowCompass != next.isShowCompass)
+    
+  if (_isRecycled || prev.isShowCompass != next.isShowCompass) {
     [_view setShowCompass:next.isShowCompass];
-  if (prev.isShowIndoorLevelPicker != next.isShowIndoorLevelPicker)
+  }
+  
+  if (_isRecycled || prev.isShowIndoorLevelPicker != next.isShowIndoorLevelPicker) {
     [_view setShowIndoorLevelPicker:next.isShowIndoorLevelPicker];
-  if (prev.isShowLocationButton != next.isShowLocationButton)
+  }
+  
+  if (_isRecycled || prev.isShowLocationButton != next.isShowLocationButton) {
     [_view setShowLocationButton:next.isShowLocationButton];
-  if (prev.isShowScaleBar != next.isShowScaleBar)
+  }
+  
+  if (_isRecycled || prev.isShowScaleBar != next.isShowScaleBar) {
     [_view setShowScaleBar:next.isShowScaleBar];
-  if (prev.isShowZoomControls != next.isShowZoomControls)
+  }
+  
+  if (_isRecycled || prev.isShowZoomControls != next.isShowZoomControls) {
     [_view setShowZoomControls:next.isShowZoomControls];
+  }
 
   if (prev.logoAlign != next.logoAlign) {
     if (next.logoAlign == RNCNaverMapViewLogoAlign::TopLeft)
@@ -176,16 +194,25 @@ using namespace facebook::react;
   if (prev.maxZoom != next.maxZoom)
     [self.map setMaxZoomLevel:next.maxZoom];
 
-  if (prev.isScrollGesturesEnabled != next.isScrollGesturesEnabled)
+  if (_isRecycled || prev.isScrollGesturesEnabled != next.isScrollGesturesEnabled) {
     [self.map setScrollGestureEnabled:next.isScrollGesturesEnabled];
-  if (prev.isZoomGesturesEnabled != next.isZoomGesturesEnabled)
+  }
+  
+  if (_isRecycled || prev.isZoomGesturesEnabled != next.isZoomGesturesEnabled) {
     [self.map setZoomGestureEnabled:next.isZoomGesturesEnabled];
-  if (prev.isTiltGesturesEnabled != next.isTiltGesturesEnabled)
+  }
+  
+  if (_isRecycled || prev.isTiltGesturesEnabled != next.isTiltGesturesEnabled) {
     [self.map setTiltGestureEnabled:next.isTiltGesturesEnabled];
-  if (prev.isRotateGesturesEnabled != next.isRotateGesturesEnabled)
+  }
+  
+  if (_isRecycled || prev.isRotateGesturesEnabled != next.isRotateGesturesEnabled) {
     [self.map setRotateGestureEnabled:next.isRotateGesturesEnabled];
-  if (prev.isStopGesturesEnabled != next.isStopGesturesEnabled)
+  }
+  
+  if (_isRecycled || prev.isStopGesturesEnabled != next.isStopGesturesEnabled) {
     [self.map setStopGestureEnabled:next.isStopGesturesEnabled];
+  }
 
   if (prev.animationDuration != next.animationDuration)
     _view.animationDuration = next.animationDuration;
