@@ -35,6 +35,7 @@ import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
 import type { ClusterMarkerProp } from '../types/ClusterMarkerProp';
 import hash from 'object-hash';
 import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
+import type { MarkerImageProp } from '../types/MarkerImageProp';
 
 /**
  * @category Hell
@@ -360,6 +361,7 @@ export interface NaverMapViewProps extends ViewProps {
     height?: number;
     markers: ClusterMarkerProp[];
     screenDistance?: number;
+    image?: MarkerImageProp;
     /**
      * 클러스터링할 최소 줌 레벨.
      *
@@ -659,6 +661,7 @@ export const NaverMapView = forwardRef(
       for (const {
         animate = true,
         markers,
+        image,
         // eslint-disable-next-line @typescript-eslint/no-shadow
         minZoom = Const.MIN_ZOOM,
         // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -671,6 +674,7 @@ export const NaverMapView = forwardRef(
           animate,
           maxZoom,
           minZoom,
+          image,
           screenDistance,
           markers,
           width,
@@ -680,6 +684,7 @@ export const NaverMapView = forwardRef(
         ret.push({
           key,
           animate,
+          image: convertJsImagePropToNativeProp(image ?? { symbol: 'green' }),
           markers: markers.map((m) => ({
             ...m,
             image: convertJsImagePropToNativeProp(

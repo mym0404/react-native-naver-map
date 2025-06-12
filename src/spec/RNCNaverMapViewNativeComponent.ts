@@ -50,6 +50,7 @@ export type NativeClusterProp = {
   width?: Double;
   height?: Double;
   markers: ClusterMarker[];
+  image?: NativeImageProp;
   screenDistance?: Double;
   minZoom?: Double;
   maxZoom?: Double;

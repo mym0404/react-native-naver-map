@@ -13,6 +13,7 @@ internal data class RNCNaverMapLeafMarkerHolder(
   val image: Map<*, *>? = null,
   val width: Double?,
   val height: Double?,
+  val caption: Map<*, *>? = null,
   val onTapLeaf: (() -> Unit)?,
 ) {
   val imageHolder: DraweeHolder<GenericDraweeHierarchy> by lazy {
