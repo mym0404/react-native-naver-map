@@ -1,9 +1,11 @@
 package com.mjstudio.reactnativenavermap.overlay.marker.cluster
 
+import android.graphics.Color
 import com.mjstudio.reactnativenavermap.util.image.getOverlayImage
 import com.mjstudio.reactnativenavermap.util.px
 import com.naver.maps.map.clustering.DefaultLeafMarkerUpdater
 import com.naver.maps.map.clustering.LeafMarkerInfo
+import com.naver.maps.map.overlay.Align
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Marker.SIZE_AUTO
 import com.naver.maps.map.util.MarkerIcons
@@ -16,7 +18,7 @@ internal class RNCNaverMapLeafMarkerUpdater : DefaultLeafMarkerUpdater() {
     super.updateLeafMarker(info, marker)
 
     (info.key as? RNCNaverMapClusterKey)?.let { (holder) ->
-      val (_, _, _, image, width, height) = holder
+      val (_, _, _, image, width, height, caption) = holder
 
       marker.width = width?.px ?: SIZE_AUTO
       marker.height = height?.px ?: SIZE_AUTO
@@ -34,7 +36,7 @@ internal class RNCNaverMapLeafMarkerUpdater : DefaultLeafMarkerUpdater() {
       if (caption != null) {
         setCaption(marker, caption);
       }
-      
+
       marker.setOnClickListener {
         if (holder.onTapLeaf == null) {
           return@setOnClickListener false
