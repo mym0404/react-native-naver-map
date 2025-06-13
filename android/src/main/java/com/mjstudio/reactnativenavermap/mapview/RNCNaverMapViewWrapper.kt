@@ -10,6 +10,7 @@ import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.uimanager.ThemedReactContext
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMapOptions
+import android.view.MotionEvent
 
 @SuppressLint("ViewConstructor")
 class RNCNaverMapViewWrapper(
@@ -94,6 +95,24 @@ class RNCNaverMapViewWrapper(
   }
 
   override fun onHostDestroy() {}
+
+   override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+    mapView?.withMap { map ->
+        if (map.uiSettings.isScrollGesturesEnabled) {
+            when (ev?.action) {
+                MotionEvent.ACTION_DOWN,
+                MotionEvent.ACTION_MOVE -> {
+                    parent?.requestDisallowInterceptTouchEvent(true)
+                }
+                MotionEvent.ACTION_UP,
+                MotionEvent.ACTION_CANCEL -> {
+                    parent?.requestDisallowInterceptTouchEvent(false)
+                }
+            }
+        }
+    }
+    return super.dispatchTouchEvent(ev)
+}
 
   companion object {
     /**
