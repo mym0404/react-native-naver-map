@@ -591,6 +591,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
           val image = marker["image"] as? Map<*, *>
           val width = marker["width"] as? Double
           val height = marker["height"] as? Double
+          val caption = marker["caption"] as? Map<*, *>
 
           RNCNaverMapClusterKey(
             RNCNaverMapLeafMarkerHolder(
@@ -600,6 +601,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
               image,
               width,
               height,
+              caption,
               onTapLeaf =
                 if (isLeafTapCallbackExist) {
                   {

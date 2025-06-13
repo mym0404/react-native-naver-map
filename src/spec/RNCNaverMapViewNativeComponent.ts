@@ -8,6 +8,7 @@ import type {
 } from 'react-native/Libraries/Types/CodegenTypes';
 import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
 import React from 'react';
+import type { NativeCaptionProp } from './RNCNaverMapMarkerNativeComponent';
 
 /* Type should be redeclared because of codegen ts parser doesn't allow imported type
  * [comments](https://github.com/reactwg/react-native-new-architecture/discussions/91#discussioncomment-4282452)
@@ -28,6 +29,7 @@ type NativeImageProp = Readonly<{
 type ClusterMarker = Coord & {
   identifier: string;
   image?: NativeImageProp;
+  caption?: Readonly<NativeCaptionProp>;
   width?: Double;
   height?: Double;
 };
@@ -50,7 +52,7 @@ export type NativeClusterProp = {
   width?: Double;
   height?: Double;
   markers: ClusterMarker[];
-  image?: NativeImageProp;
+  image?: Readonly<NativeImageProp>;
   screenDistance?: Double;
   minZoom?: Double;
   maxZoom?: Double;

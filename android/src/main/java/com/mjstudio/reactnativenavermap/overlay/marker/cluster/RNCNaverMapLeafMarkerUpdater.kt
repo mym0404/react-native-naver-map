@@ -31,6 +31,10 @@ internal class RNCNaverMapLeafMarkerUpdater : DefaultLeafMarkerUpdater() {
         marker.alpha = 1f
       }
 
+      if (caption != null) {
+        setCaption(marker, caption);
+      }
+      
       marker.setOnClickListener {
         if (holder.onTapLeaf == null) {
           return@setOnClickListener false
@@ -40,4 +44,17 @@ internal class RNCNaverMapLeafMarkerUpdater : DefaultLeafMarkerUpdater() {
       }
     }
   }
+
+  fun setCaption(marker: Marker, caption: Map<*, *>) = with(marker) {
+      setCaptionText(caption["text"] as? String ?: "")
+      setCaptionRequestedWidth((caption["requestedWidth"] as? Double ?: 0.0).px)
+      setCaptionAligns(caption["align"] as? Align ?: Align.Center)
+      setCaptionOffset((caption["offset"] as? Double ?: 0.0).px)
+      setCaptionColor(caption["color"] as? Int ?: Color.WHITE)
+      setCaptionHaloColor(caption["haloColor"] as? Int ?: Color.TRANSPARENT)
+      setCaptionTextSize((caption["textSize"] as? Double ?: 12.0).toFloat())
+      setCaptionMinZoom(caption["minZoom"] as? Double ?: 0.0)
+      setCaptionMaxZoom(caption["maxZoom"] as? Double ?: 21.0)
+  }
+
 }
