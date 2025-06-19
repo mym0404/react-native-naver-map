@@ -13,7 +13,6 @@
   BOOL _initialCameraSet;
   BOOL _isFirstCameraAnimationRun;
 
-  // iOS 카메라 변경 감지를 위한 추가 프로퍼티
   BOOL _isUserInteracting;
 
   // Array to manually track RN subviews
@@ -264,7 +263,7 @@
   if (!_rncParent.emitter)
     return;
 
-  // 카메라 이동 완료 시 상호작용 상태 리셋
+  // Reset property on camera idle
   _isUserInteracting = NO;
 
   NMFCameraPosition* pos = mapView.cameraPosition;
@@ -294,21 +293,16 @@
   });
 }
 
-// iOS에서 실시간 카메라 변경 감지를 위한 새로운 델리게이트 메서드들
 - (void)mapView:(NMFMapView*)mapView
     cameraWillChangeByReason:(NSInteger)reason
                     animated:(BOOL)animated {
-  // 카메라 변경이 시작될 때
   _isUserInteracting = YES;
-
-  // cameraIsChangingByReason과 동일한 이벤트 발생
   [self mapView:mapView cameraIsChangingByReason:reason];
 }
 
 - (void)mapView:(NMFMapView*)mapView
     cameraDidChangeByReason:(NSInteger)reason
                    animated:(BOOL)animated {
-  // 카메라 변경이 완료될 때도 이벤트 발생 (실시간 업데이트)
   if (_isUserInteracting) {
     [self mapView:mapView cameraIsChangingByReason:reason];
   }
