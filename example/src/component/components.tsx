@@ -1,13 +1,13 @@
-import { TouchableOpacity, Text, View, Switch } from 'react-native';
-import Slider from '@react-native-community/slider';
-import React from 'react';
+import Slider from '@react-native-community/slider'
+import React from 'react'
+import { Switch, Text, TouchableOpacity, View } from 'react-native'
 
 export const Btn = ({
   onPress,
   title,
 }: {
-  title: string;
-  onPress: () => void;
+  title: string
+  onPress: () => void
 }) => {
   return (
     <TouchableOpacity
@@ -26,17 +26,17 @@ export const Btn = ({
         {title}
       </Text>
     </TouchableOpacity>
-  );
-};
+  )
+}
 
 export const Toggle = ({
   onChange,
   text,
   value,
 }: {
-  value: boolean;
-  onChange: (value: boolean) => void;
-  text: string;
+  value: boolean
+  onChange: (value: boolean) => void
+  text: string
 }) => {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
@@ -53,8 +53,8 @@ export const Toggle = ({
         }}
       />
     </View>
-  );
-};
+  )
+}
 
 export const Range = ({
   onChange,
@@ -63,11 +63,11 @@ export const Range = ({
   max,
   min,
 }: {
-  value?: number;
-  onChange?: (value: number) => void;
-  text: string;
-  min?: number;
-  max?: number;
+  value?: number
+  onChange?: (value: number) => void
+  text: string
+  min?: number
+  max?: number
 }) => {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
@@ -85,5 +85,5 @@ export const Range = ({
         thumbTintColor={'white'}
       />
     </View>
-  );
-};
+  )
+}

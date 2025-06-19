@@ -10,14 +10,18 @@
   "exclude": ["src/spec/**/*", "src/internal/**/*"],
   "searchInComments": true,
   "sort": ["kind", "static-first", "alphabetical"],
-  "plugin": ["typedoc-plugin-extras", "typedoc-theme-hierarchy", "@8hobbies/typedoc-plugin-404"],
+  "plugin": [
+    "typedoc-plugin-extras",
+    "typedoc-theme-hierarchy",
+    "@8hobbies/typedoc-plugin-404"
+  ],
   "theme": "hierarchy",
   "customTitle": "React Native Naver Map",
   "customDescription": "\uD83D\uDCCD Naver Map Component for React Native Supporting Fabric and Bridge and Expo",
   "footerLastModified": true,
   "footerTypedocVersion": true,
   "categorizeByGroup": true,
-  "groupOrder": ["Events","*", "Properties"],
+  "groupOrder": ["Events", "*", "Properties"],
   "visibilityFilters": {
     "protected": false,
     "private": false,

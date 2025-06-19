@@ -10,7 +10,7 @@ export interface BaseOverlayProps {
    * @see {@link globalZIndex}
    * @default 0
    * */
-  zIndex?: number;
+  zIndex?: number
   /** 지도에서 global z index의 위치입니다. 기본값은 오버레이의 타입에 따라 다릅니다.
    *
    * 전역 Z 인덱스. 여러 오버레이가 화면에서 겹쳐지면 전역 Z 인덱스가 큰 오버레이가 작은 오버레이를 덮습니다.
@@ -32,28 +32,28 @@ export interface BaseOverlayProps {
    * @see {@link zIndex}
    * @default null
    * */
-  globalZIndex?: number;
+  globalZIndex?: number
   /** 감춰진 여부입니다. */
-  isHidden?: boolean;
+  isHidden?: boolean
   /**
    * 지도에 보이는 최소 줌 레벨입니다.
    *
    * @default 0
    */
-  minZoom?: number;
+  minZoom?: number
   /**
    * 지도에 보이는 최대 줌 레벨입니다.
    *
    * @default 21
    */
-  maxZoom?: number;
+  maxZoom?: number
   /** 최소 줌 레벨이 포함될 때도 보이는 지 여부입니다. */
-  isMinZoomInclusive?: boolean;
+  isMinZoomInclusive?: boolean
   /** 최대 줌 레벨이 포함될 때도 보이는 지 여부입니다. */
-  isMaxZoomInclusive?: boolean;
+  isMaxZoomInclusive?: boolean
   /**
    *  오버레이를 클릭했을 때의 이벤트입니다.
    *  @group Events
    */
-  onTap?: () => void;
+  onTap?: () => void
 }

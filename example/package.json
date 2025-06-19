@@ -1,29 +1,52 @@
 {
-  "name": "@mj-studio/react-native-naver-map-example",
-  "version": "0.0.1",
-  "private": true,
+  "name": "example",
+  "main": "expo-router/entry",
+  "version": "1.0.0",
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start"
+    "start": "expo start",
+    "reset-project": "node ./scripts/reset-project.js",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "lint": "expo lint"
   },
   "dependencies": {
-    "@mj-studio/js-util": "1.1.16",
-    "@react-native-community/slider": "4.5.2",
-    "react": "18.3.1",
-    "react-native": "0.75.2",
-    "react-native-permissions": "4.1.5"
+    "@expo/vector-icons": "^14.1.0",
+    "@mj-studio/js-util": "^1.1.20",
+    "@mj-studio/react-native-naver-map": "workspace:*",
+    "@react-native-community/slider": "^4.5.7",
+    "@react-navigation/bottom-tabs": "^7.3.10",
+    "@react-navigation/elements": "^2.3.8",
+    "@react-navigation/native": "^7.1.6",
+    "expo": "catalog:",
+    "expo-blur": "~14.1.5",
+    "expo-build-properties": "~0.14.6",
+    "expo-constants": "~17.1.6",
+    "expo-font": "~13.3.1",
+    "expo-haptics": "~14.1.4",
+    "expo-image": "~2.3.0",
+    "expo-linking": "~7.1.5",
+    "expo-location": "~18.1.5",
+    "expo-router": "~5.1.0",
+    "expo-splash-screen": "~0.30.9",
+    "expo-status-bar": "~2.2.3",
+    "expo-symbols": "~0.4.5",
+    "expo-system-ui": "~5.0.9",
+    "expo-web-browser": "~14.2.0",
+    "react": "catalog:",
+    "react-native": "catalog:",
+    "react-native-gesture-handler": "~2.24.0",
+    "react-native-reanimated": "~3.17.4",
+    "react-native-safe-area-context": "5.4.0",
+    "react-native-screens": "~4.11.1",
+    "react-native-webview": "13.13.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
-    "@babel/preset-env": "^7.20.0",
-    "@babel/runtime": "^7.20.0",
-    "@react-native/babel-preset": "0.75.2",
-    "@react-native/metro-config": "0.75.2",
-    "@react-native/typescript-config": "0.75.2",
-    "babel-plugin-module-resolver": "5.0.2"
+    "@babel/core": "^7.25.2",
+    "@types/react": "~19.0.10",
+    "eslint": "^9.25.0",
+    "eslint-config-expo": "~9.2.0",
+    "typescript": "~5.8.3"
   },
-  "engines": {
-    "node": ">=18"
-  }
+  "private": true
 }

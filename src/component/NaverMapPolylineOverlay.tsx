@@ -1,17 +1,17 @@
-import { default as NativeNaverMapPolyline } from '../spec/RNCNaverMapPolylineNativeComponent';
-import type { BaseOverlayProps } from '../types/BaseOverlayProps';
-import { type ColorValue, processColor } from 'react-native';
-import { Const } from '../internal/util/Const';
 import type {
-  Coord,
   CapType,
+  Coord,
   JoinType,
-} from '@mj-studio/react-native-naver-map';
-import { nAssert } from '../internal/util/Assert';
-import React from 'react';
+} from '@mj-studio/react-native-naver-map'
+import React from 'react'
+import { type ColorValue, processColor } from 'react-native'
+import { nAssert } from '../internal/util/Assert'
+import { Const } from '../internal/util/Const'
+import { default as NativeNaverMapPolyline } from '../spec/RNCNaverMapPolylineNativeComponent'
+import type { BaseOverlayProps } from '../types/BaseOverlayProps'
 
 export interface NaverMapPolylineOverlayProps extends BaseOverlayProps {
-  coords: Coord[];
+  coords: Coord[]
   /**
    * 두께를 지정할 수 있습니다.
    *
@@ -19,14 +19,14 @@ export interface NaverMapPolylineOverlayProps extends BaseOverlayProps {
    *
    * @default 1
    */
-  width?: number;
+  width?: number
   /**
    * color속성을 사용해 선의 색상을 지정할 수 있습니다.
    *
    * @default black
    */
-  color?: ColorValue;
-  pattern?: number[];
+  color?: ColorValue
+  pattern?: number[]
   /**
    * capType 속성을 사용해 끝 지점의 모양을 지정할 수 있습니다.
    *
@@ -39,7 +39,7 @@ export interface NaverMapPolylineOverlayProps extends BaseOverlayProps {
    * @see {@link CapType}
    * @default Round
    */
-  capType?: CapType;
+  capType?: CapType
   /**
    * joinType 속성을 사용해 연결점의 모양을 지정할 수 있습니다.
    *
@@ -54,7 +54,7 @@ export interface NaverMapPolylineOverlayProps extends BaseOverlayProps {
    * @see {@link JoinType}
    * @default Round
    */
-  joinType?: JoinType;
+  joinType?: JoinType
 }
 
 export const NaverMapPolylineOverlay = ({
@@ -77,7 +77,7 @@ export const NaverMapPolylineOverlay = ({
     nAssert(
       coords.length >= 2,
       `[NaverMapPolylineOverlay] coords length should be equal or greater than 2, is ${coords.length}.`
-    );
+    )
   }
   return (
     <NativeNaverMapPolyline
@@ -95,5 +95,5 @@ export const NaverMapPolylineOverlay = ({
       joinType={joinType}
       onTapOverlay={onTap}
     />
-  );
-};
+  )
+}

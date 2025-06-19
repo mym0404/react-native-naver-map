@@ -14,4 +14,4 @@ export type MarkerSymbol =
   | 'black'
   | 'lowDensityCluster'
   | 'mediumDensityCluster'
-  | 'highDensityCluster';
+  | 'highDensityCluster'

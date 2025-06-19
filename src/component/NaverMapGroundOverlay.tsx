@@ -1,12 +1,9 @@
-import { default as NativeNaverMapGround } from '../spec/RNCNaverMapGroundNativeComponent';
-import type { BaseOverlayProps } from '../types/BaseOverlayProps';
-import { Const } from '../internal/util/Const';
-import type {
-  MarkerImageProp,
-  Region,
-} from '@mj-studio/react-native-naver-map';
-import { convertJsImagePropToNativeProp } from '../internal/Util';
-import React from 'react';
+import type { MarkerImageProp, Region } from '@mj-studio/react-native-naver-map'
+import React from 'react'
+import { convertJsImagePropToNativeProp } from '../internal/Util'
+import { Const } from '../internal/util/Const'
+import { default as NativeNaverMapGround } from '../spec/RNCNaverMapGroundNativeComponent'
+import type { BaseOverlayProps } from '../types/BaseOverlayProps'
 
 export interface NaverMapGroundOverlayProps extends BaseOverlayProps {
   /**
@@ -14,13 +11,13 @@ export interface NaverMapGroundOverlayProps extends BaseOverlayProps {
    *
    * 이미지는 필수적인 속성으로, 이미지를 지정하지 않은 지상 오버레이는 지도에 추가되지 않습니다.
    */
-  image: MarkerImageProp;
+  image: MarkerImageProp
   /**
    * 지상 오버레이의 영역을 지정할 수 있습니다.
    *
    * 영역은 필수적인 속성으로, 영역을 지정하지 않은 지상 오버레이는 지도에 추가되지 않습니다.
    */
-  region: Region;
+  region: Region
 }
 
 export const NaverMapGroundOverlay = ({
@@ -48,5 +45,5 @@ export const NaverMapGroundOverlay = ({
       image={convertJsImagePropToNativeProp(image)}
       onTapOverlay={onTap}
     />
-  );
-};
+  )
+}

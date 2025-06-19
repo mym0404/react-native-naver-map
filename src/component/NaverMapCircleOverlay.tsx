@@ -1,31 +1,31 @@
-import { default as NativeNaverMapCircle } from '../spec/RNCNaverMapCircleNativeComponent';
-import type { BaseOverlayProps } from '../types/BaseOverlayProps';
-import { type ColorValue, processColor } from 'react-native';
-import { Const } from '../internal/util/Const';
-import type { Coord } from '../types/Coord';
-import React from 'react';
+import React from 'react'
+import { type ColorValue, processColor } from 'react-native'
+import { Const } from '../internal/util/Const'
+import { default as NativeNaverMapCircle } from '../spec/RNCNaverMapCircleNativeComponent'
+import type { BaseOverlayProps } from '../types/BaseOverlayProps'
+import type { Coord } from '../types/Coord'
 
 export interface NaverMapCircleOverlayProps extends BaseOverlayProps, Coord {
   /** 지도에 원의 반지름을 미터 단위로 표시합니다. */
-  radius?: number;
+  radius?: number
   /**
    * 원의 색상입니다.
    *
    * @default black
    */
-  color?: ColorValue;
+  color?: ColorValue
   /**
    * 외곽선의 굵기입니다. dp(android), pt(ios)
    *
    * @default 0
    */
-  outlineWidth?: number;
+  outlineWidth?: number
   /**
    * 외곽선의 색상입니다.
    *
    * @default black
    */
-  outlineColor?: ColorValue;
+  outlineColor?: ColorValue
 }
 
 export const NaverMapCircleOverlay = ({
@@ -64,5 +64,5 @@ export const NaverMapCircleOverlay = ({
       outlineColor={processColor(outlineColor) as number}
       onTapOverlay={onTap}
     />
-  );
-};
+  )
+}

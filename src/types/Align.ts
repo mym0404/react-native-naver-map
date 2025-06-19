@@ -10,4 +10,4 @@ export type Align =
   | 'TopLeft'
   | 'TopRight'
   | 'BottomRight'
-  | 'BottomLeft';
+  | 'BottomLeft'

@@ -1,0 +1,16 @@
+packages:
+  - .
+  - example
+# onlyBuiltDependencies:
+#   - "@sentry/cli"
+#   - "@swc/core"
+#   - core-js-pure
+#   - esbuild
+#   - nx
+#   - sharp
+#   - typia
+#   - workerd
+catalog:
+  "react-native": 0.79.4
+  "react": 19.0.0
+  "expo": 53.0.12

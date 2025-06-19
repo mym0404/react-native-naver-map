@@ -1,91 +1,91 @@
-import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
-import type { ViewProps, HostComponent } from 'react-native';
+import type React from 'react'
+import type { HostComponent, ViewProps } from 'react-native'
 import type {
   DirectEventHandler,
+  Double,
   Int32,
   WithDefault,
-  Double,
-} from 'react-native/Libraries/Types/CodegenTypes';
-import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
-import React from 'react';
+} from 'react-native/Libraries/Types/CodegenTypes'
+import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands'
+import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent'
 
 /* Type should be redeclared because of codegen ts parser doesn't allow imported type
  * [comments](https://github.com/reactwg/react-native-new-architecture/discussions/91#discussioncomment-4282452)
  */
 
 type Coord = {
-  latitude: Double;
-  longitude: Double;
-};
+  latitude: Double
+  longitude: Double
+}
 type NativeImageProp = Readonly<{
-  symbol?: string;
-  rnAssetUri?: string;
-  httpUri?: string;
-  assetName?: string;
-  reuseIdentifier?: string;
-}>;
+  symbol?: string
+  rnAssetUri?: string
+  httpUri?: string
+  assetName?: string
+  reuseIdentifier?: string
+}>
 
 type ClusterMarker = Coord & {
-  identifier: string;
-  image?: NativeImageProp;
-  width?: Double;
-  height?: Double;
-};
+  identifier: string
+  image?: NativeImageProp
+  width?: Double
+  height?: Double
+}
 type Camera = {
-  latitude: Double;
-  longitude: Double;
-  zoom?: Double;
-  tilt?: Double;
-  bearing?: Double;
-};
+  latitude: Double
+  longitude: Double
+  zoom?: Double
+  tilt?: Double
+  bearing?: Double
+}
 type Region = {
-  latitude: Double;
-  longitude: Double;
-  latitudeDelta: Double;
-  longitudeDelta: Double;
-};
-type LogoAlign = 'TopLeft' | 'TopRight' | 'BottomLeft' | 'BottomRight';
+  latitude: Double
+  longitude: Double
+  latitudeDelta: Double
+  longitudeDelta: Double
+}
+type LogoAlign = 'TopLeft' | 'TopRight' | 'BottomLeft' | 'BottomRight'
 export type NativeClusterProp = {
-  key: string;
-  width?: Double;
-  height?: Double;
-  markers: ClusterMarker[];
-  screenDistance?: Double;
-  minZoom?: Double;
-  maxZoom?: Double;
-  animate?: boolean;
-};
+  key: string
+  width?: Double
+  height?: Double
+  markers: ClusterMarker[]
+  screenDistance?: Double
+  minZoom?: Double
+  maxZoom?: Double
+  animate?: boolean
+}
 export type NativeClustersProp = Readonly<{
-  key: string;
-  clusters: ReadonlyArray<NativeClusterProp>;
-  isLeafTapCallbackExist: boolean;
-}>;
+  key: string
+  clusters: ReadonlyArray<NativeClusterProp>
+  isLeafTapCallbackExist: boolean
+}>
 export type NativeLocationOverlayProp = {
-  isVisible?: boolean;
-  position?: Coord;
-  bearing?: Double;
-  image?: NativeImageProp;
-  imageWidth?: Double;
-  imageHeight?: Double;
-  anchor?: Readonly<{ x: Double; y: Double }>;
-  subImage?: NativeImageProp;
-  subImageWidth?: Double;
-  subImageHeight?: Double;
-  subAnchor?: Readonly<{ x: Double; y: Double }>;
-  circleRadius?: Double;
-  circleColor?: Int32;
-  circleOutlineWidth?: Double;
-  circleOutlineColor?: Int32;
-};
+  isVisible?: boolean
+  position?: Coord
+  bearing?: Double
+  image?: NativeImageProp
+  imageWidth?: Double
+  imageHeight?: Double
+  anchor?: Readonly<{ x: Double; y: Double }>
+  subImage?: NativeImageProp
+  subImageWidth?: Double
+  subImageHeight?: Double
+  subAnchor?: Readonly<{ x: Double; y: Double }>
+  circleRadius?: Double
+  circleColor?: Int32
+  circleOutlineWidth?: Double
+  circleOutlineColor?: Int32
+}
 
 ////////////////////
 
 type PartialRect = Readonly<{
-  top?: Double;
-  right?: Double;
-  bottom?: Double;
-  left?: Double;
-}>;
+  top?: Double
+  right?: Double
+  bottom?: Double
+  left?: Double
+}>
 
 interface Props extends ViewProps {
   mapType?: WithDefault<
@@ -97,105 +97,105 @@ interface Props extends ViewProps {
     | 'NaviHybrid'
     | 'None',
     'Basic'
-  >;
+  >
 
-  layerGroups: Int32;
+  layerGroups: Int32
 
-  initialCamera?: Readonly<Camera>;
-  camera?: Readonly<Camera>;
+  initialCamera?: Readonly<Camera>
+  camera?: Readonly<Camera>
 
-  initialRegion?: Readonly<Region>;
-  region?: Readonly<Region>;
+  initialRegion?: Readonly<Region>
+  region?: Readonly<Region>
 
-  animationDuration?: Int32;
-  animationEasing?: Int32 /*'EaseIn' | 'None' | 'Linear' | 'Fly' | 'EaseOut'*/;
+  animationDuration?: Int32
+  animationEasing?: Int32 /*'EaseIn' | 'None' | 'Linear' | 'Fly' | 'EaseOut'*/
 
-  isIndoorEnabled?: boolean;
-  isNightModeEnabled?: boolean;
-  isLiteModeEnabled?: boolean;
-  lightness?: Double;
-  buildingHeight?: Double;
-  symbolScale?: Double;
-  symbolPerspectiveRatio?: Double;
+  isIndoorEnabled?: boolean
+  isNightModeEnabled?: boolean
+  isLiteModeEnabled?: boolean
+  lightness?: Double
+  buildingHeight?: Double
+  symbolScale?: Double
+  symbolPerspectiveRatio?: Double
 
-  mapPadding?: PartialRect;
+  mapPadding?: PartialRect
 
-  minZoom?: Double;
-  maxZoom?: Double;
+  minZoom?: Double
+  maxZoom?: Double
 
-  isShowCompass?: boolean;
-  isShowScaleBar?: boolean;
-  isShowZoomControls?: boolean;
-  isShowIndoorLevelPicker?: boolean;
-  isShowLocationButton?: boolean;
+  isShowCompass?: boolean
+  isShowScaleBar?: boolean
+  isShowZoomControls?: boolean
+  isShowIndoorLevelPicker?: boolean
+  isShowLocationButton?: boolean
 
-  logoAlign?: WithDefault<LogoAlign, 'BottomLeft'>;
-  logoMargin?: PartialRect;
+  logoAlign?: WithDefault<LogoAlign, 'BottomLeft'>
+  logoMargin?: PartialRect
   // isLogoInteractionEnabled?: boolean;
 
-  extent?: Readonly<Region>;
+  extent?: Readonly<Region>
 
-  isScrollGesturesEnabled?: boolean;
-  isZoomGesturesEnabled?: boolean;
-  isTiltGesturesEnabled?: boolean;
-  isRotateGesturesEnabled?: boolean;
-  isUseTextureViewAndroid?: boolean;
-  isStopGesturesEnabled?: boolean;
+  isScrollGesturesEnabled?: boolean
+  isZoomGesturesEnabled?: boolean
+  isTiltGesturesEnabled?: boolean
+  isRotateGesturesEnabled?: boolean
+  isUseTextureViewAndroid?: boolean
+  isStopGesturesEnabled?: boolean
 
-  locale?: string;
+  locale?: string
 
-  clusters?: NativeClustersProp;
-  fpsLimit?: Int32;
-  locationOverlay?: Readonly<NativeLocationOverlayProp>;
+  clusters?: NativeClustersProp
+  fpsLimit?: Int32
+  locationOverlay?: Readonly<NativeLocationOverlayProp>
 
-  onInitialized?: DirectEventHandler<Readonly<{}>>;
-  onOptionChanged?: DirectEventHandler<Readonly<{}>>;
+  onInitialized?: DirectEventHandler<Readonly<{}>>
+  onOptionChanged?: DirectEventHandler<Readonly<{}>>
   onCameraChanged?: DirectEventHandler<
     Readonly<{
-      latitude: Double;
-      longitude: Double;
-      zoom: Double;
-      tilt: Double;
-      bearing: Double;
-      reason: Int32 /* CameraChangeReason */;
-      regionLatitude: Double;
-      regionLongitude: Double;
-      regionLatitudeDelta: Double;
-      regionLongitudeDelta: Double;
+      latitude: Double
+      longitude: Double
+      zoom: Double
+      tilt: Double
+      bearing: Double
+      reason: Int32 /* CameraChangeReason */
+      regionLatitude: Double
+      regionLongitude: Double
+      regionLatitudeDelta: Double
+      regionLongitudeDelta: Double
     }>
-  >;
+  >
   onCameraIdle?: DirectEventHandler<
     Readonly<{
-      latitude: Double;
-      longitude: Double;
-      zoom: Double;
-      tilt: Double;
-      bearing: Double;
-      regionLatitude: Double;
-      regionLongitude: Double;
-      regionLatitudeDelta: Double;
-      regionLongitudeDelta: Double;
+      latitude: Double
+      longitude: Double
+      zoom: Double
+      tilt: Double
+      bearing: Double
+      regionLatitude: Double
+      regionLongitude: Double
+      regionLatitudeDelta: Double
+      regionLongitudeDelta: Double
     }>
-  >;
+  >
   onTapMap?: DirectEventHandler<
     Readonly<{
-      latitude: Double;
-      longitude: Double;
-      x: Double;
-      y: Double;
+      latitude: Double
+      longitude: Double
+      x: Double
+      y: Double
     }>
-  >;
-  onTapClusterLeaf?: DirectEventHandler<Readonly<{ markerIdentifier: string }>>;
+  >
+  onTapClusterLeaf?: DirectEventHandler<Readonly<{ markerIdentifier: string }>>
 
   onScreenToCoordinate?: DirectEventHandler<
     Readonly<{ isValid: boolean; latitude: Double; longitude: Double }>
-  >;
+  >
   onCoordinateToScreen?: DirectEventHandler<
     Readonly<{ isValid: boolean; screenX: Double; screenY: Double }>
-  >;
+  >
 }
 
-type ComponentType = HostComponent<Props>;
+type ComponentType = HostComponent<Props>
 
 interface NaverMapNativeCommands {
   screenToCoordinate: (
@@ -204,22 +204,22 @@ interface NaverMapNativeCommands {
     y: Double
   ) => Promise<
     Readonly<{
-      isValid: boolean;
-      latitude: Double;
-      longitude: Double;
+      isValid: boolean
+      latitude: Double
+      longitude: Double
     }>
-  >;
+  >
   coordinateToScreen: (
     ref: React.ElementRef<ComponentType>,
     latitude: Double,
     longitude: Double
   ) => Promise<
     Readonly<{
-      isValid: boolean;
-      screenX: Double;
-      screenY: Double;
+      isValid: boolean
+      screenX: Double
+      screenY: Double
     }>
-  >;
+  >
   animateCameraTo: (
     ref: React.ElementRef<ComponentType>,
     latitude: Double,
@@ -229,7 +229,7 @@ interface NaverMapNativeCommands {
     pivotX?: Double,
     pivotY?: Double,
     zoom?: Double
-  ) => void;
+  ) => void
   animateCameraBy: (
     ref: React.ElementRef<ComponentType>,
     x: Double,
@@ -238,7 +238,7 @@ interface NaverMapNativeCommands {
     easing?: Int32 /*'Easing' | 'None' | 'Linear' | 'Fly'*/,
     pivotX?: Double,
     pivotY?: Double
-  ) => void;
+  ) => void
   animateRegionTo: (
     ref: React.ElementRef<ComponentType>,
     latitude: Double,
@@ -249,15 +249,15 @@ interface NaverMapNativeCommands {
     easing?: Int32 /*'Easing' | 'None' | 'Linear' | 'Fly'*/,
     pivotX?: Double,
     pivotY?: Double
-  ) => void;
-  cancelAnimation: (ref: React.ElementRef<ComponentType>) => void;
+  ) => void
+  cancelAnimation: (ref: React.ElementRef<ComponentType>) => void
   setLocationTrackingMode: (
     ref: React.ElementRef<ComponentType>,
     mode: string
-  ) => void;
+  ) => void
 }
 
-export default codegenNativeComponent<Props>('RNCNaverMapView');
+export default codegenNativeComponent<Props>('RNCNaverMapView')
 export const Commands: NaverMapNativeCommands =
   codegenNativeCommands<NaverMapNativeCommands>({
     supportedCommands: [
@@ -269,4 +269,4 @@ export const Commands: NaverMapNativeCommands =
       'animateRegionTo',
       'setLocationTrackingMode',
     ],
-  });
+  })

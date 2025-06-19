@@ -15,7 +15,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Build Docs
-        run: yarn build:docs
+        run: pnpm build:docs
 
       - name: Deploy Docs
         uses: peaceiris/actions-gh-pages@v3
@@ -24,4 +24,3 @@ jobs:
           publish_dir: ./docs
           user_name: github-actions[bot]
           user_email: 41898282+github-actions[bot]@users.noreply.github.com
-
