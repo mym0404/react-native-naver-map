@@ -66,4 +66,4 @@ call_lefthook()
   fi
 }
 
-call_lefthook run "check" "$@"
+call_lefthook run "pre-commit" "$@"

@@ -1,4 +1,4 @@
-import type React from 'react'
+import type { ComponentRef } from 'react'
 import type { HostComponent, ViewProps } from 'react-native'
 import type {
   DirectEventHandler,
@@ -199,7 +199,7 @@ type ComponentType = HostComponent<Props>
 
 interface NaverMapNativeCommands {
   screenToCoordinate: (
-    ref: React.ElementRef<ComponentType>,
+    ref: ComponentRef<ComponentType>,
     x: Double,
     y: Double
   ) => Promise<
@@ -210,7 +210,7 @@ interface NaverMapNativeCommands {
     }>
   >
   coordinateToScreen: (
-    ref: React.ElementRef<ComponentType>,
+    ref: ComponentRef<ComponentType>,
     latitude: Double,
     longitude: Double
   ) => Promise<
@@ -221,7 +221,7 @@ interface NaverMapNativeCommands {
     }>
   >
   animateCameraTo: (
-    ref: React.ElementRef<ComponentType>,
+    ref: ComponentRef<ComponentType>,
     latitude: Double,
     longitude: Double,
     duration?: Int32,
@@ -231,7 +231,7 @@ interface NaverMapNativeCommands {
     zoom?: Double
   ) => void
   animateCameraBy: (
-    ref: React.ElementRef<ComponentType>,
+    ref: ComponentRef<ComponentType>,
     x: Double,
     y: Double,
     duration?: Int32,
@@ -240,7 +240,7 @@ interface NaverMapNativeCommands {
     pivotY?: Double
   ) => void
   animateRegionTo: (
-    ref: React.ElementRef<ComponentType>,
+    ref: ComponentRef<ComponentType>,
     latitude: Double,
     longitude: Double,
     latitudeDelta: Double,
@@ -250,9 +250,9 @@ interface NaverMapNativeCommands {
     pivotX?: Double,
     pivotY?: Double
   ) => void
-  cancelAnimation: (ref: React.ElementRef<ComponentType>) => void
+  cancelAnimation: (ref: ComponentRef<ComponentType>) => void
   setLocationTrackingMode: (
-    ref: React.ElementRef<ComponentType>,
+    ref: ComponentRef<ComponentType>,
     mode: string
   ) => void
 }

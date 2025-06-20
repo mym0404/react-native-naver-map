@@ -221,7 +221,6 @@ export interface NaverMapViewProps extends ViewProps {
    * 콘텐츠 패딩을 지정할 수 있습니다.
    * 다음 그림과 같이 UI 요소가 지도의 일부를 덮을 경우, 카메라는 지도 뷰의 중심에 위치하므로 실제로 보이는 지도의 중심과 카메라의 위치가 불일치하게 됩니다.
    *
-   * @description
    * <img src="https://navermaps.github.io/ios-map-sdk/assets/3-1-contentspadding1.png" alt="Docs Image" width="500">
    */
   mapPadding?: Partial<Rect>
@@ -834,7 +833,8 @@ export const NaverMapView = forwardRef(
         longitude: number
       }) => void
       reject: (e: any) => void
-    }>()
+    }>(undefined)
+
     const coordinateToScreenPromise = useRef<{
       resolve: (params: {
         isValid: boolean
@@ -842,7 +842,8 @@ export const NaverMapView = forwardRef(
         screenY: number
       }) => void
       reject: (e: any) => void
-    }>()
+    }>(undefined)
+
     useEffect(() => {
       return () => {
         screenToCoordinatePromise.current?.resolve({

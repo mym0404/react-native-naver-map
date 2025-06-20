@@ -160,8 +160,6 @@ export interface NaverMapMarkerOverlayProps
    * 앵커 속성은 기본 마커 이미지를 사용하지 않을 때 유용합니다.
    * 예를 들어 다음 그림과 같이 오른쪽 아래에 꼬리가 달려 있는 이미지를 마커의 아이콘으로 지정하면, 이미지에서 가리키는 지점은 오른쪽 아래이지만 마커는 중앙 아래를 기준으로 지도에 붙어 있으므로 이미지와 마커의 좌표 간에 이격이 발생합니다.
    *
-   * @description
-   *
    * <img src="https://navermaps.github.io/android-map-sdk/assets/5-2-distance.png" alt="example1" width="500">
    *
    * 이 경우 앵커를 오른쪽 아래를 의미하는 (1, 1)로 지정하면 이미지와 마커의 좌표 간 이격을 해소할 수 있습니다.
@@ -237,8 +235,6 @@ export interface NaverMapMarkerOverlayProps
   tintColor?: ColorValue
   /**
    * 마커의 이미지입니다.
-   *
-   * @description
    *
    * 마커의 종류는 총 5가지입니다.
    *

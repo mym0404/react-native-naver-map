@@ -99,7 +99,7 @@ For more detailed settings, please refer to the [Official Documentation](https:/
 
 Import Naver SDK Maven Repository to `android/build.gradle`.
 
-```groovy
+``` 
 allprojects {
     repositories {
         maven {

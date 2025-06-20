@@ -1,19 +1,45 @@
 {
   "name": "React Native Naver Map | MJ Studio",
-  "entryPoints": ["src/index.tsx"],
+  "entryPoints": [
+    "src/index.tsx"
+  ],
   "entryPointStrategy": "resolve",
   "out": "docs",
-  "kindSortOrder": ["Function"],
+  "kindSortOrder": [
+    "Function"
+  ],
+  "highlightLanguages": [
+    "bash",
+    "console",
+    "css",
+    "html",
+    "javascript",
+    "json",
+    "jsonc",
+    "json5",
+    "yaml",
+    "tsx",
+    "typescript",
+    "xml",
+    "groovy",
+    "ruby"
+  ],
   "readme": "README.md",
   "tsconfig": "tsconfig.json",
   "commentStyle": "all",
-  "exclude": ["src/spec/**/*", "src/internal/**/*"],
+  "exclude": [
+    "src/spec/**/*",
+    "src/internal/**/*"
+  ],
   "searchInComments": true,
-  "sort": ["kind", "static-first", "alphabetical"],
+  "sort": [
+    "kind",
+    "static-first",
+    "alphabetical"
+  ],
   "plugin": [
     "typedoc-plugin-extras",
-    "typedoc-theme-hierarchy",
-    "@8hobbies/typedoc-plugin-404"
+    "typedoc-theme-hierarchy"
   ],
   "theme": "hierarchy",
   "customTitle": "React Native Naver Map",
@@ -21,7 +47,11 @@
   "footerLastModified": true,
   "footerTypedocVersion": true,
   "categorizeByGroup": true,
-  "groupOrder": ["Events", "*", "Properties"],
+  "groupOrder": [
+    "Events",
+    "*",
+    "Properties"
+  ],
   "visibilityFilters": {
     "protected": false,
     "private": false,
@@ -30,7 +60,7 @@
     "@alpha": true,
     "@beta": true
   },
-  "favicon": "public/favicon.png",
+  "favicon": "public/favicon.ico",
   "navigationLinks": {
     "Github": "https://github.com/mym0404/react-native-naver-map"
   },
