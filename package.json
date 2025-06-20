@@ -72,12 +72,12 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",
-    "@commitlint/config-conventional": "19.8.1",
+    "@commitlint/config-conventional": "17.0.2",
     "@expo/config-plugins": "10.0.3",
     "@release-it/conventional-changelog": "^10.0.1",
     "@types/object-hash": "^3",
     "@types/react": "catalog:",
-    "commitlint": "19.8.1",
+    "commitlint": "17.0.2",
     "del-cli": "6.0.0",
     "lefthook": "1.11.14",
     "react": "catalog:",
@@ -103,6 +103,11 @@
       }
     },
     "./package.json": "./package.json"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "release-it": {
     "git": {
