@@ -187,7 +187,7 @@ export default function Home() {
           subCaption={{
             text: '123',
           }}
-          image={require('./logo180.png')}
+          // image={require('../logo180.png')}
         />
         <NaverMapMarkerOverlay
           latitude={30.0565607356}
@@ -297,7 +297,7 @@ export default function Home() {
         flex: 1,
       }}
     >
-      {rerenderKey % 2 === 0 ? (
+      {rerenderKey % 2 === 0 && false ? (
         <NaverMapView
           camera={camera}
           // initialCamera={Cameras.Jeju}
@@ -359,7 +359,7 @@ export default function Home() {
               latitude={city.lat}
               longitude={city.lng}
               alpha={0.2}
-              image={require('./logo180.png')}
+              // image={require('./logo180.png')}
               width={1}
               height={1}
             />

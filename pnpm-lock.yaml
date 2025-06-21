@@ -9,9 +9,6 @@ catalogs:
     '@types/react':
       specifier: ~19.0.10
       version: 19.0.14
-    expo:
-      specifier: 53.0.12
-      version: 53.0.12
     react:
       specifier: 19.0.0
       version: 19.0.0
@@ -109,7 +106,7 @@ importers:
         specifier: ^7.1.6
         version: 7.1.13(react-native@0.79.4(@babel/core@7.27.4)(@react-native-community/cli@14.0.0(typescript@5.8.3))(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       expo:
-        specifier: 'catalog:'
+        specifier: ~53.0.12
         version: 53.0.12(@babel/core@7.27.4)(@expo/metro-runtime@5.0.4(react-native@0.79.4(@babel/core@7.27.4)(@react-native-community/cli@14.0.0(typescript@5.8.3))(@types/react@19.0.14)(react@19.0.0)))(react-native-webview@13.13.5(react-native@0.79.4(@babel/core@7.27.4)(@react-native-community/cli@14.0.0(typescript@5.8.3))(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.4)(@react-native-community/cli@14.0.0(typescript@5.8.3))(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       expo-blur:
         specifier: ~14.1.5
@@ -154,10 +151,10 @@ importers:
         specifier: ~14.2.0
         version: 14.2.0(expo@53.0.12(@babel/core@7.27.4)(@expo/metro-runtime@5.0.4(react-native@0.79.4(@babel/core@7.27.4)(@react-native-community/cli@14.0.0(typescript@5.8.3))(@types/react@19.0.14)(react@19.0.0)))(react-native-webview@13.13.5(react-native@0.79.4(@babel/core@7.27.4)(@react-native-community/cli@14.0.0(typescript@5.8.3))(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.4)(@react-native-community/cli@14.0.0(typescript@5.8.3))(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.4)(@react-native-community/cli@14.0.0(typescript@5.8.3))(@types/react@19.0.14)(react@19.0.0))
       react:
-        specifier: 'catalog:'
+        specifier: 19.0.0
         version: 19.0.0
       react-native:
-        specifier: 'catalog:'
+        specifier: 0.79.4
         version: 0.79.4(@babel/core@7.27.4)(@react-native-community/cli@14.0.0(typescript@5.8.3))(@types/react@19.0.14)(react@19.0.0)
       react-native-gesture-handler:
         specifier: ~2.24.0
@@ -179,7 +176,7 @@ importers:
         specifier: ^7.25.2
         version: 7.27.4
       '@types/react':
-        specifier: 'catalog:'
+        specifier: '19'
         version: 19.0.14
       typescript:
         specifier: ~5.8.3
@@ -6200,7 +6197,7 @@ snapshots:
       '@types/node': 20.5.1
       chalk: 4.1.2
       cosmiconfig: 8.3.6(typescript@5.8.3)
-      cosmiconfig-typescript-loader: 4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.3.3))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.3.3))(typescript@5.8.3)
+      cosmiconfig-typescript-loader: 4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.8.3))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.8.3))(typescript@5.8.3)
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
@@ -8075,7 +8072,7 @@ snapshots:
     dependencies:
       browserslist: 4.25.0
 
-  cosmiconfig-typescript-loader@4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.3.3))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.3.3))(typescript@5.8.3):
+  cosmiconfig-typescript-loader@4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.8.3))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.8.3))(typescript@5.8.3):
     dependencies:
       '@types/node': 20.5.1
       cosmiconfig: 8.3.6(typescript@5.8.3)
