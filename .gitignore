@@ -80,5 +80,5 @@ docs/
 example/.watchman-*
 *.bak
 
-android
-ios
+example/android
+example/ios

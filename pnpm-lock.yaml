@@ -157,7 +157,7 @@ importers:
         specifier: 19.0.0
         version: 19.0.0
       react-native:
-        specifier: 0.79.4
+        specifier: 'catalog:'
         version: 0.79.4(@babel/core@7.27.4)(@react-native-community/cli@14.0.0(typescript@5.8.3))(@types/react@19.0.14)(react@19.0.0)
       react-native-gesture-handler:
         specifier: ~2.24.0
