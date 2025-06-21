@@ -47,7 +47,7 @@
       [
         "@mj-studio/react-native-naver-map",
         {
-          "client_id": "{{Naver Map Client Key}}",
+          "client_id": "1mpaoo3941",
           "android": {
             "ACCESS_FINE_LOCATION": true,
             "ACCESS_COARSE_LOCATION": true,

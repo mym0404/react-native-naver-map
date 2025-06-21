@@ -41,7 +41,7 @@
     "codegen": "pnpm codegen:android && pnpm codegen:ios",
     "studio": "studio $(pwd)/example/android",
     "xcode": "open $(pwd)/example/ios/NaverMapExample.xcworkspace",
-    "pod": "cd example/ios &&  pod install",
+    "pod": "cd example/ios && pod install",
     "pod:update": "cd example/ios &&  pod update",
     "prepack": "pnpm build:expo-config-plugin && pnpm build:docs && bob build",
     "build:expo-config-plugin": "tsc --project ./expo-config-plugin",
@@ -72,6 +72,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",
+    "@blackwych/typedoc-plugin-categorized-hierarchy-theme": "^1.1.1",
     "@commitlint/config-conventional": "17.0.2",
     "@expo/config-plugins": "10.0.3",
     "@release-it/conventional-changelog": "^10.0.1",
@@ -86,7 +87,6 @@
     "release-it": "19.0.3",
     "turbo": "^2.0.6",
     "typedoc": "0.28.5",
-    "@blackwych/typedoc-plugin-categorized-hierarchy-theme": "^1.1.1",
     "typedoc-plugin-extras": "^4.0.0",
     "typedoc-theme-hierarchy": "^6.0.0",
     "typescript": "5.3.3"

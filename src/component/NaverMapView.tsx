@@ -8,7 +8,7 @@ import React, {
   useMemo,
   useRef,
 } from 'react'
-import type { NativeSyntheticEvent, ViewProps } from 'react-native'
+import { type NativeSyntheticEvent, type ViewProps } from 'react-native'
 import type { Double } from 'react-native/Libraries/Types/CodegenTypes'
 import {
   cameraChangeReasonFromNumber,

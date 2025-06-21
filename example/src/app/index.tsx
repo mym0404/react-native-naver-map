@@ -297,7 +297,7 @@ export default function Home() {
         flex: 1,
       }}
     >
-      {rerenderKey % 2 === 0 && false ? (
+      {rerenderKey % 2 === 0 ? (
         <NaverMapView
           camera={camera}
           // initialCamera={Cameras.Jeju}

@@ -9,6 +9,9 @@ catalogs:
     '@types/react':
       specifier: ~19.0.10
       version: 19.0.14
+    expo:
+      specifier: 53.0.12
+      version: 53.0.12
     react:
       specifier: 19.0.0
       version: 19.0.0
@@ -106,7 +109,7 @@ importers:
         specifier: ^7.1.6
         version: 7.1.13(react-native@0.79.4(@babel/core@7.27.4)(@react-native-community/cli@14.0.0(typescript@5.8.3))(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       expo:
-        specifier: ~53.0.12
+        specifier: 'catalog:'
         version: 53.0.12(@babel/core@7.27.4)(@expo/metro-runtime@5.0.4(react-native@0.79.4(@babel/core@7.27.4)(@react-native-community/cli@14.0.0(typescript@5.8.3))(@types/react@19.0.14)(react@19.0.0)))(react-native-webview@13.13.5(react-native@0.79.4(@babel/core@7.27.4)(@react-native-community/cli@14.0.0(typescript@5.8.3))(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.4)(@react-native-community/cli@14.0.0(typescript@5.8.3))(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       expo-blur:
         specifier: ~14.1.5
