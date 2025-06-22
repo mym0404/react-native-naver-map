@@ -16,4 +16,4 @@ export type MapType =
   | 'Hybrid'
   | 'Terrain'
   | 'NaviHybrid'
-  | 'None';
+  | 'None'

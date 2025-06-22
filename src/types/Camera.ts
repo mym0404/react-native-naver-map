@@ -3,9 +3,9 @@
  */
 export interface Camera {
   /** 위도 */
-  latitude: number;
+  latitude: number
   /** 경도 */
-  longitude: number;
+  longitude: number
   /**
    * 카메라의 줌 레벨을 나타내는 속성입니다.<br/>줌 레벨은 지도의 축척을 나타냅니다.
    * 즉, 줌 레벨이 작을수록 지도가 축소되고 클수록 확대됩니다.
@@ -13,7 +13,7 @@ export interface Camera {
    *
    * @default 10
    */
-  zoom?: number;
+  zoom?: number
   /**
    *  카메라의 기울임 각도를 나타내는 속성입니다.
    *  카메라는 기울임 각도만큼 지면을 비스듬하게 내려다봅니다.
@@ -24,7 +24,7 @@ export interface Camera {
    *
    *  @default 0
    */
-  tilt?: number;
+  tilt?: number
   /**
    * 카메라의 헤딩 각도를 나타내는 속성입니다.
    * 헤딩은 카메라가 바라보는 방위를 의미합니다.
@@ -33,5 +33,5 @@ export interface Camera {
    *
    * @default 0
    */
-  bearing?: number;
+  bearing?: number
 }

@@ -10,54 +10,39 @@ The `package.json` file contains various scripts for common tasks:
 
 **Installiation, Build**
 
-- `yarn`: setup project by installing dependencies.
-- `yarn prepack`: build package (including docs, expo config plugin)
-- `yarn build:docs`: build documentation at `./docs`.
-- `yarn build:expo-config-plugin`: build expo config plugin.
+- `pnpm install`: setup project by installing dependencies.
+- `pnpm prepack`: build package (including docs, expo config plugin)
+- `pnpm build:docs`: build documentation at `./docs`.
+- `pnpm build:expo-config-plugin`: build expo config plugin.
 
 **Validation**
 
-- `yarn lint`: lint files with ESLint, ClangFormat, Ktlint, TypeScript
-- `yarn t`: alias for lint
-- `yarn test`: run unit tests with Jest
-- `yarn format`: run formatter with ClangFormat, SwiftFormat for iOS codes and Ktlint for Android codes
+- `pnpm lint`: lint files with ESLint, ClangFormat, Ktlint, TypeScript
+- `pnpm run t`: alias for lint
+- `pnpm test`: run unit tests with Jest
+- `pnpm format`: run formatter with ClangFormat, SwiftFormat for iOS codes and Ktlint for Android codes
 
 **Example App Build, Manipluations**
 
-- `yarn example start`: start the Metro server for the example app.
-- `yarn example android`: run the example app on Android.
-- `yarn example ios`: run the example app on iOS.
-- `yarn codegen:{android,ios}`: generate codegen output for development typing (this should be clean for running example app, prevetning redelcaration compile error)
+- `pnpm start`: start the Metro server for the example app.
+- `pnpm android`: run the example app on Android.
+- `pnpm ios`: run the example app on iOS.
+- `pnpm codegen:{android,ios}`: generate codegen output for development typing (this should be clean for running example app, prevetning redelcaration compile error)
 
 **Util**
 
-- `yarn studio`: open android studio for example project
-- `yarn xcode`: open xcode for example project
+- `pnpm studio`: open android studio for example project
+- `pnpm xcode`: open xcode for example project
 
 **Codegen**
 
-- `yarn codegen`: generate codegen spec for all platform
-- `yarn codegen:android`: generate android codegen spec
-- `yarn codegen:ios`: generate ios codegen spec
+- `pnpm codegen`: generate codegen spec for all platform
+- `pnpm codegen:android`: generate android codegen spec
+- `pnpm codegen:ios`: generate ios codegen spec
 
 ## Development workflow
 
-This project is a monorepo managed using [Yarn workspaces](https://yarnpkg.com/features/workspaces). It contains the following packages:
-
-- The library package in the root directory.
-- An example app in the `example/` directory.
-
-To get started with the project, run `yarn` in the root directory to install the required dependencies for each package:
-
-```sh
-yarn
-```
-
-> Since the project relies on Yarn workspaces, you cannot use [`npm`](https://github.com/npm/cli) for development.
-
 The [example app](/example/) demonstrates usage of the library. You need to run it to test any changes you make.
-
-It is configured to use the local version of the library, so any changes you make to the library's source code will be reflected in the example app. Changes to the library's JavaScript code will be reflected in the example app without a rebuild, but native code changes will require a rebuild of the example app.
 
 If you want to use Android Studio or XCode to edit the native code, you can open the `example/android` or `example/ios` directories respectively in those editors. To edit the Objective-C or Swift files, open `example/ios/NaverMapExample.xcworkspace` in XCode and find the source files at `Pods > Development Pods > @mj-studio/react-native-naver-map`.
 
@@ -68,7 +53,7 @@ You can use various commands from the root directory to work with the project.
 To start the packager:
 
 ```sh
-yarn example start
+cd example && pnpm start
 ```
 
 ### Android
@@ -84,7 +69,7 @@ Set your Naver SDK Key at `example/nadroid/app/src/main/res/values/secret.xml`
 ```
 
 ```sh
-yarn example android
+cd example && pnpm android
 ```
 
 ### iOS
@@ -98,8 +83,8 @@ NAVER_CLIENT_ID = {{your_key}}
 ```
 
 ```sh
-yarn pod
-yarn example ios
+pnpm pod
+cd example && pnpm ios
 ```
 
 ### Type Check & Lint
@@ -107,7 +92,7 @@ yarn example ios
 Make sure your code passes TypeScript and ESLint and clang. Run the following to verify:
 
 ```sh
-yarn lint
+pnpm lint
 ```
 
 ### Formatting for native codes
@@ -149,7 +134,7 @@ We use [TypeDoc](https://typedoc.org/guides/overview/) for generating api docume
 
 When changing code, be sure to attach comments in JSDoc Style to functions, variables, interfaces, type aliases, classes, etc. of the code.
 
-You can check generated docs with `yarn build:docs` command.
+You can check generated docs with `pnpm build:docs` command.
 
 The documentation is published on push main branch automatically.
 

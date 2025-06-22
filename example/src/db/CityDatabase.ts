@@ -1,9 +1,9 @@
-import type { Region } from '@mj-studio/react-native-naver-map';
+import type { Region } from '@mj-studio/react-native-naver-map'
 
 export interface City {
-  region: string;
-  lat: number;
-  lng: number;
+  region: string
+  lat: number
+  lng: number
 }
 
 const items: City[] = [
@@ -103,7 +103,7 @@ const items: City[] = [
   { region: 'Yeongdeok', lat: 36.4173, lng: 129.3661 },
   { region: 'Yeongyang', lat: 36.665, lng: 129.117 },
   { region: 'Cheongsong', lat: 36.4354, lng: 129.0573 },
-];
+]
 
 export function getCitiesByRegion({
   longitudeDelta,
@@ -111,7 +111,7 @@ export function getCitiesByRegion({
   longitude,
   latitude,
 }: Region): City[] {
-  const ret: City[] = [];
+  const ret: City[] = []
 
   for (const item of items) {
     if (
@@ -120,8 +120,8 @@ export function getCitiesByRegion({
       item.lng >= longitude &&
       item.lng < longitude + longitudeDelta
     ) {
-      ret.push({ ...item });
+      ret.push({ ...item })
     }
   }
-  return ret;
+  return ret
 }

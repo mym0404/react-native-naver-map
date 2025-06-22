@@ -10,4 +10,4 @@ export type CameraChangeReason =
   | 'Developer'
   | 'Gesture'
   | 'Control'
-  | 'Location';
+  | 'Location'

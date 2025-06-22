@@ -1,19 +1,12 @@
-# Resolve react_native_pods.rb with node to allow for hoisting
-#require Pod::Executable.execute_command('node', ['-p',
-#  'require.resolve(
-#    "react-native/scripts/react_native_pods.rb",
-#    {paths: [process.argv[1]]},
-#  )', __dir__]).strip
-
 ## RNPERMISSION
 def node_require(script)
-   # Resolve script with node to allow for hoisting
-   require Pod::Executable.execute_command('node', ['-p',
-                                                "require.resolve(
-                                                  '#{script}',
-                                                  {paths: [process.argv[1]]},
-                                                )", __dir__]).strip
-  end
+  # Resolve script with node to allow for hoisting
+  require Pod::Executable.execute_command('node', [
+    '-p',
+    "require.resolve('#{script}', {paths: [process.argv[1]]})",
+    __dir__
+  ]).strip
+end
 
 node_require('react-native/scripts/react_native_pods.rb')
 node_require('react-native-permissions/scripts/setup.rb')
@@ -24,27 +17,27 @@ prepare_react_native_project!
 
 # ⬇️ uncomment wanted permissions
 setup_permissions([
-                  # 'AppTrackingTransparency',
-                  # 'Bluetooth',
-                  # 'Calendars',
-                  # 'CalendarsWriteOnly',
-                  # 'Camera',
-                  # 'Contacts',
-                  # 'FaceID',
-                   'LocationAccuracy',
-                   'LocationAlways',
-                   'LocationWhenInUse',
-                  # 'MediaLibrary',
-                  # 'Microphone',
-                  # 'Motion',
-                  # 'Notifications',
-                  # 'PhotoLibrary',
-                  # 'PhotoLibraryAddOnly',
-                  # 'Reminders',
-                  # 'Siri',
-                  # 'SpeechRecognition',
-                  # 'StoreKit',
-                  ])
+  # 'AppTrackingTransparency',
+  # 'Bluetooth',
+  # 'Calendars',
+  # 'CalendarsWriteOnly',
+  # 'Camera',
+  # 'Contacts',
+  # 'FaceID',
+  'LocationAccuracy',
+  'LocationAlways',
+  'LocationWhenInUse',
+  # 'MediaLibrary',
+  # 'Microphone',
+  # 'Motion',
+  # 'Notifications',
+  # 'PhotoLibrary',
+  # 'PhotoLibraryAddOnly',
+  # 'Reminders',
+  # 'Siri',
+  # 'SpeechRecognition',
+  # 'StoreKit',
+])
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -52,17 +45,15 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'NaverMapExample' do
+target 'example' do
   config = use_native_modules!
 
   use_react_native!(
     :path => config[:reactNativePath],
-    # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
   post_install do |installer|
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
       installer,
       config[:reactNativePath],

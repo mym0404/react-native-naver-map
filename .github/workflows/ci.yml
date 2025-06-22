@@ -19,18 +19,18 @@ jobs:
 
       - uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
-          java-version: '17'
+          distribution: "zulu"
+          java-version: "17"
 
-#      - name: Cache Gradle
-#        uses: actions/cache@v4
-#        with:
-#          path: |
-#            ~/.gradle/wrapper
-#            ~/.gradle/caches
-#          key: ${{ runner.os }}-gradle-${{ hashFiles('example/android/gradle/wrapper/gradle-wrapper.properties') }}-lint
-#          restore-keys: |
-#            ${{ runner.os }}-gradle-${{matrix.arch}}-lint-
+      #      - name: Cache Gradle
+      #        uses: actions/cache@v4
+      #        with:
+      #          path: |
+      #            ~/.gradle/wrapper
+      #            ~/.gradle/caches
+      #          key: ${{ runner.os }}-gradle-${{ hashFiles('example/android/gradle/wrapper/gradle-wrapper.properties') }}-lint
+      #          restore-keys: |
+      #            ${{ runner.os }}-gradle-${{matrix.arch}}-lint-
 
       - name: Install ktlint
         run: |
@@ -39,31 +39,31 @@ jobs:
           sudo mv ktlint /usr/local/bin/
 
       - name: Check
-        run: yarn t
+        run: pnpm run t
 
-#  test:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v3
-#
-#      - name: Setup
-#        uses: ./.github/actions/setup
-#
-#      - name: Run unit tests
-#        run: yarn test --maxWorkers=2 --coverage
+  #  test:
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - name: Checkout
+  #        uses: actions/checkout@v3
+  #
+  #      - name: Setup
+  #        uses: ./.github/actions/setup
+  #
+  #      - name: Run unit tests
+  #        run: pnpm test --maxWorkers=2 --coverage
 
-#  build-library:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v3
-#
-#      - name: Setup
-#        uses: ./.github/actions/setup
-#
-#      - name: Build package
-#        run: yarn prepare
+  #  build-library:
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - name: Checkout
+  #        uses: actions/checkout@v3
+  #
+  #      - name: Setup
+  #        uses: ./.github/actions/setup
+  #
+  #      - name: Build package
+  #        run: pnpm prepare
 
   build-android:
     runs-on: ubuntu-latest
@@ -76,20 +76,17 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-
-
-
       - name: Cache turborepo for Android
         uses: actions/cache@v4
         with:
           path: ${{ env.TURBO_CACHE_DIR }}
-          key: ${{ runner.os }}-turborepo-android-${{ hashFiles('yarn.lock') }}
+          key: ${{ runner.os }}-turborepo-android-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-turborepo-android-
 
       - name: Check turborepo cache for Android
         run: |
-          TURBO_CACHE_STATUS=$(node -p "($(yarn turbo run ci:android --single-package --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => t.task === 'ci:android').cache.status")
+          TURBO_CACHE_STATUS=$(node -p "($(pnpm turbo run ci:android --single-package --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => t.task === 'ci:android').cache.status")
 
           if [[ $TURBO_CACHE_STATUS == "HIT" ]]; then
             echo "turbo_cache_hit=1" >> $GITHUB_ENV
@@ -98,8 +95,8 @@ jobs:
       - name: Install JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
-          java-version: '17'
+          distribution: "zulu"
+          java-version: "17"
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -121,7 +118,7 @@ jobs:
       - name: Build example for Android
         env:
           JAVA_OPTS: "-XX:MaxHeapSize=6g"
-        run: yarn turbo:android
+        run: pnpm turbo:android
 
   build-ios:
     runs-on: macos-latest
@@ -138,13 +135,13 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.TURBO_CACHE_DIR }}
-          key: ${{ runner.os }}-turborepo-ios-${{ hashFiles('yarn.lock') }}
+          key: ${{ runner.os }}-turborepo-ios-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-turborepo-ios-
 
       - name: Check turborepo cache for iOS
         run: |
-          TURBO_CACHE_STATUS=$(node -p "($(yarn turbo run ci:ios --single-package --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => t.task === 'ci:ios').cache.status")
+          TURBO_CACHE_STATUS=$(node -p "($(pnpm turbo run ci:ios --single-package --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => t.task === 'ci:ios').cache.status")
 
           if [[ $TURBO_CACHE_STATUS == "HIT" ]]; then
             echo "turbo_cache_hit=1" >> $GITHUB_ENV
@@ -163,7 +160,6 @@ jobs:
             ${{ runner.os }}-cocoapods-
 
       - name: Install pod for codegen stuffs
-        run: yarn pod:update
+        run: pnpm pod:update
       - name: Build example for iOS
-        run: yarn turbo:ios
-
+        run: pnpm turbo:ios

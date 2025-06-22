@@ -14,14 +14,14 @@
  * }, []);
  * ```
  */
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef } from 'react'
 
 export function useStableCallback<T extends Function>(unstableCallback: T): T {
-  const ref = useRef<T>(unstableCallback);
-  ref.current = unstableCallback;
+  const ref = useRef<T>(unstableCallback)
+  ref.current = unstableCallback
   const callback = useCallback(function () {
     // @ts-ignore
-    return ref.current && ref.current.apply(this, arguments);
-  }, []);
-  return callback as unknown as T;
+    return ref.current && ref.current.apply(this, arguments)
+  }, [])
+  return callback as unknown as T
 }

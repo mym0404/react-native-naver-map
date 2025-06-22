@@ -1,5 +1,5 @@
-import type { MarkerSymbol } from './MarkerSymbol';
-import type { ImageRequireSource } from 'react-native/Libraries/Image/ImageSource';
+import type { ImageRequireSource } from 'react-native/Libraries/Image/ImageSource'
+import type { MarkerSymbol } from './MarkerSymbol'
 
 /**
  * 마커의 이미지 Prop 타입입니다.
@@ -7,8 +7,8 @@ import type { ImageRequireSource } from 'react-native/Libraries/Image/ImageSourc
 export type MarkerImageProp =
   | ImageRequireSource
   | {
-      symbol?: MarkerSymbol;
-      httpUri?: string;
-      assetName?: string;
-      reuseIdentifier?: string;
-    };
+      symbol?: MarkerSymbol
+      httpUri?: string
+      assetName?: string
+      reuseIdentifier?: string
+    }

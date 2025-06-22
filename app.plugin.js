@@ -1,1 +1,1 @@
-module.exports = require('./expo-config-plugin/build');
+module.exports = require('./expo-config-plugin/build')
