@@ -1,28 +1,26 @@
-import type {
-  CameraAnimationEasing,
-  CameraChangeReason,
-  Align,
-  Camera,
-  MarkerImageProp,
-} from '@mj-studio/react-native-naver-map';
-import { Const } from './util/Const';
-import { Image } from 'react-native';
+import { Image } from 'react-native'
+import type { Align } from '../types/Align'
+import type { Camera } from '../types/Camera'
+import type { CameraAnimationEasing } from '../types/CameraAnimationEasing'
+import type { CameraChangeReason } from '../types/CameraChangeReason'
+import type { MarkerImageProp } from '../types/MarkerImageProp'
+import { Const } from './util/Const'
 
 export function cameraEasingToNumber(
   value: CameraAnimationEasing = 'EaseIn'
 ): number {
   switch (value) {
     case 'None':
-      return 1;
+      return 1
     case 'Linear':
-      return 2;
+      return 2
     case 'Fly':
-      return 3;
+      return 3
     case 'EaseOut':
-      return 4;
+      return 4
     default:
     case 'EaseIn':
-      return 0;
+      return 0
   }
 }
 
@@ -31,39 +29,39 @@ export function cameraChangeReasonFromNumber(
 ): CameraChangeReason {
   switch (value) {
     case 0:
-      return 'Developer';
+      return 'Developer'
     case 1:
-      return 'Gesture';
+      return 'Gesture'
     case 2:
-      return 'Control';
+      return 'Control'
     case 3:
-      return 'Location';
+      return 'Location'
     default:
-      return 'Developer';
+      return 'Developer'
   }
 }
 
 export function getAlignIntValue(value?: Align) {
   switch (value) {
     case 'Center':
-      return 0;
+      return 0
     case 'Left':
-      return 1;
+      return 1
     case 'Right':
-      return 2;
+      return 2
     case 'Top':
-      return 3;
+      return 3
     case 'TopLeft':
-      return 5;
+      return 5
     case 'TopRight':
-      return 6;
+      return 6
     case 'BottomRight':
-      return 7;
+      return 7
     case 'BottomLeft':
-      return 8;
+      return 8
     default:
     case 'Bottom':
-      return 4;
+      return 4
   }
 }
 
@@ -80,30 +78,30 @@ export function createCameraInstance({
     zoom: zoom ?? Const.DEFAULT_ZOOM,
     tilt: tilt ?? Const.DEFAULT_TILT,
     bearing: bearing ?? Const.DEFAULT_BEARING,
-  };
+  }
 }
 
 export const convertJsImagePropToNativeProp = (image: MarkerImageProp) => {
   if (typeof image === 'number') {
-    const rnAssetUri = Image.resolveAssetSource(image)?.uri;
+    const rnAssetUri = Image.resolveAssetSource(image)?.uri
     if (rnAssetUri) {
-      return { rnAssetUri };
+      return { rnAssetUri }
     } else {
-      return;
+      return
     }
   }
   const { assetName, httpUri, reuseIdentifier, symbol } = image as Exclude<
     MarkerImageProp,
     number
-  >;
+  >
   if (assetName) {
-    return { assetName, reuseIdentifier };
+    return { assetName, reuseIdentifier }
   }
   if (httpUri) {
-    return { httpUri, reuseIdentifier };
+    return { httpUri, reuseIdentifier }
   }
   if (symbol) {
-    return { symbol, reuseIdentifier };
+    return { symbol, reuseIdentifier }
   }
-  return;
-};
+  return
+}

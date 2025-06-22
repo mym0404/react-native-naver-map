@@ -4,7 +4,7 @@
   "description": "Naver Map Component for React Native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
-  "types": "lib/typescript/src/index.d.ts",
+  "types": "lib/typescript/commonjs/src/index.d.ts",
   "react-native": "src/index",
   "source": "src/index",
   "files": [
@@ -28,9 +28,6 @@
     "!**/.*"
   ],
   "scripts": {
-    "example": "yarn workspace @mj-studio/react-native-naver-map-example",
-    "dev": "yarn example start",
-    "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "yarn t",
     "t": "yarn lefthook run check",
@@ -41,16 +38,19 @@
     "codegen:ios": "node example/node_modules/react-native/scripts/generate-codegen-artifacts.js --path example/ --outputPath example/ios -t ios",
     "codegen": "yarn codegen:android && yarn codegen:ios",
     "studio": "studio $(pwd)/example/android",
-    "xcode": "open $(pwd)/example/ios/NaverMapExample.xcworkspace",
-    "pod": "cd example/ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install",
-    "pod:update": "cd example/ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod update",
+    "xcode": "open $(pwd)/example/ios/example.xcworkspace",
+    "pod": "cd example/ios && pod install",
+    "pod:update": "cd example/ios &&  pod update",
     "prepack": "yarn build:expo-config-plugin && yarn build:docs && bob build",
     "build:expo-config-plugin": "tsc --project ./expo-config-plugin",
     "build:docs": "rm -rf docs && typedoc",
-    "ci:ios": "cd example/ios && xcodebuild -workspace NaverMapExample.xcworkspace -scheme NaverMapExample -configuration Debug -sdk iphonesimulator -quiet CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO ONLY_ACTIVE_ARCH=YES",
+    "ci:ios": "cd example/ios && xcodebuild -workspace example.xcworkspace -scheme example -configuration Debug -sdk iphonesimulator -quiet CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO ONLY_ACTIVE_ARCH=YES",
     "ci:android": "cd example/android && ./gradlew assembleDebug",
     "turbo:android": "yarn turbo ci:android --single-package --cache-dir=\".turbo/android\"",
-    "turbo:ios": "yarn turbo ci:ios --single-package --cache-dir=\".turbo/ios\""
+    "turbo:ios": "yarn turbo ci:ios --single-package --cache-dir=\".turbo/ios\"",
+    "ios": "cd example && yarn ios",
+    "android": "cd example && yarn android",
+    "dev": "cd example && yarn start"
   },
   "keywords": [
     "react-native",
@@ -72,50 +72,44 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@8hobbies/typedoc-plugin-404": "^2.0.2",
+    "@babel/runtime": "^7.27.6",
+    "@biomejs/biome": "^2.0.0",
     "@blackwych/typedoc-plugin-categorized-hierarchy-theme": "^1.1.1",
-    "@commitlint/config-conventional": "^17.0.2",
-    "@expo/config-plugins": "^8.0.7",
-    "@react-native/eslint-config": "0.75.2",
-    "@release-it/conventional-changelog": "^5.0.0",
-    "@types/jest": "^29.5.5",
+    "@commitlint/config-conventional": "17.0.2",
+    "@expo/config-plugins": "10.0.3",
+    "@release-it/conventional-changelog": "^10.0.1",
     "@types/object-hash": "^3",
-    "@types/react": "^18.2.44",
-    "commitlint": "^17.0.2",
-    "del-cli": "^5.1.0",
-    "eslint": "^8.51.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.1",
-    "jest": "^29.7.0",
-    "lefthook": "1.7.2",
-    "prettier": "3.3.2",
-    "react": "18.3.1",
-    "react-native": "0.75.2",
-    "react-native-builder-bob": "0.26.0",
-    "release-it": "17.5.0",
+    "@types/react": "19.1.0",
+    "commitlint": "17.0.2",
+    "del-cli": "6.0.0",
+    "lefthook": "1.11.14",
+    "react": "19.1.0",
+    "react-native": "0.80.0",
+    "react-native-builder-bob": "0.40.12",
+    "release-it": "19.0.3",
     "turbo": "^2.0.6",
-    "typedoc": "^0.25.13",
-    "typedoc-plugin-extras": "^3.0.0",
-    "typedoc-theme-hierarchy": "^4.1.2",
+    "typedoc": "0.28.5",
+    "typedoc-plugin-extras": "^4.0.0",
+    "typedoc-theme-hierarchy": "^6.0.0",
     "typescript": "5.3.3"
-  },
-  "resolutions": {
-    "@types/react": "^18.2.6"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
-  "workspaces": [
-    "example"
-  ],
-  "packageManager": "yarn@4.1.1",
-  "jest": {
-    "preset": "react-native",
-    "modulePathIgnorePatterns": [
-      "<rootDir>/example/node_modules",
-      "<rootDir>/lib/"
-    ]
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./lib/typescript/module/src/index.d.ts",
+        "default": "./lib/module/index.js"
+      },
+      "require": {
+        "types": "./lib/typescript/commonjs/src/index.d.ts",
+        "default": "./lib/commonjs/index.js"
+      }
+    },
+    "./package.json": "./package.json",
+    "./app.plugin.js": "./app.plugin.js"
   },
   "commitlint": {
     "extends": [
@@ -138,12 +132,22 @@
     "source": "src",
     "output": "lib",
     "targets": [
-      "commonjs",
-      "module",
       [
         "typescript",
         {
           "project": "tsconfig.build.json"
+        }
+      ],
+      [
+        "commonjs",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "module",
+        {
+          "esm": true
         }
       ]
     ]
@@ -151,9 +155,25 @@
   "codegenConfig": {
     "name": "RNCNaverMapSpec",
     "type": "all",
-    "jsSrcsDir": "src"
+    "jsSrcsDir": "src",
+    "ios": {
+      "componentProvider": {
+        "RNCNaverMapView": "RNCNaverMapView",
+        "RNCNaverMapArrowheadPath": "RNCNaverMapArrowheadPath",
+        "RNCNaverMapCircle": "RNCNaverMapCircle",
+        "RNCNaverMapGround": "RNCNaverMapGround",
+        "RNCNaverMapMarker": "RNCNaverMapMarker",
+        "RNCNaverMapPath": "RNCNaverMapPath",
+        "RNCNaverMapPolygon": "RNCNaverMapPolygon",
+        "RNCNaverMapPolyline": "RNCNaverMapPolyline"
+      }
+    }
   },
   "dependencies": {
     "object-hash": "^3.0.0"
-  }
+  },
+  "packageManager": "yarn@4.9.2",
+  "workspaces": [
+    "example"
+  ]
 }

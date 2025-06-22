@@ -1,8 +1,8 @@
 class NaverMapJSError extends Error {
   constructor(message: string) {
-    super(message);
+    super(message)
 
-    this.name = 'NaverMapJSError';
+    this.name = 'NaverMapJSError'
   }
 }
 export function nAssert(
@@ -10,6 +10,6 @@ export function nAssert(
   message: string
 ) {
   if (!condition) {
-    throw new NaverMapJSError(message);
+    throw new NaverMapJSError(message)
   }
 }

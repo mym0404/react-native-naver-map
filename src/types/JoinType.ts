@@ -1,1 +1,1 @@
-export type JoinType = 'Bevel' | 'Miter' | 'Round';
+export type JoinType = 'Bevel' | 'Miter' | 'Round'
