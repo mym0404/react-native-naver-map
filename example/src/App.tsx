@@ -26,7 +26,6 @@ import {
   PERMISSIONS,
   request,
   requestLocationAccuracy,
-  requestMultiple,
 } from 'react-native-permissions'
 import { Btn, Range, Toggle } from './component/components'
 import { type City, getCitiesByRegion } from './db/CityDatabase'
@@ -123,16 +122,16 @@ export default function App() {
       })
     }
     if (Platform.OS === 'android') {
-      requestMultiple([
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
-      ])
-        .then((status) => {
-          console.log(`Location request status: ${status}`)
-        })
-        .catch((e) => {
-          console.error(`Location request has been failed: ${e}`)
-        })
+      // requestMultiple([
+      //   PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      //   PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
+      // ])
+      //   .then((status) => {
+      //     console.log(`Location request status: ${status}`)
+      //   })
+      //   .catch((e) => {
+      //     console.error(`Location request has been failed: ${e}`)
+      //   })
     }
   }, [])
 
@@ -345,7 +344,9 @@ export default function App() {
           onInitialized={() => console.log('initialized!')}
           // onOptionChanged={() => console.log('Option Changed!')}
           onCameraChanged={({ region }) => {
-            // console.log(`Camera: ${formatJson({ latitude, longitude })}`);
+            console.log(
+              `Camera: ${formatJson({ latitude: region.latitude, longitude: region.longitude })}`
+            )
 
             startTransition(() => {
               // console.log(`Region: ${formatJson(region)}`);
