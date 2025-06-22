@@ -1,4 +1,5 @@
 {
+  "extends": "@react-native/typescript-config",
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
