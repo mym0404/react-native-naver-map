@@ -1,4 +1,4 @@
-package com.rnmaps.maps;
+package com.airbnb.android.react.maps;
 
 import android.content.Context;
 import android.graphics.Rect;
