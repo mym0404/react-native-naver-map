@@ -23,6 +23,9 @@ format:
     format:kotlin:
       glob: "*.kt"
       run: bash ./script/ktlint-format.sh {all_files}
+    format:js:
+      glob: "*.{js,ts,jsx,tsx}"
+      run: pnpm biome check --fix
 
 check:
   parallel: true
