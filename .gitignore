@@ -80,5 +80,3 @@ docs/
 example/.watchman-*
 *.bak
 
-example/android
-example/ios

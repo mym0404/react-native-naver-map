@@ -40,7 +40,7 @@
     "codegen:ios": "node example/node_modules/react-native/scripts/generate-codegen-artifacts.js --path example/ --outputPath example/ios -t ios",
     "codegen": "pnpm codegen:android && pnpm codegen:ios",
     "studio": "studio $(pwd)/example/android",
-    "xcode": "open $(pwd)/example/ios/NaverMapExample.xcworkspace",
+    "xcode": "open $(pwd)/example/ios/example.xcworkspace",
     "pod": "cd example/ios && pod install",
     "pod:update": "cd example/ios &&  pod update",
     "prepack": "pnpm build:expo-config-plugin && pnpm build:docs && bob build",
@@ -80,16 +80,16 @@
     "commitlint": "17.0.2",
     "del-cli": "6.0.0",
     "lefthook": "1.11.14",
-    "@types/react": "19.1.0",
-    "react": "19.1.0",
-    "react-native": "0.80.0",
     "react-native-builder-bob": "0.40.12",
     "release-it": "19.0.3",
     "turbo": "^2.0.6",
     "typedoc": "0.28.5",
     "typedoc-plugin-extras": "^4.0.0",
     "typedoc-theme-hierarchy": "^6.0.0",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "react": "19.1.0",
+    "@types/react": "19.1.0",
+    "react-native": "0.80.0"
   },
   "exports": {
     ".": {
