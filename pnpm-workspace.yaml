@@ -2,15 +2,5 @@ packages:
   - .
   - example
 
-catalog:
-  react-native: 0.79.4
-  "@types/react": ~19.0.10
-  react: 19.0.0
-  expo: 53.0.12
-
-# hoist: false
-#
-# hoistWorkspacePackages: false
-
 onlyBuiltDependencies:
   - lefthook
