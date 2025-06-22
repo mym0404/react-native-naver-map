@@ -2,7 +2,5 @@ packages:
   - .
   - example
 
-hoistWorkspacePackages: false
-hoist: false
 onlyBuiltDependencies:
   - lefthook

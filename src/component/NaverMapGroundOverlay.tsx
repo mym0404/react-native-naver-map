@@ -1,9 +1,10 @@
-import type { MarkerImageProp, Region } from '@mj-studio/react-native-naver-map'
 import React from 'react'
 import { convertJsImagePropToNativeProp } from '../internal/Util'
 import { Const } from '../internal/util/Const'
 import { default as NativeNaverMapGround } from '../spec/RNCNaverMapGroundNativeComponent'
 import type { BaseOverlayProps } from '../types/BaseOverlayProps'
+import type { MarkerImageProp } from '../types/MarkerImageProp'
+import type { Region } from '../types/Region'
 
 export interface NaverMapGroundOverlayProps extends BaseOverlayProps {
   /**

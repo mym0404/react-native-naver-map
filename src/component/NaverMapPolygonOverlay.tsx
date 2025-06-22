@@ -1,10 +1,10 @@
-import type { Coord } from '@mj-studio/react-native-naver-map'
 import React from 'react'
 import { type ColorValue, processColor } from 'react-native'
 import { nAssert } from '../internal/util/Assert'
 import { Const } from '../internal/util/Const'
 import { default as NativeNaverMapPolygon } from '../spec/RNCNaverMapPolygonNativeComponent'
 import type { BaseOverlayProps } from '../types/BaseOverlayProps'
+import type { Coord } from '../types/Coord'
 
 export interface NaverMapPolygonOverlayProps extends BaseOverlayProps {
   /**

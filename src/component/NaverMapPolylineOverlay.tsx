@@ -1,14 +1,12 @@
-import type {
-  CapType,
-  Coord,
-  JoinType,
-} from '@mj-studio/react-native-naver-map'
 import React from 'react'
 import { type ColorValue, processColor } from 'react-native'
 import { nAssert } from '../internal/util/Assert'
 import { Const } from '../internal/util/Const'
 import { default as NativeNaverMapPolyline } from '../spec/RNCNaverMapPolylineNativeComponent'
 import type { BaseOverlayProps } from '../types/BaseOverlayProps'
+import type { CapType } from '../types/CapType'
+import type { Coord } from '../types/Coord'
+import type { JoinType } from '../types/JoinType'
 
 export interface NaverMapPolylineOverlayProps extends BaseOverlayProps {
   coords: Coord[]

@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@mj-studio/react-native-naver-map": [
+        "../src/index"
+      ]
+    },
+  },
+  "include": [
+    "src",
+    "index.js"
+  ]
+}
