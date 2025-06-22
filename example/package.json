@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@mj-studio/js-util": "^1.1.20",
-    "@mj-studio/react-native-naver-map": "link:../",
     "@react-native-community/slider": "^4.5.7",
     "@react-native/new-app-screen": "0.80.0",
     "react": "19.1.0",

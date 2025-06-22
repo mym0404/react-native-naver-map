@@ -2400,12 +2400,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mj-studio/react-native-naver-map@link:../::locator=example%40workspace%3Aexample":
-  version: 0.0.0-use.local
-  resolution: "@mj-studio/react-native-naver-map@link:../::locator=example%40workspace%3Aexample"
-  languageName: node
-  linkType: soft
-
 "@mj-studio/react-native-naver-map@workspace:.":
   version: 0.0.0-use.local
   resolution: "@mj-studio/react-native-naver-map@workspace:."
@@ -5931,7 +5925,6 @@ __metadata:
     "@babel/preset-env": "npm:^7.25.3"
     "@babel/runtime": "npm:^7.25.0"
     "@mj-studio/js-util": "npm:^1.1.20"
-    "@mj-studio/react-native-naver-map": "link:../"
     "@react-native-community/cli": "npm:19.0.0"
     "@react-native-community/cli-platform-android": "npm:19.0.0"
     "@react-native-community/cli-platform-ios": "npm:19.0.0"
