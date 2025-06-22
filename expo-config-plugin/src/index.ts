@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import {
-  withInfoPlist,
-  withAndroidManifest,
   AndroidConfig,
   type ConfigPlugin,
+  withAndroidManifest,
+  withInfoPlist,
 } from '@expo/config-plugins';
 
 const withNaverMap: ConfigPlugin<{

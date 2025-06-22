@@ -1,36 +1,34 @@
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  useMemo,
-  useTransition,
-} from 'react';
-
-import { View, Platform, Text } from 'react-native';
+import { formatJson, generateArray } from '@mj-studio/js-util';
 import {
-  type MapType,
-  type NaverMapViewRef,
   type Camera,
   type ClusterMarkerProp,
-  type Region,
-  NaverMapView,
-  NaverMapCircleOverlay,
-  NaverMapPolygonOverlay,
-  NaverMapPathOverlay,
+  type MapType,
   NaverMapArrowheadPathOverlay,
+  NaverMapCircleOverlay,
   NaverMapGroundOverlay,
-  NaverMapPolylineOverlay,
   NaverMapMarkerOverlay,
+  NaverMapPathOverlay,
+  NaverMapPolygonOverlay,
+  NaverMapPolylineOverlay,
+  NaverMapView,
+  type NaverMapViewRef,
+  type Region,
 } from '@mj-studio/react-native-naver-map';
-import { Toggle, Btn, Range } from './component/components';
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+} from 'react';
+import { Platform, Text, View } from 'react-native';
 import {
-  request,
   PERMISSIONS,
+  request,
   requestLocationAccuracy,
-  requestMultiple,
 } from 'react-native-permissions';
-import { generateArray, formatJson } from '@mj-studio/js-util';
-import { getCitiesByRegion, type City } from './db/CityDatabase';
+import { Btn, Range, Toggle } from './component/components';
+import { type City, getCitiesByRegion } from './db/CityDatabase';
 
 // const jejuRegion: Region = {
 //   latitude: 33.20530773,
@@ -124,16 +122,16 @@ export default function App() {
       });
     }
     if (Platform.OS === 'android') {
-      requestMultiple([
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
-      ])
-        .then((status) => {
-          console.log(`Location request status: ${status}`);
-        })
-        .catch((e) => {
-          console.error(`Location request has been failed: ${e}`);
-        });
+      // requestMultiple([
+      //   PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      //   PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
+      // ])
+      //   .then((status) => {
+      //     console.log(`Location request status: ${status}`)
+      //   })
+      //   .catch((e) => {
+      //     console.error(`Location request has been failed: ${e}`)
+      //   })
     }
   }, []);
 
@@ -346,7 +344,9 @@ export default function App() {
           onInitialized={() => console.log('initialized!')}
           // onOptionChanged={() => console.log('Option Changed!')}
           onCameraChanged={({ region }) => {
-            // console.log(`Camera: ${formatJson({ latitude, longitude })}`);
+            console.log(
+              `Camera: ${formatJson({ latitude: region.latitude, longitude: region.longitude })}`
+            );
 
             startTransition(() => {
               // console.log(`Region: ${formatJson(region)}`);

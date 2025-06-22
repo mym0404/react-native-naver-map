@@ -19,18 +19,18 @@ jobs:
 
       - uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
-          java-version: '17'
+          distribution: "zulu"
+          java-version: "17"
 
-#      - name: Cache Gradle
-#        uses: actions/cache@v4
-#        with:
-#          path: |
-#            ~/.gradle/wrapper
-#            ~/.gradle/caches
-#          key: ${{ runner.os }}-gradle-${{ hashFiles('example/android/gradle/wrapper/gradle-wrapper.properties') }}-lint
-#          restore-keys: |
-#            ${{ runner.os }}-gradle-${{matrix.arch}}-lint-
+      #      - name: Cache Gradle
+      #        uses: actions/cache@v4
+      #        with:
+      #          path: |
+      #            ~/.gradle/wrapper
+      #            ~/.gradle/caches
+      #          key: ${{ runner.os }}-gradle-${{ hashFiles('example/android/gradle/wrapper/gradle-wrapper.properties') }}-lint
+      #          restore-keys: |
+      #            ${{ runner.os }}-gradle-${{matrix.arch}}-lint-
 
       - name: Install ktlint
         run: |
@@ -39,31 +39,31 @@ jobs:
           sudo mv ktlint /usr/local/bin/
 
       - name: Check
-        run: yarn t
+        run: yarn run t
 
-#  test:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v3
-#
-#      - name: Setup
-#        uses: ./.github/actions/setup
-#
-#      - name: Run unit tests
-#        run: yarn test --maxWorkers=2 --coverage
+  #  test:
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - name: Checkout
+  #        uses: actions/checkout@v3
+  #
+  #      - name: Setup
+  #        uses: ./.github/actions/setup
+  #
+  #      - name: Run unit tests
+  #        run: yarn test --maxWorkers=2 --coverage
 
-#  build-library:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v3
-#
-#      - name: Setup
-#        uses: ./.github/actions/setup
-#
-#      - name: Build package
-#        run: yarn prepare
+  #  build-library:
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - name: Checkout
+  #        uses: actions/checkout@v3
+  #
+  #      - name: Setup
+  #        uses: ./.github/actions/setup
+  #
+  #      - name: Build package
+  #        run: yarn prepare
 
   build-android:
     runs-on: ubuntu-latest
@@ -76,8 +76,8 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-
-
+      - name: Set Android Home
+        run: echo "sdk.dir=$ANDROID_HOME" > example/android/local.properties
 
       - name: Cache turborepo for Android
         uses: actions/cache@v4
@@ -98,8 +98,8 @@ jobs:
       - name: Install JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
-          java-version: '17'
+          distribution: "zulu"
+          java-version: "17"
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -166,4 +166,3 @@ jobs:
         run: yarn pod:update
       - name: Build example for iOS
         run: yarn turbo:ios
-
