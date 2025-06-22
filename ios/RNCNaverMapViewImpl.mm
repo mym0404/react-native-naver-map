@@ -13,8 +13,6 @@
   BOOL _initialCameraSet;
   BOOL _isFirstCameraAnimationRun;
 
-  BOOL _isUserInteracting;
-
   // Array to manually track RN subviews
   //
   // AIRMap implicitly creates subviews that aren't regular RN children
@@ -64,7 +62,6 @@
   _initialRegionSet = NO;
   _initialCameraSet = NO;
   _isFirstCameraAnimationRun = NO;
-  _isUserInteracting = NO;
 }
 
 #pragma clang diagnostic push
@@ -263,9 +260,6 @@
   if (!_rncParent.emitter)
     return;
 
-  // Reset property on camera idle
-  _isUserInteracting = NO;
-
   NMFCameraPosition* pos = mapView.cameraPosition;
   NMGLatLngBounds* bounds = mapView.coveringBounds;
 
@@ -296,16 +290,13 @@
 - (void)mapView:(NMFMapView*)mapView
     cameraWillChangeByReason:(NSInteger)reason
                     animated:(BOOL)animated {
-  _isUserInteracting = YES;
   [self mapView:mapView cameraIsChangingByReason:reason];
 }
 
 - (void)mapView:(NMFMapView*)mapView
     cameraDidChangeByReason:(NSInteger)reason
                    animated:(BOOL)animated {
-  if (_isUserInteracting) {
-    [self mapView:mapView cameraIsChangingByReason:reason];
-  }
+  [self mapView:mapView cameraIsChangingByReason:reason];
 }
 
 #pragma clang diagnostic pop
