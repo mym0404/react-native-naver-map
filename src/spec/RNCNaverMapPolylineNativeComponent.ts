@@ -1,5 +1,8 @@
-import type { CodegenTypes, ViewProps } from 'react-native'
-import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent'
+import {
+  CodegenTypes,
+  codegenNativeComponent,
+  type ViewProps,
+} from 'react-native'
 
 /* Type should be redeclared because of codegen ts parser doesn't allow imported type
  * [comments](https://github.com/reactwg/react-native-new-architecture/discussions/91#discussioncomment-4282452)
