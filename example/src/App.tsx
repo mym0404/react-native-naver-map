@@ -22,11 +22,6 @@ import React, {
   useTransition,
 } from 'react';
 import { Platform, Text, View } from 'react-native';
-import {
-  PERMISSIONS,
-  request,
-  requestLocationAccuracy,
-} from 'react-native-permissions';
 import { Btn, Range, Toggle } from './component/components';
 import { type City, getCitiesByRegion } from './db/CityDatabase';
 
@@ -106,20 +101,20 @@ export default function App() {
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
-      request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((status) => {
-        console.log(`Location request status: ${status}`);
-        if (status === 'granted') {
-          requestLocationAccuracy({
-            purposeKey: 'common-purpose', // replace your purposeKey of Info.plist
-          })
-            .then((accuracy) => {
-              console.log(`Location accuracy is: ${accuracy}`);
-            })
-            .catch((e) => {
-              console.error(`Location accuracy request has been failed: ${e}`);
-            });
-        }
-      });
+      // request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((status) => {
+      //   console.log(`Location request status: ${status}`);
+      //   if (status === 'granted') {
+      //     requestLocationAccuracy({
+      //       purposeKey: 'common-purpose', // replace your purposeKey of Info.plist
+      //     })
+      //       .then((accuracy) => {
+      //         console.log(`Location accuracy is: ${accuracy}`);
+      //       })
+      //       .catch((e) => {
+      //         console.error(`Location accuracy request has been failed: ${e}`);
+      //       });
+      //   }
+      // });
     }
     if (Platform.OS === 'android') {
       // requestMultiple([
