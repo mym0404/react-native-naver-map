@@ -1,4 +1,4 @@
-package com.example
+package happy.mjstudio.rnnmap.example
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

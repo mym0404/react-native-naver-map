@@ -1,4 +1,4 @@
-package com.example
+package happy.mjstudio.rnnmap.example
 
 import android.app.Application
 import com.facebook.react.PackageList

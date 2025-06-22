@@ -71,25 +71,26 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
+    "@babel/runtime": "^7.27.6",
     "@biomejs/biome": "^2.0.0",
     "@blackwych/typedoc-plugin-categorized-hierarchy-theme": "^1.1.1",
     "@commitlint/config-conventional": "17.0.2",
     "@expo/config-plugins": "10.0.3",
     "@release-it/conventional-changelog": "^10.0.1",
     "@types/object-hash": "^3",
+    "@types/react": "19.1.0",
     "commitlint": "17.0.2",
     "del-cli": "6.0.0",
     "lefthook": "1.11.14",
+    "react": "19.1.0",
+    "react-native": "0.80.0",
     "react-native-builder-bob": "0.40.12",
     "release-it": "19.0.3",
     "turbo": "^2.0.6",
     "typedoc": "0.28.5",
     "typedoc-plugin-extras": "^4.0.0",
     "typedoc-theme-hierarchy": "^6.0.0",
-    "typescript": "5.3.3",
-    "react": "19.1.0",
-    "@types/react": "19.1.0",
-    "react-native": "0.80.0"
+    "typescript": "5.3.3"
   },
   "exports": {
     ".": {
