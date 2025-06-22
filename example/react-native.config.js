@@ -1,5 +1,5 @@
-const path = require('path')
-const pak = require('../package.json')
+const path = require('path');
+const pak = require('../package.json');
 
 module.exports = {
   dependencies: {
@@ -16,4 +16,4 @@ module.exports = {
       root: path.resolve(__dirname, '../node_modules/react-native-permission'),
     },
   },
-}
+};

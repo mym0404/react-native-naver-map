@@ -1,28 +1,28 @@
-import hash from 'object-hash'
-import React, { Children, type PropsWithChildren } from 'react'
-import { type ColorValue, processColor } from 'react-native'
-import type { Double } from 'react-native/Libraries/Types/CodegenTypes'
+import hash from 'object-hash';
+import React, { Children, type PropsWithChildren } from 'react';
+import { type ColorValue, processColor } from 'react-native';
+import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import {
   convertJsImagePropToNativeProp,
   getAlignIntValue,
-} from '../internal/Util'
-import { nAssert } from '../internal/util/Assert'
-import { Const } from '../internal/util/Const'
+} from '../internal/Util';
+import { nAssert } from '../internal/util/Assert';
+import { Const } from '../internal/util/Const';
 import {
   type NativeCaptionProp,
   default as NativeNaverMapMarker,
   type NativeSubCaptionProp,
-} from '../spec/RNCNaverMapMarkerNativeComponent'
-import type { Align } from '../types/Align'
-import type { BaseOverlayProps } from '../types/BaseOverlayProps'
-import type { Coord } from '../types/Coord'
-import type { MarkerImageProp } from '../types/MarkerImageProp'
-import type { Point } from '../types/Point'
+} from '../spec/RNCNaverMapMarkerNativeComponent';
+import type { Align } from '../types/Align';
+import type { BaseOverlayProps } from '../types/BaseOverlayProps';
+import type { Coord } from '../types/Coord';
+import type { MarkerImageProp } from '../types/MarkerImageProp';
+import type { Point } from '../types/Point';
 
 export interface CaptionType {
   /** 캡션으로 표시할 텍스트를 지정할 수 있습니다.
    * 빈 문자열이나 null을 지정하면 캡션이 나타나지 않습니다. */
-  text: string
+  text: string;
   /**
    * 캡션 텍스트의 너비를 제한할 수 있습니다.
    * 캡션의 한 줄이 지정된 너비보다 길어지면 적당한 위치에서 자동으로 줄바꿈이 일어납니다.
@@ -31,68 +31,68 @@ export interface CaptionType {
    *
    * @default 0
    */
-  requestedWidth?: Double
+  requestedWidth?: Double;
   /**
    * @default Bottom
    */
-  align?: Align
+  align?: Align;
   /** 아이콘과 캡션 간의 거리를 지정할 수 있습니다. */
-  offset?: Double
+  offset?: Double;
   /**
    * 텍스트의 색상입니다.
    *
    * @default black
    */
-  color?: ColorValue
+  color?: ColorValue;
   /**
    * 외곽선 색상입니다.
    *
    * @default transparent
    */
-  haloColor?: ColorValue
+  haloColor?: ColorValue;
   /**
    *  캡션의 텍스트 크기를 지정할 수 있습니다.
    *
    *  @default 12
    */
-  textSize?: Double
+  textSize?: Double;
   /**
    * 특정 줌 레벨에서만 캡션이 나타나도록 지정할 수 있습니다.
    * 카메라의 줌 레벨이 minZoom과 maxZoom 범위를 벗어나면 캡션이 숨겨지고 아이콘만 나타납니다.
    *
    * @default 0
    */
-  minZoom?: Double
+  minZoom?: Double;
   /**
    * 특정 줌 레벨에서만 캡션이 나타나도록 지정할 수 있습니다.
    * 카메라의 줌 레벨이 minZoom과 maxZoom 범위를 벗어나면 캡션이 숨겨지고 아이콘만 나타납니다.
    *
    * @default 21
    */
-  maxZoom?: Double
+  maxZoom?: Double;
 }
 export interface SubCaptionType {
   /** 캡션으로 표시할 텍스트를 지정할 수 있습니다.
    * 빈 문자열이나 null을 지정하면 캡션이 나타나지 않습니다. */
-  text: string
+  text: string;
   /**
    * 텍스트의 색상입니다.
    *
    * @default black
    */
-  color?: ColorValue
+  color?: ColorValue;
   /**
    * 외곽선 색상입니다.
    *
    * @default transparent
    */
-  haloColor?: ColorValue
+  haloColor?: ColorValue;
   /**
    *  캡션의 텍스트 크기를 지정할 수 있습니다.
    *
    *  @default 10
    */
-  textSize?: Double
+  textSize?: Double;
   /**
    * 캡션 텍스트의 너비를 제한할 수 있습니다.
    * 캡션의 한 줄이 지정된 너비보다 길어지면 적당한 위치에서 자동으로 줄바꿈이 일어납니다.
@@ -101,21 +101,21 @@ export interface SubCaptionType {
    *
    * @default 0
    */
-  requestedWidth?: Double
+  requestedWidth?: Double;
   /**
    * 특정 줌 레벨에서만 캡션이 나타나도록 지정할 수 있습니다.
    * 카메라의 줌 레벨이 minZoom과 maxZoom 범위를 벗어나면 캡션이 숨겨지고 아이콘만 나타납니다.
    *
    * @default 0
    */
-  minZoom?: Double
+  minZoom?: Double;
   /**
    * 특정 줌 레벨에서만 캡션이 나타나도록 지정할 수 있습니다.
    * 카메라의 줌 레벨이 minZoom과 maxZoom 범위를 벗어나면 캡션이 숨겨지고 아이콘만 나타납니다.
    *
    * @default 21
    */
-  maxZoom?: Double
+  maxZoom?: Double;
 }
 const defaultCaptionProps = {
   text: '',
@@ -125,7 +125,7 @@ const defaultCaptionProps = {
   color: 'black',
   haloColor: 'transparent',
   requestedWidth: 0,
-} satisfies Partial<CaptionType>
+} satisfies Partial<CaptionType>;
 const defaultSubCaptionProps = {
   text: '',
   textSize: 10,
@@ -134,7 +134,7 @@ const defaultSubCaptionProps = {
   color: 'black',
   haloColor: 'transparent',
   requestedWidth: 0,
-} satisfies Partial<SubCaptionType>
+} satisfies Partial<SubCaptionType>;
 
 export interface NaverMapMarkerOverlayProps
   extends BaseOverlayProps,
@@ -145,13 +145,13 @@ export interface NaverMapMarkerOverlayProps
    *
    * 지정하지 않는다면 너비 또는 높이가 이미지의 크기에 맞춰집니다.
    */
-  width?: number
+  width?: number;
   /**
    * 마커의 높이입니다.
    *
    * 지정하지 않는다면 너비 또는 높이가 이미지의 크기에 맞춰집니다.
    */
-  height?: number
+  height?: number;
   /**
    * anchor 속성을 지정하면 이미지가 가리키는 지점과 마커가 위치한 지점을 일치시킬 수 있습니다.
    * 앵커는 아이콘 이미지에서 기준이 되는 지점을 의미하는 값으로, 아이콘에서 앵커로 지정된 지점이 마커의 좌표에 위치하게 됩니다.
@@ -170,19 +170,19 @@ export interface NaverMapMarkerOverlayProps
    *
    * @default {x: 0.5, y: 1}
    */
-  anchor?: Point
+  anchor?: Point;
   /**
    * angle 속성을 지정하면 아이콘을 회전시킬 수 있습니다. 각도는 화면의 위쪽 방향을 기준으로 시계 방향으로 커집니다. 즉, 0도일 경우 화면의 위쪽, 90도일 경우 오른쪽, 180도일 경우 아래쪽을 향하게 됩니다.
    *
    * @default 0
    */
-  angle?: number
+  angle?: number;
   /**
    * 속성을 true로 지정하면 아이콘이 지도에 눕게 됩니다. 누운 아이콘은 지도가 회전하거나 기울어지면 함께 회전하고 기울어집니다.
    *
    * @default false
    */
-  isFlatEnabled?: boolean
+  isFlatEnabled?: boolean;
   /**
    * 마커에는 기본적으로 원근 효과가 적용되지 않으므로, 다음 그림처럼 지도를 기울이더라도 멀리 있는 마커와 가까이 있는 마커의 크기는 동일하게 나타납니다.
    *
@@ -190,7 +190,7 @@ export interface NaverMapMarkerOverlayProps
    *
    * @default false
    */
-  isIconPerspectiveEnabled?: boolean
+  isIconPerspectiveEnabled?: boolean;
   /**
    * alpha 속성을 이용하면 마커의 불투명도를 지정할 수 있습니다.
    * 불투명도는 아이콘과 캡션 모두에 적용됩니다.
@@ -200,19 +200,19 @@ export interface NaverMapMarkerOverlayProps
    *
    * @default 1
    */
-  alpha?: number
+  alpha?: number;
   /**
    * 속성을 true로 지정하면 마커가 지도 심벌과 겹칠 경우 겹치는 심벌이 숨겨집니다.
    *
    * @default false
    */
-  isHideCollidedSymbols?: boolean
+  isHideCollidedSymbols?: boolean;
   /**
    * 속성을 true로 지정하면 마커가 다른 마커와 겹칠 경우 겹치는 마커가 숨겨집니다. 즉, 다른 마커와 겹치지 않는 마커만이 노출됩니다. 두 마커가 서로 겹칠 경우 Z 인덱스가 큰 마커가 우선합니다.
    *
    * @default false
    */
-  isHideCollidedMarkers?: boolean
+  isHideCollidedMarkers?: boolean;
   /**
    * 속성을 true로 지정하면 마커와 다른 마커가 겹칠 경우 겹치는 마커의 아이콘은 유지되고 캡션만이 숨겨집니다.
    * 겹치는 마커의 captionAligns에 둘 이상의 방향을 지정했다면 겹치지 않는 첫 번째 방향에 캡션이 나타나며, 어느 방향으로 위치시켜도 겹칠 경우에만 캡션이 숨겨집니다.
@@ -220,7 +220,7 @@ export interface NaverMapMarkerOverlayProps
    *
    * @default false
    */
-  isHideCollidedCaptions?: boolean
+  isHideCollidedCaptions?: boolean;
   /**
    * isForceShowIcon 속성을 true로 지정하면 마커가 isHideCollidedMarkers가 true인 다른 마커와 겹치더라도 아이콘이 무조건 표시됩니다.
    * isForceShowIcon 속성을 활용하면 겹치는 마커를 숨기되 중요한 마커는 무조건 표시할 수 있습니다.
@@ -228,11 +228,11 @@ export interface NaverMapMarkerOverlayProps
    *
    * @default false
    */
-  isForceShowIcon?: boolean
+  isForceShowIcon?: boolean;
   /**
    * 아이콘 이미지에 색상을 덧입힐 수 있습니다. 색상을 덧입히면 덧입힐 색상이 아이콘 이미지의 색상과 가산 혼합됩니다. 단, 덧입힐 색상의 알파는 무시되고 아이콘 이미지의 알파만이 사용됩니다.
    */
-  tintColor?: ColorValue
+  tintColor?: ColorValue;
   /**
    * 마커의 이미지입니다.
    *
@@ -296,19 +296,19 @@ export interface NaverMapMarkerOverlayProps
    *
    * @default {symbol: 'green'}
    */
-  image?: MarkerImageProp
+  image?: MarkerImageProp;
   /**
    * 마커의 캡션입니다.
    *
    * @see {@link CaptionType}
    */
-  caption?: CaptionType
+  caption?: CaptionType;
   /**
    * 마커의 서브캡션입니다.
    *
    * @see {@link SubCaptionType}
    */
-  subCaption?: SubCaptionType
+  subCaption?: SubCaptionType;
 }
 
 export const NaverMapMarkerOverlay = ({
@@ -345,7 +345,7 @@ export const NaverMapMarkerOverlay = ({
   nAssert(
     Children.count(children) <= 1,
     `[NaverMapMarkerOverlay] children count should be equal or less than 1, is ${Children.count(children)}`
-  )
+  );
 
   const _caption: NativeCaptionProp = (() => {
     const inner = {
@@ -358,9 +358,9 @@ export const NaverMapMarkerOverlay = ({
       haloColor: processColor(
         caption?.haloColor ?? defaultCaptionProps.haloColor
       ) as number,
-    } satisfies Omit<NativeCaptionProp, 'key'>
-    return { ...inner, key: hash(inner) }
-  })()
+    } satisfies Omit<NativeCaptionProp, 'key'>;
+    return { ...inner, key: hash(inner) };
+  })();
 
   const _subCaption: NativeSubCaptionProp = (() => {
     const inner = {
@@ -372,10 +372,10 @@ export const NaverMapMarkerOverlay = ({
       haloColor: processColor(
         subCaption?.haloColor ?? defaultSubCaptionProps.haloColor
       ) as number,
-    }
+    };
 
-    return { ...inner, key: hash(inner) }
-  })()
+    return { ...inner, key: hash(inner) };
+  })();
 
   return (
     <NativeNaverMapMarker
@@ -405,5 +405,5 @@ export const NaverMapMarkerOverlay = ({
       subCaption={_subCaption}
       children={children}
     />
-  )
-}
+  );
+};

@@ -1,4 +1,4 @@
-import { formatJson, generateArray } from '@mj-studio/js-util'
+import { formatJson, generateArray } from '@mj-studio/js-util';
 import {
   type Camera,
   type ClusterMarkerProp,
@@ -13,22 +13,22 @@ import {
   NaverMapView,
   type NaverMapViewRef,
   type Region,
-} from '@mj-studio/react-native-naver-map'
+} from '@mj-studio/react-native-naver-map';
 import React, {
   useEffect,
   useMemo,
   useRef,
   useState,
   useTransition,
-} from 'react'
-import { Platform, Text, View } from 'react-native'
+} from 'react';
+import { Platform, Text, View } from 'react-native';
 import {
   PERMISSIONS,
   request,
   requestLocationAccuracy,
-} from 'react-native-permissions'
-import { Btn, Range, Toggle } from './component/components'
-import { type City, getCitiesByRegion } from './db/CityDatabase'
+} from 'react-native-permissions';
+import { Btn, Range, Toggle } from './component/components';
+import { type City, getCitiesByRegion } from './db/CityDatabase';
 
 // const jejuRegion: Region = {
 //   latitude: 33.20530773,
@@ -53,7 +53,7 @@ const Cameras = {
     longitude: 126.54656715029,
     zoom: 8,
   },
-} satisfies Record<string, Camera>
+} satisfies Record<string, Camera>;
 
 const Regions = {
   Seolleung: {
@@ -74,7 +74,7 @@ const Regions = {
     latitudeDelta: 0.05,
     longitudeDelta: 0.05,
   },
-} satisfies Record<string, Region>
+} satisfies Record<string, Region>;
 
 /**
  * @private
@@ -87,39 +87,39 @@ const MapTypes = [
   'Terrain',
   'NaviHybrid',
   'None',
-] satisfies MapType[]
+] satisfies MapType[];
 
 export default function App() {
-  const ref = useRef<NaverMapViewRef>(null)
+  const ref = useRef<NaverMapViewRef>(null);
 
-  const [camera, setCamera] = useState(Cameras.Jeju)
+  const [camera, setCamera] = useState(Cameras.Jeju);
 
-  const [nightMode, setNightMode] = useState(false)
-  const [indoor, setIndoor] = useState(false)
-  const [mapType, setMapType] = useState<MapType>(MapTypes[0]!)
-  const [lightness, setLightness] = useState(0)
-  const [compass, setCompass] = useState(true)
-  const [scaleBar, setScaleBar] = useState(true)
-  const [zoomControls, setZoomControls] = useState(true)
-  const [indoorLevelPicker, setIndoorLevelPicker] = useState(true)
-  const [myLocation, setMyLocation] = useState(true)
+  const [nightMode, setNightMode] = useState(false);
+  const [indoor, setIndoor] = useState(false);
+  const [mapType, setMapType] = useState<MapType>(MapTypes[0]!);
+  const [lightness, setLightness] = useState(0);
+  const [compass, setCompass] = useState(true);
+  const [scaleBar, setScaleBar] = useState(true);
+  const [zoomControls, setZoomControls] = useState(true);
+  const [indoorLevelPicker, setIndoorLevelPicker] = useState(true);
+  const [myLocation, setMyLocation] = useState(true);
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
       request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((status) => {
-        console.log(`Location request status: ${status}`)
+        console.log(`Location request status: ${status}`);
         if (status === 'granted') {
           requestLocationAccuracy({
             purposeKey: 'common-purpose', // replace your purposeKey of Info.plist
           })
             .then((accuracy) => {
-              console.log(`Location accuracy is: ${accuracy}`)
+              console.log(`Location accuracy is: ${accuracy}`);
             })
             .catch((e) => {
-              console.error(`Location accuracy request has been failed: ${e}`)
-            })
+              console.error(`Location accuracy request has been failed: ${e}`);
+            });
         }
-      })
+      });
     }
     if (Platform.OS === 'android') {
       // requestMultiple([
@@ -133,18 +133,18 @@ export default function App() {
       //     console.error(`Location request has been failed: ${e}`)
       //   })
     }
-  }, [])
+  }, []);
 
-  const [hash, setHash] = useState(0)
+  const [hash, setHash] = useState(0);
   const clusters = useMemo<
     {
-      markers: ClusterMarkerProp[]
-      screenDistance?: number
-      minZoom?: number
-      maxZoom?: number
-      animate?: boolean
-      width?: number
-      height?: number
+      markers: ClusterMarkerProp[];
+      screenDistance?: number;
+      minZoom?: number;
+      maxZoom?: number;
+      animate?: boolean;
+      width?: number;
+      height?: number;
     }[]
   >(() => {
     return generateArray(5).map((i) => {
@@ -164,9 +164,9 @@ export default function App() {
               identifier: `${hash}-${i}-${j}`,
             }) satisfies ClusterMarkerProp
         ),
-      }
-    })
-  }, [hash])
+      };
+    });
+  }, [hash]);
 
   const renderOverlays = () => {
     return (
@@ -302,12 +302,12 @@ export default function App() {
           ]}
         />
       </>
-    )
-  }
-  const [rerenderKey, setRerenderKey] = useState(0)
+    );
+  };
+  const [rerenderKey, setRerenderKey] = useState(0);
 
-  const [cities, setCities] = useState<City[]>([])
-  const [, startTransition] = useTransition()
+  const [cities, setCities] = useState<City[]>([]);
+  const [, startTransition] = useTransition();
 
   return (
     <View
@@ -346,15 +346,15 @@ export default function App() {
           onCameraChanged={({ region }) => {
             console.log(
               `Camera: ${formatJson({ latitude: region.latitude, longitude: region.longitude })}`
-            )
+            );
 
             startTransition(() => {
               // console.log(`Region: ${formatJson(region)}`);
               // eslint-disable-next-line @typescript-eslint/no-shadow
-              const cities = getCitiesByRegion(region)
+              const cities = getCitiesByRegion(region);
               // console.log(cities.length);
-              setCities(cities)
-            })
+              setCities(cities);
+            });
           }}
           onCameraIdle={() => {
             // console.log('idle', region);
@@ -369,7 +369,7 @@ export default function App() {
           //   circleOutlineColor: 'blue',
           // }}
           onTapClusterLeaf={({ markerIdentifier }) => {
-            console.log('onTapClusterLeaf', markerIdentifier)
+            console.log('onTapClusterLeaf', markerIdentifier);
           }}
         >
           {renderOverlays()}
@@ -413,13 +413,13 @@ export default function App() {
         <Btn
           title={'Update Camera'}
           onPress={() => {
-            setCamera(Cameras.Gangnam)
+            setCamera(Cameras.Gangnam);
           }}
         />
         <Btn
           title={'Move to'}
           onPress={() => {
-            ref.current?.animateCameraTo(Cameras.Jeju)
+            ref.current?.animateCameraTo(Cameras.Jeju);
           }}
         />
         <Btn
@@ -428,7 +428,7 @@ export default function App() {
             ref.current?.animateCameraBy({
               x: 100,
               y: 100,
-            })
+            });
           }}
         />
         <Btn
@@ -443,7 +443,7 @@ export default function App() {
                 latitude: 33.2439870024,
                 longitude: 126.9221848004,
               },
-            })
+            });
           }}
         />
         <Btn
@@ -454,37 +454,37 @@ export default function App() {
               longitude: 126.14656715029,
               latitudeDelta: 0.38,
               longitudeDelta: 0.8,
-            })
+            });
           }}
         />
         <Btn
           title={'Cancel'}
           onPress={() => {
-            ref.current?.cancelAnimation()
+            ref.current?.cancelAnimation();
           }}
         />
         <Btn
           title={'Face'}
           onPress={() => {
-            ref.current?.setLocationTrackingMode('Face')
+            ref.current?.setLocationTrackingMode('Face');
           }}
         />
         <Btn
           title={'Follow'}
           onPress={() => {
-            ref.current?.setLocationTrackingMode('Follow')
+            ref.current?.setLocationTrackingMode('Follow');
           }}
         />
         <Btn
           title={'NoFollow'}
           onPress={() => {
-            ref.current?.setLocationTrackingMode('NoFollow')
+            ref.current?.setLocationTrackingMode('NoFollow');
           }}
         />
         <Btn
           title={'None'}
           onPress={() => {
-            ref.current?.setLocationTrackingMode('None')
+            ref.current?.setLocationTrackingMode('None');
           }}
         />
         <Btn
@@ -492,7 +492,7 @@ export default function App() {
           onPress={() => {
             ref.current
               ?.screenToCoordinate({ screenX: 0, screenY: 0 })
-              .then(console.log)
+              .then(console.log);
           }}
         />
         <Btn
@@ -500,7 +500,7 @@ export default function App() {
           onPress={() => {
             ref.current
               ?.coordinateToScreen({ ...Cameras.Jeju })
-              .then(console.log)
+              .then(console.log);
           }}
         />
         <Btn title={'Rerender'} onPress={() => setRerenderKey((k) => k + 1)} />
@@ -545,5 +545,5 @@ export default function App() {
         />
       </View>
     </View>
-  )
+  );
 }

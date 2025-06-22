@@ -1,4 +1,4 @@
-import type { CameraAnimationEasing } from '../../types/CameraAnimationEasing'
+import type { CameraAnimationEasing } from '../../types/CameraAnimationEasing';
 
 export const Const = {
   /**
@@ -15,5 +15,5 @@ export const Const = {
   MAX_ZOOM: 21,
   DEFAULT_SCREEN_DISTANCE: 70,
 } satisfies (Record<string, any> & {}) & {
-  DEFAULT_EASING: CameraAnimationEasing
-}
+  DEFAULT_EASING: CameraAnimationEasing;
+};

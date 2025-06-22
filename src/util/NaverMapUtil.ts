@@ -25,4 +25,4 @@
 //       }
 //     );
 
-export const NaverMapUtil = {}
+export const NaverMapUtil = {};

@@ -8,4 +8,4 @@
  * - Face:위치 추적이 활성화되고, 현위치 오버레이, 카메라의 좌표, 베어링이 사용자의 위치 및 방향을 따라 움직입니다.
  * API나 제스처를 사용해 임의로 카메라를 움직일 경우 모드가 NoFollow로 바뀝니다.
  */
-export type LocationTrackingMode = 'None' | 'NoFollow' | 'Follow' | 'Face'
+export type LocationTrackingMode = 'None' | 'NoFollow' | 'Follow' | 'Face';

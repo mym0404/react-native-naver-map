@@ -12,4 +12,4 @@ export type CameraAnimationEasing =
   | 'EaseOut'
   | 'None'
   | 'Linear'
-  | 'Fly'
+  | 'Fly';

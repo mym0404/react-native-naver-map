@@ -1,4 +1,4 @@
-import hash from 'object-hash'
+import hash from 'object-hash';
 
 import React, {
   type ForwardedRef,
@@ -7,34 +7,34 @@ import React, {
   useImperativeHandle,
   useMemo,
   useRef,
-} from 'react'
-import { type NativeSyntheticEvent, type ViewProps } from 'react-native'
-import type { Double } from 'react-native/Libraries/Types/CodegenTypes'
+} from 'react';
+import { type NativeSyntheticEvent, type ViewProps } from 'react-native';
+import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import {
   cameraChangeReasonFromNumber,
   cameraEasingToNumber,
   convertJsImagePropToNativeProp,
   createCameraInstance,
-} from '../internal/Util'
-import { Const } from '../internal/util/Const'
-import { useStableCallback } from '../internal/util/useStableCallback'
+} from '../internal/Util';
+import { Const } from '../internal/util/Const';
+import { useStableCallback } from '../internal/util/useStableCallback';
 import {
   Commands,
   type NativeClusterProp,
   type NativeClustersProp,
   default as NativeNaverMapView,
-} from '../spec/RNCNaverMapViewNativeComponent'
-import type { Camera } from '../types/Camera'
-import type { CameraAnimationEasing } from '../types/CameraAnimationEasing'
-import type { CameraChangeReason } from '../types/CameraChangeReason'
-import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams'
-import type { ClusterMarkerProp } from '../types/ClusterMarkerProp'
-import type { Coord } from '../types/Coord'
-import type { LocationTrackingMode } from '../types/LocationTrackingMode'
-import type { LogoAlign } from '../types/LogoAlign'
-import type { MapType } from '../types/MapType'
-import type { Rect } from '../types/Rect'
-import type { Region } from '../types/Region'
+} from '../spec/RNCNaverMapViewNativeComponent';
+import type { Camera } from '../types/Camera';
+import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
+import type { CameraChangeReason } from '../types/CameraChangeReason';
+import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
+import type { ClusterMarkerProp } from '../types/ClusterMarkerProp';
+import type { Coord } from '../types/Coord';
+import type { LocationTrackingMode } from '../types/LocationTrackingMode';
+import type { LogoAlign } from '../types/LogoAlign';
+import type { MapType } from '../types/MapType';
+import type { Rect } from '../types/Rect';
+import type { Region } from '../types/Region';
 
 /**
  * @category Hell
@@ -48,7 +48,7 @@ export interface NaverMapViewProps extends ViewProps {
    * @group Map Look & Feel
    * @default Basic
    */
-  mapType?: MapType
+  mapType?: MapType;
 
   /**
    * 바닥 지도 위에 부가적인 정보를 나타내는 레이어 그룹을 노출할 수 있습니다.
@@ -66,18 +66,18 @@ export interface NaverMapViewProps extends ViewProps {
    */
   layerGroups?: {
     /** 건물 그룹입니다. 활성화할 경우 건물 형상, 주소 심벌 등 건물과 관련된 요소가 노출됩니다. 기본적으로 활성화됩니다. */
-    BUILDING: boolean
+    BUILDING: boolean;
     /** 실시간 교통정보 그룹입니다. 활성화할 경우 실시간 교통정보가 노출됩니다. */
-    TRAFFIC: boolean
+    TRAFFIC: boolean;
     /** 대중교통 그룹입니다. 활성화할 경우 철도, 지하철 노선, 버스정류장 등 대중교통과 관련된 요소가 노출됩니다. */
-    TRANSIT: boolean
+    TRANSIT: boolean;
     /** 자전거 그룹입니다. 활성화할 경우 자전거 도로, 자전거 주차대 등 자전거와 관련된 요소가 노출됩니다. */
-    BICYCLE: boolean
+    BICYCLE: boolean;
     /** 등산로 그룹입니다. 활성화할 경우 등산로, 등고선 등 등산과 관련된 요소가 노출됩니다. */
-    MOUNTAIN: boolean
+    MOUNTAIN: boolean;
     /** 지적편집도 그룹입니다. 활성화할 경우 지적편집도가 노출됩니다. */
-    CADASTRAL: boolean
-  }
+    CADASTRAL: boolean;
+  };
   /**
    * 카메라의 위치를 조절합니다. `region`이 존재해도 `camera`가 설정되면 동작하지 않습니다.
    *
@@ -87,7 +87,7 @@ export interface NaverMapViewProps extends ViewProps {
    * @see {@link initialCamera}
    * @group Camera
    */
-  camera?: Camera
+  camera?: Camera;
   /**
    * 맵이 생성된 후 첫 카메라 설정입니다.
    *
@@ -99,7 +99,7 @@ export interface NaverMapViewProps extends ViewProps {
    * @see {@link camera}
    * @group Camera
    */
-  initialCamera?: Camera
+  initialCamera?: Camera;
   /**
    * 해당 영역이 완전히 보이는 좌표와 최대 줌 레벨로 카메라가 이동합니다.
    *
@@ -117,7 +117,7 @@ export interface NaverMapViewProps extends ViewProps {
    * @see {@link initialRegion}
    * @group Camera
    */
-  region?: Region
+  region?: Region;
   /**
    * 맵이 생성된 후 첫 위치 설정입니다.
    *
@@ -129,7 +129,7 @@ export interface NaverMapViewProps extends ViewProps {
    * @see {@link region}
    * @group Camera
    */
-  initialRegion?: Region
+  initialRegion?: Region;
   /**
    * `camera`, `region`이 변경될 때 카메라 이동의 애니메이션 지속시간, milliseconds
    * 0일 때는 애니메이션이 작동하지 않습니다.
@@ -138,7 +138,7 @@ export interface NaverMapViewProps extends ViewProps {
    * @see {@link animationEasing}
    * @default 0
    */
-  animationDuration?: number
+  animationDuration?: number;
   /**
    *
    * `camera`, `region`이 변경될 때 카메라 이동의 애니메이션 Easing
@@ -147,7 +147,7 @@ export interface NaverMapViewProps extends ViewProps {
    * @see {@link animationDuration}
    * @default EaseOut
    */
-  animationEasing?: CameraAnimationEasing
+  animationEasing?: CameraAnimationEasing;
   /**
    * indoorMapEnabled 속성을 사용하면 실내지도를 활성화할 수 있습니다.
    * 실내지도가 활성화되면 줌 레벨이 일정 수준 이상이고 실내지도가 있는 영역에 지도의 중심이 위치할 경우 자동으로 해당 영역에 대한 실내지도가 나타납니다.
@@ -156,7 +156,7 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * @default false
    */
-  isIndoorEnabled?: boolean
+  isIndoorEnabled?: boolean;
   /**
    * nightModeEnabled 속성을 사용하면 야간 모드를 활성화할 수 있습니다.
    * 야간 모드가 활성화되면 지도의 전반적인 스타일이 어두운 톤으로 변경됩니다.
@@ -165,7 +165,7 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * @default false
    */
-  isNightModeEnabled?: boolean
+  isNightModeEnabled?: boolean;
   /**
    * 이 속성을 사용하면 라이트 모드를 활성화할 수 있습니다.
    * 라이트 모드가 활성화되면 지도의 로딩이 빨라지고 메모리 소모가 줄어듭니다.
@@ -185,7 +185,7 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * @default false
    */
-  isLiteModeEnabled?: boolean
+  isLiteModeEnabled?: boolean;
   /**
    * lightness 속성을 사용하면 지도의 밝기를 지정할 수 있습니다.
    * 지도의 밝기를 지정하더라도 오버레이의 밝기는 변경되지 않으므로 오버레이를 강조하고자 할 때 사용할 수 있습니다.
@@ -193,7 +193,7 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * @default 0
    */
-  lightness?: number
+  lightness?: number;
   /**
    * 지도가 기울어지면 건물이 입체적으로 표시됩니다.
    * buildingHeight 속성을 사용하면 입체적으로 표현되는 건물의 높이를 지정할 수 있습니다.
@@ -201,14 +201,14 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * @default 1
    */
-  buildingHeight?: number
+  buildingHeight?: number;
   /**
    * symbolScale 속성을 사용하면 심벌의 크기를 변경할 수 있습니다.
    * 0~2의 비율로 지정할 수 있으며, 값이 클수록 심벌이 커집니다.
    *
    * @default 1
    */
-  symbolScale?: number
+  symbolScale?: number;
   /**
    * 지도를 기울이면 가까이 있는 심벌은 크게, 멀리 있는 심벌은 작게 그려집니다.
    * symbolPerspectiveRatio 속성을 사용하면 심벌의 원근 효과를 조절할 수 있습니다.
@@ -216,46 +216,46 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * @default 1
    */
-  symbolPerspectiveRatio?: number
+  symbolPerspectiveRatio?: number;
   /**
    * 콘텐츠 패딩을 지정할 수 있습니다.
    * 다음 그림과 같이 UI 요소가 지도의 일부를 덮을 경우, 카메라는 지도 뷰의 중심에 위치하므로 실제로 보이는 지도의 중심과 카메라의 위치가 불일치하게 됩니다.
    *
    * <img src="https://navermaps.github.io/ios-map-sdk/assets/3-1-contentspadding1.png" alt="Docs Image" width="500">
    */
-  mapPadding?: Partial<Rect>
+  mapPadding?: Partial<Rect>;
   /**
    * 나침반: 카메라의 회전 및 틸트 상태를 표현합니다.
    * 탭하면 카메라의 헤딩과 틸트가 0으로 초기화됩니다.
    * 헤딩과 틸트가 0이 되면 자동으로 사라집니다.
    */
-  isShowCompass?: boolean
+  isShowCompass?: boolean;
   /**
    * 축척 바: 지도의 축척을 표현합니다. 지도를 조작하는 기능은 없습니다.
    */
-  isShowScaleBar?: boolean
+  isShowScaleBar?: boolean;
   /**
    * 줌 버튼: 탭하면 지도의 줌 레벨을 1씩 증가 또는 감소합니다.
    */
-  isShowZoomControls?: boolean
+  isShowZoomControls?: boolean;
   /**
    * 실내지도 층 피커: 노출 중인 실내지도 구역의 층 정보를 표현합니다
    * 층을 선택하면 해당 층의 실내지도가 노출됩니다.
    * 실내지도가 보이는 상황에만 나타납니다.
    */
-  isShowIndoorLevelPicker?: boolean
+  isShowIndoorLevelPicker?: boolean;
   /**
    * 현위치 버튼: 위치 추적 모드를 표현합니다. 탭하면 모드가 변경됩니다.
    */
-  isShowLocationButton?: boolean
+  isShowLocationButton?: boolean;
   /**
    * 카메라의 최소 줌 레벨입니다.
    */
-  minZoom?: number
+  minZoom?: number;
   /**
    * 카메라의 최대 줌 레벨입니다.
    */
-  maxZoom?: number
+  maxZoom?: number;
   /**
    * extent 속성을 지정하면 카메라의 대상 지점을 영역 내로 제한할 수 있습니다.
    * 카메라가 제한 영역을 벗어나도록 API를 호출하더라도 대상 지점이 영역 내로 조정됩니다.
@@ -263,11 +263,11 @@ export interface NaverMapViewProps extends ViewProps {
    * 카메라 영역을 제한할 때 최소 줌 레벨도 함께 제한하는 것이 좋습니다.
    * 그렇지 않으면 지도가 축소되었을 때 제한 영역이 너무 작게 나타날 수 있습니다.
    */
-  extent?: Region
+  extent?: Region;
   /**
    * 한반도로 `extent`를 제한합니다. `extent`가 존재한다면 동작하지 않습니다.
    */
-  isExtentBoundedInKorea?: boolean
+  isExtentBoundedInKorea?: boolean;
 
   /**
    * 네이버 로고의 위치입니다.
@@ -275,7 +275,7 @@ export interface NaverMapViewProps extends ViewProps {
    * @see {@link LogoAlign}
    * @group Logo
    */
-  logoAlign?: LogoAlign
+  logoAlign?: LogoAlign;
 
   /**
    * 네이버 로고의 마진입니다.
@@ -283,7 +283,7 @@ export interface NaverMapViewProps extends ViewProps {
    * @see {@link Rect}
    * @group Logo
    */
-  logoMargin?: Partial<Rect>
+  logoMargin?: Partial<Rect>;
 
   /**
    * 탭 활성화 여부를 지정할 수 있습니다.
@@ -297,7 +297,7 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * @group Gesture
    */
-  isScrollGesturesEnabled?: boolean
+  isScrollGesturesEnabled?: boolean;
 
   /**
    * 줌: 지도를 더블 탭하면 줌 레벨이 한 단계 확대됩니다. 두 손가락 탭하면 한 단계 축소됩니다.
@@ -305,35 +305,35 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * @group Gesture
    */
-  isZoomGesturesEnabled?: boolean
+  isZoomGesturesEnabled?: boolean;
 
   /**
    * 틸트: 두 개의 손가락으로 지도를 위아래로 드래그하면 기울임 각도가 바뀝니다.
    *
    * @group Gesture
    */
-  isTiltGesturesEnabled?: boolean
+  isTiltGesturesEnabled?: boolean;
 
   /**
    * 회전: 두 개의 손가락으로 지도를 돌리면 베어링 각도가 바뀝니다.
    *
    * @group Gesture
    */
-  isRotateGesturesEnabled?: boolean
+  isRotateGesturesEnabled?: boolean;
 
   /**
    * 스톱: 카메라 애니메이션이 진행 중일 때 지도를 탭하면 애니메이션이 취소되고 카메라가 현재 위치에 멈춥니다.
    *
    * @group Gesture
    */
-  isStopGesturesEnabled?: boolean
+  isStopGesturesEnabled?: boolean;
 
   /**
    * 안드로이드에서 SurfaceView대신 TextureView를 사용합니다.
    *
    * 컴포넌트가 mount되고 변경해도 동작하지 않습니다.
    */
-  isUseTextureViewAndroid?: boolean
+  isUseTextureViewAndroid?: boolean;
 
   /**
    * 지도의 언어를 지정합니다.
@@ -341,7 +341,7 @@ export interface NaverMapViewProps extends ViewProps {
    * @example `ko`, `ja`, `en`
    * @default system locale
    */
-  locale?: string
+  locale?: string;
 
   /**
    * 한 화면에 대량의 마커가 노출되면 성능이 저하될 뿐만 아니라 여러 마커가 겹쳐 나타나므로 시인성이 떨어집니다.
@@ -352,13 +352,13 @@ export interface NaverMapViewProps extends ViewProps {
     /**
      * 클러스터 마커의 넓이
      */
-    width?: number
+    width?: number;
     /**
      * 클러스터 마커의 높이
      */
-    height?: number
-    markers: ClusterMarkerProp[]
-    screenDistance?: number
+    height?: number;
+    markers: ClusterMarkerProp[];
+    screenDistance?: number;
     /**
      * 클러스터링할 최소 줌 레벨.
      *
@@ -367,7 +367,7 @@ export interface NaverMapViewProps extends ViewProps {
      *
      * @default 0
      */
-    minZoom?: number
+    minZoom?: number;
     /**
      * 클러스터링할 최대 줌 레벨.
      *
@@ -376,14 +376,14 @@ export interface NaverMapViewProps extends ViewProps {
      *
      * @default 21
      */
-    maxZoom?: number
+    maxZoom?: number;
     /**
      * 카메라 확대/축소시 클러스터가 펼쳐지는/합쳐지는 애니메이션을 적용할지 여부.
      *
      * @default true
      */
-    animate?: boolean
-  }[]
+    animate?: boolean;
+  }[];
 
   /**
    * 지도의 최대 초당 프레임 수(FPS, frames per second)를 지정합니다.
@@ -396,7 +396,7 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * @default 0
    */
-  fpsLimit?: number
+  fpsLimit?: number;
 
   // locationOverlay?: {
   //   isVisible?: boolean;
@@ -421,7 +421,7 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * @group Events
    */
-  onInitialized?: () => void
+  onInitialized?: () => void;
   /**
    * 지도 유형, 디스플레이 옵션 등 지도와 관련된 옵션이 변경되면 이벤트가 발생합니다.
    * 지도의 옵션이 변경되면 콜백 메서드가 호출됩니다.
@@ -432,7 +432,7 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * @event
    */
-  onOptionChanged?: () => void
+  onOptionChanged?: () => void;
   /**
    * 어떤 이유에 의해서건 카메라가 움직이면 카메라 변경 이벤트가 발생합니다.
    *
@@ -448,10 +448,10 @@ export interface NaverMapViewProps extends ViewProps {
    */
   onCameraChanged?: (
     params: Camera & {
-      reason: CameraChangeReason
-      region: Region
+      reason: CameraChangeReason;
+      region: Region;
     }
-  ) => void
+  ) => void;
 
   /**
    * 카메라의 움직임이 끝나 대기 상태가 되면 카메라 대기 이벤트가 발생합니다.
@@ -465,7 +465,7 @@ export interface NaverMapViewProps extends ViewProps {
    * @see {@link Region}
    * @event
    */
-  onCameraIdle?: (params: Camera & { region: Region }) => void
+  onCameraIdle?: (params: Camera & { region: Region }) => void;
 
   /**
    * 맵을 클릭했을 때 발생하는 이벤트입니다.
@@ -473,14 +473,14 @@ export interface NaverMapViewProps extends ViewProps {
    * @see {@link Coord}
    * @event
    */
-  onTapMap?: (params: Coord & { x: number; y: number }) => void
+  onTapMap?: (params: Coord & { x: number; y: number }) => void;
 
   /**
    * 클러스터 Leaf 마커를 클릭했을 때 발생하는 이벤트입니다.
    *
    * @event
    */
-  onTapClusterLeaf?: (params: { markerIdentifier: string }) => void
+  onTapClusterLeaf?: (params: { markerIdentifier: string }) => void;
 }
 
 export interface NaverMapViewRef {
@@ -489,20 +489,20 @@ export interface NaverMapViewRef {
    */
   animateCameraTo: (
     params: Coord & CameraMoveBaseParams & { zoom?: number }
-  ) => void
+  ) => void;
   /**
    * 카메라를 특정 위치만큼 델타값으로 애니메이션과 함께 이동시킵니다.
    */
   animateCameraBy: (
     params: {
-      x: number
-      y: number
+      x: number;
+      y: number;
     } & CameraMoveBaseParams
-  ) => void
+  ) => void;
   /**
    * 카메라를 특정 Region으로 애니메이션과 함께 이동시킵니다.
    */
-  animateRegionTo: (params: Region & CameraMoveBaseParams) => void
+  animateRegionTo: (params: Region & CameraMoveBaseParams) => void;
   /**
    * 카메라를 두 좌표가 모두 보이는 최대 줌 레벨로 애니메이션과 함께 이동시킵니다.
    *
@@ -511,22 +511,22 @@ export interface NaverMapViewRef {
    */
   animateCameraWithTwoCoords: (
     params: {
-      coord1: Coord
-      coord2: Coord
+      coord1: Coord;
+      coord2: Coord;
     } & CameraMoveBaseParams
-  ) => void
+  ) => void;
 
   /**
    * 카메라의 애니메이션을 취소합니다.
    */
-  cancelAnimation: () => void
+  cancelAnimation: () => void;
 
   /**
    * 위치 추적 모드를 변경합니다.
    *
    * {@link LocationTrackingMode}
    */
-  setLocationTrackingMode: (mode: LocationTrackingMode) => void
+  setLocationTrackingMode: (mode: LocationTrackingMode) => void;
 
   /**
    * 지도에서 특정 부분을 위도 경도값으로 반환합니다.
@@ -536,13 +536,13 @@ export interface NaverMapViewRef {
    * `isValid`가 `false`이면 항상 `latitude`, `longitude`는 0입니다.
    */
   screenToCoordinate: (params: {
-    screenX: number
-    screenY: number
+    screenX: number;
+    screenY: number;
   }) => Promise<{
-    isValid: boolean
-    latitude: number
-    longitude: number
-  }>
+    isValid: boolean;
+    latitude: number;
+    longitude: number;
+  }>;
 
   /**
    * 지도에서 특정 위도 부분을 화면에서의 특정 위치로 반환합니다.
@@ -552,17 +552,17 @@ export interface NaverMapViewRef {
    * `isValid`가 `false`이면 항상 `screenX`, `screenY`는 0입니다.
    */
   coordinateToScreen: (params: {
-    latitude: number
-    longitude: number
+    latitude: number;
+    longitude: number;
   }) => Promise<{
-    isValid: boolean
-    screenX: number
-    screenY: number
-  }>
+    isValid: boolean;
+    screenX: number;
+    screenY: number;
+  }>;
 }
 
 function clamp(v: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, v))
+  return Math.min(max, Math.max(min, v));
 }
 
 const southKoreaExtent: Region = {
@@ -570,14 +570,14 @@ const southKoreaExtent: Region = {
   longitude: 122.37,
   latitudeDelta: 44.35 - 31.43,
   longitudeDelta: 132 - 122.37,
-}
+};
 
 const nullRegion: Region = {
   latitude: Const.NULL_NUMBER,
   longitude: Const.NULL_NUMBER,
   latitudeDelta: Const.NULL_NUMBER,
   longitudeDelta: Const.NULL_NUMBER,
-}
+};
 
 const nullCamera: Camera = {
   latitude: Const.NULL_NUMBER,
@@ -585,7 +585,7 @@ const nullCamera: Camera = {
   zoom: Const.NULL_NUMBER,
   tilt: Const.NULL_NUMBER,
   bearing: Const.NULL_NUMBER,
-}
+};
 
 export const NaverMapView = forwardRef(
   (
@@ -647,15 +647,15 @@ export const NaverMapView = forwardRef(
     }: NaverMapViewProps,
     ref: ForwardedRef<NaverMapViewRef>
   ) => {
-    const innerRef = useRef<any>(null)
+    const innerRef = useRef<any>(null);
 
-    const isLeafTapCallbackExist: boolean = !!onTapClusterLeaf
+    const isLeafTapCallbackExist: boolean = !!onTapClusterLeaf;
     const _clusters = useMemo<NativeClustersProp>(() => {
       if (!clusters || clusters.length === 0) {
-        return { key: '', clusters: [], isLeafTapCallbackExist }
+        return { key: '', clusters: [], isLeafTapCallbackExist };
       }
-      let propKey = ''
-      const ret: NativeClusterProp[] = []
+      let propKey = '';
+      const ret: NativeClusterProp[] = [];
       for (const {
         animate = true,
         markers,
@@ -675,7 +675,7 @@ export const NaverMapView = forwardRef(
           markers,
           width,
           height,
-        ])
+        ]);
 
         ret.push({
           key,
@@ -691,17 +691,17 @@ export const NaverMapView = forwardRef(
           screenDistance,
           width,
           height,
-        })
+        });
 
-        propKey += `${key}---`
+        propKey += `${key}---`;
       }
 
       return {
         key: hash(propKey),
         clusters: ret,
         isLeafTapCallbackExist,
-      }
-    }, [clusters, isLeafTapCallbackExist])
+      };
+    }, [clusters, isLeafTapCallbackExist]);
 
     // const _locationOverlay: NativeLocationOverlayProp | undefined =
     //   useMemo(() => {
@@ -752,11 +752,11 @@ export const NaverMapView = forwardRef(
         },
       }: NativeSyntheticEvent<
         Camera & {
-          reason: number
-          regionLatitude: Double
-          regionLongitude: Double
-          regionLatitudeDelta: Double
-          regionLongitudeDelta: Double
+          reason: number;
+          regionLatitude: Double;
+          regionLongitude: Double;
+          regionLatitudeDelta: Double;
+          regionLongitudeDelta: Double;
         }
       >) => {
         onCameraChangedProp?.({
@@ -772,9 +772,9 @@ export const NaverMapView = forwardRef(
             latitudeDelta: regionLatitudeDelta,
             longitudeDelta: regionLongitudeDelta,
           },
-        })
+        });
       }
-    )
+    );
 
     const onCameraIdle = useStableCallback(
       ({
@@ -791,10 +791,10 @@ export const NaverMapView = forwardRef(
         },
       }: NativeSyntheticEvent<
         Camera & {
-          regionLatitude: Double
-          regionLongitude: Double
-          regionLatitudeDelta: Double
-          regionLongitudeDelta: Double
+          regionLatitude: Double;
+          regionLongitude: Double;
+          regionLatitudeDelta: Double;
+          regionLongitudeDelta: Double;
         }
       >) => {
         onCameraIdleProp?.({
@@ -809,9 +809,9 @@ export const NaverMapView = forwardRef(
             latitudeDelta: regionLatitudeDelta,
             longitudeDelta: regionLongitudeDelta,
           },
-        })
+        });
       }
-    )
+    );
 
     const onTapMap = useStableCallback(
       ({
@@ -822,27 +822,27 @@ export const NaverMapView = forwardRef(
           latitude,
           x,
           y,
-        })
+        });
       }
-    )
+    );
 
     const screenToCoordinatePromise = useRef<{
       resolve: (params: {
-        isValid: boolean
-        latitude: number
-        longitude: number
-      }) => void
-      reject: (e: any) => void
-    }>(undefined)
+        isValid: boolean;
+        latitude: number;
+        longitude: number;
+      }) => void;
+      reject: (e: any) => void;
+    }>(undefined);
 
     const coordinateToScreenPromise = useRef<{
       resolve: (params: {
-        isValid: boolean
-        screenX: number
-        screenY: number
-      }) => void
-      reject: (e: any) => void
-    }>(undefined)
+        isValid: boolean;
+        screenX: number;
+        screenY: number;
+      }) => void;
+      reject: (e: any) => void;
+    }>(undefined);
 
     useEffect(() => {
       return () => {
@@ -850,40 +850,40 @@ export const NaverMapView = forwardRef(
           isValid: false,
           latitude: 0,
           longitude: 0,
-        })
-        screenToCoordinatePromise.current = undefined
+        });
+        screenToCoordinatePromise.current = undefined;
         coordinateToScreenPromise.current?.resolve({
           isValid: false,
           screenX: 0,
           screenY: 0,
-        })
-        coordinateToScreenPromise.current = undefined
-      }
-    }, [])
+        });
+        coordinateToScreenPromise.current = undefined;
+      };
+    }, []);
     const onScreenToCoordinate = useStableCallback(
       ({
         nativeEvent,
       }: NativeSyntheticEvent<{
-        isValid: boolean
-        latitude: number
-        longitude: number
+        isValid: boolean;
+        latitude: number;
+        longitude: number;
       }>) => {
-        screenToCoordinatePromise.current?.resolve(nativeEvent)
-        screenToCoordinatePromise.current = undefined
+        screenToCoordinatePromise.current?.resolve(nativeEvent);
+        screenToCoordinatePromise.current = undefined;
       }
-    )
+    );
     const onCoordinateToScreen = useStableCallback(
       ({
         nativeEvent,
       }: NativeSyntheticEvent<{
-        isValid: boolean
-        screenX: number
-        screenY: number
+        isValid: boolean;
+        screenX: number;
+        screenY: number;
       }>) => {
-        coordinateToScreenPromise.current?.resolve(nativeEvent)
-        coordinateToScreenPromise.current = undefined
+        coordinateToScreenPromise.current?.resolve(nativeEvent);
+        coordinateToScreenPromise.current = undefined;
       }
-    )
+    );
 
     useImperativeHandle(
       ref,
@@ -906,7 +906,7 @@ export const NaverMapView = forwardRef(
               pivot?.x ?? 0.5,
               pivot?.y ?? 0.5,
               zoom
-            )
+            );
           }
         },
         animateCameraBy: ({ duration, easing, x, y, pivot }) => {
@@ -919,7 +919,7 @@ export const NaverMapView = forwardRef(
               cameraEasingToNumber(easing ?? Const.DEFAULT_EASING),
               pivot?.x ?? 0.5,
               pivot?.y ?? 0.5
-            )
+            );
           }
         },
         animateRegionTo: ({
@@ -942,7 +942,7 @@ export const NaverMapView = forwardRef(
               cameraEasingToNumber(easing ?? Const.DEFAULT_EASING),
               pivot?.x ?? 0.5,
               pivot?.y ?? 0.5
-            )
+            );
           }
         },
         animateCameraWithTwoCoords: ({
@@ -953,10 +953,12 @@ export const NaverMapView = forwardRef(
           pivot,
         }) => {
           if (innerRef.current) {
-            const latitude = Math.min(coord1.latitude, coord2.latitude)
-            const longitude = Math.min(coord1.longitude, coord2.longitude)
-            const latitudeDelta = Math.abs(coord1.latitude - coord2.latitude)
-            const longitudeDelta = Math.abs(coord1.longitude - coord2.longitude)
+            const latitude = Math.min(coord1.latitude, coord2.latitude);
+            const longitude = Math.min(coord1.longitude, coord2.longitude);
+            const latitudeDelta = Math.abs(coord1.latitude - coord2.latitude);
+            const longitudeDelta = Math.abs(
+              coord1.longitude - coord2.longitude
+            );
 
             Commands.animateRegionTo(
               innerRef.current,
@@ -968,17 +970,17 @@ export const NaverMapView = forwardRef(
               cameraEasingToNumber(easing ?? Const.DEFAULT_EASING),
               pivot?.x ?? 0.5,
               pivot?.y ?? 0.5
-            )
+            );
           }
         },
         cancelAnimation: () => {
           if (innerRef.current) {
-            Commands.cancelAnimation(innerRef.current)
+            Commands.cancelAnimation(innerRef.current);
           }
         },
         setLocationTrackingMode: (mode: LocationTrackingMode) => {
           if (innerRef.current) {
-            Commands.setLocationTrackingMode(innerRef.current, mode)
+            Commands.setLocationTrackingMode(innerRef.current, mode);
           }
         },
         screenToCoordinate: ({ screenX, screenY }) => {
@@ -986,18 +988,18 @@ export const NaverMapView = forwardRef(
             isValid: false,
             latitude: 0,
             longitude: 0,
-          })
-          screenToCoordinatePromise.current = undefined
+          });
+          screenToCoordinatePromise.current = undefined;
           if (innerRef.current) {
             const newPromise = new Promise<any>((resolve, reject) => {
-              screenToCoordinatePromise.current = { resolve, reject }
-            })
-            Commands.screenToCoordinate(innerRef.current, screenX, screenY)
-            return newPromise
+              screenToCoordinatePromise.current = { resolve, reject };
+            });
+            Commands.screenToCoordinate(innerRef.current, screenX, screenY);
+            return newPromise;
           } else {
             return new Promise((_, reject) =>
               reject(new Error('ref not set yet'))
-            )
+            );
           }
         },
         coordinateToScreen: ({ latitude, longitude }) => {
@@ -1005,23 +1007,23 @@ export const NaverMapView = forwardRef(
             isValid: false,
             screenX: 0,
             screenY: 0,
-          })
-          coordinateToScreenPromise.current = undefined
+          });
+          coordinateToScreenPromise.current = undefined;
           if (innerRef.current) {
             const newPromise = new Promise<any>((resolve, reject) => {
-              coordinateToScreenPromise.current = { resolve, reject }
-            })
-            Commands.coordinateToScreen(innerRef.current, latitude, longitude)
-            return newPromise
+              coordinateToScreenPromise.current = { resolve, reject };
+            });
+            Commands.coordinateToScreen(innerRef.current, latitude, longitude);
+            return newPromise;
           } else {
             return new Promise((_, reject) =>
               reject(new Error('ref not set yet'))
-            )
+            );
           }
         },
       }),
       []
-    )
+    );
 
     return (
       <NativeNaverMapView
@@ -1098,6 +1100,6 @@ export const NaverMapView = forwardRef(
         }
         {...rest}
       />
-    )
+    );
   }
-)
+);

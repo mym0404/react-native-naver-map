@@ -1,1 +1,1 @@
-export type CapType = 'Round' | 'Butt' | 'Square'
+export type CapType = 'Round' | 'Butt' | 'Square';
