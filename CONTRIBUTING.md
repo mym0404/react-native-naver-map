@@ -19,7 +19,6 @@ The `package.json` file contains various scripts for common tasks:
 
 - `yarn lint`: lint files with ESLint, ClangFormat, Ktlint, TypeScript
 - `yarn run t`: alias for lint
-- `yarn test`: run unit tests with Jest
 - `yarn format`: run formatter with ClangFormat, SwiftFormat for iOS codes and Ktlint for Android codes
 
 **Example App Build, Manipluations**
@@ -124,8 +123,7 @@ Our pre-commit hooks verify that your commit message matches this format when co
 
 [ESLint](https://eslint.org/), [Prettier](https://prettier.io/), [TypeScript](https://www.typescriptlang.org/)
 
-We use [TypeScript](https://www.typescriptlang.org/) for type checking, [ESLint](https://eslint.org/) with [Prettier](https://prettier.io/) for linting and formatting the code, and [Jest](https://jestjs.io/) for testing.
-
+We use [TypeScript](https://www.typescriptlang.org/) for type checking, [ESLint](https://eslint.org/) with [Prettier](https://prettier.io/) for linting and formatting the code.
 Our pre-commit hooks verify that the linter and tests pass when committing.
 
 ### API Documentation

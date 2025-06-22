@@ -1,9 +1,4 @@
-import type { ViewProps } from 'react-native'
-import type {
-  DirectEventHandler,
-  Double,
-  Int32,
-} from 'react-native/Libraries/Types/CodegenTypes'
+import type { CodegenTypes, ViewProps } from 'react-native'
 import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent'
 
 /* Type should be redeclared because of codegen ts parser doesn't allow imported type
@@ -11,11 +6,11 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
  */
 
 interface BaseOverlay {
-  zIndexValue: Int32
-  globalZIndexValue: Int32
+  zIndexValue: CodegenTypes.Int32
+  globalZIndexValue: CodegenTypes.Int32
   isHidden: boolean
-  minZoom: Double
-  maxZoom: Double
+  minZoom: CodegenTypes.Double
+  maxZoom: CodegenTypes.Double
   isMinZoomInclusive: boolean
   isMaxZoomInclusive: boolean
 }
@@ -23,25 +18,25 @@ interface BaseOverlay {
 export type NativeCaptionProp = {
   key: string
   text: string
-  requestedWidth?: Double
-  align?: Int32
-  offset?: Double
-  color?: Int32
-  haloColor?: Int32
-  textSize?: Double
-  minZoom?: Double
-  maxZoom?: Double
+  requestedWidth?: CodegenTypes.Double
+  align?: CodegenTypes.Int32
+  offset?: CodegenTypes.Double
+  color?: CodegenTypes.Int32
+  haloColor?: CodegenTypes.Int32
+  textSize?: CodegenTypes.Double
+  minZoom?: CodegenTypes.Double
+  maxZoom?: CodegenTypes.Double
 }
 
 export type NativeSubCaptionProp = {
   key: string
   text: string
-  color?: Int32
-  haloColor?: Int32
-  textSize?: Double
-  requestedWidth?: Double
-  minZoom?: Double
-  maxZoom?: Double
+  color?: CodegenTypes.Int32
+  haloColor?: CodegenTypes.Int32
+  textSize?: CodegenTypes.Double
+  requestedWidth?: CodegenTypes.Double
+  minZoom?: CodegenTypes.Double
+  maxZoom?: CodegenTypes.Double
 }
 
 export type NativeImageProp = Readonly<{
@@ -55,20 +50,23 @@ export type NativeImageProp = Readonly<{
 ////////////////////
 
 interface Props extends BaseOverlay, ViewProps {
-  coord: Readonly<{ latitude: Double; longitude: Double }>
-  onTapOverlay?: DirectEventHandler<Readonly<{}>>
-  width?: Double
-  height?: Double
-  anchor?: Readonly<{ x: Double; y: Double }>
-  angle?: Double
+  coord: Readonly<{
+    latitude: CodegenTypes.Double
+    longitude: CodegenTypes.Double
+  }>
+  onTapOverlay?: CodegenTypes.DirectEventHandler<Readonly<{}>>
+  width?: CodegenTypes.Double
+  height?: CodegenTypes.Double
+  anchor?: Readonly<{ x: CodegenTypes.Double; y: CodegenTypes.Double }>
+  angle?: CodegenTypes.Double
   isFlatEnabled?: boolean
   isIconPerspectiveEnabled?: boolean
-  alpha?: Double
+  alpha?: CodegenTypes.Double
   isHideCollidedSymbols?: boolean
   isHideCollidedMarkers?: boolean
   isHideCollidedCaptions?: boolean
   isForceShowIcon?: boolean
-  tintColor?: Int32
+  tintColor?: CodegenTypes.Int32
   image?: Readonly<NativeImageProp>
   caption?: Readonly<NativeCaptionProp>
   subCaption?: Readonly<NativeSubCaptionProp>

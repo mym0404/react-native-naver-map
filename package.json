@@ -28,7 +28,6 @@
     "!**/.*"
   ],
   "scripts": {
-    "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "yarn t",
     "t": "yarn lefthook run check",

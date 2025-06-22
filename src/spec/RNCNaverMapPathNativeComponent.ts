@@ -1,9 +1,4 @@
-import type { ViewProps } from 'react-native'
-import type {
-  DirectEventHandler,
-  Double,
-  Int32,
-} from 'react-native/Libraries/Types/CodegenTypes'
+import type { CodegenTypes, ViewProps } from 'react-native'
 import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent'
 
 /* Type should be redeclared because of codegen ts parser doesn't allow imported type
@@ -11,18 +6,18 @@ import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNati
  */
 
 interface BaseOverlay {
-  zIndexValue: Int32
-  globalZIndexValue: Int32
+  zIndexValue: CodegenTypes.Int32
+  globalZIndexValue: CodegenTypes.Int32
   isHidden: boolean
-  minZoom: Double
-  maxZoom: Double
+  minZoom: CodegenTypes.Double
+  maxZoom: CodegenTypes.Double
   isMinZoomInclusive: boolean
   isMaxZoomInclusive: boolean
 }
 
 type Coord = {
-  latitude: Double
-  longitude: Double
+  latitude: CodegenTypes.Double
+  longitude: CodegenTypes.Double
 }
 type NativeImageProp =
   | undefined
@@ -37,17 +32,17 @@ type NativeImageProp =
 ////////////////////
 
 interface Props extends BaseOverlay, ViewProps {
-  onTapOverlay?: DirectEventHandler<Readonly<{}>>
+  onTapOverlay?: CodegenTypes.DirectEventHandler<Readonly<{}>>
   coords: ReadonlyArray<Coord>
-  width?: Double
-  outlineWidth?: Double
-  patternInterval?: Int32
+  width?: CodegenTypes.Double
+  outlineWidth?: CodegenTypes.Double
+  patternInterval?: CodegenTypes.Int32
   patternImage?: NativeImageProp
-  progress?: Double
-  color?: Int32
-  passedColor?: Int32
-  outlineColor?: Int32
-  passedOutlineColor?: Int32
+  progress?: CodegenTypes.Double
+  color?: CodegenTypes.Int32
+  passedColor?: CodegenTypes.Int32
+  outlineColor?: CodegenTypes.Int32
+  passedOutlineColor?: CodegenTypes.Int32
   isHideCollidedSymbols?: boolean
   isHideCollidedMarkers?: boolean
   isHideCollidedCaptions?: boolean
