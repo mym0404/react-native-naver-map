@@ -2255,7 +2255,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
-  - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
+  - "react-native-slider (from `../../node_modules/@react-native-community/slider`)"
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-oscompat (from `../node_modules/react-native/ReactCommon/oscompat`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -2378,7 +2378,7 @@ EXTERNAL SOURCES:
   React-microtasksnativemodule:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
   react-native-slider:
-    :path: "../node_modules/@react-native-community/slider"
+    :path: "../../node_modules/@react-native-community/slider"
   React-NativeModulesApple:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios"
   React-oscompat:
@@ -2517,7 +2517,7 @@ SPEC CHECKSUMS:
   React-timing: a275a1c2e6112dba17f8f7dd496d439213bbea0d
   React-utils: 257f8c08cb0559e458a9a9254967058434198ced
   ReactAppDependencyProvider: cd55f820247d424280ae0b94e1ffb38963410c01
-  ReactCodegen: e68a4f6ff714fd4f8b8dbd95877406c6ccb279cd
+  ReactCodegen: 304f881dea867b659e4ba479608ec06f8117e0c5
   ReactCommon: 658874decaf8c4fd76cfa3a878b94a869db85b1c
   RNPermissions: 30bf2aa7b7ce0d5e9e2996cd19596757e75cc508
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748

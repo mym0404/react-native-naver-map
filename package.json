@@ -28,28 +28,28 @@
     "!**/.*"
   ],
   "scripts": {
-    "dev": "pnpm example start",
+    "dev": "yarn example start",
     "test": "jest",
     "typecheck": "tsc --noEmit",
-    "lint": "pnpm t",
-    "t": "pnpm lefthook run check",
-    "format": "pnpm lefthook run format",
+    "lint": "yarn t",
+    "t": "yarn lefthook run check",
+    "format": "yarn lefthook run format",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "release": "./script/release.sh",
     "codegen:android": "cd example/android && ./gradlew generateCodegenArtifactsFromSchema",
     "codegen:ios": "node example/node_modules/react-native/scripts/generate-codegen-artifacts.js --path example/ --outputPath example/ios -t ios",
-    "codegen": "pnpm codegen:android && pnpm codegen:ios",
+    "codegen": "yarn codegen:android && yarn codegen:ios",
     "studio": "studio $(pwd)/example/android",
     "xcode": "open $(pwd)/example/ios/example.xcworkspace",
     "pod": "cd example/ios && pod install",
     "pod:update": "cd example/ios &&  pod update",
-    "prepack": "pnpm build:expo-config-plugin && pnpm build:docs && bob build",
+    "prepack": "yarn build:expo-config-plugin && yarn build:docs && bob build",
     "build:expo-config-plugin": "tsc --project ./expo-config-plugin",
     "build:docs": "rm -rf docs && typedoc",
     "ci:ios": "cd example/ios && xcodebuild -workspace example.xcworkspace -scheme example -configuration Debug -sdk iphonesimulator -quiet CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO ONLY_ACTIVE_ARCH=YES",
     "ci:android": "cd example/android && ./gradlew assembleDebug",
-    "turbo:android": "pnpm turbo ci:android --single-package --cache-dir=\".turbo/android\"",
-    "turbo:ios": "pnpm turbo ci:ios --single-package --cache-dir=\".turbo/ios\""
+    "turbo:android": "yarn turbo ci:android --single-package --cache-dir=\".turbo/android\"",
+    "turbo:ios": "yarn turbo ci:ios --single-package --cache-dir=\".turbo/ios\""
   },
   "keywords": [
     "react-native",
@@ -91,6 +91,10 @@
     "typedoc-plugin-extras": "^4.0.0",
     "typedoc-theme-hierarchy": "^6.0.0",
     "typescript": "5.3.3"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
   },
   "exports": {
     ".": {
@@ -155,5 +159,8 @@
   "dependencies": {
     "object-hash": "^3.0.0"
   },
-  "packageManager": "pnpm@10.12.1"
+  "packageManager": "yarn@4.9.2",
+  "workspaces": [
+    "example"
+  ]
 }

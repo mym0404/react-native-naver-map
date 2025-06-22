@@ -1,6 +1,0 @@
-packages:
-  - .
-  - example
-
-onlyBuiltDependencies:
-  - lefthook

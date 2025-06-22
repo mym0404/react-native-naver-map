@@ -15,7 +15,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Build Docs
-        run: pnpm build:docs
+        run: yarn build:docs
 
       - name: Deploy Docs
         uses: peaceiris/actions-gh-pages@v3

@@ -1,6 +1,11 @@
 {
   "compilerOptions": {
     "rootDir": ".",
+    "paths": {
+      "@mj-studio/react-native-naver-map": [
+        "./src/index"
+      ]
+    },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "esModuleInterop": true,
@@ -10,7 +15,7 @@
       "esnext"
     ],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noImplicitUseStrict": false,
