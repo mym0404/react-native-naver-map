@@ -13,7 +13,7 @@ module.exports = {
       ),
     },
     'react-native-permissions': {
-      root: path.resolve(__dirname, '../node_modules/react-native-permission'),
+      root: path.resolve(__dirname, '../node_modules/react-native-permissions'),
     },
   },
 };
