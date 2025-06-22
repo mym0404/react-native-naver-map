@@ -1,19 +1,20 @@
-import {
-  CodegenTypes,
-  codegenNativeComponent,
-  type ViewProps,
-} from 'react-native';
+import { codegenNativeComponent, type ViewProps } from 'react-native';
+import type {
+  DirectEventHandler,
+  Double,
+  Int32,
+} from 'react-native/Libraries/Types/CodegenTypes';
 
 /* Type should be redeclared because of codegen ts parser doesn't allow imported type
  * [comments](https://github.com/reactwg/react-native-new-architecture/discussions/91#discussioncomment-4282452)
  */
 
 interface BaseOverlay {
-  zIndexValue: CodegenTypes.Int32;
-  globalZIndexValue: CodegenTypes.Int32;
+  zIndexValue: Int32;
+  globalZIndexValue: Int32;
   isHidden: boolean;
-  minZoom: CodegenTypes.Double;
-  maxZoom: CodegenTypes.Double;
+  minZoom: Double;
+  maxZoom: Double;
   isMinZoomInclusive: boolean;
   isMaxZoomInclusive: boolean;
 }
@@ -28,16 +29,16 @@ export type NativeImageProp =
       reuseIdentifier?: string;
     }>;
 type Region = {
-  latitude: CodegenTypes.Double;
-  longitude: CodegenTypes.Double;
-  latitudeDelta: CodegenTypes.Double;
-  longitudeDelta: CodegenTypes.Double;
+  latitude: Double;
+  longitude: Double;
+  latitudeDelta: Double;
+  longitudeDelta: Double;
 };
 
 ////////////////////
 
 interface Props extends BaseOverlay, ViewProps {
-  onTapOverlay?: CodegenTypes.DirectEventHandler<Readonly<{}>>;
+  onTapOverlay?: DirectEventHandler<Readonly<{}>>;
   image: NativeImageProp;
   region: Region;
 }

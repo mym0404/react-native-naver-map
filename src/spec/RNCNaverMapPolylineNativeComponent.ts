@@ -1,37 +1,39 @@
-import {
-  CodegenTypes,
-  codegenNativeComponent,
-  type ViewProps,
-} from 'react-native';
+import { codegenNativeComponent, type ViewProps } from 'react-native';
+import type {
+  DirectEventHandler,
+  Double,
+  Int32,
+  WithDefault,
+} from 'react-native/Libraries/Types/CodegenTypes';
 
 /* Type should be redeclared because of codegen ts parser doesn't allow imported type
  * [comments](https://github.com/reactwg/react-native-new-architecture/discussions/91#discussioncomment-4282452)
  */
 
 interface BaseOverlay {
-  zIndexValue: CodegenTypes.Int32;
-  globalZIndexValue: CodegenTypes.Int32;
+  zIndexValue: Int32;
+  globalZIndexValue: Int32;
   isHidden: boolean;
-  minZoom: CodegenTypes.Double;
-  maxZoom: CodegenTypes.Double;
+  minZoom: Double;
+  maxZoom: Double;
   isMinZoomInclusive: boolean;
   isMaxZoomInclusive: boolean;
 }
 
 type Coord = {
-  latitude: CodegenTypes.Double;
-  longitude: CodegenTypes.Double;
+  latitude: Double;
+  longitude: Double;
 };
 ////////////////////
 
 interface Props extends BaseOverlay, ViewProps {
-  onTapOverlay?: CodegenTypes.DirectEventHandler<Readonly<{}>>;
+  onTapOverlay?: DirectEventHandler<Readonly<{}>>;
   coords: ReadonlyArray<Coord>;
-  width?: CodegenTypes.Double;
-  color?: CodegenTypes.Int32;
-  pattern?: ReadonlyArray<CodegenTypes.Int32>;
-  capType?: CodegenTypes.WithDefault<'Round' | 'Butt' | 'Square', 'Round'>;
-  joinType?: CodegenTypes.WithDefault<'Bevel' | 'Miter' | 'Round', 'Round'>;
+  width?: Double;
+  color?: Int32;
+  pattern?: ReadonlyArray<Int32>;
+  capType?: WithDefault<'Round' | 'Butt' | 'Square', 'Round'>;
+  joinType?: WithDefault<'Bevel' | 'Miter' | 'Round', 'Round'>;
 }
 
 export default codegenNativeComponent<Props>('RNCNaverMapPolyline');

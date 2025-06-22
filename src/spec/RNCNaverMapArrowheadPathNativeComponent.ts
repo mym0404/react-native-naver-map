@@ -1,38 +1,39 @@
-import {
-  CodegenTypes,
-  codegenNativeComponent,
-  type ViewProps,
-} from 'react-native';
+import { codegenNativeComponent, type ViewProps } from 'react-native';
+import type {
+  DirectEventHandler,
+  Double,
+  Int32,
+} from 'react-native/Libraries/Types/CodegenTypes';
 
 /* Type should be redeclared because of codegen ts parser doesn't allow imported type
  * [comments](https://github.com/reactwg/react-native-new-architecture/discussions/91#discussioncomment-4282452)
  */
 
 interface BaseOverlay {
-  zIndexValue: CodegenTypes.Int32;
-  globalZIndexValue: CodegenTypes.Int32;
+  zIndexValue: Int32;
+  globalZIndexValue: Int32;
   isHidden: boolean;
-  minZoom: CodegenTypes.Double;
-  maxZoom: CodegenTypes.Double;
+  minZoom: Double;
+  maxZoom: Double;
   isMinZoomInclusive: boolean;
   isMaxZoomInclusive: boolean;
 }
 
 type Coord = {
-  latitude: CodegenTypes.Double;
-  longitude: CodegenTypes.Double;
+  latitude: Double;
+  longitude: Double;
 };
 ////////////////////
 
 interface Props extends BaseOverlay, ViewProps {
-  onTapOverlay?: CodegenTypes.DirectEventHandler<Readonly<{}>>;
+  onTapOverlay?: DirectEventHandler<Readonly<{}>>;
   coords: ReadonlyArray<Coord>;
-  width?: CodegenTypes.Double;
+  width?: Double;
 
-  outlineWidth?: CodegenTypes.Double;
-  color?: CodegenTypes.Int32;
-  outlineColor?: CodegenTypes.Int32;
-  headSizeRatio?: CodegenTypes.Double;
+  outlineWidth?: Double;
+  color?: Int32;
+  outlineColor?: Int32;
+  headSizeRatio?: Double;
 }
 
 export default codegenNativeComponent<Props>('RNCNaverMapArrowheadPath');

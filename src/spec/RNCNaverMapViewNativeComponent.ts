@@ -1,18 +1,23 @@
 import {
-  CodegenTypes,
   codegenNativeCommands,
   codegenNativeComponent,
   type HostComponent,
   type ViewProps,
 } from 'react-native';
+import type {
+  DirectEventHandler,
+  Double,
+  Int32,
+  WithDefault,
+} from 'react-native/Libraries/Types/CodegenTypes';
 
 /* Type should be redeclared because of codegen ts parser doesn't allow imported type
  * [comments](https://github.com/reactwg/react-native-new-architecture/discussions/91#discussioncomment-4282452)
  */
 
 type Coord = {
-  latitude: CodegenTypes.Double;
-  longitude: CodegenTypes.Double;
+  latitude: Double;
+  longitude: Double;
 };
 type NativeImageProp = Readonly<{
   symbol?: string;
@@ -25,31 +30,31 @@ type NativeImageProp = Readonly<{
 type ClusterMarker = Coord & {
   identifier: string;
   image?: NativeImageProp;
-  width?: CodegenTypes.Double;
-  height?: CodegenTypes.Double;
+  width?: Double;
+  height?: Double;
 };
 type Camera = {
-  latitude: CodegenTypes.Double;
-  longitude: CodegenTypes.Double;
-  zoom?: CodegenTypes.Double;
-  tilt?: CodegenTypes.Double;
-  bearing?: CodegenTypes.Double;
+  latitude: Double;
+  longitude: Double;
+  zoom?: Double;
+  tilt?: Double;
+  bearing?: Double;
 };
 type Region = {
-  latitude: CodegenTypes.Double;
-  longitude: CodegenTypes.Double;
-  latitudeDelta: CodegenTypes.Double;
-  longitudeDelta: CodegenTypes.Double;
+  latitude: Double;
+  longitude: Double;
+  latitudeDelta: Double;
+  longitudeDelta: Double;
 };
 type LogoAlign = 'TopLeft' | 'TopRight' | 'BottomLeft' | 'BottomRight';
 export type NativeClusterProp = {
   key: string;
-  width?: CodegenTypes.Double;
-  height?: CodegenTypes.Double;
+  width?: Double;
+  height?: Double;
   markers: ClusterMarker[];
-  screenDistance?: CodegenTypes.Double;
-  minZoom?: CodegenTypes.Double;
-  maxZoom?: CodegenTypes.Double;
+  screenDistance?: Double;
+  minZoom?: Double;
+  maxZoom?: Double;
   animate?: boolean;
 };
 export type NativeClustersProp = Readonly<{
@@ -60,32 +65,32 @@ export type NativeClustersProp = Readonly<{
 export type NativeLocationOverlayProp = {
   isVisible?: boolean;
   position?: Coord;
-  bearing?: CodegenTypes.Double;
+  bearing?: Double;
   image?: NativeImageProp;
-  imageWidth?: CodegenTypes.Double;
-  imageHeight?: CodegenTypes.Double;
-  anchor?: Readonly<{ x: CodegenTypes.Double; y: CodegenTypes.Double }>;
+  imageWidth?: Double;
+  imageHeight?: Double;
+  anchor?: Readonly<{ x: Double; y: Double }>;
   subImage?: NativeImageProp;
-  subImageWidth?: CodegenTypes.Double;
-  subImageHeight?: CodegenTypes.Double;
-  subAnchor?: Readonly<{ x: CodegenTypes.Double; y: CodegenTypes.Double }>;
-  circleRadius?: CodegenTypes.Double;
-  circleColor?: CodegenTypes.Int32;
-  circleOutlineWidth?: CodegenTypes.Double;
-  circleOutlineColor?: CodegenTypes.Int32;
+  subImageWidth?: Double;
+  subImageHeight?: Double;
+  subAnchor?: Readonly<{ x: Double; y: Double }>;
+  circleRadius?: Double;
+  circleColor?: Int32;
+  circleOutlineWidth?: Double;
+  circleOutlineColor?: Int32;
 };
 
 ////////////////////
 
 type PartialRect = Readonly<{
-  top?: CodegenTypes.Double;
-  right?: CodegenTypes.Double;
-  bottom?: CodegenTypes.Double;
-  left?: CodegenTypes.Double;
+  top?: Double;
+  right?: Double;
+  bottom?: Double;
+  left?: Double;
 }>;
 
 interface Props extends ViewProps {
-  mapType?: CodegenTypes.WithDefault<
+  mapType?: WithDefault<
     | 'Basic'
     | 'Navi'
     | 'Satellite'
@@ -96,7 +101,7 @@ interface Props extends ViewProps {
     'Basic'
   >;
 
-  layerGroups: CodegenTypes.Int32;
+  layerGroups: Int32;
 
   initialCamera?: Readonly<Camera>;
   camera?: Readonly<Camera>;
@@ -104,21 +109,21 @@ interface Props extends ViewProps {
   initialRegion?: Readonly<Region>;
   region?: Readonly<Region>;
 
-  animationDuration?: CodegenTypes.Int32;
-  animationEasing?: CodegenTypes.Int32 /*'EaseIn' | 'None' | 'Linear' | 'Fly' | 'EaseOut'*/;
+  animationDuration?: Int32;
+  animationEasing?: Int32 /*'EaseIn' | 'None' | 'Linear' | 'Fly' | 'EaseOut'*/;
 
   isIndoorEnabled?: boolean;
   isNightModeEnabled?: boolean;
   isLiteModeEnabled?: boolean;
-  lightness?: CodegenTypes.Double;
-  buildingHeight?: CodegenTypes.Double;
-  symbolScale?: CodegenTypes.Double;
-  symbolPerspectiveRatio?: CodegenTypes.Double;
+  lightness?: Double;
+  buildingHeight?: Double;
+  symbolScale?: Double;
+  symbolPerspectiveRatio?: Double;
 
   mapPadding?: PartialRect;
 
-  minZoom?: CodegenTypes.Double;
-  maxZoom?: CodegenTypes.Double;
+  minZoom?: Double;
+  maxZoom?: Double;
 
   isShowCompass?: boolean;
   isShowScaleBar?: boolean;
@@ -126,7 +131,7 @@ interface Props extends ViewProps {
   isShowIndoorLevelPicker?: boolean;
   isShowLocationButton?: boolean;
 
-  logoAlign?: CodegenTypes.WithDefault<LogoAlign, 'BottomLeft'>;
+  logoAlign?: WithDefault<LogoAlign, 'BottomLeft'>;
   logoMargin?: PartialRect;
   // isLogoInteractionEnabled?: boolean;
 
@@ -142,62 +147,60 @@ interface Props extends ViewProps {
   locale?: string;
 
   clusters?: NativeClustersProp;
-  fpsLimit?: CodegenTypes.Int32;
+  fpsLimit?: Int32;
   locationOverlay?: Readonly<NativeLocationOverlayProp>;
 
-  onInitialized?: CodegenTypes.DirectEventHandler<Readonly<{}>>;
-  onOptionChanged?: CodegenTypes.DirectEventHandler<Readonly<{}>>;
-  onCameraChanged?: CodegenTypes.DirectEventHandler<
+  onInitialized?: DirectEventHandler<Readonly<{}>>;
+  onOptionChanged?: DirectEventHandler<Readonly<{}>>;
+  onCameraChanged?: DirectEventHandler<
     Readonly<{
-      latitude: CodegenTypes.Double;
-      longitude: CodegenTypes.Double;
-      zoom: CodegenTypes.Double;
-      tilt: CodegenTypes.Double;
-      bearing: CodegenTypes.Double;
-      reason: CodegenTypes.Int32 /* CameraChangeReason */;
-      regionLatitude: CodegenTypes.Double;
-      regionLongitude: CodegenTypes.Double;
-      regionLatitudeDelta: CodegenTypes.Double;
-      regionLongitudeDelta: CodegenTypes.Double;
+      latitude: Double;
+      longitude: Double;
+      zoom: Double;
+      tilt: Double;
+      bearing: Double;
+      reason: Int32 /* CameraChangeReason */;
+      regionLatitude: Double;
+      regionLongitude: Double;
+      regionLatitudeDelta: Double;
+      regionLongitudeDelta: Double;
     }>
   >;
-  onCameraIdle?: CodegenTypes.DirectEventHandler<
+  onCameraIdle?: DirectEventHandler<
     Readonly<{
-      latitude: CodegenTypes.Double;
-      longitude: CodegenTypes.Double;
-      zoom: CodegenTypes.Double;
-      tilt: CodegenTypes.Double;
-      bearing: CodegenTypes.Double;
-      regionLatitude: CodegenTypes.Double;
-      regionLongitude: CodegenTypes.Double;
-      regionLatitudeDelta: CodegenTypes.Double;
-      regionLongitudeDelta: CodegenTypes.Double;
+      latitude: Double;
+      longitude: Double;
+      zoom: Double;
+      tilt: Double;
+      bearing: Double;
+      regionLatitude: Double;
+      regionLongitude: Double;
+      regionLatitudeDelta: Double;
+      regionLongitudeDelta: Double;
     }>
   >;
-  onTapMap?: CodegenTypes.DirectEventHandler<
+  onTapMap?: DirectEventHandler<
     Readonly<{
-      latitude: CodegenTypes.Double;
-      longitude: CodegenTypes.Double;
-      x: CodegenTypes.Double;
-      y: CodegenTypes.Double;
+      latitude: Double;
+      longitude: Double;
+      x: Double;
+      y: Double;
     }>
   >;
-  onTapClusterLeaf?: CodegenTypes.DirectEventHandler<
-    Readonly<{ markerIdentifier: string }>
-  >;
+  onTapClusterLeaf?: DirectEventHandler<Readonly<{ markerIdentifier: string }>>;
 
-  onScreenToCoordinate?: CodegenTypes.DirectEventHandler<
+  onScreenToCoordinate?: DirectEventHandler<
     Readonly<{
       isValid: boolean;
-      latitude: CodegenTypes.Double;
-      longitude: CodegenTypes.Double;
+      latitude: Double;
+      longitude: Double;
     }>
   >;
-  onCoordinateToScreen?: CodegenTypes.DirectEventHandler<
+  onCoordinateToScreen?: DirectEventHandler<
     Readonly<{
       isValid: boolean;
-      screenX: CodegenTypes.Double;
-      screenY: CodegenTypes.Double;
+      screenX: Double;
+      screenY: Double;
     }>
   >;
 }
@@ -207,55 +210,55 @@ type ComponentType = HostComponent<Props>;
 interface NaverMapNativeCommands {
   screenToCoordinate: (
     ref: React.ElementRef<ComponentType>,
-    x: CodegenTypes.Double,
-    y: CodegenTypes.Double
+    x: Double,
+    y: Double
   ) => Promise<
     Readonly<{
       isValid: boolean;
-      latitude: CodegenTypes.Double;
-      longitude: CodegenTypes.Double;
+      latitude: Double;
+      longitude: Double;
     }>
   >;
   coordinateToScreen: (
     ref: React.ElementRef<ComponentType>,
-    latitude: CodegenTypes.Double,
-    longitude: CodegenTypes.Double
+    latitude: Double,
+    longitude: Double
   ) => Promise<
     Readonly<{
       isValid: boolean;
-      screenX: CodegenTypes.Double;
-      screenY: CodegenTypes.Double;
+      screenX: Double;
+      screenY: Double;
     }>
   >;
   animateCameraTo: (
     ref: React.ElementRef<ComponentType>,
-    latitude: CodegenTypes.Double,
-    longitude: CodegenTypes.Double,
-    duration?: CodegenTypes.Int32,
-    easing?: CodegenTypes.Int32 /*'EaseIn' | 'None' | 'Linear' | 'Fly' | 'EaseOut'*/,
-    pivotX?: CodegenTypes.Double,
-    pivotY?: CodegenTypes.Double,
-    zoom?: CodegenTypes.Double
+    latitude: Double,
+    longitude: Double,
+    duration?: Int32,
+    easing?: Int32 /*'EaseIn' | 'None' | 'Linear' | 'Fly' | 'EaseOut'*/,
+    pivotX?: Double,
+    pivotY?: Double,
+    zoom?: Double
   ) => void;
   animateCameraBy: (
     ref: React.ElementRef<ComponentType>,
-    x: CodegenTypes.Double,
-    y: CodegenTypes.Double,
-    duration?: CodegenTypes.Int32,
-    easing?: CodegenTypes.Int32 /*'Easing' | 'None' | 'Linear' | 'Fly'*/,
-    pivotX?: CodegenTypes.Double,
-    pivotY?: CodegenTypes.Double
+    x: Double,
+    y: Double,
+    duration?: Int32,
+    easing?: Int32 /*'Easing' | 'None' | 'Linear' | 'Fly'*/,
+    pivotX?: Double,
+    pivotY?: Double
   ) => void;
   animateRegionTo: (
     ref: React.ElementRef<ComponentType>,
-    latitude: CodegenTypes.Double,
-    longitude: CodegenTypes.Double,
-    latitudeDelta: CodegenTypes.Double,
-    longitudeDelta: CodegenTypes.Double,
-    duration?: CodegenTypes.Int32,
-    easing?: CodegenTypes.Int32 /*'Easing' | 'None' | 'Linear' | 'Fly'*/,
-    pivotX?: CodegenTypes.Double,
-    pivotY?: CodegenTypes.Double
+    latitude: Double,
+    longitude: Double,
+    latitudeDelta: Double,
+    longitudeDelta: Double,
+    duration?: Int32,
+    easing?: Int32 /*'Easing' | 'None' | 'Linear' | 'Fly'*/,
+    pivotX?: Double,
+    pivotY?: Double
   ) => void;
   cancelAnimation: (ref: React.ElementRef<ComponentType>) => void;
   setLocationTrackingMode: (
