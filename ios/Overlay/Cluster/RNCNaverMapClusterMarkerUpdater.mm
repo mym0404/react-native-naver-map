@@ -7,6 +7,8 @@
 #import "RNCNaverMapClusterMarkerUpdater.h"
 #import "MacroUtil.h"
 #import "RNCNaverMapClusterKey.h"
+#import <React/RCTBridge+Private.h>
+#import <React/RCTBridge.h>
 
 @implementation RNCNaverMapClusterMarkerUpdater {
  RNCNaverMapImageCanceller _imgRequests;
@@ -45,7 +47,6 @@
             });
           });
     }
-  }
 }
 #pragma clang diagnostic pop
 
