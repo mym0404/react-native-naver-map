@@ -117,10 +117,7 @@ class RNCNaverMapMarker(
 
   override fun updateCustomForTracking(): Boolean = true
 
-  override fun update(
-    width: Int,
-    height: Int,
-  ) {
+  override fun update() {
     updateCustomView()
   }
 
