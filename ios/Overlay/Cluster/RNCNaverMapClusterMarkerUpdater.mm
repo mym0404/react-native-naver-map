@@ -8,12 +8,15 @@
 #import "MacroUtil.h"
 #import "RNCNaverMapClusterKey.h"
 
-@implementation RNCNaverMapClusterMarkerUpdater
+@implementation RNCNaverMapClusterMarkerUpdater {
+ RNCNaverMapImageCanceller _imgRequests;
+}
 
-- (instancetype)initWith:(double)width height:(double)height {
+- (instancetype)initWith:(double)width height:(double)height image: (facebook::react::RNCNaverMapViewClustersClustersImageStruct)image {
   if (self = [super init]) {
     _width = width;
     _height = height;
+    _image = image;
   }
   return self;
 }
@@ -24,6 +27,25 @@
   [super updateClusterMarker:info:marker];
   marker.width = isValidNumber(_width) && _width ? _width : NMF_MARKER_SIZE_AUTO;
   marker.height = isValidNumber(_height) && _height ? _height : NMF_MARKER_SIZE_AUTO;
+
+  facebook::react::RNCNaverMapViewClustersClustersImageStruct image = _image;
+    __weak NMFMarker* weakMarker = marker;
+
+    RCTBridge* bridge = [RCTBridge currentBridge];
+    if (bridge) {
+      marker.alpha = 0;
+      _imgRequests =
+          nmap::getImage(bridge, image, ^(NMFOverlayImage* _Nullable overlayImage) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+              if (weakMarker) {
+                weakMarker.alpha = 1;
+                weakMarker.iconImage = !overlayImage ? NMF_MARKER_IMAGE_GREEN : overlayImage;
+              }
+              self->_imgRequests = nil;
+            });
+          });
+    }
+  }
 }
 #pragma clang diagnostic pop
 
