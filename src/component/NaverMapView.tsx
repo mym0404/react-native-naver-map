@@ -13,7 +13,7 @@ import React, {
   useMemo,
   useEffect,
 } from 'react';
-import { type ViewProps, type NativeSyntheticEvent } from 'react-native';
+import { type NativeSyntheticEvent, processColor, type ViewProps } from 'react-native';
 import type { MapType } from '../types/MapType';
 import type { Camera } from '../types/Camera';
 import type { Region } from '../types/Region';
@@ -29,6 +29,7 @@ import {
   cameraChangeReasonFromNumber,
   createCameraInstance,
   convertJsImagePropToNativeProp,
+  getAlignIntValue,
 } from '../internal/Util';
 import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
 import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
@@ -36,6 +37,7 @@ import type { ClusterMarkerProp } from '../types/ClusterMarkerProp';
 import hash from 'object-hash';
 import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import type { MarkerImageProp } from '../types/MarkerImageProp';
+import type { CaptionType } from './NaverMapMarkerOverlay';
 
 /**
  * @category Hell
@@ -589,6 +591,16 @@ const nullCamera: Camera = {
   bearing: Const.NULL_NUMBER,
 };
 
+const defaultCaptionProps = {
+  text: '',
+  textSize: 12,
+  minZoom: Const.MIN_ZOOM,
+  maxZoom: Const.MAX_ZOOM,
+  color: 'black',
+  haloColor: 'transparent',
+  requestedWidth: 0,
+} satisfies Partial<CaptionType>;
+
 export const NaverMapView = forwardRef(
   (
     {
@@ -685,8 +697,19 @@ export const NaverMapView = forwardRef(
           key,
           animate,
           image: convertJsImagePropToNativeProp(image ?? { symbol: 'green' }),
-          markers: markers.map((m) => ({
+          markers: markers.map(({ caption, ...m }) => ({
             ...m,
+            caption: {
+              ...defaultCaptionProps,
+              ...caption,
+              align: getAlignIntValue(caption?.align),
+              color: processColor(
+                caption?.color ?? defaultCaptionProps.color,
+              ) as number,
+              haloColor: processColor(
+                caption?.haloColor ?? defaultCaptionProps.haloColor,
+              ) as number,
+            },
             image: convertJsImagePropToNativeProp(
               m.image ?? { symbol: 'green' }
             ),

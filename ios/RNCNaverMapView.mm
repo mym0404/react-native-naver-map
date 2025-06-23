@@ -305,6 +305,7 @@ using namespace facebook::react;
                           image:marker.image
                           width:marker.width
                          height:marker.height
+                         caption:marker.caption
                 onTapLeafMarker:onTapLeafMarker];
     markerDict[markerKey] = [NSNull null];
   }
