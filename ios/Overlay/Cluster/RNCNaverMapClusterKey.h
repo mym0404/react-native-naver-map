@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
     facebook::react::RNCNaverMapViewClustersClustersMarkersImageStruct image;
 @property(nonatomic, assign) double width;
 @property(nonatomic, assign) double height;
+@property(nonatomic, assign)
+    facebook::react::RNCNaverMapViewClustersClustersMarkersCaptionStruct caption;
 @property(nonatomic, nullable) OnTapLeafMarker onTapLeafMarker;
 
 + (instancetype)
@@ -31,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
                           (facebook::react::RNCNaverMapViewClustersClustersMarkersImageStruct)image
                       width:(double)width
                      height:(double)height
+                     caption:(facebook::react::RNCNaverMapViewClustersClustersMarkersCaptionStruct)caption
             onTapLeafMarker:(OnTapLeafMarker _Nullable)onTapLeafMarerk;
 
 @end
