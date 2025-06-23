@@ -61,9 +61,7 @@ public class ViewChangesTracker {
 
   public void update() {
     for (TrackableView marker : markers) {
-      if (!marker.updateCustomForTracking()) {
-        markersToRemove.add(marker);
-      }
+      marker.update();
     }
 
     // Remove markers that are not active anymore
