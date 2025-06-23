@@ -80,6 +80,53 @@ using namespace facebook::react;
 
 - (void)prepareForRecycle {
   [_view prepareForRecycle];
+  
+  // New Architecture View Recycling으로 인한 상태 초기화
+  // 모든 Boolean 설정들을 기본값으로 리셋
+  [self.map setIndoorMapEnabled:NO];
+  [self.map setNightModeEnabled:NO];
+  [self.map setLiteModeEnabled:NO];
+  [_view setShowCompass:NO];
+  [_view setShowIndoorLevelPicker:NO];
+  [_view setShowLocationButton:NO];
+  [_view setShowScaleBar:NO];
+  [_view setShowZoomControls:NO];
+  [self.map setScrollGestureEnabled:YES];
+  [self.map setZoomGestureEnabled:YES];
+  [self.map setTiltGestureEnabled:YES];
+  [self.map setRotateGestureEnabled:YES];
+  [self.map setStopGestureEnabled:YES];
+  
+  // 기타 설정들도 기본값으로 리셋
+  [self.map setMapType:NMFMapTypeBasic];
+  [self.map setLightness:0.0];
+  [self.map setBuildingHeight:1.0];
+  [self.map setSymbolScale:1.0];
+  [self.map setSymbolPerspectiveRatio:1.0];
+  [self.map setLogoAlign:NMFLogoAlignLeftBottom];
+  [self.map setMinZoomLevel:0.0];
+  [self.map setMaxZoomLevel:21.0];
+  [self.map setLocale:nil];
+  [self.map setContentInset:UIEdgeInsetsZero];
+  [self.map setLogoMargin:UIEdgeInsetsZero];
+  [self.map setExtent:nil];
+  
+  // 레이어 그룹들도 기본값으로 리셋
+  [self.map setLayerGroup:NMF_LAYER_GROUP_BUILDING isEnabled:YES];
+  [self.map setLayerGroup:NMF_LAYER_GROUP_TRAFFIC isEnabled:NO];
+  [self.map setLayerGroup:NMF_LAYER_GROUP_TRANSIT isEnabled:NO];
+  [self.map setLayerGroup:NMF_LAYER_GROUP_BICYCLE isEnabled:NO];
+  [self.map setLayerGroup:NMF_LAYER_GROUP_MOUNTAIN isEnabled:NO];
+  [self.map setLayerGroup:NMF_LAYER_GROUP_CADASTRAL isEnabled:NO];
+  
+  // 클러스터링 정리
+  for (const auto& [prevKey, _] : _clustererRecord) {
+    [self removeClustererFor:prevKey];
+  }
+  _clustererRecord.clear();
+  _clustererMarkerIdentifiers.clear();
+  _clusterMarkerImageRequestCancelers.clear();
+  
   _isRecycled = YES;
   [super prepareForRecycle];
 }
@@ -135,8 +182,7 @@ using namespace facebook::react;
     }
   }
 
-  // Boolean 값들에 대해 강제로 설정하도록 수정
-  // 첫 번째 렌더링이거나 값이 다를 때 모두 적용
+  // 재활용된 뷰이거나 값이 변경된 경우에만 설정 (기존 로직 유지하되 더 깔끔하게)
   if (_isRecycled || prev.isIndoorEnabled != next.isIndoorEnabled) {
     [self.map setIndoorMapEnabled:next.isIndoorEnabled];
   }
@@ -243,43 +289,6 @@ using namespace facebook::react;
   if (isValidNumber(next.initialRegion.latitude))
     _view.initialRegion = nmap::createLatLngBounds(next.initialRegion);
 
-  //  {
-  //    auto o1 = prev.locationOverlay, o2 = next.locationOverlay;
-  //    if ((o1.isVisible != o2.isVisible || o1.position.latitude != o2.position.longitude ||
-  //         o1.bearing != o2.bearing || !nmap::isImageEqual(o1.image, o2.image) ||
-  //         o1.imageWidth != o2.imageWidth || o1.imageHeight != o2.imageHeight ||
-  //         o1.anchor.x != o2.anchor.x || o1.anchor.y != o2.anchor.y ||
-  //         !nmap::isImageEqual(o1.subImage, o2.subImage) || o1.subImageWidth != o2.subImageWidth
-  //         || o1.subImageHeight != o2.subImageHeight || o1.subAnchor.x != o2.subAnchor.x ||
-  //         o1.subAnchor.y != o2.subAnchor.y || o1.circleRadius != o2.circleRadius ||
-  //         o1.circleColor != o2.circleColor || o1.circleOutlineWidth != o2.circleOutlineWidth ||
-  //         o1.circleOutlineColor != o2.circleOutlineColor) &&
-  //        isValidNumber(o2.circleOutlineWidth)) {
-  //
-  //      NMFLocationOverlay* overlay = self.map.locationOverlay;
-  //
-  //      overlay.hidden = !o2.isVisible;
-  //      overlay.location = nmap::createLatLng(o2.position);
-  //      overlay.heading = o2.bearing;
-  //
-  //      overlay.iconWidth = o2.imageWidth;
-  //      overlay.iconHeight = o2.imageHeight;
-  //
-  //      overlay.anchor = nmap::createAnchorCGPoint(o2.anchor);
-  //
-  //      overlay.subIconWidth = o2.subImageWidth;
-  //      overlay.subIconHeight = o2.subImageHeight;
-  //
-  //      overlay.subAnchor = nmap::createAnchorCGPoint(o2.subAnchor);
-  //      overlay.circleRadius = o2.circleRadius;
-  //      overlay.circleColor = nmap::intToColor(o2.circleColor);
-  //      overlay.circleOutlineWidth = o2.circleOutlineWidth;
-  //      overlay.circleOutlineColor = nmap::intToColor(o2.circleOutlineColor);
-  //
-  //      NSLog(@"%d", o2.circleColor);
-  //    }
-  //  }
-
   if (prev.clusters.key != next.clusters.key) {
     for (const auto& [prevKey, _] : _clustererRecord) {
       [self removeClustererFor:prevKey];
@@ -296,11 +305,11 @@ using namespace facebook::react;
   [super updateProps:props oldProps:oldProps];
   _isRecycled = NO;
 }
+
 - (void)addClusterer:(const RNCNaverMapViewClustersClustersStruct)dict
     isLeafTapCallbackExist:(BOOL)isLeafTapCallbackExist {
 
   std::string clustererKey = dict.key;
-  //  double screenDistance = clamp([dict[@"screenDistance"] doubleValue], 1, 69);
   double minZoom = clamp(dict.minZoom, 1, 20);
   double maxZoom = clamp(dict.maxZoom, 1, 20);
   bool animate = dict.animate;
@@ -339,8 +348,6 @@ using namespace facebook::react;
   _clustererMarkerIdentifiers[clustererKey] = markerIdentifiers;
 
   NMCBuilder* builder = [[NMCBuilder alloc] init];
-  // todo screenDistance not works. idk why
-  //  builder.screenDistance = screenDistance;
   builder.minZoom = minZoom;
   builder.maxZoom = maxZoom;
   builder.animate = animate;
