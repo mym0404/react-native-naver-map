@@ -1,13 +1,15 @@
-import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
-import type { ViewProps, HostComponent } from 'react-native';
+import {
+  codegenNativeCommands,
+  codegenNativeComponent,
+  type HostComponent,
+  type ViewProps,
+} from 'react-native';
 import type {
   DirectEventHandler,
+  Double,
   Int32,
   WithDefault,
-  Double,
 } from 'react-native/Libraries/Types/CodegenTypes';
-import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';
-import React from 'react';
 
 /* Type should be redeclared because of codegen ts parser doesn't allow imported type
  * [comments](https://github.com/reactwg/react-native-new-architecture/discussions/91#discussioncomment-4282452)
@@ -201,10 +203,18 @@ interface Props extends ViewProps {
   onTapClusterLeaf?: DirectEventHandler<Readonly<{ markerIdentifier: string }>>;
 
   onScreenToCoordinate?: DirectEventHandler<
-    Readonly<{ isValid: boolean; latitude: Double; longitude: Double }>
+    Readonly<{
+      isValid: boolean;
+      latitude: Double;
+      longitude: Double;
+    }>
   >;
   onCoordinateToScreen?: DirectEventHandler<
-    Readonly<{ isValid: boolean; screenX: Double; screenY: Double }>
+    Readonly<{
+      isValid: boolean;
+      screenX: Double;
+      screenY: Double;
+    }>
   >;
 }
 

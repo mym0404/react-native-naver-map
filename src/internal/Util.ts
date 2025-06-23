@@ -1,12 +1,10 @@
-import type {
-  CameraAnimationEasing,
-  CameraChangeReason,
-  Align,
-  Camera,
-  MarkerImageProp,
-} from '@mj-studio/react-native-naver-map';
-import { Const } from './util/Const';
 import { Image } from 'react-native';
+import type { Align } from '../types/Align';
+import type { Camera } from '../types/Camera';
+import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
+import type { CameraChangeReason } from '../types/CameraChangeReason';
+import type { MarkerImageProp } from '../types/MarkerImageProp';
+import { Const } from './util/Const';
 
 export function cameraEasingToNumber(
   value: CameraAnimationEasing = 'EaseIn'

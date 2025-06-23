@@ -1,43 +1,47 @@
-import {
-  default as NativeNaverMapView,
-  Commands,
-  type NativeClustersProp,
-  type NativeClusterProp,
-} from '../spec/RNCNaverMapViewNativeComponent';
+import hash from 'object-hash';
 
 import React, {
-  forwardRef,
   type ForwardedRef,
-  useImperativeHandle,
-  useRef,
-  useMemo,
+  forwardRef,
   useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
 } from 'react';
 import { type NativeSyntheticEvent, processColor, type ViewProps } from 'react-native';
-import type { MapType } from '../types/MapType';
-import type { Camera } from '../types/Camera';
-import type { Region } from '../types/Region';
-import type { Rect } from '../types/Rect';
-import type { LogoAlign } from '../types/LogoAlign';
-import { type CameraChangeReason } from '../types/CameraChangeReason';
-import type { Coord } from '../types/Coord';
-import { useStableCallback } from '../internal/util/useStableCallback';
-import { Const } from '../internal/util/Const';
-import type { LocationTrackingMode } from '../types/LocationTrackingMode';
+import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import {
-  cameraEasingToNumber,
   cameraChangeReasonFromNumber,
-  createCameraInstance,
+  cameraEasingToNumber,
   convertJsImagePropToNativeProp,
   getAlignIntValue,
+  createCameraInstance
 } from '../internal/Util';
-import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
+import { Const } from '../internal/util/Const';
+import { useStableCallback } from '../internal/util/useStableCallback';
+import {
+  Commands,
+  type NativeClusterProp,
+  type NativeClustersProp,
+  default as NativeNaverMapView,
+} from '../spec/RNCNaverMapViewNativeComponent';
+import type { Camera } from '../types/Camera';
 import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
+import type { CameraChangeReason } from '../types/CameraChangeReason';
+import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
 import type { ClusterMarkerProp } from '../types/ClusterMarkerProp';
+  
+  
 import hash from 'object-hash';
 import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import type { MarkerImageProp } from '../types/MarkerImageProp';
 import type { CaptionType } from './NaverMapMarkerOverlay';
+import type { Coord } from '../types/Coord';
+import type { LocationTrackingMode } from '../types/LocationTrackingMode';
+import type { LogoAlign } from '../types/LogoAlign';
+import type { MapType } from '../types/MapType';
+import type { Rect } from '../types/Rect';
+import type { Region } from '../types/Region';
 
 /**
  * @category Hell
@@ -224,7 +228,6 @@ export interface NaverMapViewProps extends ViewProps {
    * 콘텐츠 패딩을 지정할 수 있습니다.
    * 다음 그림과 같이 UI 요소가 지도의 일부를 덮을 경우, 카메라는 지도 뷰의 중심에 위치하므로 실제로 보이는 지도의 중심과 카메라의 위치가 불일치하게 됩니다.
    *
-   * @description
    * <img src="https://navermaps.github.io/ios-map-sdk/assets/3-1-contentspadding1.png" alt="Docs Image" width="500">
    */
   mapPadding?: Partial<Rect>;
@@ -441,6 +444,7 @@ export interface NaverMapViewProps extends ViewProps {
   /**
    * 어떤 이유에 의해서건 카메라가 움직이면 카메라 변경 이벤트가 발생합니다.
    *
+
    * reason은 이벤트를 발생시킨 카메라 이동의 원인입니다.
    * reason을 이용해 카메라 이동의 원인을 지정할 수 있으며, 이벤트 리스너 내에서 이 값을 이용해 어떤 원인에 의해 발생한 이벤트인지 판단할 수 있습니다.
    *
@@ -861,7 +865,8 @@ export const NaverMapView = forwardRef(
         longitude: number;
       }) => void;
       reject: (e: any) => void;
-    }>();
+    }>(undefined);
+
     const coordinateToScreenPromise = useRef<{
       resolve: (params: {
         isValid: boolean;
@@ -869,7 +874,8 @@ export const NaverMapView = forwardRef(
         screenY: number;
       }) => void;
       reject: (e: any) => void;
-    }>();
+    }>(undefined);
+
     useEffect(() => {
       return () => {
         screenToCoordinatePromise.current?.resolve({
