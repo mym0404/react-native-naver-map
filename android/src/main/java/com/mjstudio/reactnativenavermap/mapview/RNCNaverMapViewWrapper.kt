@@ -106,7 +106,7 @@ class RNCNaverMapViewWrapper(
             parent?.requestDisallowInterceptTouchEvent(true)
           }
           MotionEvent.ACTION_UP,
-          MotionEvent.ACTION_CANCEL, 
+          MotionEvent.ACTION_CANCEL,
           -> {
             parent?.requestDisallowInterceptTouchEvent(false)
           }
