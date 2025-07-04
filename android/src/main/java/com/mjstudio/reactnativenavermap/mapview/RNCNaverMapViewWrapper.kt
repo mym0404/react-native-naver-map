@@ -101,11 +101,13 @@ class RNCNaverMapViewWrapper(
       if (map.uiSettings.isScrollGesturesEnabled) {
         when (ev?.action) {
           MotionEvent.ACTION_DOWN,
-          MotionEvent.ACTION_MOVE, -> {
+          MotionEvent.ACTION_MOVE,
+          -> {
             parent?.requestDisallowInterceptTouchEvent(true)
           }
           MotionEvent.ACTION_UP,
-          MotionEvent.ACTION_CANCEL, -> {
+          MotionEvent.ACTION_CANCEL, 
+          -> {
             parent?.requestDisallowInterceptTouchEvent(false)
           }
         }
