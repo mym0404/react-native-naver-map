@@ -1,7 +1,7 @@
 package com.airbnb.android.react.maps;
 
 public interface TrackableView {
-    boolean updateCustomForTracking();
+  boolean updateCustomForTracking();
 
-    void update(int width, int height);
+  void update();
 }

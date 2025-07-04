@@ -7,67 +7,68 @@ import java.util.LinkedList;
 
 public class ViewChangesTracker {
 
-    private static ViewChangesTracker instance;
-    private Handler handler;
-    private LinkedList<TrackableView> markers = new LinkedList<>();
-    private boolean hasScheduledFrame = false;
-    private Runnable updateRunnable;
-    private final long fps = 2; // FIXME flickering custom view
+  private static ViewChangesTracker instance;
+  private final Handler handler;
+  private final LinkedList<TrackableView> markers = new LinkedList<>();
+  private boolean hasScheduledFrame = false;
+  private final Runnable updateRunnable;
+  private final long fps = 40;
 
-    private ViewChangesTracker() {
-        handler = new Handler(Looper.myLooper());
-        updateRunnable = () -> {
-            hasScheduledFrame = false;
-            update();
+  private ViewChangesTracker() {
+    handler = new Handler(Looper.getMainLooper());
+    updateRunnable = new Runnable() {
+      @Override
+      public void run() {
+        update();
 
-            if (markers.size() > 0) {
-                handler.postDelayed(updateRunnable, 1000 / fps);
-            }
-        };
-    }
-
-    public static ViewChangesTracker getInstance() {
-        if (instance == null) {
-            synchronized (ViewChangesTracker.class) {
-                instance = new ViewChangesTracker();
-            }
+        if (markers.size() > 0) {
+          handler.postDelayed(updateRunnable, fps);
+        } else {
+          hasScheduledFrame = false;
         }
+      }
+    };
+  }
 
-        return instance;
+  public static ViewChangesTracker getInstance() {
+    if (instance == null) {
+      synchronized (ViewChangesTracker.class) {
+        instance = new ViewChangesTracker();
+      }
     }
 
-    public void addMarker(TrackableView marker) {
-        markers.add(marker);
+    return instance;
+  }
 
-        if (!hasScheduledFrame) {
-            hasScheduledFrame = true;
-            handler.postDelayed(updateRunnable, 1000 / fps);
-        }
+  public void addMarker(TrackableView marker) {
+    markers.add(marker);
+
+    if (!hasScheduledFrame) {
+      hasScheduledFrame = true;
+      handler.postDelayed(updateRunnable, fps);
+    }
+  }
+
+  public void removeMarker(TrackableView marker) {
+    markers.remove(marker);
+  }
+
+  public boolean containsMarker(TrackableView marker) {
+    return markers.contains(marker);
+  }
+
+  private final LinkedList<TrackableView> markersToRemove = new LinkedList<>();
+
+  public void update() {
+    for (TrackableView marker : markers) {
+      marker.update();
     }
 
-    public void removeMarker(TrackableView marker) {
-        markers.remove(marker);
+    // Remove markers that are not active anymore
+    if (markersToRemove.size() > 0) {
+      markers.removeAll(markersToRemove);
+      markersToRemove.clear();
     }
+  }
 
-    public boolean containsMarker(TrackableView marker) {
-        return markers.contains(marker);
-    }
-
-    private LinkedList<TrackableView> markersToRemove = new LinkedList<>();
-
-    public void update() {
-        for (TrackableView marker : markers) {
-            if (!marker.updateCustomForTracking()) {
-                markersToRemove.add(marker);
-            } else {
-                marker.update(0, 0);
-            }
-        }
-
-        // Remove markers that are not active anymore
-        if (markersToRemove.size() > 0) {
-            markers.removeAll(markersToRemove);
-            markersToRemove.clear();
-        }
-    }
 }

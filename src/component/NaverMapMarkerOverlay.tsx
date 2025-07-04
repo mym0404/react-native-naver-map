@@ -1,23 +1,23 @@
-import {
-  default as NativeNaverMapMarker,
-  type NativeCaptionProp,
-  type NativeSubCaptionProp,
-} from '../spec/RNCNaverMapMarkerNativeComponent';
-import React, { type PropsWithChildren, Children } from 'react';
-import type { BaseOverlayProps } from '../types/BaseOverlayProps';
+import hash from 'object-hash';
+import React, { Children, type PropsWithChildren } from 'react';
 import { type ColorValue, processColor } from 'react-native';
-import { Const } from '../internal/util/Const';
 import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
-import { type Align } from '../types/Align';
-import type { Coord } from '../types/Coord';
-import type { Point } from '../types/Point';
-import type { MarkerImageProp } from '../types/MarkerImageProp';
 import {
   convertJsImagePropToNativeProp,
   getAlignIntValue,
 } from '../internal/Util';
 import { nAssert } from '../internal/util/Assert';
-import hash from 'object-hash';
+import { Const } from '../internal/util/Const';
+import {
+  type NativeCaptionProp,
+  default as NativeNaverMapMarker,
+  type NativeSubCaptionProp,
+} from '../spec/RNCNaverMapMarkerNativeComponent';
+import type { Align } from '../types/Align';
+import type { BaseOverlayProps } from '../types/BaseOverlayProps';
+import type { Coord } from '../types/Coord';
+import type { MarkerImageProp } from '../types/MarkerImageProp';
+import type { Point } from '../types/Point';
 
 export interface CaptionType {
   /** 캡션으로 표시할 텍스트를 지정할 수 있습니다.
@@ -160,8 +160,6 @@ export interface NaverMapMarkerOverlayProps
    * 앵커 속성은 기본 마커 이미지를 사용하지 않을 때 유용합니다.
    * 예를 들어 다음 그림과 같이 오른쪽 아래에 꼬리가 달려 있는 이미지를 마커의 아이콘으로 지정하면, 이미지에서 가리키는 지점은 오른쪽 아래이지만 마커는 중앙 아래를 기준으로 지도에 붙어 있으므로 이미지와 마커의 좌표 간에 이격이 발생합니다.
    *
-   * @description
-   *
    * <img src="https://navermaps.github.io/android-map-sdk/assets/5-2-distance.png" alt="example1" width="500">
    *
    * 이 경우 앵커를 오른쪽 아래를 의미하는 (1, 1)로 지정하면 이미지와 마커의 좌표 간 이격을 해소할 수 있습니다.
@@ -237,8 +235,6 @@ export interface NaverMapMarkerOverlayProps
   tintColor?: ColorValue;
   /**
    * 마커의 이미지입니다.
-   *
-   * @description
    *
    * 마커의 종류는 총 5가지입니다.
    *

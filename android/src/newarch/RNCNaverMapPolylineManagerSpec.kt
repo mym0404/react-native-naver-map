@@ -9,11 +9,7 @@ import com.facebook.react.viewmanagers.RNCNaverMapPolylineManagerInterface
 abstract class RNCNaverMapPolylineManagerSpec<T : View> :
   SimpleViewManager<T>(),
   RNCNaverMapPolylineManagerInterface<T> {
-  private val mDelegate: ViewManagerDelegate<T>
-
-  init {
-    mDelegate = RNCNaverMapPolylineManagerDelegate(this)
-  }
+  private val mDelegate: ViewManagerDelegate<T> = RNCNaverMapPolylineManagerDelegate(this)
 
   override fun getDelegate(): ViewManagerDelegate<T>? = mDelegate
 }

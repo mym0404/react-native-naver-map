@@ -5,7 +5,9 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.view.View
+import androidx.core.graphics.createBitmap
 import androidx.core.view.children
+import androidx.core.view.isEmpty
 import com.airbnb.android.react.maps.TrackableView
 import com.airbnb.android.react.maps.ViewChangesTracker
 import com.facebook.react.uimanager.ThemedReactContext
@@ -86,7 +88,7 @@ class RNCNaverMapMarker(
 
   override fun requestLayout() {
     super.requestLayout()
-    if (childCount == 0 && customView != null) {
+    if (isEmpty() && customView != null) {
       customView = null
       updateCustomView()
     }
@@ -95,15 +97,11 @@ class RNCNaverMapMarker(
   private fun updateCustomView() {
     if (customViewBitmap == null ||
       customViewBitmap!!.isRecycled ||
-      customViewBitmap?.getWidth() != overlay.width ||
-      customViewBitmap?.getHeight() != overlay.height
+      customViewBitmap?.width != overlay.width ||
+      customViewBitmap?.height != overlay.height
     ) {
       customViewBitmap =
-        Bitmap.createBitmap(
-          max(1, overlay.width),
-          max(1, overlay.height),
-          Bitmap.Config.ARGB_4444,
-        )
+        createBitmap(max(1, overlay.width), max(1, overlay.height), Bitmap.Config.ARGB_4444)
     }
     if (customView != null) {
       customViewBitmap?.also { bitmap ->
@@ -119,10 +117,7 @@ class RNCNaverMapMarker(
 
   override fun updateCustomForTracking(): Boolean = true
 
-  override fun update(
-    width: Int,
-    height: Int,
-  ) {
+  override fun update() {
     updateCustomView()
   }
 
@@ -132,6 +127,6 @@ class RNCNaverMapMarker(
 
   override fun setOverlayImage(image: OverlayImage?) {
     overlay.icon =
-      image ?: OverlayImage.fromBitmap(Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888))
+      image ?: OverlayImage.fromBitmap(createBitmap(0, 0))
   }
 }

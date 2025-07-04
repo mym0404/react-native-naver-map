@@ -45,6 +45,7 @@
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
       if (!self.rncParent.emitter)
         return;
+
       self.rncParent.emitter->onInitialized({});
     });
   }
@@ -233,6 +234,7 @@
 - (void)mapView:(NMFMapView*)mapView cameraIsChangingByReason:(NSInteger)reason {
   if (!_rncParent.emitter)
     return;
+
   NMFCameraPosition* pos = mapView.cameraPosition;
   NMGLatLngBounds* bounds = mapView.coveringBounds;
 
@@ -257,6 +259,7 @@
 - (void)mapViewCameraIdle:(NMFMapView*)mapView {
   if (!_rncParent.emitter)
     return;
+
   NMFCameraPosition* pos = mapView.cameraPosition;
   NMGLatLngBounds* bounds = mapView.coveringBounds;
 
@@ -283,5 +286,19 @@
       .y = point.y,
   });
 }
+
+- (void)mapView:(NMFMapView*)mapView
+    cameraWillChangeByReason:(NSInteger)reason
+                    animated:(BOOL)animated {
+  [self mapView:mapView cameraIsChangingByReason:reason];
+}
+
+- (void)mapView:(NMFMapView*)mapView
+    cameraDidChangeByReason:(NSInteger)reason
+                   animated:(BOOL)animated {
+  [self mapView:mapView cameraIsChangingByReason:reason];
+}
+
+#pragma clang diagnostic pop
 
 @end
