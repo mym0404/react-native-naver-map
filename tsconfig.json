@@ -1,17 +1,22 @@
 {
+  "extends": "@react-native/typescript-config",
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "@mj-studio/react-native-naver-map": ["./src/index"]
+      "@mj-studio/react-native-naver-map": [
+        "./src/index"
+      ]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "lib": ["esnext"],
+    "lib": [
+      "esnext"
+    ],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noImplicitUseStrict": false,
@@ -25,5 +30,8 @@
     "target": "esnext",
     "verbatimModuleSyntax": true
   },
-  "exclude": ["./expo-config-plugin", "./docs"]
+  "exclude": [
+    "./expo-config-plugin",
+    "./docs"
+  ]
 }

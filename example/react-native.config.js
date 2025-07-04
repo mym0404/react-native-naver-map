@@ -3,8 +3,17 @@ const pak = require('../package.json');
 
 module.exports = {
   dependencies: {
-    [pak.name]: {
-      root: path.join(__dirname, '..'),
+    '@mj-studio/react-native-naver-map': {
+      root: path.resolve(__dirname, '../'),
+    },
+    '@react-native-community/slider': {
+      root: path.resolve(
+        __dirname,
+        '../node_modules/@react-native-community/slider'
+      ),
+    },
+    'react-native-permissions': {
+      root: path.resolve(__dirname, '../node_modules/react-native-permissions'),
     },
   },
 };
