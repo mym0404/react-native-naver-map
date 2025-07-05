@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Choreographer
 import android.view.Choreographer.FrameCallback
+import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import com.facebook.react.bridge.LifecycleEventListener
@@ -94,6 +95,26 @@ class RNCNaverMapViewWrapper(
   }
 
   override fun onHostDestroy() {}
+
+  override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+    mapView?.withMap { map ->
+      if (map.uiSettings.isScrollGesturesEnabled) {
+        when (ev?.action) {
+          MotionEvent.ACTION_DOWN,
+          MotionEvent.ACTION_MOVE,
+          -> {
+            parent?.requestDisallowInterceptTouchEvent(true)
+          }
+          MotionEvent.ACTION_UP,
+          MotionEvent.ACTION_CANCEL,
+          -> {
+            parent?.requestDisallowInterceptTouchEvent(false)
+          }
+        }
+      }
+    }
+    return super.dispatchTouchEvent(ev)
+  }
 
   companion object {
     /**
