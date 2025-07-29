@@ -66,6 +66,18 @@ using namespace facebook::react;
   }
 }
 
+- (void)ensureTouchHandler {
+  if (!_inner.touchHandler) {
+    _inner.touchHandler = [self](NMFOverlay* overlay) -> BOOL {
+      if (self.emitter) {
+        self.emitter->onTapOverlay({});
+        return YES;
+      }
+      return NO;
+    };
+  }
+}
+
 - (void)setImage:(facebook::react::RNCNaverMapMarkerImageStruct)image {
   _image = image;
   // If subview exists for custom marker, then skip image
@@ -85,6 +97,7 @@ using namespace facebook::react;
       self.inner.alpha = 1;
       self.inner.iconImage = image;
       self->_imageCanceller = nil;
+      [self ensureTouchHandler]; // 터치 핸들러 재확인
     });
   });
 }
@@ -111,6 +124,7 @@ using namespace facebook::react;
   dispatch_async(dispatch_get_main_queue(), [self, subview]() {
     self.inner.alpha = 1;
     self.inner.iconImage = [NMFOverlayImage overlayImageWithImage:[self captureView:subview]];
+    [self ensureTouchHandler]; // 터치 핸들러 재확인
   });
 }
 
@@ -210,6 +224,9 @@ using namespace facebook::react;
   }
 
   [super updateProps:props oldProps:oldProps];
+
+  // 마커가 업데이트된 후 터치 핸들러 확인
+  [self ensureTouchHandler];
 }
 
 Class<RCTComponentViewProtocol> RNCNaverMapMarkerCls(void) {
