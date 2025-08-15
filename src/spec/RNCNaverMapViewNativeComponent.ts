@@ -138,9 +138,9 @@ interface Props extends ViewProps {
   minZoom?: Double;
   maxZoom?: Double;
 
-  isShowCompass?: boolean;
-  isShowScaleBar?: boolean;
-  isShowZoomControls?: boolean;
+  isShowCompass?: WithDefault<boolean, true>;
+  isShowScaleBar?: WithDefault<boolean, true>;
+  isShowZoomControls?: WithDefault<boolean, true>;
   isShowIndoorLevelPicker?: boolean;
   isShowLocationButton?: boolean;
 
