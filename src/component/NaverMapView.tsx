@@ -8,13 +8,14 @@ import React, {
   useMemo,
   useRef,
 } from 'react';
-import { type NativeSyntheticEvent, type ViewProps } from 'react-native';
+import { type NativeSyntheticEvent, processColor, type ViewProps } from 'react-native';
 import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import {
   cameraChangeReasonFromNumber,
   cameraEasingToNumber,
   convertJsImagePropToNativeProp,
-  createCameraInstance,
+  getAlignIntValue,
+  createCameraInstance
 } from '../internal/Util';
 import { Const } from '../internal/util/Const';
 import { useStableCallback } from '../internal/util/useStableCallback';
@@ -29,6 +30,12 @@ import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
 import type { CameraChangeReason } from '../types/CameraChangeReason';
 import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
 import type { ClusterMarkerProp } from '../types/ClusterMarkerProp';
+  
+  
+import hash from 'object-hash';
+import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
+import type { MarkerImageProp } from '../types/MarkerImageProp';
+import type { CaptionType } from './NaverMapMarkerOverlay';
 import type { Coord } from '../types/Coord';
 import type { LocationTrackingMode } from '../types/LocationTrackingMode';
 import type { LogoAlign } from '../types/LogoAlign';
@@ -359,6 +366,7 @@ export interface NaverMapViewProps extends ViewProps {
     height?: number;
     markers: ClusterMarkerProp[];
     screenDistance?: number;
+    image?: MarkerImageProp;
     /**
      * 클러스터링할 최소 줌 레벨.
      *
@@ -587,6 +595,16 @@ const nullCamera: Camera = {
   bearing: Const.NULL_NUMBER,
 };
 
+const defaultCaptionProps = {
+  text: '',
+  textSize: 12,
+  minZoom: Const.MIN_ZOOM,
+  maxZoom: Const.MAX_ZOOM,
+  color: 'black',
+  haloColor: 'transparent',
+  requestedWidth: 0,
+} satisfies Partial<CaptionType>;
+
 export const NaverMapView = forwardRef(
   (
     {
@@ -659,6 +677,7 @@ export const NaverMapView = forwardRef(
       for (const {
         animate = true,
         markers,
+        image,
         // eslint-disable-next-line @typescript-eslint/no-shadow
         minZoom = Const.MIN_ZOOM,
         // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -671,6 +690,7 @@ export const NaverMapView = forwardRef(
           animate,
           maxZoom,
           minZoom,
+          image,
           screenDistance,
           markers,
           width,
@@ -680,8 +700,20 @@ export const NaverMapView = forwardRef(
         ret.push({
           key,
           animate,
-          markers: markers.map((m) => ({
+          image: convertJsImagePropToNativeProp(image ?? { symbol: 'green' }),
+          markers: markers.map(({ caption, ...m }) => ({
             ...m,
+            caption: {
+              ...defaultCaptionProps,
+              ...caption,
+              align: getAlignIntValue(caption?.align),
+              color: processColor(
+                caption?.color ?? defaultCaptionProps.color,
+              ) as number,
+              haloColor: processColor(
+                caption?.haloColor ?? defaultCaptionProps.haloColor,
+              ) as number,
+            },
             image: convertJsImagePropToNativeProp(
               m.image ?? { symbol: 'green' }
             ),
