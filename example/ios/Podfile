@@ -1,3 +1,5 @@
+project 'example.xcworkspace'
+
 ## RNPERMISSION
 def node_require(script)
   # Resolve script with node to allow for hoisting
