@@ -66,6 +66,11 @@ using namespace facebook::react;
   }
 }
 
+/**
+ * Ensures that the touch handler is properly set up for the marker
+ * This method checks if the touch handler exists and creates it if it doesn't
+ * The touch handler is responsible for processing tap events on the marker
+ */
 - (void)ensureTouchHandler {
   if (!_inner.touchHandler) {
     _inner.touchHandler = [self](NMFOverlay* overlay) -> BOOL {
@@ -97,7 +102,7 @@ using namespace facebook::react;
       self.inner.alpha = 1;
       self.inner.iconImage = image;
       self->_imageCanceller = nil;
-      [self ensureTouchHandler]; // 터치 핸들러 재확인
+      [self ensureTouchHandler]; // Re-ensure touch handler after image is set
     });
   });
 }
@@ -124,7 +129,7 @@ using namespace facebook::react;
   dispatch_async(dispatch_get_main_queue(), [self, subview]() {
     self.inner.alpha = 1;
     self.inner.iconImage = [NMFOverlayImage overlayImageWithImage:[self captureView:subview]];
-    [self ensureTouchHandler]; // 터치 핸들러 재확인
+    [self ensureTouchHandler]; // Re-ensure touch handler after custom marker image is set
   });
 }
 
@@ -225,7 +230,7 @@ using namespace facebook::react;
 
   [super updateProps:props oldProps:oldProps];
 
-  // 마커가 업데이트된 후 터치 핸들러 확인
+  // Ensure touch handler is properly set after marker properties are updated
   [self ensureTouchHandler];
 }
 
