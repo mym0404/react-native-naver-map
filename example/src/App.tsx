@@ -149,16 +149,16 @@ export default function App() {
   >(() => {
     return generateArray(5).map((i) => {
       return {
-        width: 200,
-        height: 200,
+        width: 40,
+        height: 40,
         markers: generateArray(3).map<ClusterMarkerProp>(
           (j) =>
             ({
               image: {
                 httpUri: `https://picsum.photos/seed/${hash}-${i}-${j}/32/32`,
               },
-              width: 100,
-              height: 100,
+              width: 40,
+              height: 40,
               latitude: Cameras.Jeju.latitude + Math.random() + 1.5,
               longitude: Cameras.Jeju.longitude + Math.random() + 1.5,
               identifier: `${hash}-${i}-${j}`,
