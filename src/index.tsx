@@ -19,7 +19,6 @@ export {
   type SubCaptionType,
 } from './component/NaverMapMarkerOverlay';
 export {
-
   NaverMapMultiPathOverlay,
   type NaverMapMultiPathOverlayProps,
 } from './component/NaverMapMultiPathOverlay';

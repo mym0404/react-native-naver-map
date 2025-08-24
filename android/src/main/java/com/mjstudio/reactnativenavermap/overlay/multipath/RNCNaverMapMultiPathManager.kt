@@ -95,11 +95,12 @@ class RNCNaverMapMultiPathManager : RNCNaverMapMultiPathManagerSpec<RNCNaverMapM
     view: RNCNaverMapMultiPath?,
     value: ReadableArray?,
   ) {
-    val coordParts = value?.toArrayList()?.map { coordPart ->
-      (coordPart as? ArrayList<*>)?.map { coord ->
-        (coord as Map<String, *>).getLatLng()
+    val coordParts =
+      value?.toArrayList()?.map { coordPart ->
+        (coordPart as? ArrayList<*>)?.map { coord ->
+          (coord as Map<String, *>).getLatLng()
+        } ?: listOf()
       } ?: listOf()
-    } ?: listOf()
     view?.setCoordParts(coordParts)
   }
 
@@ -109,15 +110,16 @@ class RNCNaverMapMultiPathManager : RNCNaverMapMultiPathManagerSpec<RNCNaverMapM
     view: RNCNaverMapMultiPath?,
     value: ReadableArray?,
   ) {
-    val colorParts = value?.toArrayList()?.map { colorPart ->
-      val colorMap = colorPart as Map<String, *>
-      MultipartPathOverlay.ColorPart(
-        colorMap["color"] as? Int ?: android.graphics.Color.BLACK,
-        colorMap["passedColor"] as? Int ?: android.graphics.Color.BLACK,
-        colorMap["outlineColor"] as? Int ?: android.graphics.Color.BLACK,
-        colorMap["passedOutlineColor"] as? Int ?: android.graphics.Color.BLACK
-      )
-    } ?: listOf()
+    val colorParts =
+      value?.toArrayList()?.map { colorPart ->
+        val colorMap = colorPart as Map<String, *>
+        MultipartPathOverlay.ColorPart(
+          colorMap["color"] as? Int ?: android.graphics.Color.BLACK,
+          colorMap["passedColor"] as? Int ?: android.graphics.Color.BLACK,
+          colorMap["outlineColor"] as? Int ?: android.graphics.Color.BLACK,
+          colorMap["passedOutlineColor"] as? Int ?: android.graphics.Color.BLACK,
+        )
+      } ?: listOf()
     view?.setColorParts(colorParts)
   }
 
