@@ -127,6 +127,6 @@ class RNCNaverMapMarker(
 
   override fun setOverlayImage(image: OverlayImage?) {
     overlay.icon =
-      image ?: OverlayImage.fromBitmap(createBitmap(0, 0))
+      image ?: OverlayImage.fromBitmap(createBitmap(1, 1))
   }
 }
