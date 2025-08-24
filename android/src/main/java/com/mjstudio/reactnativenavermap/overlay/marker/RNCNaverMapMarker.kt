@@ -8,12 +8,12 @@ import android.view.View
 import androidx.core.graphics.createBitmap
 import androidx.core.view.children
 import androidx.core.view.isEmpty
-import com.airbnb.android.react.maps.TrackableView
-import com.airbnb.android.react.maps.ViewChangesTracker
 import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
 import com.mjstudio.reactnativenavermap.util.emitEvent
 import com.mjstudio.reactnativenavermap.util.image.RNCNaverMapImageRenderableOverlay
+import com.mjstudio.reactnativenavermap.util.view.TrackableView
+import com.mjstudio.reactnativenavermap.util.view.ViewChangesTracker
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
