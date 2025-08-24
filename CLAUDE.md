@@ -328,21 +328,50 @@ JSDoc 형식으로 TypeDoc 호환 문서 작성:
 ```typescript
 /**
  * 네이티브 렌더링을 사용하는 네이버 지도 컴포넌트입니다.
- * 
- * @example
- * ```tsx
- * <NaverMapView mapType="Basic" initialCamera={{latitude: 37.5665, longitude: 126.978}} />
- * ```
  */
 export const NaverMapView: React.FC<NaverMapViewProps> = (props) => {};
 
 /**
  * 화면 좌표를 지리 좌표로 변환합니다.
  * @param x 화면 X 좌표
- * @param y 화면 Y 좌표  
+ * @param y 화면 Y 좌표
  * @returns LatLng를 반환하는 Promise
  */
 screenToCoordinate(x: number, y: number): Promise<LatLng>;
 ```
 
 주요 태그: `@param`, `@returns`, `@example`, `@default`, `@internal`, `@platform`
+
+# Package Scripts
+
+## Development Scripts
+- `yarn dev` - Start development server for example app
+- `yarn ios` - Run example app on iOS simulator
+- `yarn android` - Run example app on Android emulator
+- `yarn studio` - Open Android Studio for the example project
+- `yarn xcode` - Open Xcode workspace for the example project
+
+## Code Quality & Testing
+- `yarn typecheck` - Run TypeScript type checking without emitting files
+- `yarn lint` / `yarn t` - Run all linting checks (uses Lefthook)
+- `yarn format` - Format code using configured formatters (Biome)
+
+## Build & Release
+- `yarn prepack` - Full build process: Expo plugin + docs + library build
+- `yarn build:expo-config-plugin` - Build Expo configuration plugin
+- `yarn build:docs` - Generate TypeDoc documentation
+- `yarn clean` - Clean all build directories
+- `yarn release` - Execute release script
+
+## Native Development
+- `yarn codegen` - Generate native codegen artifacts for both platforms
+- `yarn codegen:android` - Generate Android codegen artifacts only
+- `yarn codegen:ios` - Generate iOS codegen artifacts only
+- `yarn pod` - Install iOS dependencies via CocoaPods
+- `yarn pod:update` - Update iOS dependencies via CocoaPods
+
+## CI/CD Scripts
+- `yarn ci:ios` - Build iOS project for CI (xcodebuild)
+- `yarn ci:android` - Build Android project for CI (gradlew assembleDebug)
+- `yarn turbo:android` - Run Android CI with Turbo caching
+- `yarn turbo:ios` - Run iOS CI with Turbo caching
