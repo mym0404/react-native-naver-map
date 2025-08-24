@@ -220,6 +220,9 @@ abstract class RNCNaverMapViewManagerSpec<T : ViewGroup> :
   override fun getDelegate(): ViewManagerDelegate<T>? = mDelegate
 }
 
+ViewGroupManager or SimpleViewManager can be used based on the component type.
+Don't generate overriding functions by yourself. It is included in generated spec interface by codegen
+
 // android/src/main/java/.../RNCNaverMapViewManager.kt
 class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper>() {
 

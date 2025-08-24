@@ -654,8 +654,8 @@ iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니
 - [x] Implement Clustering (23.04.24)
 - [x] Implement ArrowheadPath Overlay (23.05.01)
 - [x] Implement Ground Overlay (23.05.01)
+- [x] Implement MutlPath Overlay (25.08.25)
 - [ ] Implement Location Overlay Commands <- 🔥
-- [ ] Implement MutlPath Overlay <- 🔥
 
 ## Contributing
 
