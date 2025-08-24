@@ -320,3 +320,29 @@ To test the library, you need to configure API keys:
 - Documentation is auto-generated with TypeDoc from JSDoc comments
 - All native code changes require both iOS and Android implementations
 - Codegen runs automatically on build - regenerate with `yarn codegen` if specs change
+
+# JSDoc & TypeDoc Documentation
+
+JSDoc 형식으로 TypeDoc 호환 문서 작성:
+
+```typescript
+/**
+ * 네이티브 렌더링을 사용하는 네이버 지도 컴포넌트입니다.
+ * 
+ * @example
+ * ```tsx
+ * <NaverMapView mapType="Basic" initialCamera={{latitude: 37.5665, longitude: 126.978}} />
+ * ```
+ */
+export const NaverMapView: React.FC<NaverMapViewProps> = (props) => {};
+
+/**
+ * 화면 좌표를 지리 좌표로 변환합니다.
+ * @param x 화면 X 좌표
+ * @param y 화면 Y 좌표  
+ * @returns LatLng를 반환하는 Promise
+ */
+screenToCoordinate(x: number, y: number): Promise<LatLng>;
+```
+
+주요 태그: `@param`, `@returns`, `@example`, `@default`, `@internal`, `@platform`
