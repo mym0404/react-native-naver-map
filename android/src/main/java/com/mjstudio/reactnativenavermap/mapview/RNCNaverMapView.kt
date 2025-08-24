@@ -216,7 +216,7 @@ class RNCNaverMapView(
     locationOverlayImageRenderer.setImage(image) { overlayImage ->
       withMap {
         it.locationOverlay.icon = overlayImage ?: OverlayImage.fromBitmap(
-          Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888),
+          Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888),
         )
       }
     }
@@ -226,7 +226,7 @@ class RNCNaverMapView(
     locationOverlaySubImageRenderer.setImage(image) { overlayImage ->
       withMap {
         it.locationOverlay.icon = overlayImage ?: OverlayImage.fromBitmap(
-          Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888),
+          Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888),
         )
       }
     }
