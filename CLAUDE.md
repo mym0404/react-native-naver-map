@@ -21,7 +21,9 @@ This is a React Native library that provides Naver Map components with native im
 
 ## Native SDK Dependencies
 - **iOS**: NMapsMap 3.21.0 (Naver Maps iOS SDK)
+  - [iOS SDK Guide](https://navermaps.github.io/ios-map-sdk/guide-ko/)
 - **Android**: Naver Maps Android SDK 3.21.0 + Google Play Services Location
+  - [Android SDK Guide](https://navermaps.github.io/android-map-sdk/guide-ko/)
 
 ## Component Architecture
 The library provides React components that wrap native map views:
