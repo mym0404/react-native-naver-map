@@ -20,9 +20,9 @@ This is a React Native library that provides Naver Map components with native im
 - `expo-config-plugin/` - Expo configuration plugin
 
 ## Native SDK Dependencies
-- **iOS**: NMapsMap 3.21.0 (Naver Maps iOS SDK)
+- **iOS**: NMapsMap (Naver Maps iOS SDK)
   - [iOS SDK Guide](https://navermaps.github.io/ios-map-sdk/guide-ko/)
-- **Android**: Naver Maps Android SDK 3.21.0 + Google Play Services Location
+- **Android**: Naver Maps Android SDK
   - [Android SDK Guide](https://navermaps.github.io/android-map-sdk/guide-ko/)
 
 ## Component Architecture
