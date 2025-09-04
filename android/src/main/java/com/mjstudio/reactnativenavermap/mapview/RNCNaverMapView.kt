@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.view.View
 import android.view.ViewGroup
-import com.airbnb.android.react.maps.ViewAttacherGroup
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.NaverMapCameraChangeEvent
@@ -16,6 +15,7 @@ import com.mjstudio.reactnativenavermap.overlay.RNCNaverMapOverlay
 import com.mjstudio.reactnativenavermap.overlay.marker.RNCNaverMapMarker
 import com.mjstudio.reactnativenavermap.util.emitEvent
 import com.mjstudio.reactnativenavermap.util.image.RNCNaverMapTaggedImageRenderer
+import com.mjstudio.reactnativenavermap.util.view.ViewAttacherGroup
 import com.naver.maps.map.CameraUpdate.REASON_CONTROL
 import com.naver.maps.map.CameraUpdate.REASON_GESTURE
 import com.naver.maps.map.CameraUpdate.REASON_LOCATION
@@ -216,7 +216,7 @@ class RNCNaverMapView(
     locationOverlayImageRenderer.setImage(image) { overlayImage ->
       withMap {
         it.locationOverlay.icon = overlayImage ?: OverlayImage.fromBitmap(
-          Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888),
+          Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888),
         )
       }
     }
@@ -226,7 +226,7 @@ class RNCNaverMapView(
     locationOverlaySubImageRenderer.setImage(image) { overlayImage ->
       withMap {
         it.locationOverlay.icon = overlayImage ?: OverlayImage.fromBitmap(
-          Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888),
+          Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888),
         )
       }
     }

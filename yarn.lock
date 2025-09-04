@@ -1518,18 +1518,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@biomejs/biome@npm:^2.0.0":
-  version: 2.0.4
-  resolution: "@biomejs/biome@npm:2.0.4"
+"@biomejs/biome@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "@biomejs/biome@npm:2.2.2"
   dependencies:
-    "@biomejs/cli-darwin-arm64": "npm:2.0.4"
-    "@biomejs/cli-darwin-x64": "npm:2.0.4"
-    "@biomejs/cli-linux-arm64": "npm:2.0.4"
-    "@biomejs/cli-linux-arm64-musl": "npm:2.0.4"
-    "@biomejs/cli-linux-x64": "npm:2.0.4"
-    "@biomejs/cli-linux-x64-musl": "npm:2.0.4"
-    "@biomejs/cli-win32-arm64": "npm:2.0.4"
-    "@biomejs/cli-win32-x64": "npm:2.0.4"
+    "@biomejs/cli-darwin-arm64": "npm:2.2.2"
+    "@biomejs/cli-darwin-x64": "npm:2.2.2"
+    "@biomejs/cli-linux-arm64": "npm:2.2.2"
+    "@biomejs/cli-linux-arm64-musl": "npm:2.2.2"
+    "@biomejs/cli-linux-x64": "npm:2.2.2"
+    "@biomejs/cli-linux-x64-musl": "npm:2.2.2"
+    "@biomejs/cli-win32-arm64": "npm:2.2.2"
+    "@biomejs/cli-win32-x64": "npm:2.2.2"
   dependenciesMeta:
     "@biomejs/cli-darwin-arm64":
       optional: true
@@ -1549,62 +1549,62 @@ __metadata:
       optional: true
   bin:
     biome: bin/biome
-  checksum: 10/d73c23857302da51b3cddd19e1e8c4c8b4ef6bb72959d45977449b612548210573b409f5fcdf8f0050c9504ed02536d4b63144cdfd58b8ec80e6cd919a18a915
+  checksum: 10/d741c187816d5ecca3d140f5d5295a38ef42beebfb5914a034789911fd6c4b0ac824d9896d583ec51ba4cce00949be75f9373784bc83c2ab89dcf11a6f59e8bf
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-arm64@npm:2.0.4":
-  version: 2.0.4
-  resolution: "@biomejs/cli-darwin-arm64@npm:2.0.4"
+"@biomejs/cli-darwin-arm64@npm:2.2.2":
+  version: 2.2.2
+  resolution: "@biomejs/cli-darwin-arm64@npm:2.2.2"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-x64@npm:2.0.4":
-  version: 2.0.4
-  resolution: "@biomejs/cli-darwin-x64@npm:2.0.4"
+"@biomejs/cli-darwin-x64@npm:2.2.2":
+  version: 2.2.2
+  resolution: "@biomejs/cli-darwin-x64@npm:2.2.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64-musl@npm:2.0.4":
-  version: 2.0.4
-  resolution: "@biomejs/cli-linux-arm64-musl@npm:2.0.4"
+"@biomejs/cli-linux-arm64-musl@npm:2.2.2":
+  version: 2.2.2
+  resolution: "@biomejs/cli-linux-arm64-musl@npm:2.2.2"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64@npm:2.0.4":
-  version: 2.0.4
-  resolution: "@biomejs/cli-linux-arm64@npm:2.0.4"
+"@biomejs/cli-linux-arm64@npm:2.2.2":
+  version: 2.2.2
+  resolution: "@biomejs/cli-linux-arm64@npm:2.2.2"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64-musl@npm:2.0.4":
-  version: 2.0.4
-  resolution: "@biomejs/cli-linux-x64-musl@npm:2.0.4"
+"@biomejs/cli-linux-x64-musl@npm:2.2.2":
+  version: 2.2.2
+  resolution: "@biomejs/cli-linux-x64-musl@npm:2.2.2"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64@npm:2.0.4":
-  version: 2.0.4
-  resolution: "@biomejs/cli-linux-x64@npm:2.0.4"
+"@biomejs/cli-linux-x64@npm:2.2.2":
+  version: 2.2.2
+  resolution: "@biomejs/cli-linux-x64@npm:2.2.2"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-arm64@npm:2.0.4":
-  version: 2.0.4
-  resolution: "@biomejs/cli-win32-arm64@npm:2.0.4"
+"@biomejs/cli-win32-arm64@npm:2.2.2":
+  version: 2.2.2
+  resolution: "@biomejs/cli-win32-arm64@npm:2.2.2"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-x64@npm:2.0.4":
-  version: 2.0.4
-  resolution: "@biomejs/cli-win32-x64@npm:2.0.4"
+"@biomejs/cli-win32-x64@npm:2.2.2":
+  version: 2.2.2
+  resolution: "@biomejs/cli-win32-x64@npm:2.2.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -2674,7 +2674,7 @@ __metadata:
   resolution: "@mj-studio/react-native-naver-map@workspace:."
   dependencies:
     "@babel/runtime": "npm:^7.27.6"
-    "@biomejs/biome": "npm:^2.0.0"
+    "@biomejs/biome": "npm:^2.2.2"
     "@blackwych/typedoc-plugin-categorized-hierarchy-theme": "npm:^1.1.1"
     "@commitlint/config-conventional": "npm:17.0.2"
     "@expo/config-plugins": "npm:10.0.3"
@@ -2683,13 +2683,13 @@ __metadata:
     "@types/react": "npm:19.1.0"
     commitlint: "npm:17.0.2"
     del-cli: "npm:6.0.0"
-    lefthook: "npm:1.11.14"
+    lefthook: "npm:^1.12.3"
     object-hash: "npm:^3.0.0"
     react: "npm:19.1.0"
     react-native: "npm:0.80.0"
     react-native-builder-bob: "npm:0.40.12"
     release-it: "npm:19.0.3"
-    turbo: "npm:^2.0.6"
+    turbo: "npm:^2.5.6"
     typedoc: "npm:0.28.5"
     typedoc-plugin-extras: "npm:^4.0.0"
     typedoc-theme-hierarchy: "npm:^6.0.0"
@@ -7927,90 +7927,90 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lefthook-darwin-arm64@npm:1.11.14":
-  version: 1.11.14
-  resolution: "lefthook-darwin-arm64@npm:1.11.14"
+"lefthook-darwin-arm64@npm:1.12.3":
+  version: 1.12.3
+  resolution: "lefthook-darwin-arm64@npm:1.12.3"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"lefthook-darwin-x64@npm:1.11.14":
-  version: 1.11.14
-  resolution: "lefthook-darwin-x64@npm:1.11.14"
+"lefthook-darwin-x64@npm:1.12.3":
+  version: 1.12.3
+  resolution: "lefthook-darwin-x64@npm:1.12.3"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"lefthook-freebsd-arm64@npm:1.11.14":
-  version: 1.11.14
-  resolution: "lefthook-freebsd-arm64@npm:1.11.14"
+"lefthook-freebsd-arm64@npm:1.12.3":
+  version: 1.12.3
+  resolution: "lefthook-freebsd-arm64@npm:1.12.3"
   conditions: os=freebsd & cpu=arm64
   languageName: node
   linkType: hard
 
-"lefthook-freebsd-x64@npm:1.11.14":
-  version: 1.11.14
-  resolution: "lefthook-freebsd-x64@npm:1.11.14"
+"lefthook-freebsd-x64@npm:1.12.3":
+  version: 1.12.3
+  resolution: "lefthook-freebsd-x64@npm:1.12.3"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"lefthook-linux-arm64@npm:1.11.14":
-  version: 1.11.14
-  resolution: "lefthook-linux-arm64@npm:1.11.14"
+"lefthook-linux-arm64@npm:1.12.3":
+  version: 1.12.3
+  resolution: "lefthook-linux-arm64@npm:1.12.3"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"lefthook-linux-x64@npm:1.11.14":
-  version: 1.11.14
-  resolution: "lefthook-linux-x64@npm:1.11.14"
+"lefthook-linux-x64@npm:1.12.3":
+  version: 1.12.3
+  resolution: "lefthook-linux-x64@npm:1.12.3"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"lefthook-openbsd-arm64@npm:1.11.14":
-  version: 1.11.14
-  resolution: "lefthook-openbsd-arm64@npm:1.11.14"
+"lefthook-openbsd-arm64@npm:1.12.3":
+  version: 1.12.3
+  resolution: "lefthook-openbsd-arm64@npm:1.12.3"
   conditions: os=openbsd & cpu=arm64
   languageName: node
   linkType: hard
 
-"lefthook-openbsd-x64@npm:1.11.14":
-  version: 1.11.14
-  resolution: "lefthook-openbsd-x64@npm:1.11.14"
+"lefthook-openbsd-x64@npm:1.12.3":
+  version: 1.12.3
+  resolution: "lefthook-openbsd-x64@npm:1.12.3"
   conditions: os=openbsd & cpu=x64
   languageName: node
   linkType: hard
 
-"lefthook-windows-arm64@npm:1.11.14":
-  version: 1.11.14
-  resolution: "lefthook-windows-arm64@npm:1.11.14"
+"lefthook-windows-arm64@npm:1.12.3":
+  version: 1.12.3
+  resolution: "lefthook-windows-arm64@npm:1.12.3"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"lefthook-windows-x64@npm:1.11.14":
-  version: 1.11.14
-  resolution: "lefthook-windows-x64@npm:1.11.14"
+"lefthook-windows-x64@npm:1.12.3":
+  version: 1.12.3
+  resolution: "lefthook-windows-x64@npm:1.12.3"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"lefthook@npm:1.11.14":
-  version: 1.11.14
-  resolution: "lefthook@npm:1.11.14"
+"lefthook@npm:^1.12.3":
+  version: 1.12.3
+  resolution: "lefthook@npm:1.12.3"
   dependencies:
-    lefthook-darwin-arm64: "npm:1.11.14"
-    lefthook-darwin-x64: "npm:1.11.14"
-    lefthook-freebsd-arm64: "npm:1.11.14"
-    lefthook-freebsd-x64: "npm:1.11.14"
-    lefthook-linux-arm64: "npm:1.11.14"
-    lefthook-linux-x64: "npm:1.11.14"
-    lefthook-openbsd-arm64: "npm:1.11.14"
-    lefthook-openbsd-x64: "npm:1.11.14"
-    lefthook-windows-arm64: "npm:1.11.14"
-    lefthook-windows-x64: "npm:1.11.14"
+    lefthook-darwin-arm64: "npm:1.12.3"
+    lefthook-darwin-x64: "npm:1.12.3"
+    lefthook-freebsd-arm64: "npm:1.12.3"
+    lefthook-freebsd-x64: "npm:1.12.3"
+    lefthook-linux-arm64: "npm:1.12.3"
+    lefthook-linux-x64: "npm:1.12.3"
+    lefthook-openbsd-arm64: "npm:1.12.3"
+    lefthook-openbsd-x64: "npm:1.12.3"
+    lefthook-windows-arm64: "npm:1.12.3"
+    lefthook-windows-x64: "npm:1.12.3"
   dependenciesMeta:
     lefthook-darwin-arm64:
       optional: true
@@ -8034,7 +8034,7 @@ __metadata:
       optional: true
   bin:
     lefthook: bin/index.js
-  checksum: 10/ab9817b2630d2e1de8f67fd66aeb1f2d6bbe8d1c89f25762e536469744d88ba7640eeddc10d5fae5bd5bfb792d8f1f6de778b33c386f8f293b057d7e0fcb7349
+  checksum: 10/28e63147d962271c8db1ee1b08feb75c0b4d58dff515ab4e5a8aad65bd11e9b598a7796a5c20fa5dfd3b16d321343f2094c9ed533965cad60fd3c30947b0c24f
   languageName: node
   linkType: hard
 
@@ -11082,58 +11082,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"turbo-darwin-64@npm:2.5.4":
-  version: 2.5.4
-  resolution: "turbo-darwin-64@npm:2.5.4"
+"turbo-darwin-64@npm:2.5.6":
+  version: 2.5.6
+  resolution: "turbo-darwin-64@npm:2.5.6"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-darwin-arm64@npm:2.5.4":
-  version: 2.5.4
-  resolution: "turbo-darwin-arm64@npm:2.5.4"
+"turbo-darwin-arm64@npm:2.5.6":
+  version: 2.5.6
+  resolution: "turbo-darwin-arm64@npm:2.5.6"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-linux-64@npm:2.5.4":
-  version: 2.5.4
-  resolution: "turbo-linux-64@npm:2.5.4"
+"turbo-linux-64@npm:2.5.6":
+  version: 2.5.6
+  resolution: "turbo-linux-64@npm:2.5.6"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-linux-arm64@npm:2.5.4":
-  version: 2.5.4
-  resolution: "turbo-linux-arm64@npm:2.5.4"
+"turbo-linux-arm64@npm:2.5.6":
+  version: 2.5.6
+  resolution: "turbo-linux-arm64@npm:2.5.6"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-windows-64@npm:2.5.4":
-  version: 2.5.4
-  resolution: "turbo-windows-64@npm:2.5.4"
+"turbo-windows-64@npm:2.5.6":
+  version: 2.5.6
+  resolution: "turbo-windows-64@npm:2.5.6"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-windows-arm64@npm:2.5.4":
-  version: 2.5.4
-  resolution: "turbo-windows-arm64@npm:2.5.4"
+"turbo-windows-arm64@npm:2.5.6":
+  version: 2.5.6
+  resolution: "turbo-windows-arm64@npm:2.5.6"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo@npm:^2.0.6":
-  version: 2.5.4
-  resolution: "turbo@npm:2.5.4"
+"turbo@npm:^2.5.6":
+  version: 2.5.6
+  resolution: "turbo@npm:2.5.6"
   dependencies:
-    turbo-darwin-64: "npm:2.5.4"
-    turbo-darwin-arm64: "npm:2.5.4"
-    turbo-linux-64: "npm:2.5.4"
-    turbo-linux-arm64: "npm:2.5.4"
-    turbo-windows-64: "npm:2.5.4"
-    turbo-windows-arm64: "npm:2.5.4"
+    turbo-darwin-64: "npm:2.5.6"
+    turbo-darwin-arm64: "npm:2.5.6"
+    turbo-linux-64: "npm:2.5.6"
+    turbo-linux-arm64: "npm:2.5.6"
+    turbo-windows-64: "npm:2.5.6"
+    turbo-windows-arm64: "npm:2.5.6"
   dependenciesMeta:
     turbo-darwin-64:
       optional: true
@@ -11149,7 +11149,7 @@ __metadata:
       optional: true
   bin:
     turbo: bin/turbo
-  checksum: 10/43dd952192a1261de3845ecac96d4f42ea6d8e49eaa4c339c029dbe010a1323957ef4b0080f8f06e3cd0169c1f00c356d32cbabde1ee08c72b0708f90994a774
+  checksum: 10/8b6509854c32b3163a6de943787e9a33d2c610577360968db1a0cc959b79aaf7e8e80611a349384295e9181ac26edede2a86ea9867d8e6b3d2d676c584b2a3a5
   languageName: node
   linkType: hard
 

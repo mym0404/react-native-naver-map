@@ -56,6 +56,6 @@ class RNCNaverMapGround(
   override fun setOverlayImage(image: OverlayImage?) {
     isImageSet = true
     overlay.image =
-      image ?: OverlayImage.fromBitmap(Bitmap.createBitmap(0, 0, Bitmap.Config.ARGB_8888))
+      image ?: OverlayImage.fromBitmap(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888))
   }
 }

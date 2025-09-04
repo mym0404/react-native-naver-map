@@ -3,7 +3,6 @@ package com.mjstudio.reactnativenavermap.mapview
 import android.graphics.PointF
 import android.view.Gravity
 import android.view.View
-import com.airbnb.android.react.maps.SizeReportingShadowNode
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.LayoutShadowNode
@@ -37,6 +36,7 @@ import com.mjstudio.reactnativenavermap.util.getLatLngBoundsOrNull
 import com.mjstudio.reactnativenavermap.util.isValidNumber
 import com.mjstudio.reactnativenavermap.util.px
 import com.mjstudio.reactnativenavermap.util.registerDirectEvent
+import com.mjstudio.reactnativenavermap.util.view.SizeReportingShadowNode
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraPosition

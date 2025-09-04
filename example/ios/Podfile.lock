@@ -8,14 +8,14 @@ PODS:
   - hermes-engine (0.80.0):
     - hermes-engine/Pre-built (= 0.80.0)
   - hermes-engine/Pre-built (0.80.0)
-  - mj-studio-react-native-naver-map (2.4.0):
+  - mj-studio-react-native-naver-map (2.5.4):
     - boost
     - DoubleConversion
     - fast_float
     - fmt
     - glog
     - hermes-engine
-    - NMapsMap (= 3.21.0)
+    - NMapsMap (= 3.22.1)
     - RCT-Folly
     - RCT-Folly/Fabric
     - RCTRequired
@@ -39,7 +39,7 @@ PODS:
     - SocketRocket
     - Yoga
   - NMapsGeometry (1.0.2)
-  - NMapsMap (3.21.0):
+  - NMapsMap (3.22.1):
     - NMapsGeometry
   - RCT-Folly (2024.11.18.00):
     - boost
@@ -2492,9 +2492,9 @@ SPEC CHECKSUMS:
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   hermes-engine: 7068e976238b29e97b3bafd09a994542af7d5c0b
-  mj-studio-react-native-naver-map: 91e07cd7adf85ab28547db1df0068f0eb657847d
+  mj-studio-react-native-naver-map: 3753302800d642c9c3af8305b467f8cd9c0e2c49
   NMapsGeometry: 4e02554fa9880ef02ed96b075dc84355d6352479
-  NMapsMap: 8e7e35c2446e7c4a88d6dd0d64aa0d1de903e4f0
+  NMapsMap: 09552eb050059e13b4c8fc294055760713cfdad8
   RCT-Folly: 59ec0ac1f2f39672a0c6e6cecdd39383b764646f
   RCTDeprecation: ff787f6c860a1b97dd1bc27264b61d23ad1994da
   RCTRequired: 664eb8399ed8a83e26ab65af7c2ad390f7e61696
@@ -2562,8 +2562,8 @@ SPEC CHECKSUMS:
   ReactCommon: 658874decaf8c4fd76cfa3a878b94a869db85b1c
   RNPermissions: 30bf2aa7b7ce0d5e9e2996cd19596757e75cc508
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  Yoga: 0c4b7d2aacc910a1f702694fa86be830386f4ceb
+  Yoga: 395b5d614cd7cbbfd76b05d01bd67230a6ad004e
 
-PODFILE CHECKSUM: e5ca43bdd312939078b3a85bdca8845493118b66
+PODFILE CHECKSUM: 39c77b7a027f87ce1a1f1b74b57ccb9b2ef57a42
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2

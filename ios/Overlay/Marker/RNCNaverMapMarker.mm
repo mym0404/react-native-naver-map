@@ -66,6 +66,23 @@ using namespace facebook::react;
   }
 }
 
+/**
+ * Ensures that the touch handler is properly set up for the marker
+ * This method checks if the touch handler exists and creates it if it doesn't
+ * The touch handler is responsible for processing tap events on the marker
+ */
+- (void)ensureTouchHandler {
+  if (!_inner.touchHandler) {
+    _inner.touchHandler = [self](NMFOverlay* overlay) -> BOOL {
+      if (self.emitter) {
+        self.emitter->onTapOverlay({});
+        return YES;
+      }
+      return NO;
+    };
+  }
+}
+
 - (void)setImage:(facebook::react::RNCNaverMapMarkerImageStruct)image {
   _image = image;
   // If subview exists for custom marker, then skip image
@@ -85,6 +102,7 @@ using namespace facebook::react;
       self.inner.alpha = 1;
       self.inner.iconImage = image;
       self->_imageCanceller = nil;
+      [self ensureTouchHandler]; // Re-ensure touch handler after image is set
     });
   });
 }
@@ -111,6 +129,7 @@ using namespace facebook::react;
   dispatch_async(dispatch_get_main_queue(), [self, subview]() {
     self.inner.alpha = 1;
     self.inner.iconImage = [NMFOverlayImage overlayImageWithImage:[self captureView:subview]];
+    [self ensureTouchHandler]; // Re-ensure touch handler after custom marker image is set
   });
 }
 
@@ -210,6 +229,9 @@ using namespace facebook::react;
   }
 
   [super updateProps:props oldProps:oldProps];
+
+  // Ensure touch handler is properly set after marker properties are updated
+  [self ensureTouchHandler];
 }
 
 Class<RCTComponentViewProtocol> RNCNaverMapMarkerCls(void) {
