@@ -33,7 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
                           (facebook::react::RNCNaverMapViewClustersClustersMarkersImageStruct)image
                       width:(double)width
                      height:(double)height
-                     caption:(facebook::react::RNCNaverMapViewClustersClustersMarkersCaptionStruct)caption
+                    caption:(facebook::react::RNCNaverMapViewClustersClustersMarkersCaptionStruct)
+                                caption
             onTapLeafMarker:(OnTapLeafMarker _Nullable)onTapLeafMarerk;
 
 @end
