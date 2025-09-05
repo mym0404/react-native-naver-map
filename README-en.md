@@ -275,7 +275,9 @@ const jejuRegion: Region = {
   logoAlign={'TopRight'}
   locale={'ja'}
   onInitialized={() => console.log('initialized!')}
-  onOptionChanged={() => console.log('Option Changed!')}
+  onOptionChanged={({ nativeEvent: { locationTrackingMode } }) => 
+    console.log('Option Changed!', locationTrackingMode)
+  }
   onCameraChanged={(args) => console.log(`Camera Changed: ${formatJson(args)}`)}
   onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
 >
