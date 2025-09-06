@@ -284,6 +284,9 @@ export default function App() {
           outlineWidth={1}
         />
         <NaverMapMultiPathOverlay
+          width={40}
+          patternImage={{ symbol: 'blue' }}
+          patternInterval={100}
           pathParts={[
             {
               coords: [
@@ -318,8 +321,7 @@ export default function App() {
               passedOutlineColor: 'gray',
             },
           ]}
-          width={6}
-          outlineWidth={0}
+          outlineWidth={5}
           onTap={() => console.log('MultiPath tapped!')}
         />
         <NaverMapPolygonOverlay
