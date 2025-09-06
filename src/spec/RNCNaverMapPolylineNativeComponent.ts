@@ -13,11 +13,11 @@ import type {
 interface BaseOverlay {
   zIndexValue: Int32;
   globalZIndexValue: Int32;
-  isHidden: boolean;
+  isHidden: WithDefault<boolean, false>;
   minZoom: Double;
   maxZoom: Double;
-  isMinZoomInclusive: boolean;
-  isMaxZoomInclusive: boolean;
+  isMinZoomInclusive: WithDefault<boolean, true>;
+  isMaxZoomInclusive: WithDefault<boolean, true>;
 }
 
 type Coord = {

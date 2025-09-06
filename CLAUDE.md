@@ -36,66 +36,23 @@ The library provides React components that wrap native map views:
 ## TypeScript
 
 ### Native Component Specifications
-Define Fabric components using `codegenNativeComponent`:
-
-```typescript
-// src/spec/RNCNaverMapViewNativeComponent.ts
-import { codegenNativeComponent, type HostComponent, type ViewProps } from 'react-native';
-import type { DirectEventHandler, Double, Int32, WithDefault } from 'react-native/Libraries/Types/CodegenTypes';
-
-interface Props extends ViewProps {
-  mapType?: WithDefault<'Basic' | 'Satellite' | 'Hybrid', 'Basic'>;
-  initialCamera?: Readonly<{
-    latitude: Double;
-    longitude: Double;
-    zoom?: Double;
-  }>;
-  onCameraChanged?: DirectEventHandler<Readonly<{
-    latitude: Double;
-    longitude: Double;
-    zoom: Double;
-  }>>;
-}
-
-export default codegenNativeComponent<Props>('RNCNaverMapView');
-```
+- Define Fabric components using `codegenNativeComponent`
+- Use codegen types: `WithDefault`, `DirectEventHandler`, `Double`, `Int32`, `Readonly`
+- 패턴 참조: `/pattern-use fabric-native-component`
 
 ### Commands Specification
-Define imperative methods using `codegenNativeCommands`:
-
-```typescript
-interface NaverMapNativeCommands {
-  screenToCoordinate: (ref: React.ElementRef<ComponentType>, x: Double, y: Double) => Promise<{
-    latitude: Double;
-    longitude: Double;
-  }>;
-  animateCameraTo: (ref: React.ElementRef<ComponentType>, latitude: Double, longitude: Double, zoom?: Double) => void;
-}
-
-export const Commands: NaverMapNativeCommands = codegenNativeCommands<NaverMapNativeCommands>({
-  supportedCommands: ['screenToCoordinate', 'animateCameraTo']
-});
-```
+- Define imperative methods using `codegenNativeCommands`
+- Support async methods that return Promises
+- 패턴 참조: `/pattern-use codegen-native-commands`
 
 ### TurboModule Specification
-Define native modules using TurboModule interface:
-
-```typescript
-// src/spec/NativeRNCNaverMapUtil.ts
-import { type TurboModule, TurboModuleRegistry } from 'react-native';
-import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
-
-export interface Spec extends TurboModule {
-  setGlobalZIndex(type: string, zIndex: Double): void;
-}
-
-export default TurboModuleRegistry.getEnforcing<Spec>('RNCNaverMapUtil');
-```
+- Define native modules using TurboModule interface
+- Use `TurboModuleRegistry.getEnforcing()` for module access
+- 패턴 참조: `/pattern-use turbo-module-spec`
 
 ### Codegen Types
-Key types for codegen specifications:
 - `Double` - 64-bit floating point
-- `Int32` - 32-bit integer
+- `Int32` - 32-bit integer  
 - `WithDefault<T, Default>` - Type with default value
 - `DirectEventHandler<T>` - Event callback type
 - `Readonly<T>` - Immutable object type
@@ -103,109 +60,24 @@ Key types for codegen specifications:
 ## iOS
 
 ### Fabric Component Implementation
-Extend `RCTViewComponentView` for native components:
-
-```objc
-// ios/RNCNaverMapView.h
-#import <React/RCTViewComponentView.h>
-#import <react/renderer/components/RNCNaverMapSpec/ComponentDescriptors.h>
-#import <react/renderer/components/RNCNaverMapSpec/EventEmitters.h>
-#import <react/renderer/components/RNCNaverMapSpec/Props.h>
-
-@interface RNCNaverMapView : RCTViewComponentView
-- (std::shared_ptr<facebook::react::RNCNaverMapViewEventEmitter const>)emitter;
-@end
-
-// ios/RNCNaverMapView.mm
-@implementation RNCNaverMapView {
-  RNCNaverMapViewImpl* _view;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame {
-  if (self = [super initWithFrame:frame]) {
-    static const auto defaultProps = std::make_shared<const RNCNaverMapViewProps>();
-    _props = defaultProps;
-    _view = [[RNCNaverMapViewImpl alloc] init];
-    self.contentView = _view;
-  }
-  return self;
-}
-
-- (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps {
-  const auto &oldViewProps = *std::static_pointer_cast<RNCNaverMapViewProps const>(_props);
-  const auto &newViewProps = *std::static_pointer_cast<RNCNaverMapViewProps const>(props);
-
-  if (oldViewProps.mapType != newViewProps.mapType) {
-    // Update native map type
-  }
-
-  [super updateProps:props oldProps:oldProps];
-}
-```
+- Extend `RCTViewComponentView` for native components
+- Implement `initWithFrame`, `updateProps` methods
+- 패턴 참조: `/pattern-use ios-fabric-component`
 
 ### Commands Implementation
-Handle imperative commands through `handleCommand`:
-
-```objc
-- (void)handleCommand:(const NSString *)commandName args:(const NSArray *)args {
-  RCTRNCNaverMapViewHandleCommand(self, commandName, args);
-}
-
-void RCTRNCNaverMapViewHandleCommand(RNCNaverMapView *componentView, NSString const *commandName, NSArray const *args) {
-  if ([commandName isEqualToString:@"screenToCoordinate"]) {
-    double x = [args[0] doubleValue];
-    double y = [args[1] doubleValue];
-    // Convert screen coordinates to lat/lng and resolve promise
-  }
-}
-```
+- Handle imperative commands through `handleCommand`
+- Use generated command handler functions
+- 패턴 참조: `/pattern-use ios-command-handling`
 
 ### Event Emission
-Emit events using generated event emitters:
-
-```objc
-- (void)onCameraChanged:(NMFCameraPosition *)position {
-  if (auto emitter = [self emitter]) {
-    facebook::react::RNCNaverMapViewEventEmitter::OnCameraChanged event;
-    event.latitude = position.target.latitude;
-    event.longitude = position.target.longitude;
-    event.zoom = position.zoom;
-    emitter->onCameraChanged(event);
-  }
-}
-```
+- Emit events using generated event emitters
+- Access emitter through component view
+- 패턴 참조: `/pattern-use ios-event-emission`
 
 ### TurboModule Implementation
-Conditional Bridge/TurboModule support:
-
-```objc
-// ios/Module/RNCNaverMapUtil.h
-#ifdef RCT_NEW_ARCH_ENABLED
-#import "RNCNaverMapSpec.h"
-@interface RNCNaverMapUtil : NSObject <NativeRNCNaverMapUtilSpec>
-#else
-#import <React/RCTBridgeModule.h>
-@interface RNCNaverMapUtil : NSObject <RCTBridgeModule>
-#endif
-
-// ios/Module/RNCNaverMapUtil.mm
-@implementation RNCNaverMapUtil
-
-RCT_EXPORT_MODULE()
-
-#ifdef RCT_NEW_ARCH_ENABLED
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
-    (const facebook::react::ObjCTurboModule::InitParams&)params {
-  return std::make_shared<facebook::react::NativeRNCNaverMapUtilSpecJSI>(params);
-}
-#endif
-
-- (void)setGlobalZIndex:(NSString *)type zIndex:(double)zIndex {
-  // Implementation
-}
-
-@end
-```
+- Conditional Bridge/TurboModule support with preprocessor macros
+- Implement both legacy and new arch interfaces
+- 패턴 참조: `/pattern-use ios-turbo-module`
 
 ## Android
 
@@ -378,3 +250,50 @@ screenToCoordinate(x: number, y: number): Promise<LatLng>;
 - `yarn ci:android` - Build Android project for CI (gradlew assembleDebug)
 - `yarn turbo:android` - Run Android CI with Turbo caching
 - `yarn turbo:ios` - Run iOS CI with Turbo caching
+
+# Self Reference Context Management System (cc-self-refer cli and context storage project structure)
+
+This project uses `cc-self-refer` for intelligent self-reference capabilities.
+Claude Code agents should use these CLI commands to access and manage project context automatically:
+
+## Keyword Detection and Command Intent Recognition
+
+**When users use natural language prompts, agents should READ the corresponding command documentation and EXECUTE the instructions within:**
+
+**CRITICAL: Always monitor for these keywords in user prompts regardless of language:**
+- **spec**
+- **pattern**
+- **page**
+- **plan**
+
+When these keywords appear in user prompts, determine if the user intends to use the corresponding cc-self-refer commands below.
+
+**Response Format for Self-Reference Actions**: If you determine that the user's natural language prompt requires using cc-self-refer functionality, prefix your response with `Self Refering... ♦️` to indicate self-reference action execution.
+
+### Specification (spec) Commands
+- "use spec" / "refer to spec" / "check specifications" → **Read and execute** `.claude/commands/spec-refer.md`
+- "use spec #3" / "refer to spec 003" → **Read and execute** `.claude/commands/spec-refer.md` with specific ID
+- "find API spec" / "search authentication spec" → **Read and execute** `.claude/commands/spec-refer.md` for search
+
+### Pattern Commands
+- "use pattern" / "apply pattern" / "use existing patterns" → **Read and execute** `.claude/commands/pattern-use.md`
+- "create pattern" / "save as pattern" → **Read and execute** `.claude/commands/pattern-create.md`
+- "find Redux pattern" / "search API patterns" → **Read and execute** `.claude/commands/pattern-use.md` for search
+- "use pattern #5" / "apply pattern 005" → **Read and execute** `.claude/commands/pattern-use.md` with specific ID
+
+### Page Commands
+- "refer to previous conversation" / "check pages" → **Read and execute** `.claude/commands/page-refer.md`
+- "yesterday's work" / "recent sessions" → **Read and execute** `.claude/commands/page-refer.md` for list
+
+### Plan Commands
+- "check plan" / "show plans" / "review planning" → **Read and execute** `.claude/commands/plan-resolve.md`
+- "create plan" / "make a plan" → **Read and execute** `.claude/commands/plan-create.md`
+- "edit plan" / "modify plan" → **Read and execute** `.claude/commands/plan-edit.md`
+- "refactoring plan" / "migration plan" → **Read and execute** `.claude/commands/plan-resolve.md` for specific plans
+
+**IMPORTANT Agent Behavior:**
+1. **Identify** the user's intent from natural language
+2. **Read** the appropriate `.claude/commands/*.md` file
+3. **Execute** all instructions and commands specified in that file
+4. **Use** the retrieved context to complete the user's request
+5. **Follow** the exact workflow described in the command documentation
