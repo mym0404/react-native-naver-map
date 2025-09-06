@@ -38,17 +38,17 @@ The library provides React components that wrap native map views:
 ### Native Component Specifications
 - Define Fabric components using `codegenNativeComponent`
 - Use codegen types: `WithDefault`, `DirectEventHandler`, `Double`, `Int32`, `Readonly`
-- 패턴 참조: `/pattern-use fabric-native-component`
+- Pattern reference: `/pattern-use fabric-native-component`
 
 ### Commands Specification
 - Define imperative methods using `codegenNativeCommands`
 - Support async methods that return Promises
-- 패턴 참조: `/pattern-use codegen-native-commands`
+- Pattern reference: `/pattern-use codegen-native-commands`
 
 ### TurboModule Specification
 - Define native modules using TurboModule interface
 - Use `TurboModuleRegistry.getEnforcing()` for module access
-- 패턴 참조: `/pattern-use turbo-module-spec`
+- Pattern reference: `/pattern-use turbo-module-spec`
 
 ### Codegen Types
 - `Double` - 64-bit floating point
@@ -62,111 +62,43 @@ The library provides React components that wrap native map views:
 ### Fabric Component Implementation
 - Extend `RCTViewComponentView` for native components
 - Implement `initWithFrame`, `updateProps` methods
-- 패턴 참조: `/pattern-use ios-fabric-component`
+- Pattern reference: `/pattern-use ios-fabric-component`
 
 ### Commands Implementation
 - Handle imperative commands through `handleCommand`
 - Use generated command handler functions
-- 패턴 참조: `/pattern-use ios-command-handling`
+- Pattern reference: `/pattern-use ios-command-handling`
 
 ### Event Emission
 - Emit events using generated event emitters
 - Access emitter through component view
-- 패턴 참조: `/pattern-use ios-event-emission`
+- Pattern reference: `/pattern-use ios-event-emission`
 
 ### TurboModule Implementation
 - Conditional Bridge/TurboModule support with preprocessor macros
 - Implement both legacy and new arch interfaces
-- 패턴 참조: `/pattern-use ios-turbo-module`
+- Pattern reference: `/pattern-use ios-turbo-module`
 
 ## Android
 
 ### ViewManager with Codegen
-Extend generated spec classes using delegate pattern:
-
-```kotlin
-// android/src/newarch/RNCNaverMapViewManagerSpec.kt
-abstract class RNCNaverMapViewManagerSpec<T : ViewGroup> :
-  ViewGroupManager<T>(), RNCNaverMapViewManagerInterface<T> {
-  private val mDelegate: ViewManagerDelegate<T> = RNCNaverMapViewManagerDelegate(this)
-  override fun getDelegate(): ViewManagerDelegate<T>? = mDelegate
-}
-
-ViewGroupManager or SimpleViewManager can be used based on the component type.
-Don't generate overriding functions by yourself. It is included in generated spec interface by codegen
-
-// android/src/main/java/.../RNCNaverMapViewManager.kt
-class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper>() {
-
-  override fun getName(): String = "RNCNaverMapView"
-
-  override fun createViewInstance(reactContext: ThemedReactContext): RNCNaverMapViewWrapper {
-    return RNCNaverMapViewWrapper(reactContext)
-  }
-
-  @ReactProp(name = "mapType", defaultValue = "Basic")
-  override fun setMapType(view: RNCNaverMapViewWrapper?, value: String?) {
-    view?.setMapType(value)
-  }
-
-  @ReactProp(name = "initialCamera")
-  override fun setInitialCamera(view: RNCNaverMapViewWrapper?, value: ReadableMap?) {
-    value?.let { view?.setInitialCamera(it) }
-  }
-}
-```
+- Extend generated spec classes using delegate pattern
+- Use ViewGroupManager or SimpleViewManager based on component type
+- Pattern reference: `/pattern-use android-view-manager-spec`
 
 ### Commands Implementation
-Handle commands through generated interface:
-
-```kotlin
-override fun receiveCommand(root: RNCNaverMapViewWrapper, commandId: String, args: ReadableArray?) {
-  when (commandId) {
-    "screenToCoordinate" -> {
-      val x = args?.getDouble(0) ?: 0.0
-      val y = args?.getDouble(1) ?: 0.0
-      // Convert and resolve promise
-    }
-    "animateCameraTo" -> {
-      val latitude = args?.getDouble(0) ?: 0.0
-      val longitude = args?.getDouble(1) ?: 0.0
-      root.animateCameraTo(latitude, longitude)
-    }
-  }
-}
-```
+- Handle commands through generated interface
+- Use `receiveCommand` with command ID matching
+- Pattern reference: `/pattern-use android-command-handling`
 
 ### Event Emission
-Emit events using ReactContext:
-
-```kotlin
-private fun emitCameraChangeEvent(view: RNCNaverMapViewWrapper, position: CameraPosition) {
-  val event = Arguments.createMap().apply {
-    putDouble("latitude", position.target.latitude)
-    putDouble("longitude", position.target.longitude)
-    putDouble("zoom", position.zoom)
-  }
-
-  (view.context as ReactContext)
-    .getJSModule(RCTEventEmitter::class.java)
-    .receiveEvent(view.id, "onCameraChanged", event)
-}
-```
+- Emit events using ReactContext and RCTEventEmitter
+- Create event data with Arguments.createMap()
+- Pattern reference: `/pattern-use android-event-emission`
 
 ### Package Registration
-Register modules in ReactPackage:
-
-```kotlin
-class RNCNaverMapPackage : ReactPackage {
-  override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
-    return listOf(RNCNaverMapUtilModule(reactContext))
-  }
-
-  override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
-    return listOf(RNCNaverMapViewManager())
-  }
-}
-```
+- Register modules in ReactPackage implementation
+- Pattern reference: `/pattern-use android-package-registration`
 
 ### Build System
 - **TypeScript**: Strict configuration with path mappings
@@ -198,24 +130,9 @@ To test the library, you need to configure API keys:
 
 # JSDoc & TypeDoc Documentation
 
-JSDoc 형식으로 TypeDoc 호환 문서 작성:
-
-```typescript
-/**
- * 네이티브 렌더링을 사용하는 네이버 지도 컴포넌트입니다.
- */
-export const NaverMapView: React.FC<NaverMapViewProps> = (props) => {};
-
-/**
- * 화면 좌표를 지리 좌표로 변환합니다.
- * @param x 화면 X 좌표
- * @param y 화면 Y 좌표
- * @returns LatLng를 반환하는 Promise
- */
-screenToCoordinate(x: number, y: number): Promise<LatLng>;
-```
-
-주요 태그: `@param`, `@returns`, `@example`, `@default`, `@internal`, `@platform`
+- Write TypeDoc compatible documentation in JSDoc format
+- Key tags: `@param`, `@returns`, `@example`, `@default`, `@internal`, `@platform`
+- Pattern reference: `/pattern-use jsdoc-typedoc`
 
 # Package Scripts
 

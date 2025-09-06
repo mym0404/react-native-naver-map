@@ -13,11 +13,11 @@ import type {
 interface BaseOverlay {
   zIndexValue: Int32;
   globalZIndexValue: Int32;
-  isHidden: WithDefault<boolean, false>;
+  isHidden?: WithDefault<boolean, false>;
   minZoom: Double;
   maxZoom: Double;
-  isMinZoomInclusive: WithDefault<boolean, true>;
-  isMaxZoomInclusive: WithDefault<boolean, true>;
+  isMinZoomInclusive?: WithDefault<boolean, true>;
+  isMaxZoomInclusive?: WithDefault<boolean, true>;
 }
 
 export type NativeCaptionProp = {
