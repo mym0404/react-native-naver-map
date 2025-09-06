@@ -96,11 +96,11 @@ class RNCNaverMapMultiPathManager : RNCNaverMapMultiPathManagerSpec<RNCNaverMapM
     value: ReadableArray?,
   ) {
     val coordParts =
-      value?.toArrayList()?.map { coordPart ->
-        (coordPart as? ArrayList<*>)?.map { coord ->
+      (value?.toArrayList() ?: arrayListOf()).map { coordPart ->
+        (coordPart as? ArrayList<*>)?.mapNotNull { coord ->
           (coord as Map<String, *>).getLatLng()
         } ?: listOf()
-      } ?: listOf()
+      }
     view?.setCoordParts(coordParts)
   }
 
