@@ -3,6 +3,7 @@ import type {
   DirectEventHandler,
   Double,
   Int32,
+  WithDefault,
 } from 'react-native/Libraries/Types/CodegenTypes';
 
 /* Type should be redeclared because of codegen ts parser doesn't allow imported type
@@ -12,11 +13,11 @@ import type {
 interface BaseOverlay {
   zIndexValue: Int32;
   globalZIndexValue: Int32;
-  isHidden: boolean;
+  isHidden?: WithDefault<boolean, false>;
   minZoom: Double;
   maxZoom: Double;
-  isMinZoomInclusive: boolean;
-  isMaxZoomInclusive: boolean;
+  isMinZoomInclusive?: WithDefault<boolean, true>;
+  isMaxZoomInclusive?: WithDefault<boolean, true>;
 }
 
 export type NativeImageProp =

@@ -3,6 +3,7 @@ import type {
   DirectEventHandler,
   Double,
   Int32,
+  WithDefault,
 } from 'react-native/Libraries/Types/CodegenTypes';
 
 /* Type should be redeclared because of codegen ts parser doesn't allow imported type
@@ -12,11 +13,11 @@ import type {
 interface BaseOverlay {
   zIndexValue: Int32;
   globalZIndexValue: Int32;
-  isHidden: boolean;
+  isHidden?: WithDefault<boolean, false>;
   minZoom: Double;
   maxZoom: Double;
-  isMinZoomInclusive: boolean;
-  isMaxZoomInclusive: boolean;
+  isMinZoomInclusive?: WithDefault<boolean, true>;
+  isMaxZoomInclusive?: WithDefault<boolean, true>;
 }
 
 export type NativeCaptionProp = {
@@ -63,13 +64,13 @@ interface Props extends BaseOverlay, ViewProps {
   height?: Double;
   anchor?: Readonly<{ x: Double; y: Double }>;
   angle?: Double;
-  isFlatEnabled?: boolean;
-  isIconPerspectiveEnabled?: boolean;
+  isFlatEnabled?: WithDefault<boolean, false>;
+  isIconPerspectiveEnabled?: WithDefault<boolean, false>;
   alpha?: Double;
-  isHideCollidedSymbols?: boolean;
-  isHideCollidedMarkers?: boolean;
-  isHideCollidedCaptions?: boolean;
-  isForceShowIcon?: boolean;
+  isHideCollidedSymbols?: WithDefault<boolean, false>;
+  isHideCollidedMarkers?: WithDefault<boolean, false>;
+  isHideCollidedCaptions?: WithDefault<boolean, false>;
+  isForceShowIcon?: WithDefault<boolean, false>;
   tintColor?: Int32;
   image?: Readonly<NativeImageProp>;
   caption?: Readonly<NativeCaptionProp>;
