@@ -432,8 +432,8 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * @event
    */
-  onOptionChanged?: (event: {
-    nativeEvent: { locationTrackingMode: LocationTrackingMode | string };
+  onOptionChanged?: (params: {
+    locationTrackingMode: LocationTrackingMode;
   }) => void;
   /**
    * 어떤 이유에 의해서건 카메라가 움직이면 카메라 변경 이벤트가 발생합니다.
@@ -632,7 +632,7 @@ export const NaverMapView = forwardRef(
       onCameraIdle: onCameraIdleProp,
       onTapMap: onTapMapProp,
       onInitialized,
-      onOptionChanged,
+      onOptionChanged: onOptionChangedProp,
       isScrollGesturesEnabled = true,
       isZoomGesturesEnabled = true,
       isTiltGesturesEnabled = true,
@@ -1064,7 +1064,15 @@ export const NaverMapView = forwardRef(
         onCameraChanged={onCameraChangedProp ? onCameraChanged : undefined}
         onCameraIdle={onCameraIdleProp ? onCameraIdle : undefined}
         onTapMap={onTapMapProp ? onTapMap : undefined}
-        onOptionChanged={onOptionChanged}
+        onOptionChanged={
+          onOptionChangedProp
+            ? ({ nativeEvent: { locationTrackingMode } }) =>
+                onOptionChangedProp({
+                  locationTrackingMode:
+                    locationTrackingMode as LocationTrackingMode,
+                })
+            : undefined
+        }
         mapPadding={mapPadding}
         isShowCompass={isShowCompass}
         isShowIndoorLevelPicker={isShowIndoorLevelPicker}

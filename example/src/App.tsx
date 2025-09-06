@@ -385,7 +385,7 @@ export default function App() {
           isShowLocationButton={myLocation}
           // isExtentBoundedInKorea
           onInitialized={() => console.log('initialized!')}
-          onOptionChanged={({ nativeEvent: { locationTrackingMode } }) =>
+          onOptionChanged={({ locationTrackingMode }) =>
             console.log('Option Changed!', locationTrackingMode)
           }
           onCameraChanged={({ region }) => {
