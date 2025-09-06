@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(npx cc-self-refer:*)",
+      "Bash(npx -y cc-self-refer:*)"
     ],
     "deny": [],
     "ask": []

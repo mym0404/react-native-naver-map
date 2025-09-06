@@ -54,11 +54,11 @@ export interface NaverMapPolylineOverlayProps extends BaseOverlayProps {
 export const NaverMapPolylineOverlay = ({
   zIndex = 0,
   globalZIndex = Const.NULL_NUMBER,
-  isHidden = false,
+  isHidden,
   minZoom = Const.MIN_ZOOM,
   maxZoom = Const.MAX_ZOOM,
-  isMinZoomInclusive = true,
-  isMaxZoomInclusive = true,
+  isMinZoomInclusive,
+  isMaxZoomInclusive,
 
   coords = [],
   width = 1,

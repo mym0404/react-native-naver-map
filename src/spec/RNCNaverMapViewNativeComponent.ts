@@ -112,9 +112,9 @@ interface Props extends ViewProps {
   animationDuration?: Int32;
   animationEasing?: Int32 /*'EaseIn' | 'None' | 'Linear' | 'Fly' | 'EaseOut'*/;
 
-  isIndoorEnabled?: boolean;
-  isNightModeEnabled?: boolean;
-  isLiteModeEnabled?: boolean;
+  isIndoorEnabled?: WithDefault<boolean, false>;
+  isNightModeEnabled?: WithDefault<boolean, false>;
+  isLiteModeEnabled?: WithDefault<boolean, false>;
   lightness?: Double;
   buildingHeight?: Double;
   symbolScale?: Double;
@@ -128,8 +128,8 @@ interface Props extends ViewProps {
   isShowCompass?: WithDefault<boolean, true>;
   isShowScaleBar?: WithDefault<boolean, true>;
   isShowZoomControls?: WithDefault<boolean, true>;
-  isShowIndoorLevelPicker?: boolean;
-  isShowLocationButton?: boolean;
+  isShowIndoorLevelPicker?: WithDefault<boolean, true>;
+  isShowLocationButton?: WithDefault<boolean, true>;
 
   logoAlign?: WithDefault<LogoAlign, 'BottomLeft'>;
   logoMargin?: PartialRect;
@@ -137,12 +137,12 @@ interface Props extends ViewProps {
 
   extent?: Readonly<Region>;
 
-  isScrollGesturesEnabled?: boolean;
-  isZoomGesturesEnabled?: boolean;
-  isTiltGesturesEnabled?: boolean;
-  isRotateGesturesEnabled?: boolean;
-  isUseTextureViewAndroid?: boolean;
-  isStopGesturesEnabled?: boolean;
+  isScrollGesturesEnabled?: WithDefault<boolean, true>;
+  isZoomGesturesEnabled?: WithDefault<boolean, true>;
+  isTiltGesturesEnabled?: WithDefault<boolean, true>;
+  isRotateGesturesEnabled?: WithDefault<boolean, true>;
+  isUseTextureViewAndroid?: WithDefault<boolean, false>;
+  isStopGesturesEnabled?: WithDefault<boolean, true>;
 
   locale?: string;
 
