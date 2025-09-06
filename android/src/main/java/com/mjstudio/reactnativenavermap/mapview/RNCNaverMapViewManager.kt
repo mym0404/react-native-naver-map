@@ -84,9 +84,9 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     reactAppContext = reactContext.reactApplicationContext
     initialMapOptions =
       NaverMapOptions().apply {
-        useTextureView(
-          initialProps?.getBoolean("isUseTextureViewAndroid", false) ?: false,
-        )
+        if (initialProps?.hasKey("isUseTextureViewAndroid") == true) {
+          useTextureView(initialProps.getBoolean("isUseTextureViewAndroid", false))
+        }
         initialProps?.getString("locale")?.also { locale ->
           locale(Locale.forLanguageTag(locale))
         }
@@ -644,9 +644,9 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     view: RNCNaverMapViewWrapper?,
     value: ReadableMap?,
   ) = view.withMapView { mapView ->
-    mapView.withMap {
+    mapView.withMap { map ->
       value?.let { v ->
-        val o = it.locationOverlay
+        val o = map.locationOverlay
         o.isVisible = v.getBoolean("isVisible")
         v.getMap("position")?.getLatLng()?.let { o.position = it }
         v.getDoubleOrNull("bearing")?.let { o.bearing = it.toFloat() }

@@ -1,5 +1,6 @@
 package com.mjstudio.reactnativenavermap.overlay.multipath
 
+import android.graphics.Color
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.ThemedReactContext
@@ -10,6 +11,7 @@ import com.mjstudio.reactnativenavermap.util.getLatLng
 import com.mjstudio.reactnativenavermap.util.isValidNumber
 import com.mjstudio.reactnativenavermap.util.px
 import com.mjstudio.reactnativenavermap.util.registerDirectEvent
+import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.MultipartPathOverlay
 
 class RNCNaverMapMultiPathManager : RNCNaverMapMultiPathManagerSpec<RNCNaverMapMultiPath>() {
@@ -89,38 +91,45 @@ class RNCNaverMapMultiPathManager : RNCNaverMapMultiPathManagerSpec<RNCNaverMapM
     it.isMaxZoomInclusive = value
   }
 
-  @Suppress("UNCHECKED_CAST")
-  @ReactProp(name = "coordParts")
-  override fun setCoordParts(
+  @ReactProp(name = "pathParts")
+  override fun setPathParts(
     view: RNCNaverMapMultiPath?,
     value: ReadableArray?,
   ) {
-    val coordParts =
-      (value?.toArrayList() ?: arrayListOf()).map { coordPart ->
-        (coordPart as? ArrayList<*>)?.mapNotNull { coord ->
-          (coord as Map<String, *>).getLatLng()
-        } ?: listOf()
-      }
-    view?.setCoordParts(coordParts)
-  }
+    if (value == null) {
+      view?.setPathParts(emptyList(), emptyList())
+      return
+    }
 
-  @Suppress("UNCHECKED_CAST")
-  @ReactProp(name = "colorParts")
-  override fun setColorParts(
-    view: RNCNaverMapMultiPath?,
-    value: ReadableArray?,
-  ) {
-    val colorParts =
-      value?.toArrayList()?.map { colorPart ->
-        val colorMap = colorPart as Map<String, *>
+    val coordParts = mutableListOf<List<LatLng>>()
+    val colorParts = mutableListOf<MultipartPathOverlay.ColorPart>()
+
+    for (i in 0 until value.size()) {
+      val pathPartMap = value.getMap(i) ?: continue
+
+      // Extract coordinates
+      val coords = mutableListOf<LatLng>()
+      pathPartMap.getArray("coords")?.let { coordsArray ->
+        for (j in 0 until coordsArray.size()) {
+          coordsArray.getMap(j)?.getLatLng()?.let { latLng ->
+            coords.add(latLng)
+          }
+        }
+      }
+      coordParts.add(coords)
+
+      // Extract colors
+      val colorPart =
         MultipartPathOverlay.ColorPart(
-          colorMap["color"] as? Int ?: android.graphics.Color.BLACK,
-          colorMap["passedColor"] as? Int ?: android.graphics.Color.BLACK,
-          colorMap["outlineColor"] as? Int ?: android.graphics.Color.BLACK,
-          colorMap["passedOutlineColor"] as? Int ?: android.graphics.Color.BLACK,
+          pathPartMap.getInt("color").takeIf { pathPartMap.hasKey("color") } ?: Color.BLACK,
+          pathPartMap.getInt("passedColor").takeIf { pathPartMap.hasKey("passedColor") } ?: Color.BLACK,
+          pathPartMap.getInt("outlineColor").takeIf { pathPartMap.hasKey("outlineColor") } ?: Color.BLACK,
+          pathPartMap.getInt("passedOutlineColor").takeIf { pathPartMap.hasKey("passedOutlineColor") } ?: Color.BLACK,
         )
-      } ?: listOf()
-    view?.setColorParts(colorParts)
+      colorParts.add(colorPart)
+    }
+
+    view?.setPathParts(coordParts, colorParts)
   }
 
   @ReactProp(name = "width")

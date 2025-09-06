@@ -25,7 +25,8 @@ type Coord = {
   longitude: Double;
 };
 
-type ColorPart = {
+type PathPart = {
+  coords: ReadonlyArray<Coord>;
   color: Int32;
   passedColor: Int32;
   outlineColor: Int32;
@@ -46,8 +47,7 @@ type NativeImageProp =
 
 interface Props extends BaseOverlay, ViewProps {
   onTapOverlay?: DirectEventHandler<Readonly<{}>>;
-  coordParts: ReadonlyArray<ReadonlyArray<Coord>>;
-  colorParts: ReadonlyArray<ColorPart>;
+  pathParts: ReadonlyArray<PathPart>;
   width?: Double;
   outlineWidth?: Double;
   patternInterval?: Int32;
