@@ -17,6 +17,7 @@
 #import "RNCNaverMapGround.h"
 #import "RNCNaverMapLeafMarkerUpdater.h"
 #import "RNCNaverMapMarker.h"
+#import "RNCNaverMapMultiPath.h"
 #import "RNCNaverMapPath.h"
 #import "RNCNaverMapPolygon.h"
 #import "RNCNaverMapPolyline.h"
