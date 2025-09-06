@@ -20,7 +20,19 @@ interface BaseOverlay {
   isMaxZoomInclusive?: WithDefault<boolean, true>;
 }
 
-export type NativeImageProp =
+type Coord = {
+  latitude: Double;
+  longitude: Double;
+};
+
+type ColorPart = {
+  color: Int32;
+  passedColor: Int32;
+  outlineColor: Int32;
+  passedOutlineColor: Int32;
+};
+
+type NativeImageProp =
   | undefined
   | Readonly<{
       symbol?: string;
@@ -29,19 +41,20 @@ export type NativeImageProp =
       assetName?: string;
       reuseIdentifier?: string;
     }>;
-type Region = {
-  latitude: Double;
-  longitude: Double;
-  latitudeDelta: Double;
-  longitudeDelta: Double;
-};
 
 ////////////////////
 
 interface Props extends BaseOverlay, ViewProps {
   onTapOverlay?: DirectEventHandler<Readonly<{}>>;
-  image: NativeImageProp;
-  region: Region;
+  coordParts: ReadonlyArray<ReadonlyArray<Coord>>;
+  colorParts: ReadonlyArray<ColorPart>;
+  width?: Double;
+  outlineWidth?: Double;
+  patternInterval?: Int32;
+  patternImage?: NativeImageProp;
+  isHideCollidedSymbols?: WithDefault<boolean, false>;
+  isHideCollidedMarkers?: WithDefault<boolean, false>;
+  isHideCollidedCaptions?: WithDefault<boolean, false>;
 }
 
-export default codegenNativeComponent<Props>('RNCNaverMapGround');
+export default codegenNativeComponent<Props>('RNCNaverMapMultiPath');

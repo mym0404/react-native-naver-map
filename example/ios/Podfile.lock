@@ -2562,7 +2562,7 @@ SPEC CHECKSUMS:
   ReactCommon: 658874decaf8c4fd76cfa3a878b94a869db85b1c
   RNPermissions: 30bf2aa7b7ce0d5e9e2996cd19596757e75cc508
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  Yoga: 395b5d614cd7cbbfd76b05d01bd67230a6ad004e
+  Yoga: 0c4b7d2aacc910a1f702694fa86be830386f4ceb
 
 PODFILE CHECKSUM: 39c77b7a027f87ce1a1f1b74b57ccb9b2ef57a42
 

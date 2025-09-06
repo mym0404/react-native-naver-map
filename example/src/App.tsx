@@ -26,6 +26,7 @@ import {
   PERMISSIONS,
   request,
   requestLocationAccuracy,
+  requestMultiple,
 } from 'react-native-permissions';
 import { Btn, Range, Toggle } from './component/components';
 import { type City, getCitiesByRegion } from './db/CityDatabase';
@@ -122,16 +123,16 @@ export default function App() {
       });
     }
     if (Platform.OS === 'android') {
-      // requestMultiple([
-      //   PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      //   PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
-      // ])
-      //   .then((status) => {
-      //     console.log(`Location request status: ${status}`)
-      //   })
-      //   .catch((e) => {
-      //     console.error(`Location request has been failed: ${e}`)
-      //   })
+      requestMultiple([
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
+      ])
+        .then((status) => {
+          console.log(`Location request status: ${status}`);
+        })
+        .catch((e) => {
+          console.error(`Location request has been failed: ${e}`);
+        });
     }
   }, []);
 
@@ -237,7 +238,6 @@ export default function App() {
           height={100}
           image={{ httpUri: 'https://picsum.photos/1000/1201' }}
         />
-
         <NaverMapArrowheadPathOverlay
           coords={[
             { longitude: 126.93240597362552, latitude: 32.433509943138404 },
@@ -263,7 +263,6 @@ export default function App() {
           globalZIndex={-1}
           onTap={() => console.log('hi')}
         />
-
         <NaverMapGroundOverlay
           image={{ assetName: 'thumbnail' }}
           region={Regions.Jeju}
@@ -283,6 +282,48 @@ export default function App() {
           passedColor={'black'}
           outlineWidth={1}
         />
+        {/*<NaverMapMultiPathOverlay*/}
+        {/*  coordParts={[*/}
+        {/*    [*/}
+        {/*      { latitude: 33.5744287, longitude: 126.982625 },*/}
+        {/*      { latitude: 33.57152, longitude: 126.97714 },*/}
+        {/*      { latitude: 33.56607, longitude: 126.98268 },*/}
+        {/*    ],*/}
+        {/*    [*/}
+        {/*      { latitude: 33.56607, longitude: 126.98268 },*/}
+        {/*      { latitude: 33.56445, longitude: 126.97707 },*/}
+        {/*      { latitude: 33.55855, longitude: 126.97822 },*/}
+        {/*    ],*/}
+        {/*    [*/}
+        {/*      { latitude: 33.55855, longitude: 126.97822 },*/}
+        {/*      { latitude: 33.55234, longitude: 126.98456 },*/}
+        {/*      { latitude: 33.54789, longitude: 126.97333 },*/}
+        {/*    ],*/}
+        {/*  ]}*/}
+        {/*  colorParts={[*/}
+        {/*    {*/}
+        {/*      color: 'red',*/}
+        {/*      passedColor: 'darkred',*/}
+        {/*      outlineColor: 'white',*/}
+        {/*      passedOutlineColor: 'gray',*/}
+        {/*    },*/}
+        {/*    {*/}
+        {/*      color: 'green',*/}
+        {/*      passedColor: 'darkgreen',*/}
+        {/*      outlineColor: 'white',*/}
+        {/*      passedOutlineColor: 'gray',*/}
+        {/*    },*/}
+        {/*    {*/}
+        {/*      color: 'blue',*/}
+        {/*      passedColor: 'darkblue',*/}
+        {/*      outlineColor: 'white',*/}
+        {/*      passedOutlineColor: 'gray',*/}
+        {/*    },*/}
+        {/*  ]}*/}
+        {/*  width={6}*/}
+        {/*  outlineWidth={2}*/}
+        {/*  onTap={() => console.log('MultiPath tapped!')}*/}
+        {/*/>*/}
         <NaverMapPolygonOverlay
           outlineWidth={5}
           outlineColor={'#f2f2'}
@@ -342,7 +383,9 @@ export default function App() {
           isShowLocationButton={myLocation}
           // isExtentBoundedInKorea
           onInitialized={() => console.log('initialized!')}
-          // onOptionChanged={() => console.log('Option Changed!')}
+          onOptionChanged={({ locationTrackingMode }) =>
+            console.log('Option Changed!', locationTrackingMode)
+          }
           onCameraChanged={({ region }) => {
             console.log(
               `Camera: ${formatJson({ latitude: region.latitude, longitude: region.longitude })}`

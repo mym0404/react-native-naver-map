@@ -437,7 +437,9 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * @event
    */
-  onOptionChanged?: () => void;
+  onOptionChanged?: (params: {
+    locationTrackingMode: LocationTrackingMode;
+  }) => void;
   /**
    * 어떤 이유에 의해서건 카메라가 움직이면 카메라 변경 이벤트가 발생합니다.
    *
@@ -620,20 +622,20 @@ export const NaverMapView = forwardRef(
         TRAFFIC: false,
         TRANSIT: false,
       },
-      isIndoorEnabled = false,
-      isNightModeEnabled = false,
-      isLiteModeEnabled = false,
+      isIndoorEnabled,
+      isNightModeEnabled,
+      isLiteModeEnabled,
       lightness = 0,
       buildingHeight = 1,
       symbolScale = 1,
       symbolPerspectiveRatio = 1,
 
       mapPadding,
-      isShowCompass = true,
-      isShowIndoorLevelPicker = true,
-      isShowLocationButton = true,
-      isShowScaleBar = true,
-      isShowZoomControls = true,
+      isShowCompass,
+      isShowIndoorLevelPicker,
+      isShowLocationButton,
+      isShowScaleBar,
+      isShowZoomControls,
       minZoom,
       maxZoom,
       extent,
@@ -645,13 +647,13 @@ export const NaverMapView = forwardRef(
       onCameraIdle: onCameraIdleProp,
       onTapMap: onTapMapProp,
       onInitialized,
-      onOptionChanged,
-      isScrollGesturesEnabled = true,
-      isZoomGesturesEnabled = true,
-      isTiltGesturesEnabled = true,
-      isRotateGesturesEnabled = true,
-      isStopGesturesEnabled = true,
-      isUseTextureViewAndroid = false,
+      onOptionChanged: onOptionChangedProp,
+      isScrollGesturesEnabled,
+      isZoomGesturesEnabled,
+      isTiltGesturesEnabled,
+      isRotateGesturesEnabled,
+      isStopGesturesEnabled,
+      isUseTextureViewAndroid,
       locale,
       clusters,
       fpsLimit = 0,
@@ -1097,7 +1099,15 @@ export const NaverMapView = forwardRef(
         onCameraChanged={onCameraChangedProp ? onCameraChanged : undefined}
         onCameraIdle={onCameraIdleProp ? onCameraIdle : undefined}
         onTapMap={onTapMapProp ? onTapMap : undefined}
-        onOptionChanged={onOptionChanged}
+        onOptionChanged={
+          onOptionChangedProp
+            ? ({ nativeEvent: { locationTrackingMode } }) =>
+                onOptionChangedProp({
+                  locationTrackingMode:
+                    locationTrackingMode as LocationTrackingMode,
+                })
+            : undefined
+        }
         mapPadding={mapPadding}
         isShowCompass={isShowCompass}
         isShowIndoorLevelPicker={isShowIndoorLevelPicker}

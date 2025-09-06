@@ -1,20 +1,25 @@
 import React from 'react';
-import { type ColorValue, processColor } from 'react-native';
+import { processColor } from 'react-native';
 import { convertJsImagePropToNativeProp } from '../internal/Util';
 import { nAssert } from '../internal/util/Assert';
 import { Const } from '../internal/util/Const';
-import { default as NativeNaverMapPath } from '../spec/RNCNaverMapPathNativeComponent';
+import { default as NativeNaverMapMultiPath } from '../spec/RNCNaverMapMultiPathNativeComponent';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
 import type { Coord } from '../types/Coord';
 import type { MarkerImageProp } from '../types/MarkerImageProp';
+import type { MultiPathColorPart } from '../types/MultiPathColorPart';
 
-export interface NaverMapPathOverlayProps extends BaseOverlayProps {
+export interface NaverMapMultiPathOverlayProps extends BaseOverlayProps {
   /**
-   *  좌표열을 지정할 수 있습니다.
-   *  좌표열은 필수적인 속성으로, 좌표열을 지정하지 않은 경로선 오버레이는 지도에 추가되지 않습니다.
-   *  또한 좌표열의 크기가 2 미만이거나 null인 원소가 있을 경우에도 지도에 추가되지 않습니다.
+   * 좌표 구간들을 지정할 수 있습니다.
+   * 각 구간은 2개 이상의 좌표로 구성되어야 하며, coordParts와 colorParts의 길이가 일치해야 합니다.
    */
-  coords: Coord[];
+  coordParts: Coord[][];
+  /**
+   * 각 좌표 구간별 색상 설정입니다.
+   * coordParts와 동일한 길이여야 합니다.
+   */
+  colorParts: MultiPathColorPart[];
   /**
    * 두께를 지정할 수 있습니다.
    *
@@ -43,40 +48,6 @@ export interface NaverMapPathOverlayProps extends BaseOverlayProps {
    */
   patternInterval?: number;
   /**
-   * 진척률을 지정할 수 있습니다. 경로는 진척률을 기준으로 지나온 경로와 지나갈 경로로 구분됩니다. 지나온 구간과 지나갈 구간에 대한 색상을 달리 지정할 수 있으므로 진척률에 따라 좌표열을 변경할 필요가 없습니다. 값의 범위는 -1~1이며 각각 다음과 같은 의미를 갖습니다.
-   *
-   * 양수로 지정하면 첫 좌표부터 진척률만큼 떨어진 지점까지의 선형은 지나온 경로로, 나머지는 지나갈 경로로 간주됩니다.
-   * 음수로 지정하면 마지막 좌표부터 -진척률만큼 떨어진 지점까지의 선형은 지나온 경로로, 나머지는 지나갈 경로로 간주됩니다.
-   * 0으로 지정하면 모든 선형이 지나갈 경로로 간주됩니다.
-   *
-   * @default 0
-   */
-  progress?: number;
-  /**
-   * color와 passedColor 속성을 사용해 각각 지나갈, 지나온 경로선의 색상을 지정할 수 있습니다.
-   *
-   * @default black
-   */
-  color?: ColorValue;
-  /**
-   * color와 passedColor 속성을 사용해 각각 지나갈, 지나온 경로선의 색상을 지정할 수 있습니다.
-   *
-   * @default black
-   */
-  passedColor?: ColorValue;
-  /**
-   * 외곽선 색상입니다.
-   *
-   * @default black
-   */
-  outlineColor?: ColorValue;
-  /**
-   * 지나온 경로의 외곽선 색상입니다.
-   *
-   * @default black
-   */
-  passedOutlineColor?: ColorValue;
-  /**
    * isHideCollidedSymbols 속성을 true로 지정하면 경로선과 겹치는 지도 심벌이 숨겨집니다.
    *
    * @default false
@@ -100,65 +71,73 @@ export interface NaverMapPathOverlayProps extends BaseOverlayProps {
   isHideCollidedCaptions?: boolean;
 }
 
-export const NaverMapPathOverlay = ({
-  zIndex = 0,
+export const NaverMapMultiPathOverlay = ({
+  colorParts,
+  coordParts,
   globalZIndex = Const.NULL_NUMBER,
   isHidden,
-  minZoom = Const.MIN_ZOOM,
-  maxZoom = Const.MAX_ZOOM,
-  isMinZoomInclusive,
-  isMaxZoomInclusive,
-
-  coords = [],
-  width = 1,
-  color = 'black',
   isHideCollidedCaptions,
   isHideCollidedMarkers,
   isHideCollidedSymbols,
-  outlineColor = 'black',
+  isMaxZoomInclusive,
+  isMinZoomInclusive,
+  maxZoom = Const.MAX_ZOOM,
+  minZoom = Const.MIN_ZOOM,
+  onTap,
   outlineWidth = 0,
-  passedColor = 'black',
-  passedOutlineColor = 'black',
   patternImage,
   patternInterval = 0,
-  progress = 0,
-  onTap,
-}: NaverMapPathOverlayProps) => {
-  if (coords) {
+  width = 1,
+  zIndex = 0,
+}: NaverMapMultiPathOverlayProps) => {
+  // Validate coordParts and colorParts
+  nAssert(
+    coordParts.length === colorParts.length,
+    `[NaverMapMultiPathOverlay] coordParts length (${coordParts.length}) should equal colorParts length (${colorParts.length}).`
+  );
+
+  if (coordParts.length === 0 || colorParts.length === 0) return null;
+
+  // Validate each coordinate part has at least 2 coordinates
+  coordParts.forEach((coords, index) => {
     nAssert(
       coords.length >= 2,
-      `[NaverMapPolylineOverlay] coords length should be equal or greater than 2, is ${coords.length}.`
+      `[NaverMapMultiPathOverlay] coordParts[${index}] length should be equal or greater than 2, is ${coords.length}.`
     );
-    if (coords.length < 2) return null;
-  }
-  nAssert(
-    progress >= -1 && progress <= 1,
-    '[NaverMapPolylineOverlay] progress should be -1 ~ 1'
-  );
+  });
+
+  if (coordParts.some((coords) => coords.length < 2)) return null;
+
+  // Process color parts to native format
+  const processedColorParts = colorParts.map((colorPart) => ({
+    color: processColor(colorPart.color || 'black') as number,
+    passedColor: processColor(colorPart.passedColor || 'black') as number,
+    outlineColor: processColor(colorPart.outlineColor || 'black') as number,
+    passedOutlineColor: processColor(
+      colorPart.passedOutlineColor || 'black'
+    ) as number,
+  }));
+
   return (
-    <NativeNaverMapPath
+    <NativeNaverMapMultiPath
       zIndexValue={zIndex}
       globalZIndexValue={globalZIndex}
       isHidden={isHidden}
       minZoom={minZoom}
       maxZoom={maxZoom}
-      coords={coords}
+      coordParts={coordParts}
+      colorParts={processedColorParts}
       width={width}
       isMinZoomInclusive={isMinZoomInclusive}
       isMaxZoomInclusive={isMaxZoomInclusive}
       isHideCollidedCaptions={isHideCollidedCaptions}
       isHideCollidedMarkers={isHideCollidedMarkers}
       isHideCollidedSymbols={isHideCollidedSymbols}
-      color={processColor(color) as number}
-      passedColor={processColor(passedColor) as number}
-      passedOutlineColor={processColor(passedOutlineColor) as number}
-      outlineColor={processColor(outlineColor) as number}
       patternImage={
         patternImage ? convertJsImagePropToNativeProp(patternImage) : undefined
       }
       patternInterval={patternInterval}
       outlineWidth={outlineWidth}
-      progress={progress}
       onTapOverlay={onTap}
     />
   );
