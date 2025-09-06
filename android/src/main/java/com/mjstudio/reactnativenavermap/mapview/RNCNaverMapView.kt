@@ -19,6 +19,7 @@ import com.mjstudio.reactnativenavermap.util.view.ViewAttacherGroup
 import com.naver.maps.map.CameraUpdate.REASON_CONTROL
 import com.naver.maps.map.CameraUpdate.REASON_GESTURE
 import com.naver.maps.map.CameraUpdate.REASON_LOCATION
+import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.NaverMapOptions
@@ -55,7 +56,15 @@ class RNCNaverMapView(
 
       it.addOnOptionChangeListener {
         reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
-          NaverMapOptionChangeEvent(surfaceId, reactTag)
+          val modeString =
+            when (it.locationTrackingMode) {
+              LocationTrackingMode.None -> "None"
+              LocationTrackingMode.NoFollow -> "NoFollow"
+              LocationTrackingMode.Follow -> "Follow"
+              LocationTrackingMode.Face -> "Face"
+              else -> "None"
+            }
+          NaverMapOptionChangeEvent(surfaceId, reactTag, modeString)
         }
       }
 
