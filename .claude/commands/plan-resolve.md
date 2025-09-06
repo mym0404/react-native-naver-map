@@ -257,3 +257,25 @@ All success criteria have been verified and met.
 15. **Impact Explanation**: Explain how decisions affect overall implementation
 16. **Progress Transparency**: Show current progress and remaining work clearly
 17. **Decision Recording**: Document important decisions made during implementation
+
+
+## Reference Commands
+
+If users want to reference existing content while creating specs:
+
+```bash
+# View existing patterns
+npx cc-self-refer pattern list
+npx cc-self-refer pattern search "<keyword>"  
+npx cc-self-refer pattern view "<pattern-id>"
+
+# View existing specs  
+npx cc-self-refer spec list
+npx cc-self-refer spec search "<keyword>"
+npx cc-self-refer spec view "<spec-id>"
+
+# View existing plans
+npx cc-self-refer plan list
+npx cc-self-refer plan search "<keyword>"
+npx cc-self-refer plan view "<plan-id>"
+```

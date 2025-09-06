@@ -167,6 +167,7 @@
         "RNCNaverMapCircle": "RNCNaverMapCircle",
         "RNCNaverMapGround": "RNCNaverMapGround",
         "RNCNaverMapMarker": "RNCNaverMapMarker",
+        "RNCNaverMapMultiPath": "RNCNaverMapMultiPath",
         "RNCNaverMapPath": "RNCNaverMapPath",
         "RNCNaverMapPolygon": "RNCNaverMapPolygon",
         "RNCNaverMapPolyline": "RNCNaverMapPolyline"

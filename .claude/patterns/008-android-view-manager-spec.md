@@ -2,6 +2,8 @@
 
 # Android ViewManager with Codegen
 
+[EXPLANATION] Android ViewManager implementation using codegen delegate pattern
+
 ## Usage
 
 ### Spec Abstract Class

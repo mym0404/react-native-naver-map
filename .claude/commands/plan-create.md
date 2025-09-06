@@ -1,42 +1,108 @@
-# Plan Create - Create New Implementation Planning Document
+# Plan Create - Interactive Implementation Planning System
 
-Create comprehensive planning to implement specific product specification or requirement with interactive Q&A and run cli.
+Create comprehensive implementation plans through deep interactive dialogue.
 
-**Usage**: `/plan-create <plan-name> <description>`
+**Usage**: `/plan-create`
 
-## What does this command do
+## Purpose
+
+This command initiates a comprehensive implementation planning process through extensive conversation. It transforms basic ideas into detailed, actionable implementation plans.
 
 ### ⚠️ IMPORTANT: CLI Command Execution Required
 
-**This command MUST execute the following `cc-self-refer` CLI command.**
+**This command MUST execute the `cc-self-refer plan create` CLI command after the interactive planning phase.**
 
-### Interactive Process Flow
-
-1. **Analyze Initial Request**: Identify all information gaps from user's brief description
-2. **Interactive Q&A Session**: Continue asking targeted questions until all implementation details are clear
-3. **Generate Plan Content**: Create comprehensive plan markdown using all gathered information
-4. **Execute CLI Command**: Save the plan using `npx -y cc-self-refer ` CLI (REQUIRED)
-
-### Information Gathering Requirements
-
-**Claude Code MUST think comprehensively and continue asking until understanding:**
-- Complete technical context and constraints
-- All implementation details and approaches
-- Success criteria and validation methods
-- Existing code patterns and dependencies
-- Performance, security, and compatibility needs
-
-### CLI Command Used
+### CLI Commands Used
 
 ```bash
-npx -y cc-self-refer plan create "<title>" <<'EOF'
-<full-plan-content>
+# Create the implementation plan after planning:
+npx -y cc-self-refer plan create "<plan-title>" <<'EOF'
+<plan-content>
 EOF
 ```
 
-### Command Arguments
-- `title`: Title of the plan
-- `full-plan-content`: Complete markdown content generated after comprehensive Q&A session
+## Interactive Deep-Dive Process
+
+### Step 1: Initial Scope Understanding (MANDATORY)
+
+**CRITICAL: Only proceed to Step 4 (CLI execution) after completing Steps 1-3 dialogue. Do not use implementation tools during discovery phase.**
+
+When user types `/plan-create`, the agent MUST first ask:
+
+```
+I'll help you create a comprehensive implementation plan through detailed conversation.
+
+First, I need to understand what you're planning to implement:
+
+**What would you like to plan?**
+
+Please describe in detail:
+- The feature, fix, or system you want to implement
+- The problem it solves or requirement it fulfills
+- Your current technical environment and constraints
+- Any specific approaches or technologies you're considering
+
+The more detail you provide about the implementation context and requirements, the better I can help create a plan that perfectly fits your project's needs and constraints.
+
+Take your time - this initial context is crucial for creating an actionable implementation plan.
+```
+
+### Step 2: Extensive Interactive Discovery
+
+Based on the user's response, engage in a **fully interactive, extensive dialogue** to understand every implementation aspect:
+
+**Technical Context Deep-Dive:**
+- Current tech stack and framework versions
+- Existing architecture and patterns
+- Database and infrastructure setup
+- Authentication and security requirements
+- Performance and scalability needs
+- Testing and deployment processes
+
+**Implementation Requirements Discovery:**
+- Specific functionality and user stories
+- Technical design and architecture decisions
+- Files and modules that need changes
+- Dependencies and integrations required
+- Error handling and edge cases
+- Success metrics and validation criteria
+
+### Step 3: Implementation Planning
+
+After thorough discovery, determine the plan structure based on implementation type:
+
+**For New Features:**
+- User stories and acceptance criteria
+- Technical architecture and design patterns
+- Database schema changes
+- API endpoints and interfaces
+- Frontend components and user flows
+- Integration points and data flow
+- Testing strategy and scenarios
+
+**For Bug Fixes:**
+- Root cause analysis and diagnosis
+- Impact assessment and affected systems
+- Fix strategy and implementation approach
+- Testing and validation requirements
+- Deployment and rollback considerations
+
+**For Performance/Refactoring:**
+- Current bottlenecks and target metrics
+- Refactoring strategy and migration steps
+- Backward compatibility considerations
+- Monitoring and observability improvements
+- Rollout and validation approach
+
+### Step 4: Create Implementation Plan
+
+Execute CLI command to create the plan:
+
+```bash
+npx -y cc-self-refer plan create "<plan-title>" <<'EOF'
+<comprehensive-plan-content>
+EOF
+```
 
 ### Interactive Q&A Strategy
 
@@ -166,54 +232,41 @@ socket.on('disconnect', () => {
 
 **Keep it practical:** Include only what's needed for execution. Skip sections if they don't apply.
 
-## Usage Examples
+## Key Principles
 
-### Create Plan Examples
+1. **Deep Discovery Through Dialogue** - Have extensive conversations to understand every implementation detail
+2. **Adaptive Questioning** - Each question builds on previous answers to go deeper
+3. **Comprehensive Planning** - Don't stop until all technical and business requirements are clear
+4. **Actionable Plans** - Create specific, implementable plans with clear steps
+5. **Context-Aware** - Consider existing codebase patterns and constraints
 
-When user requests:
+## Output Characteristics
+
+The implementation plans created should:
+- Capture complete technical requirements discussed in conversation
+- Be detailed enough for developers to execute immediately
+- Include specific file paths, code snippets, and dependencies
+- Provide clear success criteria and validation steps
+- Reference existing patterns, specs, or previous sessions when relevant
+
+## Reference Commands
+
+If users want to reference existing content while creating plans:
 
 ```bash
-/plan-create "implement rate limiting" "prevent API abuse with Redis-based rate limiting"
+# View existing patterns
+npx cc-self-refer pattern list
+npx cc-self-refer pattern search "<keyword>"  
+npx cc-self-refer pattern view "<pattern-id>"
+
+# View existing specs  
+npx cc-self-refer spec list
+npx cc-self-refer spec search "<keyword>"
+npx cc-self-refer spec view "<spec-id>"
+
+# View existing plans
+npx cc-self-refer plan list
+npx cc-self-refer plan search "<keyword>"
+npx cc-self-refer plan view "<plan-id>"
 ```
-
-**Claude's Interactive Response:**
-
-```
-I'll help create a comprehensive plan for implementing rate limiting.
-Let me gather essential information first:
-
-**Technical Context:**
-1. What web framework are you using?
-2. Is Redis already in your infrastructure?
-3. Are you running multiple server instances?
-
-**Requirements:**
-4. What rate limits do you need? (requests/minute)
-5. Different limits for different users/endpoints?
-
-Please answer these so I can ask more specific questions.
-```
-
-**User provides answers...**
-
-**Claude continues gathering information:**
-```
-Based on your answers, I need to understand:
-
-6. How do you identify users? (API key, JWT, IP?)
-7. What response when limits exceeded? (429 status, custom message?)
-8. Any services to whitelist?
-9. Monitoring/alerting requirements?
-```
-
-**After all information gathered:**
-
-1. Generate comprehensive plan using template with all Q&A information
-2. Execute (REQUIRED):
-   ```bash
-   npx -y cc-self-refer plan create "implement rate limiting" <<'EOF'
-   <generated plan content>
-   EOF
-   ```
-3. Confirm: "✅ Plan created: 001-implement-rate-limiting.md"
 

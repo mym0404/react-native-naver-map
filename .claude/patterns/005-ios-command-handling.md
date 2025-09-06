@@ -2,6 +2,8 @@
 
 # iOS Command Handling
 
+[EXPLANATION] iOS command handling implementation for processing imperative native commands
+
 ## Usage
 
 ```objc

@@ -198,3 +198,24 @@ The specifications created should:
 - Provide clear success criteria
 
 This command transforms specification creation into a deep collaborative process that produces comprehensive, multi-file project documentation that truly captures the project's vision and requirements.
+
+## Reference Commands
+
+If users want to reference existing content while creating specs:
+
+```bash
+# View existing patterns
+npx cc-self-refer pattern list
+npx cc-self-refer pattern search "<keyword>"  
+npx cc-self-refer pattern view "<pattern-id>"
+
+# View existing specs  
+npx cc-self-refer spec list
+npx cc-self-refer spec search "<keyword>"
+npx cc-self-refer spec view "<spec-id>"
+
+# View existing plans
+npx cc-self-refer plan list
+npx cc-self-refer plan search "<keyword>"
+npx cc-self-refer plan view "<plan-id>"
+```

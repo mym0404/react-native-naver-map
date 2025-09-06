@@ -2,6 +2,8 @@
 
 # Android Event Emission
 
+[EXPLANATION] Android event emission using ReactContext and RCTEventEmitter
+
 ## Usage
 
 ```kotlin
