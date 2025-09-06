@@ -2,6 +2,8 @@
 
 # React Native Codegen Commands
 
+[EXPLANATION] Defines imperative native methods using codegenNativeCommands for async/sync operations
+
 ## Usage
 
 ```typescript

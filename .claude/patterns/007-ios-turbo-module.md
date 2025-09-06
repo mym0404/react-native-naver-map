@@ -2,6 +2,8 @@
 
 # iOS TurboModule Implementation
 
+[EXPLANATION] iOS TurboModule implementation with conditional Bridge/TurboModule support
+
 ## Usage
 
 ### Header File

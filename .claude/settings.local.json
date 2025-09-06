@@ -3,7 +3,11 @@
     "allow": [
       "Bash(git add:*)",
       "Bash(npx cc-self-refer:*)",
-      "Bash(npx -y cc-self-refer:*)"
+      "Bash(npx -y cc-self-refer:*)",
+      "Bash(npx -y cc-self-refer)",
+      "Bash(cc-self-refer:*)",
+      "Bash(cc-self-refer)",
+      "Bash(mkdir:*)"
     ],
     "deny": [],
     "ask": []

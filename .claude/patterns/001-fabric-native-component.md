@@ -2,6 +2,8 @@
 
 # Fabric Native Component Definition
 
+[EXPLANATION] Defines React Native Fabric component using codegenNativeComponent with TypeScript props interface
+
 ## Usage
 
 ```typescript

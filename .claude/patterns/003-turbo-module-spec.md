@@ -2,6 +2,8 @@
 
 # TurboModule Specification
 
+[EXPLANATION] Defines TurboModule interface for native module access with type safety
+
 ## Usage
 
 ```typescript

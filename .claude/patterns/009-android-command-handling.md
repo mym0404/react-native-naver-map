@@ -2,6 +2,8 @@
 
 # Android Command Handling
 
+[EXPLANATION] Android command handling using receiveCommand method with command ID matching
+
 ## Usage
 
 ```kotlin
