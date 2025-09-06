@@ -6,7 +6,7 @@
       "Bash(npx -y cc-self-refer:*)",
       "Bash(npx -y cc-self-refer)",
       "Bash(cc-self-refer:*)",
-      "Bash(cc-self-refer)",
+      "Bash(npx -y cc-self-refer)",
       "Bash(mkdir:*)"
     ],
     "deny": [],
