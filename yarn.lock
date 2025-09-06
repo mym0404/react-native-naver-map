@@ -2679,10 +2679,12 @@ __metadata:
     "@commitlint/config-conventional": "npm:17.0.2"
     "@expo/config-plugins": "npm:10.0.3"
     "@release-it/conventional-changelog": "npm:^10.0.1"
+    "@types/fs-extra": "npm:^11"
     "@types/object-hash": "npm:^3"
     "@types/react": "npm:19.1.0"
     commitlint: "npm:17.0.2"
     del-cli: "npm:6.0.0"
+    fs-extra: "npm:^11.3.1"
     lefthook: "npm:^1.12.3"
     object-hash: "npm:^3.0.0"
     react: "npm:19.1.0"
@@ -2694,6 +2696,7 @@ __metadata:
     typedoc-plugin-extras: "npm:^4.0.0"
     typedoc-theme-hierarchy: "npm:^6.0.0"
     typescript: "npm:5.3.3"
+    zx: "npm:^8.8.1"
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -3550,6 +3553,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/fs-extra@npm:^11":
+  version: 11.0.4
+  resolution: "@types/fs-extra@npm:11.0.4"
+  dependencies:
+    "@types/jsonfile": "npm:*"
+    "@types/node": "npm:*"
+  checksum: 10/acc4c1eb0cde7b1f23f3fe6eb080a14832d8fa9dc1761aa444c5e2f0f6b6fa657ed46ebae32fb580a6700fc921b6165ce8ac3e3ba030c3dd15f10ad4dd4cae98
+  languageName: node
+  linkType: hard
+
 "@types/graceful-fs@npm:^4.1.3":
   version: 4.1.9
   resolution: "@types/graceful-fs@npm:4.1.9"
@@ -3590,6 +3603,15 @@ __metadata:
   dependencies:
     "@types/istanbul-lib-report": "npm:*"
   checksum: 10/93eb18835770b3431f68ae9ac1ca91741ab85f7606f310a34b3586b5a34450ec038c3eed7ab19266635499594de52ff73723a54a72a75b9f7d6a956f01edee95
+  languageName: node
+  linkType: hard
+
+"@types/jsonfile@npm:*":
+  version: 6.1.4
+  resolution: "@types/jsonfile@npm:6.1.4"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10/309fda20eb5f1cf68f2df28931afdf189c5e7e6bec64ac783ce737bb98908d57f6f58757ad5da9be37b815645a6f914e2d4f3ac66c574b8fe1ba6616284d0e97
   languageName: node
   linkType: hard
 
@@ -6129,6 +6151,17 @@ __metadata:
     jsonfile: "npm:^6.0.1"
     universalify: "npm:^2.0.0"
   checksum: 10/c9fe7b23dded1efe7bbae528d685c3206477e20cc60e9aaceb3f024f9b9ff2ee1f62413c161cb88546cc564009ab516dec99e9781ba782d869bb37e4fe04a97f
+  languageName: node
+  linkType: hard
+
+"fs-extra@npm:^11.3.1":
+  version: 11.3.1
+  resolution: "fs-extra@npm:11.3.1"
+  dependencies:
+    graceful-fs: "npm:^4.2.0"
+    jsonfile: "npm:^6.0.1"
+    universalify: "npm:^2.0.0"
+  checksum: 10/2b893213411b1da11f9b061ccb0bcff4d6dd66fe90aa8f5b1616219a5e7ca659da869f454ebd8e94aa21c58342730fb43a2e5c98b5c6c5124f0c54a4633f64b0
   languageName: node
   linkType: hard
 
@@ -11950,5 +11983,14 @@ __metadata:
   version: 2.1.2
   resolution: "yoctocolors-cjs@npm:2.1.2"
   checksum: 10/d731e3ba776a0ee19021d909787942933a6c2eafb2bbe85541f0c59aa5c7d475ce86fcb860d5803105e32244c3dd5ba875b87c4c6bf2d6f297da416aa54e556f
+  languageName: node
+  linkType: hard
+
+"zx@npm:^8.8.1":
+  version: 8.8.1
+  resolution: "zx@npm:8.8.1"
+  bin:
+    zx: build/cli.js
+  checksum: 10/615860a8deeec35d247c9bab3f9ab6c4801eac150cb09a3e09a3c79d1c8429fbaa3f7497cfa933ce8d75b48308ef531067f9a756610d69acf022bafe251bc7c1
   languageName: node
   linkType: hard

@@ -9,6 +9,7 @@ import com.mjstudio.reactnativenavermap.overlay.arrowheadpath.RNCNaverMapArrowhe
 import com.mjstudio.reactnativenavermap.overlay.circle.RNCNaverMapCircleManager
 import com.mjstudio.reactnativenavermap.overlay.ground.RNCNaverMapGroundManager
 import com.mjstudio.reactnativenavermap.overlay.marker.RNCNaverMapMarkerManager
+import com.mjstudio.reactnativenavermap.overlay.multipath.RNCNaverMapMultiPathManager
 import com.mjstudio.reactnativenavermap.overlay.path.RNCNaverMapPathManager
 import com.mjstudio.reactnativenavermap.overlay.polygon.RNCNaverMapPolygonManager
 import com.mjstudio.reactnativenavermap.overlay.polyline.RNCNaverMapPolylineManager
@@ -22,6 +23,7 @@ class RNCNaverMapPackage : ReactPackage {
       add(RNCNaverMapPolygonManager())
       add(RNCNaverMapPolylineManager())
       add(RNCNaverMapPathManager())
+      add(RNCNaverMapMultiPathManager())
       add(RNCNaverMapArrowheadPathManager())
       add(RNCNaverMapGroundManager())
     }
