@@ -229,27 +229,26 @@
   if (!_rncParent.emitter)
     return;
 
-  NSString* modeString;
+  std::string modeString;
   switch (self.mapView.positionMode) {
     case NMFMyPositionDisabled:
-      modeString = @"None";
+      modeString = "None";
       break;
     case NMFMyPositionNormal:
-      modeString = @"NoFollow";
+      modeString = "NoFollow";
       break;
     case NMFMyPositionDirection:
-      modeString = @"Follow";
+      modeString = "Follow";
       break;
     case NMFMyPositionCompass:
-      modeString = @"Face";
+      modeString = "Face";
       break;
     default:
-      modeString = @"None";
+      modeString = "None";
       break;
   }
 
-  _rncParent.emitter->onOptionChanged(
-      {.locationTrackingMode = std::string([modeString UTF8String])});
+  _rncParent.emitter->onOptionChanged({.locationTrackingMode = modeString});
 }
 
 - (void)mapView:(NMFMapView*)mapView cameraIsChangingByReason:(NSInteger)reason {

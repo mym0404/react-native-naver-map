@@ -271,7 +271,7 @@ const jejuRegion: Region = {
   logoAlign={'TopRight'}
   locale={'ja'}
   onInitialized={() => console.log('initialized!')}
-  onOptionChanged={({ nativeEvent: { locationTrackingMode } }) => 
+  onOptionChanged={({ locationTrackingMode }) =>
     console.log('Option Changed!', locationTrackingMode)
   }
   onCameraChanged={(args) => console.log(`Camera Changed: ${formatJson(args)}`)}
