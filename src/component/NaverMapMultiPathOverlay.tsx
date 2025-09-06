@@ -42,6 +42,12 @@ export interface NaverMapMultiPathOverlayProps extends BaseOverlayProps {
    */
   patternInterval?: number;
   /**
+   * progress 속성을 사용하면 경로의 진행도를 0.0 ~ 1.0 범위로 지정할 수 있습니다.
+   *
+   * @default 0
+   */
+  progress?: number;
+  /**
    * isHideCollidedSymbols 속성을 true로 지정하면 경로선과 겹치는 지도 심벌이 숨겨집니다.
    *
    * @default false
@@ -80,6 +86,7 @@ export const NaverMapMultiPathOverlay = ({
   outlineWidth = 0,
   patternImage,
   patternInterval = 0,
+  progress = 0,
   width = 1,
   zIndex = 0,
 }: NaverMapMultiPathOverlayProps) => {
@@ -127,6 +134,7 @@ export const NaverMapMultiPathOverlay = ({
         patternImage ? convertJsImagePropToNativeProp(patternImage) : undefined
       }
       patternInterval={patternInterval}
+      progress={progress}
       outlineWidth={outlineWidth}
       onTapOverlay={onTap}
     />

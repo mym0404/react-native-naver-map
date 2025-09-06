@@ -52,6 +52,7 @@ interface Props extends BaseOverlay, ViewProps {
   outlineWidth?: Double;
   patternInterval?: Int32;
   patternImage?: NativeImageProp;
+  progress?: Double;
   isHideCollidedSymbols?: WithDefault<boolean, false>;
   isHideCollidedMarkers?: WithDefault<boolean, false>;
   isHideCollidedCaptions?: WithDefault<boolean, false>;

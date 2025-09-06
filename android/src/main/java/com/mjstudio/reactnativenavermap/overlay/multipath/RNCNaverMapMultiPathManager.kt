@@ -122,8 +122,8 @@ class RNCNaverMapMultiPathManager : RNCNaverMapMultiPathManagerSpec<RNCNaverMapM
       val colorPart =
         MultipartPathOverlay.ColorPart(
           pathPartMap.getInt("color").takeIf { pathPartMap.hasKey("color") } ?: Color.BLACK,
-          pathPartMap.getInt("passedColor").takeIf { pathPartMap.hasKey("passedColor") } ?: Color.BLACK,
           pathPartMap.getInt("outlineColor").takeIf { pathPartMap.hasKey("outlineColor") } ?: Color.BLACK,
+          pathPartMap.getInt("passedColor").takeIf { pathPartMap.hasKey("passedColor") } ?: Color.BLACK,
           pathPartMap.getInt("passedOutlineColor").takeIf { pathPartMap.hasKey("passedOutlineColor") } ?: Color.BLACK,
         )
       colorParts.add(colorPart)
@@ -162,6 +162,14 @@ class RNCNaverMapMultiPathManager : RNCNaverMapMultiPathManagerSpec<RNCNaverMapM
     value: Int,
   ) = view.withOverlay {
     it.patternInterval = value
+  }
+
+  @ReactProp(name = "progress")
+  override fun setProgress(
+    view: RNCNaverMapMultiPath?,
+    value: Double,
+  ) = view.withOverlay {
+    it.progress = value
   }
 
   @ReactProp(name = "isHideCollidedSymbols")

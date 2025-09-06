@@ -99,6 +99,8 @@ using namespace facebook::react;
   }
   if (prev.patternInterval != next.patternInterval)
     _inner.patternInterval = next.patternInterval;
+  if (prev.progress != next.progress)
+    _inner.progress = next.progress;
 
   if (prev.isHideCollidedSymbols != next.isHideCollidedSymbols)
     [_inner setIsHideCollidedSymbols:next.isHideCollidedSymbols];
