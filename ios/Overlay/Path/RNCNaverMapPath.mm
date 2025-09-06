@@ -95,6 +95,8 @@ using namespace facebook::react;
                          [self, image]() { self.inner.patternIcon = image; });
         });
   }
+  if (prev.patternInterval != next.patternInterval)
+    _inner.patternInterval = next.patternInterval;
 
   if (prev.progress != next.progress)
     _inner.progress = next.progress;
