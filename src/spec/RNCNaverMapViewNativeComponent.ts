@@ -151,7 +151,11 @@ interface Props extends ViewProps {
   locationOverlay?: Readonly<NativeLocationOverlayProp>;
 
   onInitialized?: DirectEventHandler<Readonly<{}>>;
-  onOptionChanged?: DirectEventHandler<Readonly<{}>>;
+  onOptionChanged?: DirectEventHandler<
+    Readonly<{
+      locationTrackingMode: string;
+    }>
+  >;
   onCameraChanged?: DirectEventHandler<
     Readonly<{
       latitude: Double;

@@ -432,7 +432,9 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * @event
    */
-  onOptionChanged?: () => void;
+  onOptionChanged?: (event: {
+    nativeEvent: { locationTrackingMode: LocationTrackingMode | string };
+  }) => void;
   /**
    * 어떤 이유에 의해서건 카메라가 움직이면 카메라 변경 이벤트가 발생합니다.
    *
