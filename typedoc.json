@@ -38,10 +38,8 @@
     "alphabetical"
   ],
   "plugin": [
-    "typedoc-plugin-extras",
-    "typedoc-theme-hierarchy"
+    "typedoc-plugin-extras"
   ],
-  "theme": "hierarchy",
   "customTitle": "React Native Naver Map",
   "customDescription": "\uD83D\uDCCD Naver Map Component for React Native Supporting Fabric and Bridge and Expo",
   "footerLastModified": true,
@@ -63,6 +61,5 @@
   "favicon": "public/favicon.ico",
   "navigationLinks": {
     "Github": "https://github.com/mym0404/react-native-naver-map"
-  },
-  "customCss": "./public/doc.css"
+  }
 }

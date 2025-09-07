@@ -1,5 +1,64 @@
 packages:
   - example
 
+catalog:
+  # React & React Native
+  react: 19.1.0
+  react-native: 0.80.0
+  '@types/react': 19.1.0
+  '@types/react-test-renderer': ^19.1.0
+  react-test-renderer: 19.1.0
+  
+  # React Native Core Packages
+  '@react-native/babel-preset': 0.80.0
+  '@react-native/metro-config': 0.80.0
+  '@react-native/new-app-screen': 0.80.0
+  '@react-native/typescript-config': 0.80.0
+  '@react-native-community/cli': 19.0.0
+  '@react-native-community/cli-platform-android': 19.0.0
+  '@react-native-community/cli-platform-ios': 19.0.0
+  
+  # TypeScript
+  typescript: 5.3.3
+  
+  # Babel
+  '@babel/core': ^7.28.4
+  '@babel/preset-env': ^7.28.3
+  '@babel/runtime': ^7.28.4
+  
+  # Testing
+  jest: ^30.0.2
+  
+  # Build & Development Tools
+  'react-native-builder-bob': 0.40.12
+  turbo: ^2.5.6
+  'del-cli': 6.0.0
+  lefthook: ^1.12.3
+  zx: ^8.8.1
+  
+  # Linting & Code Quality
+  '@biomejs/biome': ^2.2.2
+  commitlint: 17.0.2
+  '@commitlint/config-conventional': 17.0.2
+  
+  # Documentation
+  typedoc: 0.28.5
+  'typedoc-plugin-extras': ^4.0.0
+  'typedoc-theme-hierarchy': ^6.0.0
+  '@blackwych/typedoc-plugin-categorized-hierarchy-theme': ^1.1.1
+  
+  # Release Management
+  'release-it': 19.0.3
+  '@release-it/conventional-changelog': ^10.0.1
+  
+  # Expo
+  '@expo/config-plugins': 10.0.3
+  
+  # Utilities
+  'fs-extra': ^11.3.1
+  '@types/fs-extra': ^11
+  'object-hash': ^3.0.0
+  '@types/object-hash': ^3
+
 onlyBuiltDependencies:
   - unrs-resolver

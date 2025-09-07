@@ -74,29 +74,31 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@babel/runtime": "^7.27.6",
-    "@biomejs/biome": "^2.2.2",
-    "@blackwych/typedoc-plugin-categorized-hierarchy-theme": "^1.1.1",
-    "@commitlint/config-conventional": "17.0.2",
-    "@expo/config-plugins": "10.0.3",
-    "@release-it/conventional-changelog": "^10.0.1",
-    "@types/fs-extra": "^11",
-    "@types/object-hash": "^3",
-    "@types/react": "19.1.0",
-    "commitlint": "17.0.2",
-    "del-cli": "6.0.0",
-    "fs-extra": "^11.3.1",
-    "lefthook": "^1.12.3",
-    "react": "19.1.0",
-    "react-native": "0.80.0",
-    "react-native-builder-bob": "0.40.12",
-    "release-it": "19.0.3",
-    "turbo": "^2.5.6",
-    "typedoc": "0.28.5",
-    "typedoc-plugin-extras": "^4.0.0",
-    "typedoc-theme-hierarchy": "^6.0.0",
-    "typescript": "5.3.3",
-    "zx": "^8.8.1"
+    "@babel/runtime": "catalog:",
+    "@babel/core": "catalog:",
+    "@biomejs/biome": "catalog:",
+    "@blackwych/typedoc-plugin-categorized-hierarchy-theme": "catalog:",
+    "@commitlint/config-conventional": "catalog:",
+    "@expo/config-plugins": "catalog:",
+    "@release-it/conventional-changelog": "catalog:",
+    "@types/fs-extra": "catalog:",
+    "@types/object-hash": "catalog:",
+    "@types/react": "catalog:",
+    "@react-native/typescript-config": "catalog:",
+    "commitlint": "catalog:",
+    "del-cli": "catalog:",
+    "fs-extra": "catalog:",
+    "lefthook": "catalog:",
+    "react": "catalog:",
+    "react-native": "catalog:",
+    "react-native-builder-bob": "catalog:",
+    "release-it": "catalog:",
+    "turbo": "catalog:",
+    "typedoc": "catalog:",
+    "typedoc-plugin-extras": "catalog:",
+    "typedoc-theme-hierarchy": "catalog:",
+    "typescript": "catalog:",
+    "zx": "catalog:"
   },
   "peerDependencies": {
     "react": "*",
@@ -180,7 +182,7 @@
     }
   },
   "dependencies": {
-    "object-hash": "^3.0.0"
+    "object-hash": "catalog:"
   },
   "packageManager": "pnpm@10.15.0+sha512.486ebc259d3e999a4e8691ce03b5cac4a71cbeca39372a9b762cb500cfdf0873e2cb16abe3d951b1ee2cf012503f027b98b6584e4df22524e0c7450d9ec7aa7b",
   "workspaces": [
