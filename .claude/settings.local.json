@@ -7,7 +7,9 @@
       "Bash(npx -y cc-self-refer)",
       "Bash(cc-self-refer:*)",
       "Bash(npx -y cc-self-refer)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(gh pr view:*)",
+      "Bash(pnpm add:*)"
     ],
     "deny": [],
     "ask": []

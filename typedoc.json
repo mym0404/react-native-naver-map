@@ -38,8 +38,10 @@
     "alphabetical"
   ],
   "plugin": [
-    "typedoc-plugin-extras"
+    "typedoc-plugin-extras",
+    "typedoc-theme-hierarchy"
   ],
+  "theme": "hierarchy",
   "customTitle": "React Native Naver Map",
   "customDescription": "\uD83D\uDCCD Naver Map Component for React Native Supporting Fabric and Bridge and Expo",
   "footerLastModified": true,
