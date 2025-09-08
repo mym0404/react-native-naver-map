@@ -124,15 +124,15 @@ To test the library, you need to configure API keys:
 - The library requires React Native 0.74+ and New Architecture enabled
 - New Architecture (Fabric) is mandatory in v2.x - no Bridge support
 - Uses Conventional Commits for commit messages
-- Documentation is auto-generated with TypeDoc from JSDoc comments
+- Documentation is auto-generated from JSDoc comments
 - All native code changes require both iOS and Android implementations
 - Codegen runs automatically on build - regenerate with `pnpm codegen` if specs change
 
-# JSDoc & TypeDoc Documentation
+# JSDoc Documentation
 
-- Write TypeDoc compatible documentation in JSDoc format
+- Write JSDoc documentation for all public APIs
 - Key tags: `@param`, `@returns`, `@example`, `@default`, `@internal`, `@platform`
-- Pattern reference: `/pattern-use jsdoc-typedoc`
+- Pattern reference: `/pattern-use jsdoc`
 
 # Package Scripts
 
@@ -151,7 +151,7 @@ To test the library, you need to configure API keys:
 ## Build & Release
 - `pnpm prepack` - Full build process: Expo plugin + docs + library build
 - `pnpm build:expo-config-plugin` - Build Expo configuration plugin
-- `pnpm build:docs` - Generate TypeDoc documentation
+- `pnpm build:docs` - Generate documentation
 - `pnpm clean` - Clean all build directories
 - `pnpm release` - Execute release script
 

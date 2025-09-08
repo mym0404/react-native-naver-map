@@ -1,8 +1,8 @@
-# jsdoc-typedoc
+# jsdoc
 
-# JSDoc TypeDoc Documentation
+# JSDoc Documentation
 
-[EXPLANATION] JSDoc documentation patterns for TypeScript components and methods using TypeDoc
+[EXPLANATION] JSDoc documentation patterns for TypeScript components and methods
 
 ## Usage
 
@@ -30,7 +30,7 @@ screenToCoordinate(x: number, y: number): Promise<LatLng>;
 /**
  * 카메라를 지정된 위치로 애니메이션합니다.
  * @param latitude 위도
- * @param longitude 경도 
+ * @param longitude 경도
  * @param zoom 줌 레벨 (선택사항)
  * @default zoom 현재 줌 레벨 유지
  * @example
