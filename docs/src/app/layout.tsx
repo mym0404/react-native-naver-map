@@ -58,7 +58,15 @@ export default async function RootLayout({
         data-website-id={'20802a8b-5591-4919-a8af-d20317718fd0'}
       />
       <Head
-      // ... Your additional head options
+        color={{
+          hue: { light: 160, dark: 164 }, // 0~360
+          saturation: 80, // 0~100 (단일값 또는 light/dark 분리 가능)
+          lightness: { light: 44, dark: 60 }, // 0~100
+        }}
+        backgroundColor={{
+          dark: '#080808',
+        }}
+        // ... Your additional head options
       >
         {/* Your additional tags should be passed as `children` of `<Head>` element */}
       </Head>
