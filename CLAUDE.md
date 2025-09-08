@@ -52,7 +52,7 @@ The library provides React components that wrap native map views:
 
 ### Codegen Types
 - `Double` - 64-bit floating point
-- `Int32` - 32-bit integer  
+- `Int32` - 32-bit integer
 - `WithDefault<T, Default>` - Type with default value
 - `DirectEventHandler<T>` - Event callback type
 - `Readonly<T>` - Immutable object type
@@ -145,7 +145,7 @@ To test the library, you need to configure API keys:
 
 ## Code Quality & Testing
 - `pnpm typecheck` - Run TypeScript type checking without emitting files
-- `pnpm lint` / `pnpm t` - Run all linting checks (uses Lefthook)
+- `pnpm lint` / `pnpm run t` - Run all linting checks (uses Lefthook)
 - `pnpm format` - Format code using configured formatters (Biome)
 
 ## Build & Release

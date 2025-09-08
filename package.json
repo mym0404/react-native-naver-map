@@ -29,7 +29,7 @@
   ],
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "lint": "pnpm t",
+    "lint": "pnpm run t",
     "t": "pnpm lefthook run check",
     "format": "pnpm lefthook run format",
     "release": "./script/release.sh",
