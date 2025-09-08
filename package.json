@@ -75,7 +75,7 @@
   "devDependencies": {
     "@babel/runtime": "catalog:",
     "@babel/core": "catalog:",
-    "@biomejs/biome": "^2.2.2",
+    "@biomejs/biome": "catalog:",
     "@commitlint/config-conventional": "17.0.2",
     "@expo/config-plugins": "10.0.3",
     "@release-it/conventional-changelog": "^10.0.1",
