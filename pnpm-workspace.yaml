@@ -2,25 +2,26 @@ packages:
   - example
 
 catalog:
-  # React & React Native (공통)
+  # React & React Native
   react: 19.1.0
   react-native: 0.80.0
   '@types/react': 19.1.0
   '@types/react-test-renderer': ^19.1.0
   react-test-renderer: 19.1.0
-  
-  # React Native Core (공통)
+
+  # React Native Core
+  '@react-native/new-app-screen': 0.80.0
   '@react-native/babel-preset': 0.80.0
   '@react-native/metro-config': 0.80.0
   '@react-native/typescript-config': 0.80.0
   '@react-native-community/cli': 19.0.0
   '@react-native-community/cli-platform-android': 19.0.0
   '@react-native-community/cli-platform-ios': 19.0.0
-  
-  # TypeScript (공통)
+
+  # TypeScript
   typescript: 5.3.3
-  
-  # Babel (공통)
+
+  # Babel
   '@babel/core': ^7.28.4
   '@babel/runtime': ^7.28.4
 

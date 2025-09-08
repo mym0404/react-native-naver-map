@@ -28,7 +28,7 @@
     "@react-native/typescript-config": "catalog:",
     "@types/react": "catalog:",
     "@types/react-test-renderer": "catalog:",
-    "jest": "^30.0.2"
+    "jest": "^30.0.2",
     "react-test-renderer": "catalog:",
     "typescript": "catalog:"
   },
