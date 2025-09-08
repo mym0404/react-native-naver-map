@@ -1,0 +1,262 @@
+import { Callout, Steps, Tabs, FileTree } from 'nextra/components'
+
+# iOS 설정
+
+iOS 플랫폼에서 React Native Naver Map을 설정하는 상세 가이드입니다.
+
+## 요구사항
+
+- iOS 13.0 이상
+- Xcode 14.0 이상
+- CocoaPods 1.11 이상
+
+## 설정 단계
+
+<Steps>
+### CocoaPods 설치
+
+iOS 프로젝트 디렉토리에서 Pod을 설치합니다:
+
+```bash
+cd ios && pod install
+```
+
+<Callout type="info">
+  `pod install` 실행 시 오류가 발생하면 `pod repo update`를 먼저 실행해보세요.
+</Callout>
+
+### API 키 설정
+
+`ios/[프로젝트명]/Info.plist` 파일에 API 키를 추가합니다:
+
+```xml {3-4,6-7}
+<?xml version="1.0" encoding="UTF-8"?>
+<dict>
+  <key>NMFNcpKeyId</key>
+  <string>YOUR_CLIENT_ID_HERE</string>
+  
+  <!-- 2025.04.17 이전 AI NAVER API 고객용 (선택사항) -->
+  <key>NMFClientId</key>
+  <string>YOUR_CLIENT_ID_HERE</string>
+  
+  <!-- 기타 설정들... -->
+</dict>
+```
+
+### 위치 권한 설정
+
+사용자의 현재 위치를 표시하려면 위치 권한 설명을 추가합니다:
+
+```xml {2-5,7-8,10-15}
+<dict>
+  <!-- 앱 사용 중 위치 권한 -->
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>지도에서 현재 위치를 표시하기 위해 위치 정보가 필요합니다.</string>
+  
+  <!-- 항상 위치 권한 (선택사항) -->
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>백그라운드에서도 위치를 추적하기 위해 위치 정보가 필요합니다.</string>
+  
+  <!-- 임시 정확한 위치 권한 (iOS 14+) -->
+  <key>NSLocationTemporaryUsageDescriptionDictionary</key>
+  <dict>
+    <key>MapNavigation</key>
+    <string>정확한 내비게이션을 위해 위치 정보가 필요합니다.</string>
+  </dict>
+</dict>
+```
+
+### 백그라운드 모드 설정 (선택사항)
+
+백그라운드에서 위치 업데이트가 필요한 경우:
+
+1. Xcode에서 프로젝트 열기
+2. 프로젝트 타겟 선택
+3. **Signing & Capabilities** 탭 선택
+4. **+ Capability** 클릭
+5. **Background Modes** 추가
+6. **Location updates** 체크
+
+### 빌드 및 실행
+
+모든 설정이 완료되면 앱을 빌드하고 실행합니다:
+
+<Tabs items={['npm', 'yarn', 'pnpm']}>
+  <Tabs.Tab>
+    ```bash
+    npm run ios
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```bash
+    yarn ios
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```bash
+    pnpm ios
+    ```
+  </Tabs.Tab>
+</Tabs>
+</Steps>
+
+## 권한 요청 구현
+
+### react-native-permissions 사용
+
+<Steps>
+### 설치
+
+```bash
+npm install react-native-permissions
+```
+
+### Podfile 설정
+
+`ios/Podfile`에 권한 설정 추가:
+
+```ruby {3-7}
+target 'YourProject' do
+  # ... 기존 설정
+  
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-LocationAccuracy', :path => "#{permissions_path}/LocationAccuracy"
+  pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
+  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
+end
+```
+
+### Pod 재설치
+
+```bash
+cd ios && pod install
+```
+
+### 코드 구현
+
+```tsx
+import { request, PERMISSIONS, requestLocationAccuracy } from 'react-native-permissions';
+
+const requestLocationPermission = async () => {
+  try {
+    // 위치 권한 요청
+    const result = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+    
+    if (result === 'granted') {
+      // 정확한 위치 요청 (iOS 14+)
+      const accuracy = await requestLocationAccuracy({
+        purposeKey: 'MapNavigation', // Info.plist에 정의한 키
+      });
+      
+      console.log('위치 정확도:', accuracy);
+    }
+  } catch (error) {
+    console.error('위치 권한 요청 실패:', error);
+  }
+};
+```
+</Steps>
+
+## 일반적인 문제 해결
+
+### 빌드 오류
+
+<Callout type="error" emoji="❌">
+  **"No such module 'NMapsMap'"** 오류가 발생하는 경우
+</Callout>
+
+1. `pod install`을 다시 실행
+2. Xcode에서 **Product > Clean Build Folder** 실행
+3. DerivedData 삭제: `rm -rf ~/Library/Developer/Xcode/DerivedData`
+
+### API 키 오류
+
+<Callout type="error" emoji="❌">
+  **"인증되지 않은 앱"** 메시지가 표시되는 경우
+</Callout>
+
+1. Info.plist에 API 키가 올바르게 설정되었는지 확인
+2. 네이버 클라우드 콘솔에서 Bundle ID가 일치하는지 확인
+3. 개발/프로덕션 환경의 Bundle ID 확인
+
+### 시뮬레이터 이슈
+
+<Callout type="warning" emoji="⚠️">
+  **시뮬레이터에서 위치가 작동하지 않는 경우**
+</Callout>
+
+시뮬레이터 메뉴에서:
+1. **Features > Location** 선택
+2. **Custom Location** 또는 미리 정의된 위치 선택
+
+## 고급 설정
+
+### 빌드 구성별 API 키
+
+환경별로 다른 API 키를 사용하려면 빌드 구성을 활용합니다:
+
+1. Xcode에서 **xcconfig** 파일 생성
+2. 환경별 설정 추가:
+
+`Config-Debug.xcconfig`:
+```
+NAVER_MAP_API_KEY = DEBUG_KEY_HERE
+```
+
+`Config-Release.xcconfig`:
+```
+NAVER_MAP_API_KEY = RELEASE_KEY_HERE
+```
+
+3. Info.plist에서 변수 사용:
+```xml
+<key>NMFNcpKeyId</key>
+<string>$(NAVER_MAP_API_KEY)</string>
+```
+
+### 앱 크기 최적화
+
+앱 크기를 줄이려면 사용하지 않는 아키텍처를 제외합니다:
+
+`ios/Podfile`:
+```ruby
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
+    end
+  end
+end
+```
+
+### 비트코드 설정
+
+네이버 지도 SDK는 비트코드를 지원하지 않으므로 비활성화해야 합니다:
+
+1. Xcode에서 프로젝트 선택
+2. **Build Settings** 탭
+3. **Enable Bitcode**를 **No**로 설정
+
+## 프로젝트 구조
+
+성공적으로 설정된 iOS 프로젝트의 구조:
+
+<FileTree>
+  <FileTree.Folder name="ios" defaultOpen>
+    <FileTree.Folder name="YourProject" defaultOpen>
+      <FileTree.File name="Info.plist" />
+      <FileTree.File name="AppDelegate.mm" />
+    </FileTree.Folder>
+    <FileTree.File name="Podfile" />
+    <FileTree.File name="Podfile.lock" />
+    <FileTree.Folder name="Pods">
+      <FileTree.File name="..." />
+    </FileTree.Folder>
+  </FileTree.Folder>
+</FileTree>
+
+## 다음 단계
+
+- [Android 설정](/installation/android) - Android 플랫폼 설정
+- [Expo 설정](/installation/expo) - Expo 프로젝트 설정
+- [컴포넌트 사용법](/components) - 지도 컴포넌트 활용

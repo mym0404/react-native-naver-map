@@ -1,48 +1,110 @@
-# Expo Release It
+import { Callout } from 'nextra/components'
+import { Cards, Card } from '../lib/components'
+import { Smartphone, Monitor, Package, Play, Puzzle, BookOpen, FileText } from 'lucide-react'
 
-![expo-release-it thumbnail](/social-image.png)
+# React Native Naver Map
 
-`expo-release-it` is an opinionated Expo CICD workflow CLI for building & uploading & submitting Expo projects on your machine
+React Native 앱에 네이버 지도를 통합할 수 있는 강력하고 유연한 라이브러리입니다.
 
-# Features
+<Callout type="info" emoji="🚀">
+  **v2.x 버전**부터는 React Native의 New Architecture (Fabric)만 지원합니다.
+  Bridge 아키텍처를 사용 중이라면 v1.x 버전을 사용해주세요.
+</Callout>
 
-- 🎉 No **EAS**
-- 🩵 No headaches when understanding and managing **keys and credentials**
-- 🧩 Manage and sync **store metadata** easily
-- 🌍 Works with [Expo CNG](https://docs.expo.dev/workflow/continuous-native-generation/) mode (also available in non-CNG environments)
-- 📦 Build artifacts **locally** (`apk`, `aab`, `ipa`)
-- 🚀 Upload artifacts to Google Play Console Internal Testing Track and iOS TestFlight
-- ✅ Submit releases for review
+## 주요 특징
 
+### 🏗️ New Architecture 지원
+React Native 0.74+ 버전의 Fabric 렌더러를 완벽하게 지원합니다. 네이티브 성능과 동기식 레이아웃으로 더욱 부드러운 지도 경험을 제공합니다.
 
-# Why?
+### 📚 상세한 문서화
+모든 컴포넌트와 API에 대한 완벽한 TypeScript 타입 정의와 JSDoc 주석을 제공합니다. IDE에서 자동 완성과 인라인 문서를 통해 개발 생산성을 높일 수 있습니다.
 
-**You don't need Expo EAS and to understand how it works in most small projects and our machine is much faster than using the cloud.**
+### 📱 Expo 지원
+Expo Config Plugin을 통해 Expo 프로젝트에서도 손쉽게 사용할 수 있습니다. Development Build와 Production 환경 모두 지원합니다.
 
-<details>
-  <summary>Full Details</summary>
+### ⚡ 최적화된 마커 성능
+다양한 마커 타입을 지원하며, 이미지 캐싱과 최적화를 통해 수천 개의 마커도 부드럽게 렌더링합니다.
 
-  Expo EAS is convenient, but it requires additional configuration files, console setup, and a conceptual understanding of Over-The-Air (OTA) updates.
-  Also, builds must be performed on EAS Cloud, which is not free and can be slow.
+### 🔄 네이티브 SDK 완벽 호환
+최신 네이버 지도 SDK (iOS/Android 3.22.1)의 모든 기능을 React Native에서 사용할 수 있도록 포팅했습니다.
 
-  While EAS is useful for larger teams, if you are developing alone or with just a few people and question the need for such a process, `expo-release-it` is the answer.
+## 지원 플랫폼
 
-  Based on years of experience developing with React Native, I encourage a more traditional approach: build APK, AAB, and IPA files locally,
-  upload them to each platform’s store testing track, and request reviews—without worrying about binary versions, OTA update versions, or branch management.
+<Cards>
+  <Card title="iOS" href="/installation/ios" icon={<Smartphone className="w-8 h-8" />}>
+    **iOS 13.0+**<br/>
+    • NMapsMap SDK 3.22.1<br/>
+    • Objective-C++ 구현
+  </Card>
+  <Card title="Android" href="/installation/android" icon={<Monitor className="w-8 h-8" />}>
+    **Android 6.0+ (API 23)**<br/>
+    • Naver Maps SDK 3.22.1<br/>
+    • Kotlin 구현
+  </Card>
+  <Card title="Expo" href="/installation/expo" icon={<Package className="w-8 h-8" />}>
+    **Expo SDK 49+**<br/>
+    • Config Plugin 제공<br/>
+    • Development Build 지원
+  </Card>
+</Cards>
 
-  This approach is much faster, simpler, and, most importantly, allows you to take full advantage of your computer’s fast CPU.
+## 빠른 시작
 
-  I’m also a big fan of OTA updates, and I’ve enjoyed a lot of efficiency when working in larger teams, but it always required setting up many supporting systems in advance.
+```tsx
+import { NaverMapView, NaverMapMarkerOverlay } from '@mj-studio/react-native-naver-map';
 
-  `expo-release-it` is a CLI tool that encapsulates the know-how I have gained over years of automating build and review processes.
-  Internally, it ports and integrates tools like Fastlane and Match to automate native binary builds and review requests.
+export default function MapScreen() {
+  return (
+    <NaverMapView
+      style={{ flex: 1 }}
+      initialRegion={{
+        latitude: 37.5665,
+        longitude: 126.9780,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      }}
+    >
+      <NaverMapMarkerOverlay
+        latitude={37.5665}
+        longitude={126.9780}
+        anchor={{ x: 0.5, y: 1 }}
+        caption={{ text: "서울시청" }}
+      />
+    </NaverMapView>
+  );
+}
+```
 
-  Therefore, this tool enforces an opinionated versioning, build, and review request workflow.
-  However, once you understand this approach, your app deployment process will become significantly faster.
+<Callout type="warning">
+  네이버 지도를 사용하려면 [네이버 클라우드 플랫폼](https://www.ncloud.com)에서 Maps API 키를 발급받아야 합니다.
+</Callout>
 
-</details>
+## 버전 호환성
 
-# Structurual Requirements
+| React Native Naver Map | React Native | 비고 |
+|---|---|---|
+| ≥ 2.1.0 | ≥ 0.74 | Bridge 지원 중단, New Architecture 필수 |
+| ≥ 2.0.0 | ≥ 0.73 | New Architecture 전용 |
+| < 2.0.0 | ≥ 0.64 | Old/New Architecture 모두 지원 |
 
-- `Version Code(Android)` and `Builder Number(iOS)` are the same.
-- All Keys, Credentials(except iOS certificates & provisioning profiles served in Github separately) are stored in VCS
+<Callout>
+  2025년 4월 17일부터 [새로운 Maps 단독 상품](https://www.ncloud.com/support/notice/all/1930)이 출시되었습니다.
+  기존 AI NAVER API 고객은 레거시 키 설정을 참고해주세요.
+</Callout>
+
+## 다음 단계
+
+<Cards>
+  <Card title="시작하기" href="/getting-started" icon={<Play className="w-6 h-6" />}>
+    설치 및 초기 설정 방법을 알아보세요
+  </Card>
+  <Card title="컴포넌트" href="/components" icon={<Puzzle className="w-6 h-6" />}>
+    사용 가능한 컴포넌트와 오버레이를 확인하세요
+  </Card>
+  <Card title="가이드" href="/guides" icon={<BookOpen className="w-6 h-6" />}>
+    실제 사용 예제와 모범 사례를 살펴보세요
+  </Card>
+  <Card title="API 레퍼런스" href="/api" icon={<FileText className="w-6 h-6" />}>
+    전체 API 문서를 확인하세요
+  </Card>
+</Cards>

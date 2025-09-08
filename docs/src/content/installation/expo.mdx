@@ -1,0 +1,399 @@
+import { Callout, Steps, Tabs, FileTree } from 'nextra/components'
+
+# Expo 설정
+
+Expo 프로젝트에서 React Native Naver Map을 설정하는 상세 가이드입니다.
+
+<Callout type="info" emoji="📱">
+  Expo Go에서는 네이티브 모듈을 사용할 수 없습니다. 
+  Development Build 또는 Production Build가 필요합니다.
+</Callout>
+
+## 요구사항
+
+- Expo SDK 49 이상
+- React Native 0.73 이상
+- Development Build 환경
+
+## 설정 단계
+
+<Steps>
+### 패키지 설치
+
+<Tabs items={['npm', 'yarn', 'pnpm', 'expo']}>
+  <Tabs.Tab>
+    ```bash
+    npm install @mj-studio/react-native-naver-map
+    npm install expo-build-properties
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```bash
+    yarn add @mj-studio/react-native-naver-map
+    yarn add expo-build-properties
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```bash
+    pnpm add @mj-studio/react-native-naver-map
+    pnpm add expo-build-properties
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```bash
+    npx expo install @mj-studio/react-native-naver-map
+    npx expo install expo-build-properties
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+<Callout>
+  `expo-build-properties`는 Android Maven 저장소를 추가하는 데 필요합니다.
+</Callout>
+
+### app.json 설정
+
+`app.json` 또는 `app.config.js`에 Config Plugin을 추가합니다:
+
+```json {5-29}
+{
+  "expo": {
+    "name": "your-app",
+    "slug": "your-app",
+    "plugins": [
+      [
+        "@mj-studio/react-native-naver-map",
+        {
+          "client_id": "YOUR_NAVER_MAP_CLIENT_ID",
+          // Android 권한 설정 (선택사항)
+          "android": {
+            "ACCESS_FINE_LOCATION": true,
+            "ACCESS_COARSE_LOCATION": true,
+            "ACCESS_BACKGROUND_LOCATION": false
+          },
+          // iOS 권한 설정 (선택사항)
+          "ios": {
+            "NSLocationWhenInUseUsageDescription": "지도에서 현재 위치를 표시하기 위해 위치 정보가 필요합니다.",
+            "NSLocationAlwaysAndWhenInUseUsageDescription": "백그라운드에서도 위치를 추적하기 위해 위치 정보가 필요합니다.",
+            "NSLocationTemporaryUsageDescriptionDictionary": {
+              "purposeKey": "MapNavigation",
+              "usageDescription": "정확한 내비게이션을 위해 위치 정보가 필요합니다."
+            }
+          }
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "extraMavenRepos": ["https://repository.map.naver.com/archive/maven"]
+          }
+        }
+      ]
+    ]
+  }
+}
+```
+
+### Development Build 생성
+
+Expo Go는 네이티브 모듈을 지원하지 않으므로 Development Build를 생성해야 합니다:
+
+<Tabs items={['로컬 빌드', 'EAS Build']}>
+  <Tabs.Tab>
+    #### 로컬 Development Build
+    
+    ```bash
+    # iOS
+    npx expo run:ios
+    
+    # Android
+    npx expo run:android
+    ```
+    
+    <Callout type="info">
+      처음 실행 시 네이티브 프로젝트가 생성되며 시간이 걸릴 수 있습니다.
+    </Callout>
+  </Tabs.Tab>
+  
+  <Tabs.Tab>
+    #### EAS Development Build
+    
+    1. EAS CLI 설치:
+    ```bash
+    npm install -g eas-cli
+    ```
+    
+    2. EAS 설정:
+    ```bash
+    eas build:configure
+    ```
+    
+    3. Development Build 생성:
+    ```bash
+    # iOS
+    eas build --platform ios --profile development
+    
+    # Android
+    eas build --platform android --profile development
+    ```
+    
+    4. 빌드된 앱 설치 후 개발 서버 연결:
+    ```bash
+    npx expo start --dev-client
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+### 앱 실행
+
+Development Build가 설치되면 개발 서버를 시작합니다:
+
+```bash
+npx expo start --dev-client
+```
+</Steps>
+
+## 환경별 설정
+
+### app.config.js 사용
+
+환경별로 다른 설정을 사용하려면 `app.config.js`를 활용합니다:
+
+```javascript
+export default ({ config }) => {
+  const isProduction = process.env.NODE_ENV === 'production';
+  
+  return {
+    ...config,
+    plugins: [
+      [
+        "@mj-studio/react-native-naver-map",
+        {
+          client_id: isProduction 
+            ? process.env.NAVER_MAP_PROD_KEY 
+            : process.env.NAVER_MAP_DEV_KEY,
+          android: {
+            ACCESS_FINE_LOCATION: true,
+            ACCESS_COARSE_LOCATION: true,
+          },
+          ios: {
+            NSLocationWhenInUseUsageDescription: "현재 위치를 표시합니다.",
+          }
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          android: {
+            extraMavenRepos: ["https://repository.map.naver.com/archive/maven"]
+          }
+        }
+      ]
+    ]
+  };
+};
+```
+
+## 위치 권한 처리
+
+### expo-location 사용
+
+Expo 프로젝트에서는 `expo-location`을 사용하여 위치 권한을 처리하는 것을 권장합니다:
+
+<Steps>
+### 설치
+
+```bash
+npx expo install expo-location
+```
+
+### 권한 요청 구현
+
+```tsx
+import * as Location from 'expo-location';
+import { useEffect, useState } from 'react';
+
+export function useLocationPermission() {
+  const [permission, setPermission] = useState(null);
+  const [location, setLocation] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      // 권한 요청
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      setPermission(status === 'granted');
+      
+      if (status === 'granted') {
+        // 현재 위치 가져오기
+        const currentLocation = await Location.getCurrentPositionAsync({});
+        setLocation(currentLocation);
+        
+        // 백그라운드 권한 요청 (선택사항)
+        const { status: bgStatus } = await Location.requestBackgroundPermissionsAsync();
+        console.log('백그라운드 권한:', bgStatus);
+      }
+    })();
+  }, []);
+
+  return { permission, location };
+}
+```
+
+### 지도에 적용
+
+```tsx
+import { NaverMapView } from '@mj-studio/react-native-naver-map';
+import { useLocationPermission } from './useLocationPermission';
+
+export default function MapScreen() {
+  const { permission, location } = useLocationPermission();
+
+  return (
+    <NaverMapView
+      style={{ flex: 1 }}
+      initialRegion={location ? {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      } : undefined}
+      isShowLocationButton={permission}
+    />
+  );
+}
+```
+</Steps>
+
+## 일반적인 문제 해결
+
+### Expo Go 오류
+
+<Callout type="error" emoji="❌">
+  **"Cannot read property 'NaverMapView' of undefined"**
+</Callout>
+
+Expo Go는 네이티브 모듈을 지원하지 않습니다. Development Build를 사용해야 합니다:
+
+```bash
+npx expo run:ios
+# 또는
+npx expo run:android
+```
+
+### 플러그인 오류
+
+<Callout type="error" emoji="❌">
+  **"Config plugin not found"**
+</Callout>
+
+1. 패키지가 올바르게 설치되었는지 확인
+2. `expo prebuild --clear`로 캐시 클리어
+3. node_modules 재설치
+
+### Maven 저장소 오류
+
+<Callout type="error" emoji="❌">
+  **Android 빌드 시 "Could not find com.naver.maps.map"**
+</Callout>
+
+`expo-build-properties` 플러그인이 올바르게 설정되었는지 확인:
+
+```json
+[
+  "expo-build-properties",
+  {
+    "android": {
+      "extraMavenRepos": ["https://repository.map.naver.com/archive/maven"]
+    }
+  }
+]
+```
+
+## 프로덕션 빌드
+
+### EAS Build 사용
+
+```bash
+# iOS 프로덕션 빌드
+eas build --platform ios --profile production
+
+# Android 프로덕션 빌드
+eas build --platform android --profile production
+```
+
+### 로컬 프로덕션 빌드
+
+```bash
+# iOS
+npx expo run:ios --configuration Release
+
+# Android APK
+npx expo run:android --variant release
+
+# Android AAB
+cd android && ./gradlew bundleRelease
+```
+
+## 프로젝트 구조
+
+Expo 프로젝트의 권장 구조:
+
+<FileTree>
+  <FileTree.Folder name="your-expo-app" defaultOpen>
+    <FileTree.File name="app.json" />
+    <FileTree.File name="app.config.js" />
+    <FileTree.File name="package.json" />
+    <FileTree.File name=".env" />
+    <FileTree.Folder name="src" defaultOpen>
+      <FileTree.Folder name="components">
+        <FileTree.File name="Map.tsx" />
+      </FileTree.Folder>
+      <FileTree.Folder name="hooks">
+        <FileTree.File name="useLocationPermission.ts" />
+      </FileTree.Folder>
+    </FileTree.Folder>
+    <FileTree.Folder name="ios">
+      <FileTree.File name="(생성됨)" />
+    </FileTree.Folder>
+    <FileTree.Folder name="android">
+      <FileTree.File name="(생성됨)" />
+    </FileTree.Folder>
+  </FileTree.Folder>
+</FileTree>
+
+## 팁과 모범 사례
+
+### 환경 변수 사용
+
+`.env` 파일로 API 키 관리:
+
+```bash
+# .env
+EXPO_PUBLIC_NAVER_MAP_KEY=your_key_here
+```
+
+`app.config.js`:
+```javascript
+export default {
+  expo: {
+    plugins: [
+      ["@mj-studio/react-native-naver-map", {
+        client_id: process.env.EXPO_PUBLIC_NAVER_MAP_KEY
+      }]
+    ]
+  }
+};
+```
+
+### 개발 효율성
+
+1. **Fast Refresh 활용**: 지도 설정 변경 시 앱 재시작 없이 업데이트
+2. **디버깅**: React Native Debugger 또는 Flipper 사용
+3. **성능 모니터링**: React DevTools Profiler 활용
+
+## 다음 단계
+
+- [컴포넌트 가이드](/components) - 지도 컴포넌트 사용법
+- [권한 설정](/guides/permissions) - 상세 권한 가이드
+- [최적화 가이드](/guides/performance) - 성능 최적화 팁

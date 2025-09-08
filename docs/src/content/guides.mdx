@@ -1,0 +1,234 @@
+import { Cards, Card } from '../lib/components'
+import { Shield, Zap, Palette, AlertTriangle } from 'lucide-react'
+
+# 가이드
+
+실제 앱 개발에 도움이 되는 실전 가이드와 모범 사례를 제공합니다.
+
+## 주요 가이드
+
+<Cards>
+  <Card title="권한 설정" href="/guides/permissions" icon={<Shield className="w-6 h-6" />}>
+    위치 권한 요청 및 관리 방법
+  </Card>
+  <Card title="성능 최적화" href="/guides/performance" icon={<Zap className="w-6 h-6" />}>
+    대량 데이터 처리 및 성능 향상 팁
+  </Card>
+  <Card title="스타일링" href="/guides/styling" icon={<Palette className="w-6 h-6" />}>
+    지도 및 오버레이 커스터마이징
+  </Card>
+  <Card title="문제 해결" href="/guides/troubleshooting" icon={<AlertTriangle className="w-6 h-6" />}>
+    자주 발생하는 문제와 해결 방법
+  </Card>
+</Cards>
+
+## 튜토리얼
+
+React Native Naver Map을 처음 사용한다면 이 순서로 학습하세요:
+
+1. **[시작하기](/getting-started)** - 기본 설치 및 설정
+2. **[첫 번째 지도](/guides/first-map)** - 간단한 지도 앱 만들기
+3. **[마커 추가](/guides/adding-markers)** - 마커로 위치 표시하기
+4. **[위치 추적](/guides/location-tracking)** - 사용자 위치 추적 구현
+5. **[커스텀 디자인](/guides/custom-design)** - 나만의 지도 스타일 만들기
+
+## 실전 예제
+
+### 맛집 지도 앱
+
+```tsx
+import React, { useState, useEffect } from 'react';
+import { NaverMapView, NaverMapMarkerOverlay } from '@mj-studio/react-native-naver-map';
+
+const RestaurantMap = () => {
+  const [restaurants, setRestaurants] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  const categories = {
+    korean: { color: 'red', name: '한식' },
+    chinese: { color: 'blue', name: '중식' },
+    western: { color: 'green', name: '양식' },
+  };
+
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      {restaurants
+        .filter(r => selectedCategory === 'all' || r.category === selectedCategory)
+        .map(restaurant => (
+          <NaverMapMarkerOverlay
+            key={restaurant.id}
+            latitude={restaurant.lat}
+            longitude={restaurant.lng}
+            image={{ symbol: categories[restaurant.category]?.color || 'gray' }}
+            caption={{ text: restaurant.name }}
+            onTap={() => showRestaurantDetails(restaurant)}
+          />
+        ))}
+    </NaverMapView>
+  );
+};
+```
+
+### 배송 추적 앱
+
+```tsx
+import React, { useState, useEffect } from 'react';
+import {
+  NaverMapView,
+  NaverMapPathOverlay,
+  NaverMapMarkerOverlay
+} from '@mj-studio/react-native-naver-map';
+
+const DeliveryTracker = () => {
+  const [deliveryRoute, setDeliveryRoute] = useState([]);
+  const [currentProgress, setCurrentProgress] = useState(0);
+  const [driverLocation, setDriverLocation] = useState(null);
+
+  // 실시간 배송 상태 업데이트
+  useEffect(() => {
+    const interval = setInterval(updateDeliveryStatus, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      {/* 배송 경로 */}
+      <NaverMapPathOverlay
+        coords={deliveryRoute}
+        width={6}
+        color="blue"
+        progress={currentProgress}
+        passedColor="green"
+      />
+
+      {/* 배송 기사 위치 */}
+      {driverLocation && (
+        <NaverMapMarkerOverlay
+          latitude={driverLocation.lat}
+          longitude={driverLocation.lng}
+          image={{ uri: 'https://example.com/driver-icon.png' }}
+          width={40}
+          height={40}
+        />
+      )}
+    </NaverMapView>
+  );
+};
+```
+
+## 모범 사례
+
+### 1. 성능 최적화
+
+```tsx
+// ✅ 좋은 예: 메모이제이션 활용
+const OptimizedMarkers = React.memo(({ markers, onMarkerPress }) => {
+  return (
+    <>
+      {markers.map(marker => (
+        <NaverMapMarkerOverlay
+          key={marker.id}
+          latitude={marker.lat}
+          longitude={marker.lng}
+          onTap={() => onMarkerPress(marker)}
+        />
+      ))}
+    </>
+  );
+});
+
+// ❌ 나쁜 예: 매번 새로운 함수 생성
+<NaverMapMarkerOverlay
+  onTap={() => console.log('tapped')} // 매 렌더링마다 새 함수
+/>
+```
+
+### 2. 타입 안전성
+
+```tsx
+// ✅ 타입 정의 활용
+import type { Region, Coord } from '@mj-studio/react-native-naver-map';
+
+interface MapProps {
+  initialRegion: Region;
+  markers: Array<{
+    id: string;
+    coordinate: Coord;
+    title: string;
+  }>;
+}
+```
+
+### 3. 에러 처리
+
+```tsx
+const MapComponent = () => {
+  const [mapError, setMapError] = useState(null);
+
+  return (
+    <NaverMapView
+      onError={(error) => {
+        console.error('Map error:', error);
+        setMapError(error);
+      }}
+      onInitialized={() => {
+        setMapError(null);
+      }}
+    />
+  );
+};
+```
+
+## 고급 기법
+
+### 클러스터링 구현
+
+대량의 마커를 효율적으로 표시:
+
+```tsx
+import { useMemo } from 'react';
+
+const useMarkerClustering = (markers, zoom, region) => {
+  return useMemo(() => {
+    if (zoom > 14) return markers; // 확대 시 개별 마커 표시
+
+    // 클러스터링 로직
+    const clusters = groupNearbyMarkers(markers, region);
+    return clusters;
+  }, [markers, zoom, region]);
+};
+```
+
+### 동적 스타일링
+
+줌 레벨에 따른 동적 스타일 변경:
+
+```tsx
+const DynamicStyledMap = () => {
+  const [zoom, setZoom] = useState(10);
+
+  const markerSize = useMemo(() => {
+    return zoom > 12 ? 40 : 20;
+  }, [zoom]);
+
+  return (
+    <NaverMapView
+      onCameraChanged={(e) => setZoom(e.zoom)}
+    >
+      <NaverMapMarkerOverlay
+        width={markerSize}
+        height={markerSize}
+        // 줌에 따라 마커 크기 조절
+      />
+    </NaverMapView>
+  );
+};
+```
+
+## 다음 단계
+
+더 자세한 내용은 각 가이드 페이지를 참고하세요:
+
+- [권한 설정 상세 가이드](/guides/permissions)
+- [성능 최적화 기법](/guides/performance)
+- [문제 해결 FAQ](/guides/troubleshooting)
