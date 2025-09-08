@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@babel/core": "catalog:",
-    "@babel/preset-env": "catalog:",
+    "@babel/preset-env": "^7.25.3",
     "@babel/runtime": "catalog:",
     "@react-native-community/cli": "catalog:",
     "@react-native-community/cli-platform-android": "catalog:",
@@ -28,7 +28,7 @@
     "@react-native/typescript-config": "catalog:",
     "@types/react": "catalog:",
     "@types/react-test-renderer": "catalog:",
-    "jest": "catalog:",
+    "jest": "^30.0.2"
     "react-test-renderer": "catalog:",
     "typescript": "catalog:"
   },

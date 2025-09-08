@@ -4,82 +4,199 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@babel/core':
+      specifier: ^7.28.4
+      version: 7.28.4
+    '@babel/preset-env':
+      specifier: ^7.28.3
+      version: 7.28.3
+    '@babel/runtime':
+      specifier: ^7.28.4
+      version: 7.28.4
+    '@biomejs/biome':
+      specifier: ^2.2.2
+      version: 2.2.3
+    '@blackwych/typedoc-plugin-categorized-hierarchy-theme':
+      specifier: ^1.1.1
+      version: 1.1.1
+    '@commitlint/config-conventional':
+      specifier: 17.0.2
+      version: 17.0.2
+    '@expo/config-plugins':
+      specifier: 10.0.3
+      version: 10.0.3
+    '@react-native-community/cli':
+      specifier: 19.0.0
+      version: 19.0.0
+    '@react-native-community/cli-platform-android':
+      specifier: 19.0.0
+      version: 19.0.0
+    '@react-native-community/cli-platform-ios':
+      specifier: 19.0.0
+      version: 19.0.0
+    '@react-native/babel-preset':
+      specifier: 0.80.0
+      version: 0.80.0
+    '@react-native/metro-config':
+      specifier: 0.80.0
+      version: 0.80.0
+    '@react-native/new-app-screen':
+      specifier: 0.80.0
+      version: 0.80.0
+    '@react-native/typescript-config':
+      specifier: 0.80.0
+      version: 0.80.0
+    '@release-it/conventional-changelog':
+      specifier: ^10.0.1
+      version: 10.0.1
+    '@types/fs-extra':
+      specifier: ^11
+      version: 11.0.4
+    '@types/object-hash':
+      specifier: ^3
+      version: 3.0.6
+    '@types/react':
+      specifier: 19.1.0
+      version: 19.1.0
+    '@types/react-test-renderer':
+      specifier: ^19.1.0
+      version: 19.1.0
+    commitlint:
+      specifier: 17.0.2
+      version: 17.0.2
+    del-cli:
+      specifier: 6.0.0
+      version: 6.0.0
+    fs-extra:
+      specifier: ^11.3.1
+      version: 11.3.1
+    jest:
+      specifier: ^30.0.2
+      version: 30.1.3
+    lefthook:
+      specifier: ^1.12.3
+      version: 1.12.3
+    object-hash:
+      specifier: ^3.0.0
+      version: 3.0.0
+    react:
+      specifier: 19.1.0
+      version: 19.1.0
+    react-native:
+      specifier: 0.80.0
+      version: 0.80.0
+    react-native-builder-bob:
+      specifier: 0.40.12
+      version: 0.40.12
+    react-test-renderer:
+      specifier: 19.1.0
+      version: 19.1.0
+    release-it:
+      specifier: 19.0.3
+      version: 19.0.3
+    turbo:
+      specifier: ^2.5.6
+      version: 2.5.6
+    typedoc:
+      specifier: 0.28.5
+      version: 0.28.5
+    typedoc-plugin-extras:
+      specifier: ^4.0.0
+      version: 4.0.1
+    typedoc-theme-hierarchy:
+      specifier: ^6.0.0
+      version: 6.0.0
+    typescript:
+      specifier: 5.3.3
+      version: 5.3.3
+    zx:
+      specifier: ^8.8.1
+      version: 8.8.1
+
 importers:
 
   .:
     dependencies:
       object-hash:
-        specifier: ^3.0.0
+        specifier: 'catalog:'
         version: 3.0.0
     devDependencies:
+      '@babel/core':
+        specifier: 'catalog:'
+        version: 7.28.4
       '@babel/runtime':
-        specifier: ^7.27.6
+        specifier: 'catalog:'
         version: 7.28.4
       '@biomejs/biome':
-        specifier: ^2.2.2
+        specifier: 'catalog:'
         version: 2.2.3
       '@blackwych/typedoc-plugin-categorized-hierarchy-theme':
-        specifier: ^1.1.1
+        specifier: 'catalog:'
         version: 1.1.1(typescript@5.3.3)
       '@commitlint/config-conventional':
-        specifier: 17.0.2
+        specifier: 'catalog:'
         version: 17.0.2
       '@expo/config-plugins':
-        specifier: 10.0.3
+        specifier: 'catalog:'
         version: 10.0.3
+      '@react-native/typescript-config':
+        specifier: 'catalog:'
+        version: 0.80.0
       '@release-it/conventional-changelog':
-        specifier: ^10.0.1
+        specifier: 'catalog:'
         version: 10.0.1(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.2.0)(release-it@19.0.3(@types/node@20.5.1))
       '@types/fs-extra':
-        specifier: ^11
+        specifier: 'catalog:'
         version: 11.0.4
       '@types/object-hash':
-        specifier: ^3
+        specifier: 'catalog:'
         version: 3.0.6
       '@types/react':
-        specifier: 19.1.0
+        specifier: 'catalog:'
         version: 19.1.0
       commitlint:
-        specifier: 17.0.2
+        specifier: 'catalog:'
         version: 17.0.2
       del-cli:
-        specifier: 6.0.0
+        specifier: 'catalog:'
         version: 6.0.0
       fs-extra:
-        specifier: ^11.3.1
+        specifier: 'catalog:'
         version: 11.3.1
       lefthook:
-        specifier: ^1.12.3
+        specifier: 'catalog:'
         version: 1.12.3
       react:
-        specifier: 19.1.0
+        specifier: 'catalog:'
         version: 19.1.0
       react-native:
-        specifier: 0.80.0
+        specifier: 'catalog:'
         version: 0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.3.3))(@types/react@19.1.0)(react@19.1.0)
       react-native-builder-bob:
-        specifier: 0.40.12
+        specifier: 'catalog:'
         version: 0.40.12
       release-it:
-        specifier: 19.0.3
+        specifier: 'catalog:'
         version: 19.0.3(@types/node@20.5.1)
       turbo:
-        specifier: ^2.5.6
+        specifier: 'catalog:'
         version: 2.5.6
       typedoc:
-        specifier: 0.28.5
+        specifier: 'catalog:'
         version: 0.28.5(typescript@5.3.3)
       typedoc-plugin-extras:
-        specifier: ^4.0.0
+        specifier: 'catalog:'
         version: 4.0.1(typedoc@0.28.5(typescript@5.3.3))
       typedoc-theme-hierarchy:
-        specifier: ^6.0.0
+        specifier: 'catalog:'
         version: 6.0.0(typedoc@0.28.5(typescript@5.3.3))
       typescript:
-        specifier: 5.3.3
+        specifier: 'catalog:'
         version: 5.3.3
       zx:
-        specifier: ^8.8.1
+        specifier: 'catalog:'
         version: 8.8.1
 
   example:
@@ -91,60 +208,60 @@ importers:
         specifier: ^4.5.7
         version: 4.5.7
       '@react-native/new-app-screen':
-        specifier: 0.80.0
-        version: 0.80.0(@types/react@19.1.0)(react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.0.4))(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)
+        specifier: 'catalog:'
+        version: 0.80.0(@types/react@19.1.0)(react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.3.3))(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)
       react:
-        specifier: 19.1.0
+        specifier: 'catalog:'
         version: 19.1.0
       react-native:
-        specifier: 0.80.0
-        version: 0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.0.4))(@types/react@19.1.0)(react@19.1.0)
+        specifier: 'catalog:'
+        version: 0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.3.3))(@types/react@19.1.0)(react@19.1.0)
       react-native-permissions:
         specifier: ^5.4.1
-        version: 5.4.2(react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.0.4))(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)
+        version: 5.4.2(react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.3.3))(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)
     devDependencies:
       '@babel/core':
-        specifier: ^7.25.2
+        specifier: 'catalog:'
         version: 7.28.4
       '@babel/preset-env':
-        specifier: ^7.25.3
+        specifier: 'catalog:'
         version: 7.28.3(@babel/core@7.28.4)
       '@babel/runtime':
-        specifier: ^7.25.0
+        specifier: 'catalog:'
         version: 7.28.4
       '@react-native-community/cli':
-        specifier: 19.0.0
-        version: 19.0.0(typescript@5.0.4)
+        specifier: 'catalog:'
+        version: 19.0.0(typescript@5.3.3)
       '@react-native-community/cli-platform-android':
-        specifier: 19.0.0
+        specifier: 'catalog:'
         version: 19.0.0
       '@react-native-community/cli-platform-ios':
-        specifier: 19.0.0
+        specifier: 'catalog:'
         version: 19.0.0
       '@react-native/babel-preset':
-        specifier: 0.80.0
+        specifier: 'catalog:'
         version: 0.80.0(@babel/core@7.28.4)
       '@react-native/metro-config':
-        specifier: 0.80.0
+        specifier: 'catalog:'
         version: 0.80.0(@babel/core@7.28.4)
       '@react-native/typescript-config':
-        specifier: 0.80.0
+        specifier: 'catalog:'
         version: 0.80.0
       '@types/react':
-        specifier: 19.1.0
+        specifier: 'catalog:'
         version: 19.1.0
       '@types/react-test-renderer':
-        specifier: ^19.1.0
+        specifier: 'catalog:'
         version: 19.1.0
       jest:
-        specifier: ^30.0.2
-        version: 30.1.3(@types/node@24.3.1)(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.0.4))
+        specifier: 'catalog:'
+        version: 30.1.3(@types/node@24.3.1)(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.3.3))
       react-test-renderer:
-        specifier: 19.1.0
+        specifier: 'catalog:'
         version: 19.1.0(react@19.1.0)
       typescript:
-        specifier: 5.0.4
-        version: 5.0.4
+        specifier: 'catalog:'
+        version: 5.3.3
 
 packages:
 
@@ -4669,11 +4786,6 @@ packages:
     peerDependencies:
       typescript: 5.0.x || 5.1.x || 5.2.x || 5.3.x || 5.4.x || 5.5.x || 5.6.x || 5.7.x || 5.8.x
 
-  typescript@5.0.4:
-    resolution: {integrity: sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==}
-    engines: {node: '>=12.20'}
-    hasBin: true
-
   typescript@5.3.3:
     resolution: {integrity: sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==}
     engines: {node: '>=14.17'}
@@ -6189,7 +6301,7 @@ snapshots:
       jest-util: 30.0.5
       slash: 3.0.0
 
-  '@jest/core@30.1.3(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.0.4))':
+  '@jest/core@30.1.3(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.3.3))':
     dependencies:
       '@jest/console': 30.1.2
       '@jest/pattern': 30.0.1
@@ -6204,7 +6316,7 @@ snapshots:
       exit-x: 0.2.2
       graceful-fs: 4.2.11
       jest-changed-files: 30.0.5
-      jest-config: 30.1.3(@types/node@24.3.1)(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.0.4))
+      jest-config: 30.1.3(@types/node@24.3.1)(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.3.3))
       jest-haste-map: 30.1.0
       jest-message-util: 30.1.0
       jest-regex-util: 30.0.1
@@ -6570,17 +6682,6 @@ snapshots:
       execa: 5.1.1
       fast-glob: 3.3.3
 
-  '@react-native-community/cli-config@19.0.0(typescript@5.0.4)':
-    dependencies:
-      '@react-native-community/cli-tools': 19.0.0
-      chalk: 4.1.2
-      cosmiconfig: 9.0.0(typescript@5.0.4)
-      deepmerge: 4.3.1
-      fast-glob: 3.3.3
-      joi: 17.13.3
-    transitivePeerDependencies:
-      - typescript
-
   '@react-native-community/cli-config@19.0.0(typescript@5.3.3)':
     dependencies:
       '@react-native-community/cli-tools': 19.0.0
@@ -6589,27 +6690,6 @@ snapshots:
       deepmerge: 4.3.1
       fast-glob: 3.3.3
       joi: 17.13.3
-    transitivePeerDependencies:
-      - typescript
-    optional: true
-
-  '@react-native-community/cli-doctor@19.0.0(typescript@5.0.4)':
-    dependencies:
-      '@react-native-community/cli-config': 19.0.0(typescript@5.0.4)
-      '@react-native-community/cli-platform-android': 19.0.0
-      '@react-native-community/cli-platform-apple': 19.0.0
-      '@react-native-community/cli-platform-ios': 19.0.0
-      '@react-native-community/cli-tools': 19.0.0
-      chalk: 4.1.2
-      command-exists: 1.2.9
-      deepmerge: 4.3.1
-      envinfo: 7.14.0
-      execa: 5.1.1
-      node-stream-zip: 1.15.0
-      ora: 5.4.1
-      semver: 7.7.2
-      wcwidth: 1.0.1
-      yaml: 2.8.1
     transitivePeerDependencies:
       - typescript
 
@@ -6632,7 +6712,6 @@ snapshots:
       yaml: 2.8.1
     transitivePeerDependencies:
       - typescript
-    optional: true
 
   '@react-native-community/cli-platform-android@19.0.0':
     dependencies:
@@ -6688,29 +6767,6 @@ snapshots:
     dependencies:
       joi: 17.13.3
 
-  '@react-native-community/cli@19.0.0(typescript@5.0.4)':
-    dependencies:
-      '@react-native-community/cli-clean': 19.0.0
-      '@react-native-community/cli-config': 19.0.0(typescript@5.0.4)
-      '@react-native-community/cli-doctor': 19.0.0(typescript@5.0.4)
-      '@react-native-community/cli-server-api': 19.0.0
-      '@react-native-community/cli-tools': 19.0.0
-      '@react-native-community/cli-types': 19.0.0
-      chalk: 4.1.2
-      commander: 9.5.0
-      deepmerge: 4.3.1
-      execa: 5.1.1
-      find-up: 5.0.0
-      fs-extra: 8.1.0
-      graceful-fs: 4.2.11
-      prompts: 2.4.2
-      semver: 7.7.2
-    transitivePeerDependencies:
-      - bufferutil
-      - supports-color
-      - typescript
-      - utf-8-validate
-
   '@react-native-community/cli@19.0.0(typescript@5.3.3)':
     dependencies:
       '@react-native-community/cli-clean': 19.0.0
@@ -6733,7 +6789,6 @@ snapshots:
       - supports-color
       - typescript
       - utf-8-validate
-    optional: true
 
   '@react-native-community/slider@4.5.7': {}
 
@@ -6806,23 +6861,6 @@ snapshots:
       nullthrows: 1.1.1
       yargs: 17.7.2
 
-  '@react-native/community-cli-plugin@0.80.0(@react-native-community/cli@19.0.0(typescript@5.0.4))':
-    dependencies:
-      '@react-native/dev-middleware': 0.80.0
-      chalk: 4.1.2
-      debug: 4.4.1
-      invariant: 2.2.4
-      metro: 0.82.5
-      metro-config: 0.82.5
-      metro-core: 0.82.5
-      semver: 7.7.2
-    optionalDependencies:
-      '@react-native-community/cli': 19.0.0(typescript@5.0.4)
-    transitivePeerDependencies:
-      - bufferutil
-      - supports-color
-      - utf-8-validate
-
   '@react-native/community-cli-plugin@0.80.0(@react-native-community/cli@19.0.0(typescript@5.3.3))':
     dependencies:
       '@react-native/dev-middleware': 0.80.0
@@ -6881,27 +6919,20 @@ snapshots:
       metro-runtime: 0.82.5
     transitivePeerDependencies:
       - '@babel/core'
+      - bufferutil
       - supports-color
+      - utf-8-validate
 
-  '@react-native/new-app-screen@0.80.0(@types/react@19.1.0)(react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.0.4))(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)':
+  '@react-native/new-app-screen@0.80.0(@types/react@19.1.0)(react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.3.3))(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)':
     dependencies:
       react: 19.1.0
-      react-native: 0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.0.4))(@types/react@19.1.0)(react@19.1.0)
+      react-native: 0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.3.3))(@types/react@19.1.0)(react@19.1.0)
     optionalDependencies:
       '@types/react': 19.1.0
 
   '@react-native/normalize-colors@0.80.0': {}
 
   '@react-native/typescript-config@0.80.0': {}
-
-  '@react-native/virtualized-lists@0.80.0(@types/react@19.1.0)(react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.0.4))(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)':
-    dependencies:
-      invariant: 2.2.4
-      nullthrows: 1.1.1
-      react: 19.1.0
-      react-native: 0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.0.4))(@types/react@19.1.0)(react@19.1.0)
-    optionalDependencies:
-      '@types/react': 19.1.0
 
   '@react-native/virtualized-lists@0.80.0(@types/react@19.1.0)(react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.3.3))(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)':
     dependencies:
@@ -7781,15 +7812,6 @@ snapshots:
     optionalDependencies:
       typescript: 5.3.3
 
-  cosmiconfig@9.0.0(typescript@5.0.4):
-    dependencies:
-      env-paths: 2.2.1
-      import-fresh: 3.3.1
-      js-yaml: 4.1.0
-      parse-json: 5.2.0
-    optionalDependencies:
-      typescript: 5.0.4
-
   cosmiconfig@9.0.0(typescript@5.3.3):
     dependencies:
       env-paths: 2.2.1
@@ -7798,7 +7820,6 @@ snapshots:
       parse-json: 5.2.0
     optionalDependencies:
       typescript: 5.3.3
-    optional: true
 
   create-require@1.1.1: {}
 
@@ -8610,15 +8631,15 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 
-  jest-cli@30.1.3(@types/node@24.3.1)(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.0.4)):
+  jest-cli@30.1.3(@types/node@24.3.1)(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.3.3)):
     dependencies:
-      '@jest/core': 30.1.3(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.0.4))
+      '@jest/core': 30.1.3(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.3.3))
       '@jest/test-result': 30.1.3
       '@jest/types': 30.0.5
       chalk: 4.1.2
       exit-x: 0.2.2
       import-local: 3.2.0
-      jest-config: 30.1.3(@types/node@24.3.1)(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.0.4))
+      jest-config: 30.1.3(@types/node@24.3.1)(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.3.3))
       jest-util: 30.0.5
       jest-validate: 30.1.0
       yargs: 17.7.2
@@ -8629,7 +8650,7 @@ snapshots:
       - supports-color
       - ts-node
 
-  jest-config@30.1.3(@types/node@24.3.1)(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.0.4)):
+  jest-config@30.1.3(@types/node@24.3.1)(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.3.3)):
     dependencies:
       '@babel/core': 7.28.4
       '@jest/get-type': 30.1.0
@@ -8657,7 +8678,7 @@ snapshots:
       strip-json-comments: 3.1.1
     optionalDependencies:
       '@types/node': 24.3.1
-      ts-node: 10.9.2(@types/node@24.3.1)(typescript@5.0.4)
+      ts-node: 10.9.2(@types/node@24.3.1)(typescript@5.3.3)
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
@@ -8949,12 +8970,12 @@ snapshots:
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
-  jest@30.1.3(@types/node@24.3.1)(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.0.4)):
+  jest@30.1.3(@types/node@24.3.1)(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.3.3)):
     dependencies:
-      '@jest/core': 30.1.3(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.0.4))
+      '@jest/core': 30.1.3(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.3.3))
       '@jest/types': 30.0.5
       import-local: 3.2.0
-      jest-cli: 30.1.3(@types/node@24.3.1)(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.0.4))
+      jest-cli: 30.1.3(@types/node@24.3.1)(ts-node@10.9.2(@types/node@24.3.1)(typescript@5.3.3))
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -9848,57 +9869,10 @@ snapshots:
       escape-string-regexp: 5.0.0
       fast-glob: 3.3.3
 
-  react-native-permissions@5.4.2(react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.0.4))(@types/react@19.1.0)(react@19.1.0))(react@19.1.0):
+  react-native-permissions@5.4.2(react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.3.3))(@types/react@19.1.0)(react@19.1.0))(react@19.1.0):
     dependencies:
       react: 19.1.0
-      react-native: 0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.0.4))(@types/react@19.1.0)(react@19.1.0)
-
-  react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.0.4))(@types/react@19.1.0)(react@19.1.0):
-    dependencies:
-      '@jest/create-cache-key-function': 29.7.0
-      '@react-native/assets-registry': 0.80.0
-      '@react-native/codegen': 0.80.0(@babel/core@7.28.4)
-      '@react-native/community-cli-plugin': 0.80.0(@react-native-community/cli@19.0.0(typescript@5.0.4))
-      '@react-native/gradle-plugin': 0.80.0
-      '@react-native/js-polyfills': 0.80.0
-      '@react-native/normalize-colors': 0.80.0
-      '@react-native/virtualized-lists': 0.80.0(@types/react@19.1.0)(react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.0.4))(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)
-      abort-controller: 3.0.0
-      anser: 1.4.10
-      ansi-regex: 5.0.1
-      babel-jest: 29.7.0(@babel/core@7.28.4)
-      babel-plugin-syntax-hermes-parser: 0.28.1
-      base64-js: 1.5.1
-      chalk: 4.1.2
-      commander: 12.1.0
-      flow-enums-runtime: 0.0.6
-      glob: 7.2.3
-      invariant: 2.2.4
-      jest-environment-node: 29.7.0
-      memoize-one: 5.2.1
-      metro-runtime: 0.82.5
-      metro-source-map: 0.82.5
-      nullthrows: 1.1.1
-      pretty-format: 29.7.0
-      promise: 8.3.0
-      react: 19.1.0
-      react-devtools-core: 6.1.5
-      react-refresh: 0.14.2
-      regenerator-runtime: 0.13.11
-      scheduler: 0.26.0
-      semver: 7.7.2
-      stacktrace-parser: 0.1.11
-      whatwg-fetch: 3.6.20
-      ws: 6.2.3
-      yargs: 17.7.2
-    optionalDependencies:
-      '@types/react': 19.1.0
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@react-native-community/cli'
-      - bufferutil
-      - supports-color
-      - utf-8-validate
+      react-native: 0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.3.3))(@types/react@19.1.0)(react@19.1.0)
 
   react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.3.3))(@types/react@19.1.0)(react@19.1.0):
     dependencies:
@@ -10420,7 +10394,7 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
-  ts-node@10.9.2(@types/node@24.3.1)(typescript@5.0.4):
+  ts-node@10.9.2(@types/node@24.3.1)(typescript@5.3.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
@@ -10434,7 +10408,7 @@ snapshots:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 5.0.4
+      typescript: 5.3.3
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     optional: true
@@ -10517,8 +10491,6 @@ snapshots:
       minimatch: 9.0.5
       typescript: 5.3.3
       yaml: 2.8.1
-
-  typescript@5.0.4: {}
 
   typescript@5.3.3: {}
 
