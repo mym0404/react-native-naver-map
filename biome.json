@@ -35,6 +35,9 @@
       "recommended": false,
       "correctness": {
         "noUnusedVariables": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": "off"
       }
     }
   },
