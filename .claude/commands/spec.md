@@ -23,70 +23,58 @@ EOF
 
 ## Interactive Deep-Dive Process
 
-## ⚠️ CRITICAL: Command Priority Override
+## Interactive Specification Process
 
-**When `/spec` is executed, it IMMEDIATELY overrides any other active modes (Plan Mode, etc.)**
+**Simple Workflow:**
+1. Ask what the user wants to specify
+2. Have a conversation to understand the requirements
+3. Create specification files with CLI commands
 
-- DO NOT use ExitPlanMode or TodoWrite during discovery
-- FOCUS ONLY on understanding requirements through dialogue
+**MANDATORY: Infinite Interactive Dialogue Process**
 
-### Step 1: Initial Scope Understanding (MANDATORY)
-
-**CRITICAL: Only proceed to Step 4 (CLI execution) after completing Steps 1-3 dialogue. Do not use implementation tools during discovery phase.**
-
-### Enforced Interactive Discovery Pattern
-
-The agent MUST follow this exact sequence and use this exact first message:
-
-**FIRST MESSAGE (Mandatory):**
-
+**Start by asking:**
 ```
-🔍 **Specification Discovery Mode Activated** - stopping all other workflows
+What would you like to specify?
 
-I'll help you create comprehensive project specifications through detailed conversation.
-
-First, I need to understand what you're building:
-
-**What would you like to specify?**
-
-Please describe in detail:
+Please describe:
 - The system/feature/product you want to specify
-- Whether this is a complete product or specific functionality
-- The core problem it solves and how it works
-
-The more detail you provide about the functionality and system design, the better I can help create specifications that capture every important aspect of your solution.
-
-Take your time - this initial context is crucial for creating valuable specifications.
+- Whether this is a complete product or specific functionality  
+- The core problem it solves
 ```
 
-### Step 2: Extensive Interactive Discovery
+**CRITICAL: After every user response, analyze what information is still missing and ask deeper questions. NEVER stop asking until you have complete clarity.**
 
-Based on the user's response, engage in a **fully interactive, extensive dialogue** to understand every aspect:
+**Self-Assessment Questions - Ask yourself after each user response:**
+- "What technical details are still unclear?"
+- "What user scenarios haven't been explored?"
+- "What integration points are missing?"
+- "What business rules need clarification?"
+- "What data structures are undefined?"
+- "What edge cases haven't been considered?"
 
-**ONLY execute CLI commands when user explicitly says "create the specs" or similar.**
+**Continuous Deep-Dive Pattern:**
+- If user says "authentication system" → Ask: How will users register? Social login? Password policies? Session management? Token refresh? Multi-factor auth?
+- If user says "e-commerce" → Ask: What products? How's inventory managed? Payment methods? Order workflow? Shipping? Returns?
+- If user says "React app" → Ask: Which React version? State management? Routing? Styling? Build tools? Testing framework?
 
-### Step 3: Specification Planning
+**Keep Digging Until:**
+- You can write detailed specs without making ANY assumptions
+- Every technical component is clearly defined
+- All user workflows are mapped out
+- All data structures are specified
+- All integrations are identified
+- All business rules are documented
 
-After thorough discovery, determine the specification structure based on scope:
+**Signs You Need More Information:**
+- You're thinking "I assume..." → ASK MORE
+- You're unsure about technical implementation → ASK MORE
+- User gave high-level answers → ASK FOR SPECIFICS
+- Any requirement seems vague → DRILL DOWN
+- You don't know exact file structures → ASK MORE
 
-**For Complete System/Initial Setup:**
-- Core architecture and infrastructure
-- Data models and database design
-- API structure and authentication
-- Security framework
-- Base configurations
+**ONLY create specifications when you can confidently say: "I understand every aspect of this system and can write comprehensive specifications without guessing anything."**
 
-**For Individual Features (Most Common):**
-Each feature gets its own comprehensive specification:
-- Feature overview and user stories
-- Data model changes/additions
-- API endpoints needed
-- Business logic and rules
-- UI/UX requirements (if applicable)
-- Integration points
-- Testing scenarios
-
-### Step 4: Create Multiple Specification Files
+After complete understanding, create specifications using:
 
 Execute CLI commands to create each specification:
 

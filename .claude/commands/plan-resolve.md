@@ -4,6 +4,21 @@ Load a strategic plan and systematically work through all todos until completion
 
 **Usage**: `/plan-resolve <id|keyword>`
 
+## ⚠️ CRITICAL: Direct Plan File Modification Required
+
+**This command requires direct modification of the original plan file in `.claude/plans/` directory:**
+
+1. **TODO Checkboxes**: Mark completed todos with `[x]` directly in the plan file
+2. **Success Criteria**: Update success criteria checkboxes `[x]` as they are achieved  
+3. **File Location Display**: The `plan view` command shows the exact file path for direct editing
+4. **Real-time Progress**: Check off items in the actual plan file to track progress
+
+**Workflow Pattern:**
+- Load plan with `npx cc-self-refer plan view <id>` (shows file location)
+- Edit the plan file directly: `.claude/plans/001-example-plan.md`
+- Check off `- [x]` completed todos and success criteria as you complete them
+- Use the plan file as your live progress tracker throughout implementation
+
 ## Purpose
 
 This command facilitates comprehensive execution of strategic plans by:

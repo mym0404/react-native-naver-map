@@ -23,107 +23,70 @@ EOF
 
 ## Interactive Deep-Dive Process
 
-## ⚠️ CRITICAL: Command Priority Override
+## Interactive Planning Process
 
-**When `/plan-create` is executed, it IMMEDIATELY overrides any other active modes (Spec Mode, etc.)**
+**Simple Workflow:**
+1. Ask what the user wants to plan
+2. Have a conversation to understand details
+3. Create the plan with CLI command
 
-- DO NOT use ExitPlanMode during discovery
-- DO NOT use TodoWrite for implementation tasks during discovery
-- DO NOT start implementation or make code changes
-- FOCUS ONLY on understanding requirements through dialogue
-- ONLY create plan documents via CLI - NO implementation
+**MANDATORY: Infinite Interactive Dialogue Process**
 
-### Step 1: Initial Scope Understanding (MANDATORY)
-
-**CRITICAL: Only proceed to Step 4 (CLI execution) after completing Steps 1-3 dialogue. Do not use implementation tools during discovery phase.**
-
-When user types `/plan-create`, the agent MUST first ask:
-
+**Start by asking:**
 ```
-I'll help you create a comprehensive implementation plan through detailed conversation.
+What would you like to plan?
 
-First, I need to understand what you're planning to implement:
-
-**What would you like to plan?**
-
-Please describe in detail:
-- The feature, fix, or system you want to implement
-- The problem it solves or requirement it fulfills
-- Your current technical environment and constraints
-- Any specific approaches or technologies you're considering
-
-The more detail you provide about the implementation context and requirements, the better I can help create a plan that perfectly fits your project's needs and constraints.
-
-Take your time - this initial context is crucial for creating an actionable implementation plan.
+Please describe:
+- What you want to implement
+- The problem it solves
+- Your current tech setup
 ```
 
-### Step 2: Extensive Interactive Discovery
+**CRITICAL: After every user response, analyze what implementation details are still missing and ask deeper questions. NEVER stop asking until you know exactly how to implement everything.**
 
-Based on the user's response, engage in a **fully interactive, extensive dialogue** to understand every implementation aspect:
+**Self-Assessment Questions - Ask yourself after each user response:**
+- "What files exactly need to be created or modified?"
+- "What specific code changes are required?"
+- "What dependencies need to be installed?"
+- "What configuration changes are needed?"
+- "How will this integrate with existing code?"
+- "What testing approach should be used?"
 
-**Technical Context Deep-Dive:**
-- Current tech stack and framework versions
-- Existing architecture and patterns
-- Database and infrastructure setup
-- Authentication and security requirements
-- Performance and scalability needs
-- Testing and deployment processes
+**Continuous Implementation Deep-Dive Pattern:**
+- If user says "add authentication" → Ask: Which files handle auth? What database changes? JWT or sessions? Middleware needed? Registration flow? Password reset?
+- If user says "improve performance" → Ask: What specific bottlenecks? Which components are slow? Database queries? Frontend rendering? API endpoints? Caching strategy?
+- If user says "refactor components" → Ask: Which exact components? What's the new structure? How to maintain backwards compatibility? Migration steps?
 
-**Implementation Requirements Discovery:**
-- Specific functionality and user stories
-- Technical design and architecture decisions
-- Files and modules that need changes
-- Dependencies and integrations required
-- Error handling and edge cases
-- Success metrics and validation criteria
+**Keep Digging Until You Know:**
+- Exact file paths that need changes
+- Specific functions/components to create/modify
+- Complete dependency list with versions
+- Step-by-step implementation sequence
+- All configuration changes required
+- Comprehensive testing strategy
+- Success criteria with measurable outcomes
 
-### Step 3: Implementation Planning
+**Signs You Need More Implementation Details:**
+- You don't know exact file paths → ASK MORE
+- You're unsure about code structure → ASK MORE
+- Dependencies are unclear → ASK MORE
+- Implementation steps are vague → DRILL DOWN
+- Testing approach is undefined → ASK MORE
+- You can't write specific todo items → ASK MORE
 
-After thorough discovery, determine the plan structure based on implementation type:
+**ONLY create the plan when you can confidently say: "I know exactly which files to modify, what code to write, what dependencies to install, and how to test everything."**
 
-**For New Features:**
-- User stories and acceptance criteria
-- Technical architecture and design patterns
-- Database schema changes
-- API endpoints and interfaces
-- Frontend components and user flows
-- Integration points and data flow
-- Testing strategy and scenarios
-
-**For Bug Fixes:**
-- Root cause analysis and diagnosis
-- Impact assessment and affected systems
-- Fix strategy and implementation approach
-- Testing and validation requirements
-- Deployment and rollback considerations
-
-**For Performance/Refactoring:**
-- Current bottlenecks and target metrics
-- Refactoring strategy and migration steps
-- Backward compatibility considerations
-- Monitoring and observability improvements
-- Rollout and validation approach
-
-### Step 4: Create Implementation Plan
-
-**CRITICAL: ONLY CREATE PLAN DOCUMENT - DO NOT IMPLEMENT**
-
-Execute CLI command to create the plan:
+After complete implementation understanding, create the plan using:
 
 ```bash
 npx -y cc-self-refer plan create "<plan-title>" <<'EOF'
-<comprehensive-plan-content>
+<plan-content>
 EOF
 ```
 
-**AFTER CLI EXECUTION:**
-- STOP immediately after creating the plan document
-- DO NOT start implementation
-- DO NOT edit code files  
-- DO NOT use Write, Edit, or MultiEdit tools
-- Plan creation is COMPLETE - user must execute implementation separately
-
 ## Plan Document Template
+
+**IMPORTANT: the following implementation details are just example. The content of implementation section will vary depend on the plan requirement. **
 
 ======================TEMPLATE=====================
 ```markdown
@@ -134,37 +97,72 @@ EOF
 
 ## Implementation
 
-### Prerequisites and Setup
-[Dependencies to install (npm/yarn/pnpm packages, system requirements)]
-[Environment variables and configuration files to create/modify]
-[Database setup, migrations, or schema changes needed]
-[Authentication setup, API keys, or credentials required]
-[Development tools, CLI installations, or workspace configuration]
+### Required Content
 
-### Core Implementation
-[Specific files to create with full paths (e.g., src/components/NewFeature.tsx)]
-[Existing files to modify with exact locations and changes needed]
-[Code snippets, function signatures, or architectural patterns to implement]
-[State management setup (Redux, Context, Zustand patterns)]
-[API endpoints to create/modify with request/response schemas]
-[Business logic implementation with algorithms or data processing steps]
-[UI components with props interfaces and styling requirements]
 
-### Integration and Testing
-[Integration points with existing systems, APIs, or third-party services]
-[Unit test files to create with test scenarios and mock requirements]
-[Integration test setup for API endpoints or component interactions]
-[End-to-end test scenarios for user workflows]
-[Performance testing considerations and benchmarks]
-[Error handling implementation and fallback strategies]
+**Technical Stack & Dependencies**
+- Framework: [React, Vue, Node.js, etc.]
+- Language & Version: [TypeScript 5.x, Node 18+, etc.]  
+- Package Manager: [npm, pnpm, yarn]
+- Required Dependencies: List exact package names and versions
+- New Dependencies to Install: Exact commands to run
+  ```bash
+  npm install package-name@version
+  pnpm add package-name
+  ```
 
-### Deployment and Finalization
-[Build process modifications or new build scripts]
-[Environment-specific configuration for staging/production]
-[Database migration scripts or data seeding requirements]
-[Monitoring, logging, or analytics implementation]
-[Documentation updates (README, API docs, component docs)]
-[Version control considerations (branching, PR requirements)]
+**Architecture & File Structure **
+- Directory Structure: Show exact paths where files will be created/modified
+- Component/Module Design: Describe the main classes, functions, or components
+- Data Flow: How data moves through the system
+- State Management: Redux, Context, or other patterns used
+
+**Implementation Steps **
+1. **Setup Phase**
+   - Environment configuration
+   - Dependency installation commands (exact CLI commands)
+   - Database migration commands (if needed)
+
+2. **Core Development**
+   - File Creation: List all new files to create with their exact paths
+   - File Modification: List existing files to modify with specific functions/sections
+   - Code Patterns: Reference existing patterns or describe new ones
+
+3. **Integration Phase**  
+   - API Integration: Exact endpoint URLs, request/response formats
+   - Component Integration: How new components connect to existing ones
+   - Testing Integration: Test file locations and testing commands
+
+4. **Validation & Deployment**
+   - Build Commands: `npm run build`, `pnpm build`, etc.
+   - Test Commands: `npm test`, `pnpm test`, `npm run e2e`, etc.
+   - Linting Commands: `npm run lint`, `pnpm lint`, etc.
+
+**Configuration Details **
+- Environment Variables: Exact variable names and example values
+- Config Files: Which files need modification (tsconfig.json, package.json, etc.)
+- Build Settings: Webpack, Vite, or other build tool configurations
+
+**External References **
+- Documentation Links: Include exact URLs for libraries, APIs, or frameworks
+- CLI Commands from Docs: Copy exact commands from documentation
+  ```bash
+  # Example: From Next.js docs
+  npx create-next-app@latest my-app --typescript --tailwind
+  ```
+- Code Examples: Include relevant code snippets from documentation
+
+**Error Handling & Edge Cases (에러 처리 및 엣지 케이스)**
+- Common Error Scenarios: What could go wrong and how to handle it
+- Validation Rules: Input validation, data validation requirements
+- Fallback Strategies: What to do when primary approach fails
+
+**Performance Considerations (성능 고려사항)**
+- Optimization Strategies: Lazy loading, caching, bundling
+- Monitoring: How to measure success (metrics, logging)
+- Scalability: How the solution handles growth
+
+
 
 ## Todo List
 - [ ] [Specific action item 1]
