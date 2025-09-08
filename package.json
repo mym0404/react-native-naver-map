@@ -44,7 +44,7 @@
     "build": "pnpm build:expo-config-plugin && pnpm build:docs && bob build",
     "prepack": "pnpm build",
     "build:expo-config-plugin": "tsc --project ./expo-config-plugin",
-    "build:docs": "rm -rf docs && typedoc",
+    "build:docs": "rm -rf docs && echo \"no docs\"",
     "ci:ios": "cd example/ios && xcodebuild -workspace example.xcworkspace -scheme example -configuration Debug -sdk iphonesimulator -quiet CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO ONLY_ACTIVE_ARCH=YES",
     "ci:android": "cd example/android && ./gradlew assembleDebug",
     "turbo:android": "pnpm turbo ci:android --single-package --cache-dir=\".turbo/android\"",
@@ -75,8 +75,7 @@
   "devDependencies": {
     "@babel/runtime": "catalog:",
     "@babel/core": "catalog:",
-    "@biomejs/biome": "^2.2.2",
-    "@blackwych/typedoc-plugin-categorized-hierarchy-theme": "^1.1.1",
+    "@biomejs/biome": "catalog:",
     "@commitlint/config-conventional": "17.0.2",
     "@expo/config-plugins": "10.0.3",
     "@release-it/conventional-changelog": "^10.0.1",
@@ -91,9 +90,6 @@
     "react-native-builder-bob": "0.40.12",
     "release-it": "19.0.3",
     "turbo": "^2.5.6",
-    "typedoc": "0.28.5",
-    "typedoc-plugin-extras": "^4.0.0",
-    "typedoc-theme-hierarchy": "^6.0.0",
     "typescript": "catalog:",
     "zx": "^8.8.1"
   },
@@ -181,8 +177,5 @@
   "dependencies": {
     "object-hash": "^3.0.0"
   },
-  "packageManager": "pnpm@10.15.0+sha512.486ebc259d3e999a4e8691ce03b5cac4a71cbeca39372a9b762cb500cfdf0873e2cb16abe3d951b1ee2cf012503f027b98b6584e4df22524e0c7450d9ec7aa7b",
-  "workspaces": [
-    "example"
-  ]
+  "packageManager": "pnpm@10.15.1+sha512.34e538c329b5553014ca8e8f4535997f96180a1d0f614339357449935350d924e22f8614682191264ec33d1462ac21561aff97f6bb18065351c162c7e8f6de67"
 }

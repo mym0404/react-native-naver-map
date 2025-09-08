@@ -10,7 +10,8 @@
       "Bash(mkdir:*)",
       "Bash(gh pr view:*)",
       "Bash(pnpm add:*)",
-      "Bash(pnpm install:*)"
+      "Bash(pnpm install:*)",
+      "Read(//Users/mj/Desktop/expo-release-it/docs/src/**)"
     ],
     "deny": [],
     "ask": []

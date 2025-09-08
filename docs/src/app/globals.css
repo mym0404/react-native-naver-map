@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+h1 {
+  margin-top: 2rem;
+}
+
+body {
+  font-family:
+    "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial",
+    sans-serif;
+}
+
+@utility row {
+  @apply flex flex-row;
+}
+
+@utility col-center {
+  @apply flex flex-col items-center;
+}
+
+@utility row-center {
+  @apply flex flex-row items-center;
+}
+
+@utility row-baseline {
+  @apply flex flex-row items-baseline;
+}
+
+@utility center {
+  @apply flex items-center justify-center;
+}
+
+@utility absolute-fill {
+  @apply absolute top-0 right-0 bottom-0 left-0;
+}
+
+@utility center-position {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
