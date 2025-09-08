@@ -9,7 +9,8 @@
       "Bash(npx -y cc-self-refer)",
       "Bash(mkdir:*)",
       "Bash(gh pr view:*)",
-      "Bash(pnpm add:*)"
+      "Bash(pnpm add:*)",
+      "Bash(pnpm install:*)"
     ],
     "deny": [],
     "ask": []
