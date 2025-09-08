@@ -42,3 +42,5 @@ next-env.d.ts
 
 # pagefind generated files
 /public/_pagefind/
+
+!src/lib

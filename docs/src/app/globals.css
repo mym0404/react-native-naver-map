@@ -6,6 +6,12 @@ h1 {
   margin-top: 2rem;
 }
 
+body {
+  font-family:
+    "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial",
+    sans-serif;
+}
+
 @utility row {
   @apply flex flex-row;
 }
