@@ -7,7 +7,7 @@ shamefullyHoist: true
 catalog:
   '@babel/core': ^7.28.4
   '@babel/runtime': ^7.28.4
-  '@biomejs/biome': ^2.2.2
+  '@biomejs/biome': ^2.2.3
   '@react-native-community/cli': 19.0.0
   '@react-native-community/cli-platform-android': 19.0.0
   '@react-native-community/cli-platform-ios': 19.0.0
@@ -20,7 +20,9 @@ catalog:
   '@types/react': 19.1.0
   '@types/react-dom': ^19
   '@types/react-test-renderer': ^19.1.0
+  next: 15.5.2
   react: 19.1.0
+  react-dom: 19.1.0
   react-native: 0.80.0
   react-test-renderer: 19.1.0
   tailwindcss: ^4
