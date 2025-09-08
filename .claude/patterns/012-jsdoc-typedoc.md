@@ -2,6 +2,8 @@
 
 # JSDoc TypeDoc Documentation
 
+[EXPLANATION] JSDoc documentation patterns for TypeScript components and methods using TypeDoc
+
 ## Usage
 
 ### Component Documentation

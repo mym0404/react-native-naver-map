@@ -84,6 +84,9 @@
   } else if ([subview isKindOfClass:[RNCNaverMapPath class]]) {
     auto marker = static_cast<RNCNaverMapPath*>(subview).inner;
     marker.mapView = self.mapView;
+  } else if ([subview isKindOfClass:[RNCNaverMapMultiPath class]]) {
+    auto marker = static_cast<RNCNaverMapMultiPath*>(subview).inner;
+    marker.mapView = self.mapView;
   } else if ([subview isKindOfClass:[RNCNaverMapArrowheadPath class]]) {
     auto marker = static_cast<RNCNaverMapArrowheadPath*>(subview).inner;
     marker.mapView = self.mapView;
@@ -123,6 +126,10 @@
     marker.touchHandler = nil;
   } else if ([subview isKindOfClass:[RNCNaverMapPath class]]) {
     auto marker = static_cast<RNCNaverMapPath*>(subview).inner;
+    marker.mapView = nil;
+    marker.touchHandler = nil;
+  } else if ([subview isKindOfClass:[RNCNaverMapMultiPath class]]) {
+    auto marker = static_cast<RNCNaverMapMultiPath*>(subview).inner;
     marker.mapView = nil;
     marker.touchHandler = nil;
   } else if ([subview isKindOfClass:[RNCNaverMapArrowheadPath class]]) {

@@ -1,25 +1,19 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { processColor } from 'react-native';
 import { convertJsImagePropToNativeProp } from '../internal/Util';
 import { nAssert } from '../internal/util/Assert';
 import { Const } from '../internal/util/Const';
 import { default as NativeNaverMapMultiPath } from '../spec/RNCNaverMapMultiPathNativeComponent';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
-import type { Coord } from '../types/Coord';
 import type { MarkerImageProp } from '../types/MarkerImageProp';
-import type { MultiPathColorPart } from '../types/MultiPathColorPart';
+import type { MultiPathPart } from '../types/MultiPathPart';
 
 export interface NaverMapMultiPathOverlayProps extends BaseOverlayProps {
   /**
-   * 좌표 구간들을 지정할 수 있습니다.
-   * 각 구간은 2개 이상의 좌표로 구성되어야 하며, coordParts와 colorParts의 길이가 일치해야 합니다.
+   * 경로 구간들을 지정할 수 있습니다.
+   * 각 구간은 좌표와 색상 설정이 포함된 객체로 구성됩니다.
    */
-  coordParts: Coord[][];
-  /**
-   * 각 좌표 구간별 색상 설정입니다.
-   * coordParts와 동일한 길이여야 합니다.
-   */
-  colorParts: MultiPathColorPart[];
+  pathParts: MultiPathPart[];
   /**
    * 두께를 지정할 수 있습니다.
    *
@@ -48,6 +42,12 @@ export interface NaverMapMultiPathOverlayProps extends BaseOverlayProps {
    */
   patternInterval?: number;
   /**
+   * progress 속성을 사용하면 경로의 진행도를 0.0 ~ 1.0 범위로 지정할 수 있습니다.
+   *
+   * @default 0
+   */
+  progress?: number;
+  /**
    * isHideCollidedSymbols 속성을 true로 지정하면 경로선과 겹치는 지도 심벌이 숨겨집니다.
    *
    * @default false
@@ -72,8 +72,7 @@ export interface NaverMapMultiPathOverlayProps extends BaseOverlayProps {
 }
 
 export const NaverMapMultiPathOverlay = ({
-  colorParts,
-  coordParts,
+  pathParts,
   globalZIndex = Const.NULL_NUMBER,
   isHidden,
   isHideCollidedCaptions,
@@ -87,36 +86,35 @@ export const NaverMapMultiPathOverlay = ({
   outlineWidth = 0,
   patternImage,
   patternInterval = 0,
+  progress = 0,
   width = 1,
   zIndex = 0,
 }: NaverMapMultiPathOverlayProps) => {
-  // Validate coordParts and colorParts
-  nAssert(
-    coordParts.length === colorParts.length,
-    `[NaverMapMultiPathOverlay] coordParts length (${coordParts.length}) should equal colorParts length (${colorParts.length}).`
-  );
+  // Validate pathParts
+  if (pathParts.length === 0) return null;
 
-  if (coordParts.length === 0 || colorParts.length === 0) return null;
-
-  // Validate each coordinate part has at least 2 coordinates
-  coordParts.forEach((coords, index) => {
+  // Validate each path part has at least 2 coordinates
+  pathParts.forEach((pathPart, index) => {
     nAssert(
-      coords.length >= 2,
-      `[NaverMapMultiPathOverlay] coordParts[${index}] length should be equal or greater than 2, is ${coords.length}.`
+      pathPart.coords.length >= 2,
+      `[NaverMapMultiPathOverlay] pathParts[${index}].coords length should be equal or greater than 2, is ${pathPart.coords.length}.`
     );
   });
 
-  if (coordParts.some((coords) => coords.length < 2)) return null;
+  if (pathParts.some((pathPart) => pathPart.coords.length < 2)) return null;
 
-  // Process color parts to native format
-  const processedColorParts = colorParts.map((colorPart) => ({
-    color: processColor(colorPart.color || 'black') as number,
-    passedColor: processColor(colorPart.passedColor || 'black') as number,
-    outlineColor: processColor(colorPart.outlineColor || 'black') as number,
-    passedOutlineColor: processColor(
-      colorPart.passedOutlineColor || 'black'
-    ) as number,
-  }));
+  // Process pathParts to native format with useMemo
+  const processedPathParts = useMemo(() => {
+    return pathParts.map((pathPart) => ({
+      coords: pathPart.coords,
+      color: processColor(pathPart.color || 'black') as number,
+      passedColor: processColor(pathPart.passedColor || 'black') as number,
+      outlineColor: processColor(pathPart.outlineColor || 'black') as number,
+      passedOutlineColor: processColor(
+        pathPart.passedOutlineColor || 'black'
+      ) as number,
+    }));
+  }, [pathParts]);
 
   return (
     <NativeNaverMapMultiPath
@@ -125,8 +123,7 @@ export const NaverMapMultiPathOverlay = ({
       isHidden={isHidden}
       minZoom={minZoom}
       maxZoom={maxZoom}
-      coordParts={coordParts}
-      colorParts={processedColorParts}
+      pathParts={processedPathParts}
       width={width}
       isMinZoomInclusive={isMinZoomInclusive}
       isMaxZoomInclusive={isMaxZoomInclusive}
@@ -137,6 +134,7 @@ export const NaverMapMultiPathOverlay = ({
         patternImage ? convertJsImagePropToNativeProp(patternImage) : undefined
       }
       patternInterval={patternInterval}
+      progress={progress}
       outlineWidth={outlineWidth}
       onTapOverlay={onTap}
     />

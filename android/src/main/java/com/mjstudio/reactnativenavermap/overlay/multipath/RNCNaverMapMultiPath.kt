@@ -28,11 +28,11 @@ class RNCNaverMapMultiPath(
     }
   }
 
-  fun setCoordParts(coordParts: List<List<LatLng>>) {
+  fun setPathParts(
+    coordParts: List<List<LatLng>>,
+    colorParts: List<MultipartPathOverlay.ColorPart>,
+  ) {
     overlay.coordParts = coordParts
-  }
-
-  fun setColorParts(colorParts: List<MultipartPathOverlay.ColorPart>) {
     overlay.colorParts = colorParts
   }
 

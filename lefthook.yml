@@ -3,7 +3,7 @@ pre-commit:
   commands:
     lint:js:
       glob: "*.{js,ts,jsx,tsx}"
-      run: yarn biome check {staged_files}
+      run: pnpm biome check {staged_files}
     lint:objc:
       glob: "*.{h,mm,m,hpp,cpp,c}"
       run: bash ./script/clang-lint.sh {staged_files}
@@ -12,7 +12,7 @@ pre-commit:
       run: bash ./script/ktlint-lint.sh {staged_files}
     typecheck:
       glob: "*.{ts,tsx}"
-      run: yarn tsc --noEmit
+      run: pnpm tsc --noEmit
 
 format:
   parallel: true
@@ -25,14 +25,14 @@ format:
       run: bash ./script/ktlint-format.sh {all_files}
     format:js:
       glob: "*.{js,ts,jsx,tsx}"
-      run: yarn biome check --fix
+      run: pnpm biome check --fix
 
 check:
   parallel: true
   commands:
     lint:js:
       glob: "*.{js,ts,jsx,tsx}"
-      run: yarn biome check {staged_files}
+      run: pnpm biome check {staged_files}
     lint:objc:
       glob: "*.{h,mm,m,hpp,cpp,c}"
       run: bash ./script/clang-lint.sh {all_files}
@@ -41,9 +41,9 @@ check:
       run: bash ./script/ktlint-lint.sh {all_files}
     typecheck:
       glob: "*.{ts,tsx}"
-      run: yarn tsc --noEmit
+      run: pnpm tsc --noEmit
     build:
-      run: yarn prepack
+      run: pnpm prepack
 
 commit-msg:
   commands:

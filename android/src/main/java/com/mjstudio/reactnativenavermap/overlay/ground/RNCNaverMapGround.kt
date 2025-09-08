@@ -1,7 +1,7 @@
 package com.mjstudio.reactnativenavermap.overlay.ground
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
+import androidx.core.graphics.createBitmap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
 import com.mjstudio.reactnativenavermap.util.emitEvent
@@ -56,6 +56,6 @@ class RNCNaverMapGround(
   override fun setOverlayImage(image: OverlayImage?) {
     isImageSet = true
     overlay.image =
-      image ?: OverlayImage.fromBitmap(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888))
+      image ?: OverlayImage.fromBitmap(createBitmap(1, 1))
   }
 }

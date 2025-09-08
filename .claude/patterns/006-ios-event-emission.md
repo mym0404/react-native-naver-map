@@ -2,6 +2,8 @@
 
 # iOS Event Emission
 
+[EXPLANATION] iOS event emission using generated event emitter for sending events to JavaScript
+
 ## Usage
 
 ```objc

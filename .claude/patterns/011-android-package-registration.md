@@ -2,6 +2,8 @@
 
 # Android Package Registration
 
+[EXPLANATION] Android ReactPackage registration for native modules and ViewManagers
+
 ## Usage
 
 ```kotlin

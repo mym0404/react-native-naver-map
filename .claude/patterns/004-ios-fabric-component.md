@@ -2,6 +2,8 @@
 
 # iOS Fabric Component Implementation
 
+[EXPLANATION] iOS Fabric component implementation extending RCTViewComponentView with props handling
+
 ## Usage
 
 ### Header File

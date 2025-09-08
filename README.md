@@ -78,6 +78,9 @@ Expo Go, Snack에선 사용하지
 # npm
 npm install --save @mj-studio/react-native-naver-map
 
+# pnpm
+pnpm add @mj-studio/react-native-naver-map
+
 # yarn
 yarn add @mj-studio/react-native-naver-map
 
@@ -385,7 +388,7 @@ const jejuRegion: Region = {
 우선 패키지를 설치하고 설정합니다.
 
 ```shell
-yarn add react-native-permissions
+pnpm add react-native-permissions
 ```
 
 `react-native-permission`의 각 플랫폼별 설정 방법은 [사용법](https://github.com/zoontek/react-native-permissions#setup)을 직접 참고해

@@ -52,7 +52,7 @@ The library provides React components that wrap native map views:
 
 ### Codegen Types
 - `Double` - 64-bit floating point
-- `Int32` - 32-bit integer  
+- `Int32` - 32-bit integer
 - `WithDefault<T, Default>` - Type with default value
 - `DirectEventHandler<T>` - Event callback type
 - `Readonly<T>` - Immutable object type
@@ -109,10 +109,10 @@ The library provides React components that wrap native map views:
 
 ### Development Workflow
 1. Make changes to TypeScript source in `src/`
-2. Run `yarn codegen` to regenerate native interfaces if needed
-3. Test in example app with `yarn dev` then `yarn android`/`yarn ios`
-4. Run `yarn lint` to validate all code
-5. Use `yarn prepack` to build the full package
+2. Run `pnpm codegen` to regenerate native interfaces if needed
+3. Test in example app with `pnpm dev` then `pnpm android`/`pnpm ios`
+4. Run `pnpm lint` to validate all code
+5. Use `pnpm prepack` to build the full package
 
 ### Testing Setup
 To test the library, you need to configure API keys:
@@ -126,7 +126,7 @@ To test the library, you need to configure API keys:
 - Uses Conventional Commits for commit messages
 - Documentation is auto-generated with TypeDoc from JSDoc comments
 - All native code changes require both iOS and Android implementations
-- Codegen runs automatically on build - regenerate with `yarn codegen` if specs change
+- Codegen runs automatically on build - regenerate with `pnpm codegen` if specs change
 
 # JSDoc & TypeDoc Documentation
 
@@ -137,36 +137,36 @@ To test the library, you need to configure API keys:
 # Package Scripts
 
 ## Development Scripts
-- `yarn dev` - Start development server for example app
-- `yarn ios` - Run example app on iOS simulator
-- `yarn android` - Run example app on Android emulator
-- `yarn studio` - Open Android Studio for the example project
-- `yarn xcode` - Open Xcode workspace for the example project
+- `pnpm dev` - Start development server for example app
+- `pnpm ios` - Run example app on iOS simulator
+- `pnpm android` - Run example app on Android emulator
+- `pnpm studio` - Open Android Studio for the example project
+- `pnpm xcode` - Open Xcode workspace for the example project
 
 ## Code Quality & Testing
-- `yarn typecheck` - Run TypeScript type checking without emitting files
-- `yarn lint` / `yarn t` - Run all linting checks (uses Lefthook)
-- `yarn format` - Format code using configured formatters (Biome)
+- `pnpm typecheck` - Run TypeScript type checking without emitting files
+- `pnpm lint` / `pnpm run t` - Run all linting checks (uses Lefthook)
+- `pnpm format` - Format code using configured formatters (Biome)
 
 ## Build & Release
-- `yarn prepack` - Full build process: Expo plugin + docs + library build
-- `yarn build:expo-config-plugin` - Build Expo configuration plugin
-- `yarn build:docs` - Generate TypeDoc documentation
-- `yarn clean` - Clean all build directories
-- `yarn release` - Execute release script
+- `pnpm prepack` - Full build process: Expo plugin + docs + library build
+- `pnpm build:expo-config-plugin` - Build Expo configuration plugin
+- `pnpm build:docs` - Generate TypeDoc documentation
+- `pnpm clean` - Clean all build directories
+- `pnpm release` - Execute release script
 
 ## Native Development
-- `yarn codegen` - Generate native codegen artifacts for both platforms
-- `yarn codegen:android` - Generate Android codegen artifacts only
-- `yarn codegen:ios` - Generate iOS codegen artifacts only
-- `yarn pod` - Install iOS dependencies via CocoaPods
-- `yarn pod:update` - Update iOS dependencies via CocoaPods
+- `pnpm codegen` - Generate native codegen artifacts for both platforms
+- `pnpm codegen:android` - Generate Android codegen artifacts only
+- `pnpm codegen:ios` - Generate iOS codegen artifacts only
+- `pnpm pod` - Install iOS dependencies via CocoaPods
+- `pnpm pod:update` - Update iOS dependencies via CocoaPods
 
 ## CI/CD Scripts
-- `yarn ci:ios` - Build iOS project for CI (xcodebuild)
-- `yarn ci:android` - Build Android project for CI (gradlew assembleDebug)
-- `yarn turbo:android` - Run Android CI with Turbo caching
-- `yarn turbo:ios` - Run iOS CI with Turbo caching
+- `pnpm ci:ios` - Build iOS project for CI (xcodebuild)
+- `pnpm ci:android` - Build Android project for CI (gradlew assembleDebug)
+- `pnpm turbo:android` - Run Android CI with Turbo caching
+- `pnpm turbo:ios` - Run iOS CI with Turbo caching
 
 # Self Reference Context Management System (cc-self-refer cli and context storage project structure)
 
