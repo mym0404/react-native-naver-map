@@ -82,6 +82,9 @@ We support the latest version of the SDK, and you can manipulate the latest feat
 # npm
 npm install --save @mj-studio/react-native-naver-map
 
+# pnpm
+pnpm add @mj-studio/react-native-naver-map
+
 # yarn
 yarn add @mj-studio/react-native-naver-map
 
@@ -389,7 +392,7 @@ We will look at an example of using the [react-native-permissions](https://githu
 First, install and set up the package:
 
 ```shell
-yarn add react-native-permissions
+pnpm add react-native-permissions
 ```
 
 Please refer to the [Usage](https://github.com/zoontek/react-native-permissions#setup) directly for the platform-specific setup method for `react-native-permission` and properly modify `Podfile(iOS)`, `AndroidManifest.xml(Android)`.

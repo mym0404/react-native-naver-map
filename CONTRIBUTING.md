@@ -10,34 +10,34 @@ The `package.json` file contains various scripts for common tasks:
 
 **Installiation, Build**
 
-- `yarn install`: setup project by installing dependencies.
-- `yarn prepack`: build package (including docs, expo config plugin)
-- `yarn build:docs`: build documentation at `./docs`.
-- `yarn build:expo-config-plugin`: build expo config plugin.
+- `pnpm run install`: setup project by installing dependencies.
+- `pnpm run prepack`: build package (including docs, expo config plugin)
+- `pnpm run build:docs`: build documentation at `./docs`.
+- `pnpm run build:expo-config-plugin`: build expo config plugin.
 
 **Validation**
 
-- `yarn lint`: lint files with ESLint, ClangFormat, Ktlint, TypeScript
-- `yarn run t`: alias for lint
-- `yarn format`: run formatter with ClangFormat, SwiftFormat for iOS codes and Ktlint for Android codes
+- `pnpm run lint`: lint files with ESLint, ClangFormat, Ktlint, TypeScript
+- `pnpm run t`: alias for lint
+- `pnpm run format`: run formatter with ClangFormat, SwiftFormat for iOS codes and Ktlint for Android codes
 
 **Example App Build, Manipluations**
 
-- `yarn start`: start the Metro server for the example app.
-- `yarn android`: run the example app on Android.
-- `yarn ios`: run the example app on iOS.
-- `yarn codegen:{android,ios}`: generate codegen output for development typing (this should be clean for running example app, prevetning redelcaration compile error)
+- `pnpm run start`: start the Metro server for the example app.
+- `pnpm run android`: run the example app on Android.
+- `pnpm run ios`: run the example app on iOS.
+- `pnpm run codegen:{android,ios}`: generate codegen output for development typing (this should be clean for running example app, prevetning redelcaration compile error)
 
 **Util**
 
-- `yarn studio`: open android studio for example project
-- `yarn xcode`: open xcode for example project
+- `pnpm run studio`: open android studio for example project
+- `pnpm run xcode`: open xcode for example project
 
 **Codegen**
 
-- `yarn codegen`: generate codegen spec for all platform
-- `yarn codegen:android`: generate android codegen spec
-- `yarn codegen:ios`: generate ios codegen spec
+- `pnpm run codegen`: generate codegen spec for all platform
+- `pnpm run codegen:android`: generate android codegen spec
+- `pnpm run codegen:ios`: generate ios codegen spec
 
 ## Development workflow
 
@@ -52,7 +52,7 @@ You can use various commands from the root directory to work with the project.
 To start the packager:
 
 ```sh
-cd example && yarn start
+cd example && pnpm run start
 ```
 
 ### Android
@@ -68,7 +68,7 @@ Set your Naver SDK Key at `example/nadroid/app/src/main/res/values/secret.xml`
 ```
 
 ```sh
-cd example && yarn android
+cd example && pnpm run android
 ```
 
 ### iOS
@@ -82,8 +82,8 @@ NAVER_CLIENT_ID = {{your_key}}
 ```
 
 ```sh
-yarn pod
-cd example && yarn ios
+pnpm run pod
+cd example && pnpm run ios
 ```
 
 ### Type Check & Lint
@@ -91,7 +91,7 @@ cd example && yarn ios
 Make sure your code passes TypeScript and ESLint and clang. Run the following to verify:
 
 ```sh
-yarn lint
+pnpm run lint
 ```
 
 ### Formatting for native codes
@@ -132,7 +132,7 @@ We use [TypeDoc](https://typedoc.org/guides/overview/) for generating api docume
 
 When changing code, be sure to attach comments in JSDoc Style to functions, variables, interfaces, type aliases, classes, etc. of the code.
 
-You can check generated docs with `yarn build:docs` command.
+You can check generated docs with `pnpm run build:docs` command.
 
 The documentation is published on push main branch automatically.
 

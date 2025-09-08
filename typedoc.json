@@ -63,6 +63,5 @@
   "favicon": "public/favicon.ico",
   "navigationLinks": {
     "Github": "https://github.com/mym0404/react-native-naver-map"
-  },
-  "customCss": "./public/doc.css"
+  }
 }
