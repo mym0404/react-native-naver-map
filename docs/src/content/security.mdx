@@ -1,0 +1,13 @@
+# About Security
+
+That’s right. You might be wondering whether storing files like `.p8`, keystore files, or key values in version control is truly secure.
+In conclusion, if you’re using a private repository, you can consider it to be somewhat safe.
+
+Whereas, you can exclude those key files from the VCS and share it to your teamates.
+
+For example, Fastlane Match also uses OpenSSL encryption, but it still stores certificates and profiles in a private Git repository.
+
+While you could implement additional security policies, I haven’t taken any extra measures for now.
+If you need further encryption, you can build middleware in your pipeline that runs `expo-release-it` so that everything in the `expo-release-it` directory goes through encryption and decryption processes.
+
+Any suggestions are welcome.

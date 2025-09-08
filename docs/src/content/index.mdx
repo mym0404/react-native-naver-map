@@ -1,0 +1,48 @@
+# Expo Release It
+
+![expo-release-it thumbnail](/social-image.png)
+
+`expo-release-it` is an opinionated Expo CICD workflow CLI for building & uploading & submitting Expo projects on your machine
+
+# Features
+
+- 🎉 No **EAS**
+- 🩵 No headaches when understanding and managing **keys and credentials**
+- 🧩 Manage and sync **store metadata** easily
+- 🌍 Works with [Expo CNG](https://docs.expo.dev/workflow/continuous-native-generation/) mode (also available in non-CNG environments)
+- 📦 Build artifacts **locally** (`apk`, `aab`, `ipa`)
+- 🚀 Upload artifacts to Google Play Console Internal Testing Track and iOS TestFlight
+- ✅ Submit releases for review
+
+
+# Why?
+
+**You don't need Expo EAS and to understand how it works in most small projects and our machine is much faster than using the cloud.**
+
+<details>
+  <summary>Full Details</summary>
+
+  Expo EAS is convenient, but it requires additional configuration files, console setup, and a conceptual understanding of Over-The-Air (OTA) updates.
+  Also, builds must be performed on EAS Cloud, which is not free and can be slow.
+
+  While EAS is useful for larger teams, if you are developing alone or with just a few people and question the need for such a process, `expo-release-it` is the answer.
+
+  Based on years of experience developing with React Native, I encourage a more traditional approach: build APK, AAB, and IPA files locally,
+  upload them to each platform’s store testing track, and request reviews—without worrying about binary versions, OTA update versions, or branch management.
+
+  This approach is much faster, simpler, and, most importantly, allows you to take full advantage of your computer’s fast CPU.
+
+  I’m also a big fan of OTA updates, and I’ve enjoyed a lot of efficiency when working in larger teams, but it always required setting up many supporting systems in advance.
+
+  `expo-release-it` is a CLI tool that encapsulates the know-how I have gained over years of automating build and review processes.
+  Internally, it ports and integrates tools like Fastlane and Match to automate native binary builds and review requests.
+
+  Therefore, this tool enforces an opinionated versioning, build, and review request workflow.
+  However, once you understand this approach, your app deployment process will become significantly faster.
+
+</details>
+
+# Structurual Requirements
+
+- `Version Code(Android)` and `Builder Number(iOS)` are the same.
+- All Keys, Credentials(except iOS certificates & provisioning profiles served in Github separately) are stored in VCS

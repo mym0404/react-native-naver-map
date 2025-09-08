@@ -1,0 +1,114 @@
+import { Callout } from 'nextra/components';
+
+# Getting Started
+
+You've got to follow each step to execute `expo-release-it`.
+
+## 1. Ruby, Bundler
+
+`expo-release-it` requires `bundler` of ruby is available in your environment to run `Fastlane` internally.
+
+If not, set up your environment so that `ruby` and `bundler` are available by following [Ruby Install Guide](https://www.ruby-lang.org/en/downloads/)
+
+## 2. Prepare Keys & Credentials
+
+`init` command generates sample key files structure in `expo-release-it/key`. They are **noob files** and you must replace file contents.
+
+<Callout type={'warning'}>You must prepare all required key files in `expo-release-it/key` exactly the same filenames.</Callout>
+<Callout type={'info'}>You can add the following files in `.gitignore` if you aren't sure about security issues. Treat them as `.env` and share it to your teammates.</Callout>
+
+### `android_play_console_service_account.json`
+
+Google Play Console actions require authentication using Google Service Account.
+
+You can issue new Google Play Service Account by following Guide
+and prepare `json` file.
+
+- [Fastlane Supply JSON Key Setup Guide](https://docs.fastlane.tools/actions/supply/#setup)
+- [How to Get Your Google Play JSON Key](https://help.radio.co/en/articles/6232140-how-to-get-your-google-play-json-key)
+
+### `android_release.keystore`
+
+Prepare your android release keystore file for **uploading** and **signing** Android build artifacts.
+
+Additional passwords, alias will be prompted during the `init` command and be stored in `keyholder.json`.
+
+- [Keystore generation with Android Studio](https://developer.android.com/studio/publish/app-signing.html#generate-key)
+- [Keystore generation with CLI](https://gist.github.com/henriquemenezes/70feb8fff20a19a65346e48786bedb8f)
+
+### `ios_app_store_connect_api_key`
+
+App Store Connect actions require authentication using App Store Connect Api Key(.p8)
+
+Additional `issuer_id`, `key_id` values will be prompted during the `init` command and be stored in `keyholder.json`
+
+- [Guide](https://www.revenuecat.com/docs/service-credentials/itunesconnect-app-specific-shared-secret/app-store-connect-api-key-configuration)
+- [Apple Docs Guide](https://developer.apple.com/documentation/appstoreconnectapi/creating-api-keys-for-app-store-connect-api)
+
+## 3. Create & Configure app on the stores as much as possible
+
+Create and configure your application in Google Play Console & App Store Connect as many as possible.
+
+You'd have to fill your key & credentials information using `init` command and pull store metadatas using `pull` command later.
+
+You would need to upload & publish your first artifact, release manually at first.
+
+## 4. Set binary version in expo config file.
+
+The following buildNumber, versionCode format `ABBBCCC` is not mandatory but recommended for readability.
+
+If your expo config file is `app.json`, then set like the following.
+
+```json
+{
+  "expo": {
+    "version": "1.2.3",
+    "ios": {
+      "buildNumber": "1002003"
+    },
+    "android": {
+      "versionCode": 1002003
+    }
+  }
+}
+
+```
+
+If your expo config file is `app.config.(js|ts|mjs|cjs)`, then set like the following.
+
+```typescript
+import type { ExpoConfig, ConfigContext } from 'expo/config';
+const VERSION_NAME = '1.2.3'; // VERSION_NAME variable is required.
+const VERSION_CODE = 1002003; // VERSION_CODE variable is required.
+
+export default ({ config }: ConfigContext): ExpoConfig => {
+  return {
+    ...config,
+    version: VERSION_NAME,
+    ios: {
+      buildNumber: VERSION_CODE + '',
+    },
+    android: {
+      versionCode: VERSION_CODE,
+    },
+  };
+};
+
+```
+
+## 5. Update `.gitignore`
+
+```gitignore
+# Expo Release It
+
+expo-release-it/.temp
+android/vendor/bundle
+ios/vendor/bundle
+# if you excluded android, ios for using CNG
+!expo-release-it/metadata/*
+# if you aren't sure about security issues, feel free to exclude these files from the VCS.
+!expo-release-it/key/*.p8
+!expo-release-it/key/*.keystore
+```
+
+## 6. Run `expo-release-it init`

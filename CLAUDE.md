@@ -168,7 +168,7 @@ To test the library, you need to configure API keys:
 - `pnpm turbo:android` - Run Android CI with Turbo caching
 - `pnpm turbo:ios` - Run iOS CI with Turbo caching
 
-# Self Reference Context Management System (cc-self-refer cli and context storage project structure)
+# Self Reference Context Management System (cc-self-refer cli and context storage project sturcture)
 
 This project uses `cc-self-refer` for intelligent self-reference capabilities.
 Claude Code agents should use these CLI commands to access and manage project context automatically:
@@ -178,35 +178,17 @@ Claude Code agents should use these CLI commands to access and manage project co
 **When users use natural language prompts, agents should READ the corresponding command documentation and EXECUTE the instructions within:**
 
 **CRITICAL: Always monitor for these keywords in user prompts regardless of language:**
-- **spec**
 - **pattern**
-- **page**
-- **plan**
 
 When these keywords appear in user prompts, determine if the user intends to use the corresponding cc-self-refer commands below.
 
-**Response Format for Self-Reference Actions**: If you determine that the user's natural language prompt requires using cc-self-refer functionality, prefix your response with `Self Refering... ♦️` to indicate self-reference action execution.
-
-### Specification (spec) Commands
-- "use spec" / "refer to spec" / "check specifications" → **Read and execute** `.claude/commands/spec-refer.md`
-- "use spec #3" / "refer to spec 003" → **Read and execute** `.claude/commands/spec-refer.md` with specific ID
-- "find API spec" / "search authentication spec" → **Read and execute** `.claude/commands/spec-refer.md` for search
+**Response Format for Self-Reference Actions**: If you determine that the user's natural language prompt requires using cc-self-refer functionality, prefix your response with `Pattern Refering... ♦️` to indicate self-reference action execution.
 
 ### Pattern Commands
 - "use pattern" / "apply pattern" / "use existing patterns" → **Read and execute** `.claude/commands/pattern-use.md`
 - "create pattern" / "save as pattern" → **Read and execute** `.claude/commands/pattern-create.md`
 - "find Redux pattern" / "search API patterns" → **Read and execute** `.claude/commands/pattern-use.md` for search
 - "use pattern #5" / "apply pattern 005" → **Read and execute** `.claude/commands/pattern-use.md` with specific ID
-
-### Page Commands
-- "refer to previous conversation" / "check pages" → **Read and execute** `.claude/commands/page-refer.md`
-- "yesterday's work" / "recent sessions" → **Read and execute** `.claude/commands/page-refer.md` for list
-
-### Plan Commands
-- "check plan" / "show plans" / "review planning" → **Read and execute** `.claude/commands/plan-resolve.md`
-- "create plan" / "make a plan" → **Read and execute** `.claude/commands/plan-create.md`
-- "edit plan" / "modify plan" → **Read and execute** `.claude/commands/plan-edit.md`
-- "refactoring plan" / "migration plan" → **Read and execute** `.claude/commands/plan-resolve.md` for specific plans
 
 **IMPORTANT Agent Behavior:**
 1. **Identify** the user's intent from natural language

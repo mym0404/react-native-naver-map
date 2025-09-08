@@ -1,0 +1,61 @@
+# Troubleshooting
+
+## [iOS - submit] Add information to the :submission_information option...
+
+Add [Complying with Encryption Export Regulartions options](https://developer.apple.com/documentation/security/complying-with-encryption-export-regulations?language=objc) to your expo config file.
+
+Example `app.json`
+
+```json
+{
+  "expo": {
+    "ios": {
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    }
+  }
+}
+```
+
+## [iOS] failed to load command: fastlane
+
+This means lane of fastlane has been failed. You must check stdout of fastlane action in console.
+
+### invalid curve name
+
+check out if contents of `ios_app_store_connect_api_key.p8` are valid.
+
+## [iOS - submit] The provided entity is missing a required attribute - ...
+
+You have to fill required metadata attributes of iOS in `expo-release-it/metadata/ios`.
+
+You also skip uploading metadatas with opt out the metadata uploading from the cli prompt.
+
+## [iOS - submit]  This resource cannot be reviewed
+
+You have to fill all necessary metadata to submit app for the reivew.
+
+Check yourself if app can be submitted manually at the app store connect yourself first.
+
+## [iOS] Provisioning profile "..." doesn't include signing certificate "..."
+
+You might need to revoke iOS Certificates & Provisioning Profile and generate again.
+
+```shell
+cd ios
+bundle
+bundle exec fastlane match nuke distribution # revoke all certificates
+
+cd ..
+npx expo-release-it built -p ios # command you tried, this generate required certificates automatically
+```
+
+## [Android] Google Api Error: Invalid request - Package not found: ...
+
+At first, you have to upload your artifacts manually.
+First, create an internal testing track and then upload your artifacts (AAB or APK files).
+
+## [Android] Google Api Error: Invalid request - Only releases with status draft may be created on draft app.
+
+If you have just created your app and have never released it to production before, please fill out all the required metadata manually, publish the app manually for the first time, and then try again.

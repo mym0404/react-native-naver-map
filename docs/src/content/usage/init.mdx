@@ -1,0 +1,25 @@
+# init
+
+**Configure resources and environment**
+
+```shell
+npx expo-release-it init
+```
+
+The `init` command asks you for many form fields, and the information is saved in `expo-release-it/keyholder.json` in your project.
+
+Even after running `init`, you can manually edit `keyholder.json`, and all subsequent commands will use the updated values.
+
+The resources & output directory structure is the following.
+
+```text
+📁 expo-release-it/
+├── 📁 key/         # key & certificate files
+├── 📁 metadata/    # result of `pull`
+│   ├── 📁 android/  # android store metadatas
+│   └── 📁 ios/      # ios store metadatas
+├── 📁 output/      # result of `build`
+│   ├── 📁 android/  # android build output
+│   └── 📁 ios/      # ios build output
+└── keyholder.json
+```
