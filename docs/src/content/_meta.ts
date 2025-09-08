@@ -1,19 +1,19 @@
 import type { MetaRecord } from 'nextra';
 
-const meta: MetaRecord = {
+export default {
   index: {
-    type: 'doc',
-    title: 'Welcome',
+    title: '소개',
   },
   'getting-started': {
-    title: 'Getting Started',
+    title: '시작하기',
   },
-  usage: 'Usage',
-  config: 'Configuration',
-  security: 'About Security',
-  troubleshooting: {
-    title: 'Troubleshooting',
+  installation: {
+    title: '설치',
   },
-};
-
-export default meta;
+  components: {
+    title: '컴포넌트',
+  },
+  api: {
+    title: 'API 레퍼런스',
+  },
+} satisfies MetaRecord;
