@@ -1,6 +1,6 @@
 # Spec - Comprehensive Project Specification System
 
-Create detailed project specifications through deep interactive dialogue.
+Create detailed project specifications markdown content through deep interactive dialogue and run cli with that content.
 
 **Usage**: `/spec`
 
@@ -23,13 +23,26 @@ EOF
 
 ## Interactive Deep-Dive Process
 
+## ⚠️ CRITICAL: Command Priority Override
+
+**When `/spec` is executed, it IMMEDIATELY overrides any other active modes (Plan Mode, etc.)**
+
+- DO NOT use ExitPlanMode or TodoWrite during discovery
+- FOCUS ONLY on understanding requirements through dialogue
+
 ### Step 1: Initial Scope Understanding (MANDATORY)
 
 **CRITICAL: Only proceed to Step 4 (CLI execution) after completing Steps 1-3 dialogue. Do not use implementation tools during discovery phase.**
 
-When user types `/spec`, the agent MUST first ask:
+### Enforced Interactive Discovery Pattern
+
+The agent MUST follow this exact sequence and use this exact first message:
+
+**FIRST MESSAGE (Mandatory):**
 
 ```
+🔍 **Specification Discovery Mode Activated** - stopping all other workflows
+
 I'll help you create comprehensive project specifications through detailed conversation.
 
 First, I need to understand what you're building:
@@ -49,6 +62,8 @@ Take your time - this initial context is crucial for creating valuable specifica
 ### Step 2: Extensive Interactive Discovery
 
 Based on the user's response, engage in a **fully interactive, extensive dialogue** to understand every aspect:
+
+**ONLY execute CLI commands when user explicitly says "create the specs" or similar.**
 
 ### Step 3: Specification Planning
 
