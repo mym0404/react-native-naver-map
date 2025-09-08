@@ -28,7 +28,10 @@ EOF
 **When `/plan-create` is executed, it IMMEDIATELY overrides any other active modes (Spec Mode, etc.)**
 
 - DO NOT use ExitPlanMode during discovery
+- DO NOT use TodoWrite for implementation tasks during discovery
+- DO NOT start implementation or make code changes
 - FOCUS ONLY on understanding requirements through dialogue
+- ONLY create plan documents via CLI - NO implementation
 
 ### Step 1: Initial Scope Understanding (MANDATORY)
 
@@ -103,6 +106,8 @@ After thorough discovery, determine the plan structure based on implementation t
 
 ### Step 4: Create Implementation Plan
 
+**CRITICAL: ONLY CREATE PLAN DOCUMENT - DO NOT IMPLEMENT**
+
 Execute CLI command to create the plan:
 
 ```bash
@@ -110,6 +115,13 @@ npx -y cc-self-refer plan create "<plan-title>" <<'EOF'
 <comprehensive-plan-content>
 EOF
 ```
+
+**AFTER CLI EXECUTION:**
+- STOP immediately after creating the plan document
+- DO NOT start implementation
+- DO NOT edit code files  
+- DO NOT use Write, Edit, or MultiEdit tools
+- Plan creation is COMPLETE - user must execute implementation separately
 
 ## Plan Document Template
 
@@ -123,16 +135,36 @@ EOF
 ## Implementation
 
 ### Prerequisites and Setup
-[Dependencies, environment setup, and configuration requirements]
+[Dependencies to install (npm/yarn/pnpm packages, system requirements)]
+[Environment variables and configuration files to create/modify]
+[Database setup, migrations, or schema changes needed]
+[Authentication setup, API keys, or credentials required]
+[Development tools, CLI installations, or workspace configuration]
 
 ### Core Implementation
-[Main implementation tasks, file modifications, and architecture decisions]
+[Specific files to create with full paths (e.g., src/components/NewFeature.tsx)]
+[Existing files to modify with exact locations and changes needed]
+[Code snippets, function signatures, or architectural patterns to implement]
+[State management setup (Redux, Context, Zustand patterns)]
+[API endpoints to create/modify with request/response schemas]
+[Business logic implementation with algorithms or data processing steps]
+[UI components with props interfaces and styling requirements]
 
-### Integration and Testing  
-[Integration points, testing requirements, and validation steps]
+### Integration and Testing
+[Integration points with existing systems, APIs, or third-party services]
+[Unit test files to create with test scenarios and mock requirements]
+[Integration test setup for API endpoints or component interactions]
+[End-to-end test scenarios for user workflows]
+[Performance testing considerations and benchmarks]
+[Error handling implementation and fallback strategies]
 
 ### Deployment and Finalization
-[Final configuration, deployment considerations, and completion tasks]
+[Build process modifications or new build scripts]
+[Environment-specific configuration for staging/production]
+[Database migration scripts or data seeding requirements]
+[Monitoring, logging, or analytics implementation]
+[Documentation updates (README, API docs, component docs)]
+[Version control considerations (branching, PR requirements)]
 
 ## Todo List
 - [ ] [Specific action item 1]
