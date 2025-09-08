@@ -78,9 +78,6 @@ importers:
       '@expo/config-plugins':
         specifier: 10.0.3
         version: 10.0.3
-      '@react-native/typescript-config':
-        specifier: 'catalog:'
-        version: 0.80.0
       '@release-it/conventional-changelog':
         specifier: ^10.0.1
         version: 10.0.1(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.2.0)(release-it@19.0.3(@types/node@20.5.1))
