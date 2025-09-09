@@ -1,4 +1,6 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+import Image from 'next/image';
+import { i18n } from '@/lib/i18n';
 
 /**
  * Shared layout configurations
@@ -9,22 +11,33 @@ import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
  */
 export function baseOptions(): BaseLayoutProps {
   return {
+    i18n,
     nav: {
       title: (
         <>
-          <svg
-            width="24"
-            height="24"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-label="Logo"
+          <div
+            className={'w-8 h-8 rounded-full bg-fd-accent center relative p-1'}
           >
-            <circle cx={12} cy={12} r={12} fill="currentColor" />
-          </svg>
-          My App
+            <Image
+              src={'/logo.png'}
+              alt={'logo'}
+              width={24}
+              height={24}
+              className={'animate-fd-fade-in'}
+            />
+          </div>
+          <div className={'space-x-1'}>
+            <span className={'text-xs opacity-50'}>RN</span>
+            <span>Naver Map</span>
+          </div>
         </>
       ),
     },
     // see https://fumadocs.dev/docs/ui/navigation/links
-    links: [],
+    links: [{ text: 'Documentation', url: '/docs' }],
+    githubUrl: 'https://github.com/mym0404/react-native-naver-map',
+    searchToggle: {
+      enabled: true,
+    },
   };
 }

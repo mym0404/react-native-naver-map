@@ -1,4 +1,4 @@
-import { source } from '@/lib/source';
+import { createRelativeLink } from 'fumadocs-ui/mdx';
 import {
   DocsBody,
   DocsDescription,
@@ -7,12 +7,14 @@ import {
 } from 'fumadocs-ui/page';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { createRelativeLink } from 'fumadocs-ui/mdx';
+import { source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
 
-export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
+export default async function Page(
+  props: PageProps<'/[lang]/docs/[[...slug]]'>
+) {
   const params = await props.params;
-  const page = source.getPage(params.slug);
+  const page = source.getPage(params.slug, params.lang);
   if (!page) notFound();
 
   const MDXContent = page.data.body;
@@ -38,10 +40,10 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(
-  props: PageProps<'/docs/[[...slug]]'>,
+  props: PageProps<'/[lang]/docs/[[...slug]]'>
 ): Promise<Metadata> {
   const params = await props.params;
-  const page = source.getPage(params.slug);
+  const page = source.getPage(params.slug, params.lang);
   if (!page) notFound();
 
   return {
