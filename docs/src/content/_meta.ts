@@ -7,6 +7,9 @@ export default {
   'getting-started': {
     title: '시작하기',
   },
+  guides: {
+    title: '가이드',
+  },
   components: {
     title: '컴포넌트',
   },
