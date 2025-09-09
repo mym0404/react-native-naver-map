@@ -10,13 +10,13 @@ interface CardProps {
   className?: string;
 }
 
-export const Card: React.FC<CardProps> = ({
+export const Card = ({
   title,
   href,
   children,
   icon,
   className = '',
-}) => {
+}: CardProps) => {
   const cardContent = (
     <div
       className={`
@@ -64,7 +64,7 @@ interface CardsProps {
   className?: string;
 }
 
-export const Cards: React.FC<CardsProps> = ({ children, className = '' }) => {
+export const Cards = ({ children, className = '' }: CardsProps) => {
   return (
     <div
       className={`
