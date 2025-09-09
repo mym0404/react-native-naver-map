@@ -7,9 +7,6 @@ export default {
   'getting-started': {
     title: '시작하기',
   },
-  installation: {
-    title: '설치',
-  },
   components: {
     title: '컴포넌트',
   },

@@ -4,16 +4,9 @@ import { Tabs, Callout, Steps, FileTree } from 'nextra/components'
 
 React Native Naver Map을 프로젝트에 설치하고 설정하는 방법을 안내합니다.
 
-<Callout type="info">
-  이 가이드는 React Native 0.74+ 및 New Architecture (Fabric)를 기준으로 작성되었습니다.
-  이전 버전을 사용 중이라면 v1.x 버전을 설치해주세요.
-</Callout>
-
 ## 사전 요구사항
 
-- React Native 0.74 이상
-- iOS 13.0 이상
-- Android 6.0 (API 23) 이상
+- New Architecture
 - [네이버 클라우드 플랫폼](https://www.ncloud.com) 계정 및 Maps API 키
 
 ## 설치
@@ -70,20 +63,16 @@ cd ios && pod install
 발급받은 Client ID를 각 플랫폼별로 설정합니다.
 </Steps>
 
-<Callout type="warning">
-  2025년 4월 17일 이전 AI NAVER API 사용자는 레거시 키(`CLIENT_ID`)도 함께 설정해야 합니다.
-</Callout>
-
 ## 플랫폼별 설정
 
-<Tabs items={['Android', 'iOS', 'Expo']}>
+<Tabs items={['Android', 'iOS', 'Expo CNG']}>
   <Tabs.Tab>
     ### Android 설정
-    
+
     #### 1. Maven 저장소 추가
     `android/build.gradle` 파일에 네이버 Maven 저장소를 추가합니다:
-    
-    ```groovy
+
+    ```groovy filename="android/build.gradle"
     allprojects {
         repositories {
             maven {
@@ -92,63 +81,76 @@ cd ios && pod install
         }
     }
     ```
-    
-    #### 2. AndroidManifest.xml 설정
-    `android/app/src/main/AndroidManifest.xml`에 API 키를 추가합니다:
-    
-    ```xml
+
+    #### 2. AndroidManifest.xml에 Naver SDK 키 추가
+
+    ```xml filename="android/app/src/main/AndroidManifest.xml"
     <manifest>
         <application>
             <meta-data
                 android:name="com.naver.maps.map.NCP_KEY_ID"
                 android:value="YOUR_CLIENT_ID_HERE" />
-            <!-- 레거시 키 (선택사항) -->
+            <!-- (legacy) 4월 17일 이전에 AI NAVER API를 사용하던 지도 API 고객 전용 -->
+            <!-- https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1 -->
             <meta-data
                 android:name="com.naver.maps.map.CLIENT_ID"
                 android:value="YOUR_CLIENT_ID_HERE" />
         </application>
     </manifest>
     ```
-    
-    #### 3. 위치 권한 설정 (선택사항)
-    사용자 위치를 표시하려면 권한을 추가합니다:
-    
-    ```xml
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- 백그라운드 위치 (선택사항) -->
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+    #### 3. (선택사항) AndroidManifest.xml에 위치 권한 요청
+    현재 이 패키지는 사용자의 현재 위치를 표시하기 위해 위치 권한을 요청합니다.
+
+    ```xml filename="android/app/src/main/AndroidManifest.xml"
+    <manifest>
+      <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+      <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+      # optional for background location
+      <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    </manifest>
     ```
   </Tabs.Tab>
-  
+
   <Tabs.Tab>
     ### iOS 설정
-    
-    #### 1. Info.plist 설정
-    `ios/[프로젝트명]/Info.plist`에 API 키를 추가합니다:
-    
-    ```xml
+
+    #### 1. info.plist에 Naver SDK 키 설정
+
+    ```xml filename="Info.plist"
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
     <dict>
       <key>NMFNcpKeyId</key>
       <string>YOUR_CLIENT_ID_HERE</string>
-      <!-- 레거시 키 (선택사항) -->
+      <!-- (legacy) 2025.04.17 이전에 AI NAVER API를 사용하던 지도 API 고객 전용 -->
+      <!-- https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1 -->
       <key>NMFClientId</key>
       <string>YOUR_CLIENT_ID_HERE</string>
-    </dict>
+    <dict>
+    <plist>
     ```
-    
-    #### 2. 위치 권한 설정 (선택사항)
-    사용자 위치를 표시하려면 권한 설명을 추가합니다:
-    
-    ```xml
+
+    #### 2. (선택사항) info.plist에 위치 권한 사용 설명 설정
+    현재 이 패키지는 사용자의 현재 위치를 표시하기 위해 위치 권한을 요청합니다.
+
+    ```xml filename="Info.plist"
+    <plist version="1.0">
     <dict>
       <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-      <string>지도에서 현재 위치를 표시하기 위해 위치 정보가 필요합니다.</string>
+      <string>{{usage description}}</string>
+      <key>NSLocationTemporaryUsageDescriptionDictionary</key>
+      <dict>
+        <key>{{your purpose key}}</key>
+        <string>{{usage description}}</string>
+      </dict>
       <key>NSLocationWhenInUseUsageDescription</key>
-      <string>지도에서 현재 위치를 표시하기 위해 위치 정보가 필요합니다.</string>
+      <string>{{usage description}}</string>
     </dict>
+    </plist>
     ```
-    
+
     #### 3. 백그라운드 모드 설정 (선택사항)
     백그라운드 위치 업데이트가 필요한 경우:
     - Xcode에서 프로젝트 선택
@@ -156,53 +158,67 @@ cd ios && pod install
     - Background Modes 추가
     - Location updates 체크
   </Tabs.Tab>
-  
+
   <Tabs.Tab>
     ### Expo 설정
-    
-    #### 1. expo-build-properties 설치
-    Maven 저장소 추가를 위해 필요합니다:
-    
-    ```bash
+
+    #### 1. expo-build-properties 패키지 추가
+    이는 naver maven repository를 주입하기 위한 것입니다.
+
+    ```shell
     npx expo install expo-build-properties
     ```
-    
-    #### 2. app.json 설정
-    Config Plugin을 `app.json`에 추가합니다:
-    
-    ```json
+
+    #### 2. app.json에 Config Plugin 추가
+
+    ```json filename="app.json"
     {
-      "expo": {
-        "plugins": [
-          [
-            "@mj-studio/react-native-naver-map",
-            {
-              "client_id": "YOUR_CLIENT_ID_HERE",
-              "android": {
-                "ACCESS_FINE_LOCATION": true,
-                "ACCESS_COARSE_LOCATION": true
-              },
-              "ios": {
-                "NSLocationWhenInUseUsageDescription": "지도에서 현재 위치를 표시하기 위해 위치 정보가 필요합니다."
+      ...
+      "plugins": [
+        [
+          "@mj-studio/react-native-naver-map",
+          {
+            "client_id": "{{Naver Map Client Key}}",
+            // (optional, you can set with expo-location instead of this package)
+            "android": {
+              "ACCESS_FINE_LOCATION": true,
+              "ACCESS_COARSE_LOCATION": true,
+              "ACCESS_BACKGROUND_LOCATION": true
+            },
+            // (optional, you can set with expo-location instead of this package)
+            "ios": {
+              "NSLocationAlwaysAndWhenInUseUsageDescription": "{{ your location usage description }}",
+              "NSLocationWhenInUseUsageDescription": "{{ your location usage description }}",
+              "NSLocationTemporaryUsageDescriptionDictionary": {
+                "purposeKey": "{{ your purpose key }}",
+                "usageDescription": "{{ your location usage description }}"
               }
             }
-          ],
-          [
-            "expo-build-properties",
-            {
-              "android": {
-                "extraMavenRepos": ["https://repository.map.naver.com/archive/maven"]
-              }
+          }
+        ],
+        [
+          "expo-build-properties",
+          {
+            "android": {
+              "extraMavenRepos": ["https://repository.map.naver.com/archive/maven"]
             }
-          ]
-        ]
-      }
+          }
+        ],
+        ...
+      ]
     }
     ```
-    
-    #### 3. Development Build 생성
+
+    #### 3. Run prebuild
+
+    ```bash
+    npx expo prebuild -p android
+    npx expo prebuild -p ios
+    ```
+
+    #### 4. Development Build 생성
     Expo Go는 네이티브 모듈을 지원하지 않으므로 Development Build가 필요합니다:
-    
+
     ```bash
     npx expo run:ios
     # 또는
@@ -213,9 +229,9 @@ cd ios && pod install
 
 ## 첫 번째 지도 만들기
 
-설정이 완료되면 지도를 표시할 수 있습니다:
+설정이 완료되고 빌드를하면 지도를 표시할 수 있습니다:
 
-```tsx
+```tsx filename="App.tsx"
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { NaverMapView } from '@mj-studio/react-native-naver-map';
@@ -223,7 +239,7 @@ import { NaverMapView } from '@mj-studio/react-native-naver-map';
 export default function App() {
   return (
     <View style={styles.container}>
-      <NaverMapView 
+      <NaverMapView
         style={styles.map}
         initialRegion={{
           latitude: 37.5665,
