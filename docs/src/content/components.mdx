@@ -1,0 +1,134 @@
+import { Callout } from 'nextra/components'
+import { Cards, Card } from '../lib/components'
+import { Map, MapPin, Shapes } from 'lucide-react'
+
+# 컴포넌트
+
+React Native Naver Map에서 제공하는 다양한 컴포넌트들을 소개합니다.
+
+## 주요 컴포넌트
+
+<Cards>
+  <Card title="NaverMapView" href="/components/map-view" icon={<Map className="w-6 h-6" />}>
+    지도를 표시하는 기본 컴포넌트
+  </Card>
+  <Card title="마커" href="/components/marker" icon={<MapPin className="w-6 h-6" />}>
+    지도 위에 위치를 표시하는 마커
+  </Card>
+  <Card title="오버레이" href="/components/overlays" icon={<Shapes className="w-6 h-6" />}>
+    원, 폴리곤, 경로 등 도형 오버레이
+  </Card>
+</Cards>
+
+## 컴포넌트 지원 현황
+
+| 컴포넌트                         | iOS | Android | 설명          |
+|------------------------------|:---:|:-------:|-------------|
+| NaverMapView                 |  ✅  |    ✅    | 기본 지도 뷰     |
+| NaverMapMarkerOverlay        |  ✅  |    ✅    | 마커 오버레이     |
+| NaverMapCircleOverlay        |  ✅  |    ✅    | 원형 오버레이     |
+| NaverMapPolygonOverlay       |  ✅  |    ✅    | 다각형 오버레이    |
+| NaverMapPolylineOverlay      |  ✅  |    ✅    | 폴리라인 오버레이   |
+| NaverMapPathOverlay          |  ✅  |    ✅    | 경로 오버레이     |
+| NaverMapArrowheadPathOverlay |  ✅  |    ✅    | 화살표 경로 오버레이 |
+| NaverMapGroundOverlay        |  ✅  |    ✅    | 지면 오버레이     |
+| NaverMapMultipartPathOverlay |  ✅ |    ✅  | 다중 경로 오버레이  |
+| Info Window                  | 📦  |   📦    | 정보 창        |
+
+<Callout>
+  ✅ 완전 지원 | ⚠️ 부분 지원 | 📦 개발 예정
+</Callout>
+
+## 기본 사용법
+
+```tsx
+import {
+  NaverMapView,
+  NaverMapMarkerOverlay,
+  NaverMapCircleOverlay
+} from '@mj-studio/react-native-naver-map';
+
+function MapScreen() {
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      {/* 마커 추가 */}
+      <NaverMapMarkerOverlay
+        latitude={37.5665}
+        longitude={126.9780}
+        anchor={{ x: 0.5, y: 1 }}
+      />
+
+      {/* 원형 오버레이 추가 */}
+      <NaverMapCircleOverlay
+        latitude={37.5665}
+        longitude={126.9780}
+        radius={100}
+        color="#ff000033"
+      />
+    </NaverMapView>
+  );
+}
+```
+
+## 컴포넌트 계층 구조
+
+모든 오버레이 컴포넌트는 `NaverMapView`의 자식으로 사용되어야 합니다:
+
+```tsx
+<NaverMapView>
+  <NaverMapMarkerOverlay />
+  <NaverMapCircleOverlay />
+  <NaverMapPolygonOverlay />
+  {/* 기타 오버레이들... */}
+</NaverMapView>
+```
+
+## 성능 고려사항
+
+### 마커 최적화
+
+대량의 마커를 표시할 때는 다음 사항을 고려하세요:
+
+1. **이미지 캐싱**: `reuseIdentifier` 속성 활용
+2. **뷰포트 기반 렌더링**: 보이는 영역의 마커만 표시
+3. **클러스터링**: 근접한 마커들을 그룹화
+
+### 렌더링 성능
+
+<Callout type="info">
+  New Architecture (Fabric)를 사용하면 동기식 레이아웃으로 더 나은 성능을 얻을 수 있습니다.
+</Callout>
+
+## TypeScript 지원
+
+모든 컴포넌트는 완벽한 TypeScript 타입을 제공합니다:
+
+```tsx
+import type {
+  NaverMapViewProps,
+  Region,
+  Coord,
+  MapType
+} from '@mj-studio/react-native-naver-map';
+
+const initialRegion: Region = {
+  latitude: 37.5665,
+  longitude: 126.9780,
+  latitudeDelta: 0.01,
+  longitudeDelta: 0.01,
+};
+
+const mapProps: NaverMapViewProps = {
+  initialRegion,
+  mapType: 'Basic',
+  isShowLocationButton: true,
+};
+```
+
+## 다음 단계
+
+각 컴포넌트의 자세한 사용법은 해당 문서를 참고하세요:
+
+- [NaverMapView 상세 가이드](/components/map-view)
+- [마커 사용법](/components/marker)
+- [오버레이 종류와 활용](/components/overlays)

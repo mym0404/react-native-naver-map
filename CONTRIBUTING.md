@@ -126,16 +126,6 @@ Our pre-commit hooks verify that your commit message matches this format when co
 We use [TypeScript](https://www.typescriptlang.org/) for type checking, [ESLint](https://eslint.org/) with [Prettier](https://prettier.io/) for linting and formatting the code.
 Our pre-commit hooks verify that the linter and tests pass when committing.
 
-### API Documentation
-
-We use [TypeDoc](https://typedoc.org/guides/overview/) for generating api documentation automatically from the code.
-
-When changing code, be sure to attach comments in JSDoc Style to functions, variables, interfaces, type aliases, classes, etc. of the code.
-
-You can check generated docs with `pnpm run build:docs` command.
-
-The documentation is published on push main branch automatically.
-
 ### Sending a pull request
 
 > **Working on your first pull request?** You can learn how from this _free_ series: [How to Contribute to an Open Source Project on GitHub](https://app.egghead.io/playlists/how-to-contribute-to-an-open-source-project-on-github).
