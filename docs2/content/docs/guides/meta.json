@@ -1,0 +1,12 @@
+{
+  "title": "가이드",
+  "icon": "BookOpen",
+  "pages": [
+    "index",
+    "permissions",
+    "marker-clustering",
+    "camera-control",
+    "custom-markers",
+    "optimization"
+  ]
+}

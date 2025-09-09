@@ -1,19 +1,26 @@
-import { Callout, Tabs } from 'nextra/components'
-import { WIP } from '../../lib/components/WIP';
+---
+title: "성능 최적화"
+description: "성능 최적화 문서"
+---
 
-# 성능 최적화
+
+성능 최적화
 
 <WIP/>
 
 React Native Naver Map에서 대량의 마커와 오버레이를 효율적으로 렌더링하고 성능을 최적화하는 방법을 안내합니다.
 
-## 마커 렌더링 최적화
+# 마커 렌더링 최적화
 
-### 1. 줌 레벨 기반 마커 밀도 조절
+
+
+## 1. 줌 레벨 기반 마커 밀도 조절
+
+
 
 줌 레벨에 따라 표시할 마커 수를 조절합니다.
 
-```tsx filename="ZoomBasedFiltering.tsx"
+```tsx title="ZoomBasedFiltering.tsx"
 const useZoomBasedMarkers = (allMarkers, zoom) => {
   return useMemo(() => {
     if (zoom >= 15) {
@@ -52,9 +59,13 @@ const ZoomOptimizedMap = ({ markers }) => {
 };
 ```
 
-## 마커 타입별 성능 최적화
+# 마커 타입별 성능 최적화
 
-### 성능 비교표
+
+
+## 성능 비교표
+
+
 
 | 마커 타입 | 렌더링 속도 | 메모리 사용량 | 캐싱 지원 | 권장 사용량 |
 |----------|-------------|---------------|-----------|------------|
@@ -65,11 +76,11 @@ const ZoomOptimizedMap = ({ markers }) => {
 | 커스텀 뷰 | ⭐⭐ | ⭐⭐ | ❌ | 50개 이하 |
 
 
-## 클러스터링을 통한 최적화
+# 클러스터링을 통한 최적화
 
 대량의 마커를 클러스터로 그룹화하여 성능을 향상시킵니다.
 
-```tsx filename="BuiltinClustering.tsx"
+```tsx title="BuiltinClustering.tsx"
 import { useMemo } from 'react';
 import { NaverMapView, ClusterMarkerProp } from '@mj-studio/react-native-naver-map';
 
@@ -123,11 +134,15 @@ const groupMarkersByRegion = (markers) => {
 };
 ```
 
-## 이벤트 핸들링 최적화
+# 이벤트 핸들링 최적화
 
-### 1. 카메라 변경 디바운싱
 
-```tsx filename="DebouncedCameraEvents.tsx"
+
+## 1. 카메라 변경 디바운싱
+
+
+
+```tsx title="DebouncedCameraEvents.tsx"
 import { debounce } from 'lodash';
 
 const OptimizedMapEvents = () => {
@@ -157,9 +172,13 @@ const OptimizedMapEvents = () => {
 };
 ```
 
-### 2. 배치 업데이트
 
-```tsx filename="BatchUpdates.tsx"
+
+## 2. 배치 업데이트
+
+
+
+```tsx title="BatchUpdates.tsx"
 import { startTransition } from 'react';
 
 const BatchUpdatedMap = () => {
@@ -185,11 +204,15 @@ const BatchUpdatedMap = () => {
 };
 ```
 
-## 렌더링 최적화 전략
+# 렌더링 최적화 전략
 
-### 1. 조건부 렌더링
 
-```tsx filename="ConditionalRendering.tsx"
+
+## 1. 조건부 렌더링
+
+
+
+```tsx title="ConditionalRendering.tsx"
 const ConditionalMap = ({ showMarkers, showOverlays, zoom }) => {
   return (
     <NaverMapView>

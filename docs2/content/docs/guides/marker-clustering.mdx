@@ -1,7 +1,11 @@
-import { Callout } from 'nextra/components'
-import { WIP } from '../../lib/components/WIP';
+---
+title: "마커 클러스터링"
+description: "마커 클러스터링 문서"
+---
 
-# 마커 클러스터링
+import { Callout } from 'fumadocs-ui/components/callout'
+
+ 마커 클러스터링
 
 <WIP/>
 
@@ -12,19 +16,27 @@ import { WIP } from '../../lib/components/WIP';
   성능 향상과 더 나은 사용자 경험을 제공합니다.
 </Callout>
 
-## 기본 클러스터링 구현
+# 기본 클러스터링 구현
 
-### 1. 클러스터링 라이브러리 설치
+
+
+## 1. 클러스터링 라이브러리 설치
+
+
 
 ```bash
 npm install react-native-super-cluster
-# 또는
+ 또는
 yarn add react-native-super-cluster
 ```
 
-### 2. 클러스터링 Hook 구현
 
-```tsx filename="useMarkerClustering.ts"
+
+## 2. 클러스터링 Hook 구현
+
+
+
+```tsx title="useMarkerClustering.ts"
 import { useMemo } from 'react';
 import SuperCluster from 'react-native-super-cluster';
 
@@ -95,9 +107,13 @@ export const useMarkerClustering = (
 };
 ```
 
-### 3. 클러스터링 적용된 지도 컴포넌트
 
-```tsx filename="ClusteredMapView.tsx"
+
+## 3. 클러스터링 적용된 지도 컴포넌트
+
+
+
+```tsx title="ClusteredMapView.tsx"
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { NaverMapView, NaverMapMarkerOverlay, Region } from '@mj-studio/react-native-naver-map';
@@ -194,11 +210,15 @@ const styles = StyleSheet.create({
 });
 ```
 
-## 고급 클러스터링 기능
+# 고급 클러스터링 기능
 
-### 클러스터 터치 이벤트 처리
 
-```tsx filename="InteractiveClusteredMap.tsx"
+
+## 클러스터 터치 이벤트 처리
+
+
+
+```tsx title="InteractiveClusteredMap.tsx"
 const handleClusterPress = (cluster: any) => {
   const { cluster: isCluster, cluster_id } = cluster.properties;
 
@@ -222,9 +242,13 @@ const handleClusterPress = (cluster: any) => {
 };
 ```
 
-### 동적 클러스터 스타일링
 
-```tsx filename="DynamicClusterStyling.tsx"
+
+## 동적 클러스터 스타일링
+
+
+
+```tsx title="DynamicClusterStyling.tsx"
 const getClusterStyle = (pointCount: number) => {
   if (pointCount >= 100) {
     return {
@@ -251,7 +275,7 @@ const getClusterStyle = (pointCount: number) => {
 };
 ```
 
-## 성능 최적화 팁
+# 성능 최적화 팁
 
 <Callout type="tip">
   **성능 최적화를 위한 권장사항:**
@@ -262,9 +286,13 @@ const getClusterStyle = (pointCount: number) => {
   4. **마커 데이터 최적화**: 화면에 표시되는 영역의 마커만 로드
 </Callout>
 
-### 화면 영역 기반 마커 필터링
 
-```tsx filename="ViewportBasedFiltering.tsx"
+
+## 화면 영역 기반 마커 필터링
+
+
+
+```tsx title="ViewportBasedFiltering.tsx"
 const useViewportMarkers = (allMarkers: MarkerData[], region: Region) => {
   return useMemo(() => {
     const padding = 0.1; // 화면 영역 패딩
@@ -281,14 +309,22 @@ const useViewportMarkers = (allMarkers: MarkerData[], region: Region) => {
 };
 ```
 
-## 문제 해결
+# 문제 해결
 
-### 클러스터가 제대로 표시되지 않는 경우
+
+
+## 클러스터가 제대로 표시되지 않는 경우
+
+
 - SuperCluster 초기화 옵션 확인
 - 마커 데이터 형식이 올바른지 확인
 - 좌표 순서가 [longitude, latitude]인지 확인
 
-### 성능이 느린 경우
+
+
+## 성능이 느린 경우
+
+
 - 클러스터링 반경을 늘려 클러스터 수 감소
 - 화면 영역 기반 필터링 적용
 - 마커 데이터를 청크 단위로 로드

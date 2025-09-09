@@ -1,4 +1,9 @@
-import { Callout } from 'nextra/components'
+---
+title: "API 레퍼런스"
+description: "React Native Naver Map의 전체 API 문서"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
 
 # API 레퍼런스
 
@@ -8,9 +13,13 @@ React Native Naver Map의 전체 API 문서입니다.
   더 상세한 API 문서는 [TypeScript 자동 생성 문서](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)에서 확인할 수 있습니다.
 </Callout>
 
-## 주요 컴포넌트
+# 주요 컴포넌트
 
-### NaverMapView
+
+
+## NaverMapView
+
+
 
 지도를 표시하는 메인 컴포넌트입니다.
 
@@ -53,7 +62,11 @@ interface NaverMapViewProps {
 }
 ```
 
-### NaverMapMarkerOverlay
+
+
+## NaverMapMarkerOverlay
+
+
 
 마커를 표시하는 컴포넌트입니다.
 
@@ -99,9 +112,13 @@ interface NaverMapMarkerOverlayProps {
 }
 ```
 
-## 타입 정의
+# 타입 정의
 
-### Region
+
+
+## Region
+
+
 
 지도 영역을 정의합니다.
 
@@ -114,7 +131,11 @@ interface Region {
 }
 ```
 
-### Coord
+
+
+## Coord
+
+
 
 좌표를 나타냅니다.
 
@@ -125,7 +146,11 @@ interface Coord {
 }
 ```
 
-### Point
+
+
+## Point
+
+
 
 화면상의 점을 나타냅니다.
 
@@ -136,7 +161,11 @@ interface Point {
 }
 ```
 
-### MapType
+
+
+## MapType
+
+
 
 지도 유형을 정의합니다.
 
@@ -149,7 +178,11 @@ type MapType =
   | 'Terrain';  // 지형도
 ```
 
-### MarkerImage
+
+
+## MarkerImage
+
+
 
 마커 이미지 타입을 정의합니다.
 
@@ -165,7 +198,11 @@ type MarkerSymbol =
   | 'gray' | 'pink' | 'lightblue';
 ```
 
-### MarkerCaption
+
+
+## MarkerCaption
+
+
 
 마커 캡션을 정의합니다.
 
@@ -181,7 +218,11 @@ interface MarkerCaption {
 }
 ```
 
-### LayerGroups
+
+
+## LayerGroups
+
+
 
 레이어 그룹 설정을 정의합니다.
 
@@ -196,9 +237,13 @@ interface LayerGroups {
 }
 ```
 
-## 이벤트 타입
+# 이벤트 타입
 
-### CameraChangedEvent
+
+
+## CameraChangedEvent
+
+
 
 카메라 변경 이벤트 데이터입니다.
 
@@ -219,7 +264,11 @@ type CameraChangeReason =
   | 'program';  // 프로그래밍
 ```
 
-### MapTapEvent
+
+
+## MapTapEvent
+
+
 
 지도 탭 이벤트 데이터입니다.
 
@@ -230,9 +279,13 @@ interface MapTapEvent {
 }
 ```
 
-## Ref 메서드
+# Ref 메서드
 
-### NaverMapViewRef
+
+
+## NaverMapViewRef
+
+
 
 NaverMapView 컴포넌트의 참조를 통해 호출할 수 있는 메서드들입니다.
 
@@ -254,7 +307,11 @@ interface NaverMapViewRef {
 }
 ```
 
-### CameraAnimationParams
+
+
+## CameraAnimationParams
+
+
 
 카메라 애니메이션 매개변수입니다.
 
@@ -269,7 +326,11 @@ interface CameraAnimationParams {
 }
 ```
 
-### LocationTrackingMode
+
+
+## LocationTrackingMode
+
+
 
 위치 추적 모드입니다.
 
@@ -282,9 +343,13 @@ enum LocationTrackingMode {
 }
 ```
 
-## 오버레이 컴포넌트
+# 오버레이 컴포넌트
 
-### NaverMapCircleOverlay
+
+
+## NaverMapCircleOverlay
+
+
 
 원형 오버레이입니다.
 
@@ -304,7 +369,11 @@ interface NaverMapCircleOverlayProps {
 }
 ```
 
-### NaverMapPolygonOverlay
+
+
+## NaverMapPolygonOverlay
+
+
 
 다각형 오버레이입니다.
 
@@ -323,7 +392,11 @@ interface NaverMapPolygonOverlayProps {
 }
 ```
 
-### NaverMapPathOverlay
+
+
+## NaverMapPathOverlay
+
+
 
 경로 오버레이입니다.
 
@@ -345,9 +418,13 @@ interface NaverMapPathOverlayProps {
 }
 ```
 
-## 유틸리티 함수
+# 유틸리티 함수
 
-### 거리 계산
+
+
+## 거리 계산
+
+
 
 두 좌표 간의 거리를 계산합니다.
 
@@ -361,7 +438,11 @@ const distance = getDistance(
 console.log(`거리: ${distance}m`);
 ```
 
-### 좌표 변환
+
+
+## 좌표 변환
+
+
 
 화면 좌표와 지도 좌표 간 변환입니다.
 

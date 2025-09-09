@@ -1,7 +1,12 @@
-import { Tabs, Callout } from 'nextra/components'
-import { WIP } from '../../lib/components/WIP';
+---
+title: "커스텀 마커"
+description: "커스텀 마커 문서"
+---
 
-# 커스텀 마커
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
+import { Callout } from 'fumadocs-ui/components/callout'
+
+ 커스텀 마커
 
 <WIP/>
 
@@ -16,11 +21,11 @@ React Native Naver Map에서 제공하는 다양한 마커 타입과 커스텀 �
   - React 커스텀 뷰 컴포넌트
 </Callout>
 
-## 1. 기본 심볼 마커
+# 1. 기본 심볼 마커
 
 네이버 지도에서 제공하는 기본 마커 심볼을 사용합니다.
 
-```tsx filename="SymbolMarker.tsx"
+```tsx title="SymbolMarker.tsx"
 import { NaverMapMarkerOverlay } from '@mj-studio/react-native-naver-map';
 
 // 기본 색상 심볼
@@ -39,11 +44,11 @@ import { NaverMapMarkerOverlay } from '@mj-studio/react-native-naver-map';
   기본 심볼은 자동으로 캐싱되어 성능이 우수합니다.
 </Callout>
 
-## 2. 로컬 리소스 마커
+# 2. 로컬 리소스 마커
 
 React Native 프로젝트의 이미지 파일을 마커로 사용합니다.
 
-```tsx filename="LocalImageMarker.tsx"
+```tsx title="LocalImageMarker.tsx"
 <NaverMapMarkerOverlay
   latitude={37.5665}
   longitude={126.9780}
@@ -55,23 +60,27 @@ React Native 프로젝트의 이미지 파일을 마커로 사용합니다.
 />
 ```
 
-<Callout type="warning">
+<Callout type="warn">
   **중요**: 로컬 리소스 마커는 반드시 `width`와 `height`를 지정해야 합니다.
   지정하지 않으면 Debug와 Release 빌드에서 크기가 다르게 나올 수 있습니다.
 </Callout>
 
-## 3. 네이티브 에셋 마커
+# 3. 네이티브 에셋 마커
 
 성능 최적화를 위해 네이티브 프로젝트의 에셋을 직접 사용합니다.
 
 <Tabs items={['Android', 'iOS']}>
-  <Tabs.Tab>
-    ### Android Drawable 사용
+  <Tab value="Basic">
+
+
+## Android Drawable 사용
+
+
 
     1. `android/app/src/main/res/drawable/`에 이미지 파일 추가
     2. 파일명을 `assetName`으로 지정
 
-    ```tsx filename="AndroidAssetMarker.tsx"
+    ```tsx title="AndroidAssetMarker.tsx"
     <NaverMapMarkerOverlay
       latitude={37.5665}
       longitude={126.9780}
@@ -81,14 +90,18 @@ React Native 프로젝트의 이미지 파일을 마커로 사용합니다.
       anchor={{ x: 0.5, y: 1 }}
     />
     ```
-  </Tabs.Tab>
-  <Tabs.Tab>
-    ### iOS Bundle Asset 사용
+  </Tab>
+  <Tab value="Basic">
+
+
+## iOS Bundle Asset 사용
+
+
 
     1. iOS 프로젝트의 main bundle에 이미지 추가
     2. Asset Catalog 또는 직접 bundle에 추가
 
-    ```tsx filename="iOSAssetMarker.tsx"
+    ```tsx title="iOSAssetMarker.tsx"
     <NaverMapMarkerOverlay
       latitude={37.5665}
       longitude={126.9780}
@@ -98,14 +111,14 @@ React Native 프로젝트의 이미지 파일을 마커로 사용합니다.
       anchor={{ x: 0.5, y: 1 }}
     />
     ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
-## 4. 웹 이미지 마커
+# 4. 웹 이미지 마커
 
 HTTP/HTTPS URL을 통해 네트워크 이미지를 마커로 사용합니다.
 
-```tsx filename="NetworkImageMarker.tsx"
+```tsx title="NetworkImageMarker.tsx"
 <NaverMapMarkerOverlay
   latitude={37.5665}
   longitude={126.9780}
@@ -131,13 +144,17 @@ HTTP/HTTPS URL을 통해 네트워크 이미지를 마커로 사용합니다.
   웹 이미지는 자동으로 캐싱됩니다. 단, 현재는 커스텀 헤더를 지원하지 않습니다.
 </Callout>
 
-## 5. 커스텀 뷰 마커
+# 5. 커스텀 뷰 마커
 
 React Native 컴포넌트를 직접 마커로 사용할 수 있습니다.
 
-### 기본 커스텀 뷰
 
-```tsx filename="CustomViewMarker.tsx"
+
+## 기본 커스텀 뷰
+
+
+
+```tsx title="CustomViewMarker.tsx"
 import { View, Text } from 'react-native';
 
 const CustomMarkerExample = () => {
@@ -174,9 +191,13 @@ const CustomMarkerExample = () => {
 };
 ```
 
-### 동적 커스텀 마커
 
-```tsx filename="DynamicCustomMarker.tsx"
+
+## 동적 커스텀 마커
+
+
+
+```tsx title="DynamicCustomMarker.tsx"
 interface DynamicMarkerProps {
   latitude: number;
   longitude: number;
@@ -252,9 +273,13 @@ const DynamicCustomMarker: React.FC<DynamicMarkerProps> = ({
 };
 ```
 
-### 애니메이션 커스텀 마커
 
-```tsx filename="AnimatedMarker.tsx"
+
+## 애니메이션 커스텀 마커
+
+
+
+```tsx title="AnimatedMarker.tsx"
 import { useEffect, useRef } from 'react';
 import { Animated, View, Text } from 'react-native';
 
@@ -337,11 +362,15 @@ const AnimatedCustomMarker = ({ latitude, longitude, isActive }) => {
 };
 ```
 
-## 마커 상호작용
+# 마커 상호작용
 
-### 마커 이벤트 처리
 
-```tsx filename="MarkerEvents.tsx"
+
+## 마커 이벤트 처리
+
+
+
+```tsx title="MarkerEvents.tsx"
 <NaverMapMarkerOverlay
   latitude={37.5665}
   longitude={126.9780}
@@ -364,9 +393,13 @@ const AnimatedCustomMarker = ({ latitude, longitude, isActive }) => {
 />
 ```
 
-### 마커 상태 관리
 
-```tsx filename="MarkerStateManagement.tsx"
+
+## 마커 상태 관리
+
+
+
+```tsx title="MarkerStateManagement.tsx"
 const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(null);
 
 const markers = [
@@ -395,9 +428,13 @@ return (
 );
 ```
 
-## 성능 최적화 가이드
+# 성능 최적화 가이드
 
-### 1. 마커 타입별 성능 비교
+
+
+## 1. 마커 타입별 성능 비교
+
+
 
 | 마커 타입 | 성능 | 캐싱 | 사용 권장 |
 |----------|------|------|-----------|
@@ -407,9 +444,13 @@ return (
 | 로컬 리소스 | ⭐⭐⭐⭐ | ✅ | React Native 에셋 활용 |
 | 커스텀 뷰 | ⭐⭐ | ❌ | 복잡한 UI가 필요한 소량 마커 |
 
-### 2. 커스텀 뷰 마커 최적화
 
-<Callout type="warning">
+
+## 2. 커스텀 뷰 마커 최적화
+
+
+
+<Callout type="warn">
   **커스텀 뷰 마커 주의사항:**
 
   - 많은 수의 커스텀 뷰 마커는 성능에 큰 영향을 미칩니다
@@ -418,7 +459,7 @@ return (
   - 의존성이 변경될 때는 최상위 View의 `key` prop 업데이트 필수
 </Callout>
 
-```tsx filename="OptimizedCustomMarker.tsx"
+```tsx title="OptimizedCustomMarker.tsx"
 // ❌ 잘못된 예시
 <NaverMapMarkerOverlay latitude={lat} longitude={lng}>
   <View style={{ backgroundColor: dynamicColor }}>
@@ -438,9 +479,13 @@ return (
 </NaverMapMarkerOverlay>
 ```
 
-### 3. 대량 마커 처리
 
-```tsx filename="LargeMarkerSet.tsx"
+
+## 3. 대량 마커 처리
+
+
+
+```tsx title="LargeMarkerSet.tsx"
 import { useMemo } from 'react';
 
 const LargeMarkerExample = ({ markers, region }) => {
@@ -474,11 +519,15 @@ const LargeMarkerExample = ({ markers, region }) => {
 };
 ```
 
-## 마커 애니메이션
+# 마커 애니메이션
 
-### 마커 위치 애니메이션
 
-```tsx filename="AnimatedMarkerPosition.tsx"
+
+## 마커 위치 애니메이션
+
+
+
+```tsx title="AnimatedMarkerPosition.tsx"
 import { useEffect, useRef } from 'react';
 
 const AnimatedPositionMarker = ({

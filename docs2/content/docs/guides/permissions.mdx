@@ -1,15 +1,18 @@
-import { Tabs, Callout, Steps } from 'nextra/components'
+---
+title: "위치 권한 설정"
+description: "위치 권한 설정 문서"
+---
 
-# 위치 권한 설정
+위치 권한 설정
 
 React Native Naver Map에서 사용자의 현재 위치를 표시하려면 위치 권한 설정이 필요합니다.
 
 <Callout type="info">
-  지도 표시만 필요한 경우에는 위치 권한이 필요하지 않습니다. 
+  지도 표시만 필요한 경우에는 위치 권한이 필요하지 않습니다.
   사용자의 현재 위치를 표시하거나 위치 추적 기능을 사용할 때만 필요합니다.
 </Callout>
 
-## 권한 관리 라이브러리
+# 권한 관리 라이브러리
 
 기본적으로 앱에서 권한은 직접 관리되어야 합니다. 권한 관리를 위해 다음 라이브러리들을 사용할 수 있습니다:
 
@@ -21,45 +24,65 @@ React Native Naver Map에서 사용자의 현재 위치를 표시하려면 위�
   아래 내용 중 필요한 권한이 무엇인지 확인한 후 expo-location 문서를 참고하세요.
 </Callout>
 
-## react-native-permissions 설정
+# react-native-permissions 설정
 
-### 패키지 설치
+
+
+## 패키지 설치
+
+
 
 <Tabs items={['npm', 'yarn', 'pnpm']}>
-  <Tabs.Tab>
+  <Tab value="Basic">
     ```bash
     npm install react-native-permissions
     ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Basic">
     ```bash
     yarn add react-native-permissions
     ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Basic">
     ```bash
     pnpm add react-native-permissions
     ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 각 플랫폼별 설정 방법은 [공식 문서](https://github.com/zoontek/react-native-permissions#setup)를 참고하여 `Podfile(iOS)`, `AndroidManifest.xml(Android)`를 적절히 변경해주세요.
 
-## iOS 권한 설정
+# iOS 권한 설정
 
-### 권한 종류
+
+
+## 권한 종류
+
+
 
 iOS에서는 다음 세 가지 위치 권한이 관련되어 있습니다:
 
-#### NSLocationAlwaysAndWhenInUseUsageDescription (iOS 11+)
+
+
+## NSLocationAlwaysAndWhenInUseUsageDescription (iOS 11+)
+
+
 - 앱이 foreground와 background 모두에서 위치 정보에 액세스하는 것을 허용
 - iOS 11 이상에서는 NSLocationAlwaysUsageDescription 대신 이 키를 사용
 
-#### NSLocationWhenInUseUsageDescription
+
+
+## NSLocationWhenInUseUsageDescription
+
+
 - 앱이 foreground에 있을 때만 위치 정보에 액세스하는 것을 허용
 - 사용자가 앱을 활발히 사용 중일 때만 위치 정보 접근 가능
 
-#### NSLocationTemporaryUsageDescriptionDictionary (iOS 14+)
+
+
+## NSLocationTemporaryUsageDescriptionDictionary (iOS 14+)
+
+
 - 앱이 임시로 정확한 위치 정보에 액세스할 수 있도록 허용
 - 특정 작업을 수행하는 동안에만 정확한 위치가 필요한 경우 사용
 
@@ -67,9 +90,13 @@ iOS에서는 다음 세 가지 위치 권한이 관련되어 있습니다:
   iOS 11 미만의 기기를 지원하지 않는다면 NSLocationAlwaysUsageDescription은 설정하지 않아도 됩니다.
 </Callout>
 
-### Podfile 설정
 
-```ruby filename="ios/Podfile"
+
+## Podfile 설정
+
+
+
+```ruby title="ios/Podfile"
 setup_permissions([
   'LocationAccuracy',
   'LocationAlways',
@@ -78,22 +105,46 @@ setup_permissions([
 ])
 ```
 
-### 백그라운드 위치 업데이트 설정
+
+
+## 백그라운드 위치 업데이트 설정
+
+
 
 백그라운드에서 위치를 받아오려면:
 
-<Steps>
-### Xcode에서 프로젝트 선택
-### Signing & Capabilities 탭으로 이동
-### Background Modes 추가
-### Location updates 옵션 체크
-</Steps>
+
+
+
+## Xcode에서 프로젝트 선택
+
+
+
+
+## Signing & Capabilities 탭으로 이동
+
+
+
+
+## Background Modes 추가
+
+
+
+
+## Location updates 옵션 체크
+
+
+
 
 ![Xcode config result](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161737676.webp)
 
-## Android 권한 설정
+# Android 권한 설정
 
-### 자동 권한 요청
+
+
+## 자동 권한 요청
+
+
 
 Naver Map SDK의 `FusedLocationSource`는 `isShowLocationButton` prop을 `true`로 설정하면 자동으로 권한을 요청합니다.
 
@@ -104,28 +155,36 @@ Naver Map SDK의 `FusedLocationSource`는 `isShowLocationButton` prop을 `true`�
 />
 ```
 
-### 권한 종류
+
+
+## 권한 종류
+
+
 
 AndroidManifest.xml에 다음 권한들을 추가합니다:
 
-```xml filename="android/app/src/main/AndroidManifest.xml"
+```xml title="android/app/src/main/AndroidManifest.xml"
 <manifest>
   <!-- 정확한 위치 정보 권한 -->
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-  
+
   <!-- 대략적인 위치 정보 권한 -->
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-  
+
   <!-- 백그라운드 위치 권한 (선택사항) -->
   <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 </manifest>
 ```
 
-## 코드에서 권한 요청
+# 코드에서 권한 요청
 
-### Bare React Native (react-native-permissions)
 
-```tsx filename="App.tsx"
+
+## Bare React Native (react-native-permissions)
+
+
+
+```tsx title="App.tsx"
 import { Platform } from 'react-native';
 import {
   PERMISSIONS,
@@ -151,7 +210,7 @@ useEffect(() => {
       }
     });
   }
-  
+
   if (Platform.OS === 'android') {
     requestMultiple([
       PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
@@ -167,16 +226,20 @@ useEffect(() => {
 }, []);
 ```
 
-### Expo (expo-location)
 
-```tsx filename="App.tsx"
+
+## Expo (expo-location)
+
+
+
+```tsx title="App.tsx"
 import * as Location from 'expo-location';
 
 useEffect(() => {
   (async () => {
     try {
       const { granted } = await Location.requestForegroundPermissionsAsync();
-      
+
       // Note: Foreground 권한이 먼저 승인되어야 Background 권한 요청 가능
       if (granted) {
         await Location.requestBackgroundPermissionsAsync();
@@ -188,25 +251,33 @@ useEffect(() => {
 }, []);
 ```
 
-<Callout type="warning">
+<Callout type="warn">
   Background 권한은 Foreground 권한이 승인된 후에만 요청할 수 있습니다.
 </Callout>
 
-## 권한 상태 확인
+# 권한 상태 확인
 
 권한이 정상적으로 부여되면 다음과 같은 화면이 표시됩니다:
 
 ![permission-result-1](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161733072.webp)
 ![permission-result-2](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161737907.webp)
 
-## 트러블슈팅
+# 트러블슈팅
 
-### iOS에서 위치 버튼이 표시되지 않는 경우
+
+
+## iOS에서 위치 버튼이 표시되지 않는 경우
+
+
 - Info.plist에 권한 설명이 추가되었는지 확인
 - Podfile에 권한 설정이 추가되었는지 확인
 - pod install을 다시 실행
 
-### Android에서 권한 요청이 표시되지 않는 경우
+
+
+## Android에서 권한 요청이 표시되지 않는 경우
+
+
 - AndroidManifest.xml에 권한이 추가되었는지 확인
 - 앱을 완전히 삭제 후 재설치
 - 설정 > 앱 > 권한에서 수동으로 권한 부여

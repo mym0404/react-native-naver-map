@@ -12,7 +12,8 @@
       "Bash(pnpm add:*)",
       "Bash(pnpm install:*)",
       "Read(//Users/mj/Desktop/expo-release-it/docs/src/**)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

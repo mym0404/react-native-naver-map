@@ -1,10 +1,16 @@
-import { Callout, Tabs } from 'nextra/components'
+---
+title: "마커 (NaverMapMarkerOverlay)"
+description: "마커 (NaverMapMarkerOverlay) 문서"
+---
 
-# 마커 (NaverMapMarkerOverlay)
+import { Callout } from 'fumadocs-ui/components/callout'
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
+
+ 마커 (NaverMapMarkerOverlay)
 
 마커는 지도 위의 특정 위치를 표시하는 가장 기본적인 오버레이입니다.
 
-## 기본 사용법
+# 기본 사용법
 
 ```tsx
 import { NaverMapView, NaverMapMarkerOverlay } from '@mj-studio/react-native-naver-map';
@@ -23,11 +29,15 @@ function MapWithMarker() {
 }
 ```
 
-## 마커 이미지 타입
+# 마커 이미지 타입
 
 React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 
-### 1. 기본 심볼
+
+
+## 1. 기본 심볼
+
+
 
 네이버 지도가 제공하는 기본 심볼을 사용합니다:
 
@@ -41,7 +51,11 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 
 사용 가능한 심볼: `green`, `red`, `blue`, `yellow`, `gray`, `pink`, `lightblue`
 
-### 2. 로컬 이미지 리소스
+
+
+## 2. 로컬 이미지 리소스
+
+
 
 ```tsx
 <NaverMapMarkerOverlay
@@ -57,10 +71,14 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
   Debug/Release 빌드 시 크기가 다르게 나올 수 있으므로 `width`와 `height`를 명시하는 것을 권장합니다.
 </Callout>
 
-### 3. 네이티브 리소스
+
+
+## 3. 네이티브 리소스
+
+
 
 <Tabs items={['iOS', 'Android']}>
-  <Tabs.Tab>
+  <Tab value="Basic">
     ```tsx
     // iOS: Bundle의 이미지 asset
     <NaverMapMarkerOverlay
@@ -69,8 +87,8 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
       height={40}
     />
     ```
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Basic">
     ```tsx
     // Android: drawable 리소스
     <NaverMapMarkerOverlay
@@ -79,10 +97,14 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
       height={40}
     />
     ```
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
-### 4. 네트워크 이미지
+
+
+## 4. 네트워크 이미지
+
+
 
 ```tsx
 <NaverMapMarkerOverlay
@@ -94,7 +116,11 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 />
 ```
 
-### 5. 커스텀 React View
+
+
+## 5. 커스텀 React View
+
+
 
 ```tsx
 <NaverMapMarkerOverlay
@@ -114,11 +140,11 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 </NaverMapMarkerOverlay>
 ```
 
-<Callout type="warning">
+<Callout type="warn">
   커스텀 View는 성능에 영향을 줄 수 있습니다. 대량의 마커에는 이미지 사용을 권장합니다.
 </Callout>
 
-## 캡션과 서브캡션
+# 캡션과 서브캡션
 
 마커에 텍스트 라벨을 추가할 수 있습니다:
 
@@ -140,7 +166,11 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 />
 ```
 
-### 캡션 속성
+
+
+## 캡션 속성
+
+
 
 | 속성 | 타입 | 설명 |
 |---|---|---|
@@ -152,9 +182,13 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 | `minZoom` | `number` | 최소 줌 레벨 |
 | `maxZoom` | `number` | 최대 줌 레벨 |
 
-## 마커 설정
+# 마커 설정
 
-### 앵커 포인트
+
+
+## 앵커 포인트
+
+
 
 앵커는 마커 이미지의 어느 지점이 좌표에 위치할지 결정합니다:
 
@@ -166,7 +200,11 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 />
 ```
 
-### Z-Index
+
+
+## Z-Index
+
+
 
 마커의 렌더링 순서를 제어합니다:
 
@@ -177,7 +215,11 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 />
 ```
 
-### 표시 설정
+
+
+## 표시 설정
+
+
 
 ```tsx
 <NaverMapMarkerOverlay
@@ -190,7 +232,7 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 />
 ```
 
-## 이벤트 처리
+# 이벤트 처리
 
 ```tsx
 <NaverMapMarkerOverlay
@@ -203,9 +245,13 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 />
 ```
 
-## 성능 최적화
+# 성능 최적화
 
-### 이미지 캐싱
+
+
+## 이미지 캐싱
+
+
 
 동일한 이미지를 사용하는 마커들에 대해 자동으로 캐싱이 적용됩니다:
 
@@ -217,7 +263,11 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 />
 ```
 
-### 대량 마커 처리
+
+
+## 대량 마커 처리
+
+
 
 ```tsx
 function OptimizedMarkers({ markers }) {
@@ -243,7 +293,7 @@ function OptimizedMarkers({ markers }) {
 }
 ```
 
-## 애니메이션
+# 애니메이션
 
 마커 위치 변경 시 애니메이션:
 
@@ -269,7 +319,7 @@ const AnimatedMarker = () => {
 };
 ```
 
-## 전체 예제
+# 전체 예제
 
 ```tsx
 import React, { useState } from 'react';

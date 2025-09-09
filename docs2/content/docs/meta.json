@@ -1,0 +1,11 @@
+{
+  "title": "Documentation",
+  "icon": "Book",
+  "pages": [
+    "index",
+    "getting-started",
+    "guides",
+    "components",
+    "api"
+  ]
+}

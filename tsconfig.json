@@ -40,7 +40,6 @@
   },
   "exclude": [
     "./expo-config-plugin",
-    "./docs",
-    "./docs2"
+    "./docs"
   ]
 }

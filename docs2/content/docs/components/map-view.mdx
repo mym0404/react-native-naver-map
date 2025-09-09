@@ -1,10 +1,16 @@
-import { Callout, Tabs } from 'nextra/components'
+---
+title: "NaverMapView"
+description: "NaverMapView 문서"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
 
 # NaverMapView
 
 `NaverMapView`는 네이버 지도를 표시하는 핵심 컴포넌트입니다. 모든 오버레이와 마커의 부모 컴포넌트 역할을 합니다.
 
-## 기본 사용법
+# 기본 사용법
 
 ```tsx
 import { NaverMapView } from '@mj-studio/react-native-naver-map';
@@ -24,9 +30,13 @@ function BasicMap() {
 }
 ```
 
-## 주요 Props
+# 주요 Props
 
-### 지도 초기화
+
+
+## 지도 초기화
+
+
 
 | Prop | 타입 | 설명 |
 |---|---|---|
@@ -34,7 +44,11 @@ function BasicMap() {
 | `mapType` | `MapType` | 지도 유형 (Basic, Navi, Satellite, Hybrid, Terrain) |
 | `layerGroups` | `LayerGroup` | 레이어 그룹 설정 |
 
-### UI 컨트롤
+
+
+## UI 컨트롤
+
+
 
 | Prop | 타입 | 기본값 | 설명 |
 |---|---|---|---|
@@ -44,7 +58,11 @@ function BasicMap() {
 | `isShowLocationButton` | `boolean` | `false` | 현재 위치 버튼 표시 |
 | `isShowIndoorLevelPicker` | `boolean` | `true` | 실내 지도 층 선택기 표시 |
 
-### 지도 설정
+
+
+## 지도 설정
+
+
 
 | Prop | 타입 | 설명 |
 |---|---|---|
@@ -54,42 +72,42 @@ function BasicMap() {
 | `symbolScale` | `number` | 심볼 크기 (0.5 ~ 2.0) |
 | `lightness` | `number` | 지도 밝기 (-1.0 ~ 1.0) |
 
-## 지도 유형
+# 지도 유형
 
-<Tabs items={['Basic', 'Navi', 'Satellite', 'Hybrid', 'Terrain']}>
-  <Tabs.Tab>
+<Tabs items={["Basic", "Navi", "Satellite", "Hybrid", "Terrain"]}>
+  <Tab value="Basic">
     ```tsx
     <NaverMapView mapType="Basic" />
     ```
     기본 지도 - 일반적인 지도 표시
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Navi">
     ```tsx
     <NaverMapView mapType="Navi" />
     ```
     내비게이션용 지도 - 도로 정보 강조
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Satellite">
     ```tsx
     <NaverMapView mapType="Satellite" />
     ```
     위성 지도 - 실제 위성 사진
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Hybrid">
     ```tsx
     <NaverMapView mapType="Hybrid" />
     ```
     하이브리드 - 위성 사진 + 도로 정보
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Terrain">
     ```tsx
     <NaverMapView mapType="Terrain" />
     ```
     지형도 - 고도 정보 표시
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
-## 레이어 그룹
+# 레이어 그룹
 
 여러 정보 레이어를 토글할 수 있습니다:
 
@@ -106,9 +124,13 @@ function BasicMap() {
 />
 ```
 
-## 이벤트 처리
+# 이벤트 처리
 
-### 지도 이벤트
+
+
+## 지도 이벤트
+
+
 
 ```tsx
 <NaverMapView
@@ -128,7 +150,11 @@ function BasicMap() {
 />
 ```
 
-### 카메라 이벤트 상세
+
+
+## 카메라 이벤트 상세
+
+
 
 ```tsx
 interface CameraChangedEvent {
@@ -148,7 +174,7 @@ type CameraChangeReason =
   | 'program';    // 프로그래밍
 ```
 
-## Ref를 통한 명령형 제어
+# Ref를 통한 명령형 제어
 
 ```tsx
 import { useRef } from 'react';
@@ -181,7 +207,11 @@ function ControlledMap() {
 }
 ```
 
-### 사용 가능한 명령
+
+
+## 사용 가능한 명령
+
+
 
 | 명령 | 설명 |
 |---|---|
@@ -194,7 +224,7 @@ function ControlledMap() {
 | `screenToCoordinate(point)` | 화면 좌표를 지도 좌표로 변환 |
 | `coordinateToScreen(coord)` | 지도 좌표를 화면 좌표로 변환 |
 
-## 위치 추적 모드
+# 위치 추적 모드
 
 ```tsx
 enum LocationTrackingMode {
@@ -212,7 +242,7 @@ mapRef.current?.setLocationTrackingMode(LocationTrackingMode.Follow);
   위치 추적을 사용하려면 위치 권한이 필요하며 `isShowLocationButton`을 `true`로 설정해야 합니다.
 </Callout>
 
-## 지도 범위 제한
+# 지도 범위 제한
 
 한국 영역으로 지도 범위를 제한할 수 있습니다:
 
@@ -224,9 +254,13 @@ mapRef.current?.setLocationTrackingMode(LocationTrackingMode.Follow);
 />
 ```
 
-## 성능 최적화
+# 성능 최적화
 
-### 라이트 모드
+
+
+## 라이트 모드
+
+
 
 마커가 많거나 성능이 중요한 경우:
 
@@ -237,7 +271,11 @@ mapRef.current?.setLocationTrackingMode(LocationTrackingMode.Follow);
 />
 ```
 
-### 심볼 스케일 조정
+
+
+## 심볼 스케일 조정
+
+
 
 ```tsx
 <NaverMapView
@@ -245,9 +283,13 @@ mapRef.current?.setLocationTrackingMode(LocationTrackingMode.Follow);
 />
 ```
 
-## 스타일링
+# 스타일링
 
-### 야간 모드
+
+
+## 야간 모드
+
+
 
 ```tsx
 <NaverMapView
@@ -256,7 +298,11 @@ mapRef.current?.setLocationTrackingMode(LocationTrackingMode.Follow);
 />
 ```
 
-### 로고 위치
+
+
+## 로고 위치
+
+
 
 ```tsx
 <NaverMapView
@@ -265,7 +311,7 @@ mapRef.current?.setLocationTrackingMode(LocationTrackingMode.Follow);
 />
 ```
 
-## 전체 예제
+# 전체 예제
 
 ```tsx
 import React, { useRef } from 'react';
