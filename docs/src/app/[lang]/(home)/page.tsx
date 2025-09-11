@@ -11,18 +11,19 @@ import { TerminalCodeBlock } from '@/components/terminal-codeblock';
 
 const quickStartCode = `import { NaverMapView } from '@mj-studio/react-native-naver-map';
 
-const App = () => {
+export default function App() {
   return (
     <NaverMapView
       style={{ flex: 1 }}
-      camera={{
-        latitude: 37.5666102,
-        longitude: 126.9783881,
-        zoom: 14,
+      initialRegion={{
+        latitude: 37.5665,
+        longitude: 126.9780,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
       }}
     />
   );
-};`;
+}`;
 
 export default async function HomePage({
   params,
@@ -54,10 +55,10 @@ export default async function HomePage({
         </h1>
 
         <p className="mb-10 max-w-3xl text-lg text-fd-muted-foreground md:text-xl leading-relaxed">
-          High-performance native map component with full TypeScript support,
-          built exclusively on React Native's{' '}
+          Native-performance map component with seamless Naver SDK integration,
+          complete TypeScript support, and easy-to-use API designed for{' '}
           <span className="font-semibold text-fd-foreground">
-            New Architecture (Fabric)
+            React Native developers
           </span>
         </p>
 
@@ -94,21 +95,21 @@ export default async function HomePage({
                 <Layers className="h-6 w-6 text-green-500" />
               </div>
               <h3 className="mb-2 text-lg font-semibold">
-                Fabric Architecture
+                Native SDK Features
               </h3>
               <p className="text-sm text-fd-muted-foreground">
-                Built exclusively on React Native's New Architecture for optimal
-                performance
+                Seamless access to all Naver Maps SDK capabilities with 
+                React Native friendly APIs
               </p>
             </div>
             <div className="group relative overflow-hidden rounded-xl border border-green-500/20 bg-gradient-to-br from-green-500/5 to-transparent p-6 transition-all hover:border-green-500/40 hover:shadow-lg hover:shadow-green-500/10">
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/10">
                 <MapPin className="h-6 w-6 text-green-500" />
               </div>
-              <h3 className="mb-2 text-lg font-semibold">Native Performance</h3>
+              <h3 className="mb-2 text-lg font-semibold">Various Marker Types</h3>
               <p className="text-sm text-fd-muted-foreground">
-                Direct bindings to Naver Maps SDK ensuring smooth 60fps
-                interactions
+                Support for basic symbols, local assets, native resources, 
+                web images, and custom React components
               </p>
             </div>
             <div className="group relative overflow-hidden rounded-xl border border-green-500/20 bg-gradient-to-br from-green-500/5 to-transparent p-6 transition-all hover:border-green-500/40 hover:shadow-lg hover:shadow-green-500/10">
@@ -125,9 +126,9 @@ export default async function HomePage({
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/10">
                 <Package className="h-6 w-6 text-green-500" />
               </div>
-              <h3 className="mb-2 text-lg font-semibold">Expo Compatible</h3>
+              <h3 className="mb-2 text-lg font-semibold">Easy to Go</h3>
               <p className="text-sm text-fd-muted-foreground">
-                Config plugin for seamless Expo managed and bare workflows
+                Simple setup with Expo config plugin and intuitive React-like API
               </p>
             </div>
           </div>
@@ -136,7 +137,6 @@ export default async function HomePage({
 
       {/* Quick Start Section */}
       <section className="bg-fd-muted/30 px-6 py-16">
-        an
         <div className="mx-auto max-w-4xl">
           <h2 className="mb-8 text-center text-3xl font-bold">Quick Start</h2>
 
@@ -166,7 +166,7 @@ export default async function HomePage({
                 need to configure your Naver Maps API keys for both iOS and
                 Android platforms.{' '}
                 <Link
-                  href={`/${lang}/docs/getting-started`}
+                  href={`/${lang}/docs`}
                   className="text-fd-primary underline underline-offset-2 hover:no-underline"
                 >
                   See the installation guide
