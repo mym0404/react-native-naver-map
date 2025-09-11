@@ -14,10 +14,31 @@ description: "Page description for SEO and navigation"
 icon: "BookOpen"
 ---
 
-# Page Content
+## Page Content
 
 Your content here...
 ```
+
+### Heading Level Convention
+**IMPORTANT**: All MDX content should start with h2 (##) headings, NOT h1 (#).
+
+```mdx
+## Main Section
+Content for main section...
+
+### Subsection
+Content for subsection...
+
+#### Sub-subsection
+Content for detailed section...
+```
+
+**Reason**: The page title is automatically generated from frontmatter, so content should start from h2 level for proper hierarchy.
+
+### Content Structure Guidelines
+- **Avoid "Next Steps" sections**: Don't include generic "다음 단계" or "Next Steps" sections at the end of documents
+- **Focus on core content**: Keep documentation focused on the main topic without unnecessary navigation aids
+- **Use cross-references naturally**: Link to related content inline rather than in dedicated sections
 
 ### Meta.json Configuration
 Use `meta.json` files to control folder structure and page ordering:

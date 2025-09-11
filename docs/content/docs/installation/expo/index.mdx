@@ -5,7 +5,7 @@ description: "Expo 프로젝트에서 React Native Naver Map 설정 방법"
 
 import { Callout } from 'fumadocs-ui/components/callout'
 
-# Expo 설정 (Config Plugin)
+## Expo 설정 (Config Plugin)
 
 Expo 프로젝트에서 React Native Naver Map을 사용하기 위한 설정 방법을 안내합니다.
 
@@ -83,20 +83,20 @@ npx expo prebuild -p ios
 Expo Go는 네이티브 모듈을 지원하지 않으므로 Development Build가 필요합니다:
 
 ```bash
-# iOS
+## iOS
 npx expo run:ios
 
-# Android
+## Android
 npx expo run:android
 ```
 
 또는 EAS Build를 사용하여 클라우드에서 빌드할 수 있습니다:
 
 ```bash
-# EAS Build 설정
+## EAS Build 설정
 npx eas build:configure
 
-# Development Build 생성
+## Development Build 생성
 npx eas build --profile development --platform ios
 npx eas build --profile development --platform android
 ```
@@ -115,13 +115,13 @@ Expo 설정이 완료되었습니다! Development Build에서 네이버 지도�
 
 ## 문제 해결
 
-### 빌드 오류가 발생하는 경우
+## 빌드 오류가 발생하는 경우
 
 1. **Android 빌드 오류**: `android/build.gradle`에 Maven 저장소가 올바르게 추가되었는지 확인
 2. **iOS 빌드 오류**: `ios/Podfile`을 삭제하고 다시 prebuild 실행
 3. **Config Plugin 오류**: app.json 문법이 올바른지 확인
 
-### Metro 설정 오류
+## Metro 설정 오류
 
 ```javascript title="metro.config.js"
 const { getDefaultConfig } = require('expo/metro-config');

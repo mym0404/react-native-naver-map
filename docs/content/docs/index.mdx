@@ -8,16 +8,16 @@ import { Apple, Smartphone, Zap } from 'lucide-react'
 import { Callout } from 'fumadocs-ui/components/callout'
 import { Cards, Card } from 'fumadocs-ui/components/card'
 
-# 시작하기
+## 시작하기
 
 React Native Naver Map을 프로젝트에 설치하고 설정하는 방법을 안내합니다.
 
-# 사전 요구사항
+## 사전 요구사항
 
 - New Architecture
 - [네이버 클라우드 플랫폼](https://www.ncloud.com) 계정 및 Maps API 키
 
-# 설치
+## 설치
 
 ```npm
 npm install @mj-studio/react-native-naver-map
@@ -31,7 +31,7 @@ iOS의 경우 CocoaPods 설치가 필요합니다:
 cd ios && pod install
 ```
 
-# API 키 발급
+## API 키 발급
 
 ## 네이버 클라우드 플랫폼 접속
 
@@ -54,7 +54,7 @@ cd ios && pod install
 
 발급받은 Client ID를 각 플랫폼별로 설정합니다.
 
-# 플랫폼별 설정
+## 플랫폼별 설정
 
 설치가 완료되면 플랫폼별로 추가 설정이 필요합니다. 해당하는 플랫폼의 가이드를 따라 설정해주세요.
 
@@ -64,7 +64,7 @@ cd ios && pod install
   <Card href="/installation/expo" title="Expo 설정" icon={<Zap/>} />
 </Cards>
 
-# 첫 번째 지도 만들기
+## 첫 번째 지도 만들기
 
 플랫폼별 설정이 완료되면 지도를 표시할 수 있습니다:
 
@@ -108,8 +108,3 @@ const styles = StyleSheet.create({
 이제 다양한 컴포넌트와 기능을 추가해보세요.
 </Callout>
 
-# 다음 단계
-
-- [컴포넌트 가이드](/components) - 마커, 오버레이 등 다양한 컴포넌트 사용법
-- [권한 설정](/guides/permissions) - 위치 권한 상세 설정 가이드
-- [API 레퍼런스](/api) - 전체 API 문서

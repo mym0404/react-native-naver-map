@@ -12,7 +12,7 @@ React Native Naver Map에서 사용자의 현재 위치를 표시하려면 위�
   사용자의 현재 위치를 표시하거나 위치 추적 기능을 사용할 때만 필요합니다.
 </Callout>
 
-# 권한 관리 라이브러리
+## 권한 관리 라이브러리
 
 기본적으로 앱에서 권한은 직접 관리되어야 합니다. 권한 관리를 위해 다음 라이브러리들을 사용할 수 있습니다:
 
@@ -24,7 +24,7 @@ React Native Naver Map에서 사용자의 현재 위치를 표시하려면 위�
   아래 내용 중 필요한 권한이 무엇인지 확인한 후 expo-location 문서를 참고하세요.
 </Callout>
 
-# react-native-permissions 설정
+## react-native-permissions 설정
 
 
 
@@ -52,7 +52,7 @@ React Native Naver Map에서 사용자의 현재 위치를 표시하려면 위�
 
 각 플랫폼별 설정 방법은 [공식 문서](https://github.com/zoontek/react-native-permissions#setup)를 참고하여 `Podfile(iOS)`, `AndroidManifest.xml(Android)`를 적절히 변경해주세요.
 
-# iOS 권한 설정
+## iOS 권한 설정
 
 
 
@@ -138,7 +138,7 @@ setup_permissions([
 
 ![Xcode config result](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161737676.webp)
 
-# Android 권한 설정
+## Android 권한 설정
 
 
 
@@ -176,7 +176,7 @@ AndroidManifest.xml에 다음 권한들을 추가합니다:
 </manifest>
 ```
 
-# 코드에서 권한 요청
+## 코드에서 권한 요청
 
 
 
@@ -255,14 +255,14 @@ useEffect(() => {
   Background 권한은 Foreground 권한이 승인된 후에만 요청할 수 있습니다.
 </Callout>
 
-# 권한 상태 확인
+## 권한 상태 확인
 
 권한이 정상적으로 부여되면 다음과 같은 화면이 표시됩니다:
 
 ![permission-result-1](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161733072.webp)
 ![permission-result-2](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161737907.webp)
 
-# 트러블슈팅
+## 트러블슈팅
 
 
 

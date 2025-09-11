@@ -7,11 +7,11 @@ import { Callout } from 'fumadocs-ui/components/callout'
 import { Cards, Card } from 'fumadocs-ui/components/card'
 import { Map, MapPin, Shapes } from 'lucide-react'
 
-# 컴포넌트
+## 컴포넌트
 
 React Native Naver Map에서 제공하는 다양한 컴포넌트들을 소개합니다.
 
-# 주요 컴포넌트
+## 주요 컴포넌트
 
 <Cards>
   <Card title="NaverMapView" href="/components/map-view" icon={<Map className="w-6 h-6" />}>
@@ -25,7 +25,7 @@ React Native Naver Map에서 제공하는 다양한 컴포넌트들을 소개합
   </Card>
 </Cards>
 
-# 컴포넌트 지원 현황
+## 컴포넌트 지원 현황
 
 | 컴포넌트                         | iOS | Android | 설명          |
 |------------------------------|:---:|:-------:|-------------|
@@ -44,7 +44,7 @@ React Native Naver Map에서 제공하는 다양한 컴포넌트들을 소개합
   ✅ 완전 지원 | ⚠️ 부분 지원 | 📦 개발 예정
 </Callout>
 
-# 기본 사용법
+## 기본 사용법
 
 ```tsx
 import {
@@ -75,7 +75,7 @@ function MapScreen() {
 }
 ```
 
-# 컴포넌트 계층 구조
+## 컴포넌트 계층 구조
 
 모든 오버레이 컴포넌트는 `NaverMapView`의 자식으로 사용되어야 합니다:
 
@@ -88,7 +88,7 @@ function MapScreen() {
 </NaverMapView>
 ```
 
-# 성능 고려사항
+## 성능 고려사항
 
 
 
@@ -112,7 +112,7 @@ function MapScreen() {
   New Architecture (Fabric)를 사용하면 동기식 레이아웃으로 더 나은 성능을 얻을 수 있습니다.
 </Callout>
 
-# TypeScript 지원
+## TypeScript 지원
 
 모든 컴포넌트는 완벽한 TypeScript 타입을 제공합니다:
 
@@ -138,10 +138,3 @@ const mapProps: NaverMapViewProps = {
 };
 ```
 
-# 다음 단계
-
-각 컴포넌트의 자세한 사용법은 해당 문서를 참고하세요:
-
-- [NaverMapView 상세 가이드](/components/map-view)
-- [마커 사용법](/components/marker)
-- [오버레이 종류와 활용](/components/overlays)
