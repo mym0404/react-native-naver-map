@@ -16,7 +16,9 @@ export function baseOptions(): BaseLayoutProps {
       title: (
         <>
           <div
-            className={'w-8 h-8 rounded-full bg-fd-accent center relative p-1'}
+            className={
+              'w-8 h-8 rounded-full dark:bg-fd-accent  center relative p-1'
+            }
           >
             <Image
               src={'/logo-180.png'}
@@ -41,7 +43,7 @@ export function baseOptions(): BaseLayoutProps {
         url: 'https://github.com/mym0404/react-native-naver-map/releases',
       },
       {
-        text: 'Buy me a Coffee',
+        text: 'Donate',
         url: 'https://github.com/sponsors/mym0404',
       },
     ],
