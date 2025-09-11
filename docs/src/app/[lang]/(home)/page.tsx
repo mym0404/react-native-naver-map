@@ -6,6 +6,7 @@ import {
   Package,
   StarIcon,
 } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { TerminalCodeBlock } from '@/components/terminal-codeblock';
 
@@ -41,9 +42,13 @@ export default async function HomePage({
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-500/20 via-transparent to-transparent" />
         </div>
 
-        <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-green-600 shadow-lg">
-          <MapPin className="h-10 w-10 text-white" />
-        </div>
+        <Image
+          alt="logo"
+          src="/logo.png"
+          width={200}
+          height={200}
+          className="relative z-10 drop-shadow-xl transition-transform duration-300 hover:scale-105 drop-shadow-orange-400 dark:drop-shadow-blue-400"
+        />
 
         <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-6xl lg:text-7xl">
           <span className="bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">
@@ -55,17 +60,15 @@ export default async function HomePage({
         </h1>
 
         <p className="mb-10 max-w-3xl text-lg text-fd-muted-foreground md:text-xl leading-relaxed">
-          Native-performance map component with seamless Naver SDK integration,
-          complete TypeScript support, and easy-to-use API designed for{' '}
-          <span className="font-semibold text-fd-foreground">
-            React Native developers
-          </span>
+          Map component with seamless Naver SDK integration, complete TypeScript
+          support, and easy-to-use API designed for{' '}
+          <span className="font-semibold text-fd-foreground">React Native</span>
         </p>
 
         <div className="flex flex-col gap-4 sm:flex-row">
           <Link
             href={`/${lang}/docs`}
-            className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-green-600 to-green-500 px-8 py-3.5 font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-105"
+            className="inline-flex justify-center items-center gap-2 rounded-lg bg-gradient-to-r from-green-600 to-green-500 px-8 py-3.5 font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-105"
           >
             Get Started
             <ArrowRight className="h-4 w-4" />
@@ -98,18 +101,20 @@ export default async function HomePage({
                 Native SDK Features
               </h3>
               <p className="text-sm text-fd-muted-foreground">
-                Seamless access to all Naver Maps SDK capabilities with 
-                React Native friendly APIs
+                Seamless access to all Naver Maps SDK capabilities with React
+                Native friendly APIs
               </p>
             </div>
             <div className="group relative overflow-hidden rounded-xl border border-green-500/20 bg-gradient-to-br from-green-500/5 to-transparent p-6 transition-all hover:border-green-500/40 hover:shadow-lg hover:shadow-green-500/10">
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/10">
                 <MapPin className="h-6 w-6 text-green-500" />
               </div>
-              <h3 className="mb-2 text-lg font-semibold">Various Marker Types</h3>
+              <h3 className="mb-2 text-lg font-semibold">
+                Various Marker Types
+              </h3>
               <p className="text-sm text-fd-muted-foreground">
-                Support for basic symbols, local assets, native resources, 
-                web images, and custom React components
+                Support for basic symbols, local assets, native resources, web
+                images, and custom React components
               </p>
             </div>
             <div className="group relative overflow-hidden rounded-xl border border-green-500/20 bg-gradient-to-br from-green-500/5 to-transparent p-6 transition-all hover:border-green-500/40 hover:shadow-lg hover:shadow-green-500/10">
@@ -128,7 +133,8 @@ export default async function HomePage({
               </div>
               <h3 className="mb-2 text-lg font-semibold">Easy to Go</h3>
               <p className="text-sm text-fd-muted-foreground">
-                Simple setup with Expo config plugin and intuitive React-like API
+                Simple setup with Expo config plugin and intuitive React-like
+                API
               </p>
             </div>
           </div>
@@ -159,21 +165,6 @@ export default async function HomePage({
               filename="App.tsx"
               variant="code"
             />
-
-            <div className="rounded-lg border border-fd-border bg-fd-muted/50 p-4">
-              <p className="text-sm text-fd-muted-foreground">
-                <strong className="text-fd-foreground">Note:</strong> You'll
-                need to configure your Naver Maps API keys for both iOS and
-                Android platforms.{' '}
-                <Link
-                  href={`/${lang}/docs`}
-                  className="text-fd-primary underline underline-offset-2 hover:no-underline"
-                >
-                  See the installation guide
-                </Link>{' '}
-                for detailed setup instructions.
-              </p>
-            </div>
           </div>
         </div>
       </section>
@@ -183,15 +174,15 @@ export default async function HomePage({
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-8 text-center md:grid-cols-4">
             <div>
-              <div className="text-3xl font-bold text-green-500">v2.0+</div>
+              <div className="text-3xl font-bold text-green-500">100+</div>
               <div className="mt-1 text-sm text-fd-muted-foreground">
-                Latest Version
+                Used by Open Source Projects
               </div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-green-500">0.74+</div>
+              <div className="text-3xl font-bold text-green-500">50,000+</div>
               <div className="mt-1 text-sm text-fd-muted-foreground">
-                React Native
+                Installations
               </div>
             </div>
             <div>
@@ -201,9 +192,9 @@ export default async function HomePage({
               </div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-green-500">Fabric</div>
+              <div className="text-3xl font-bold text-green-500">100%</div>
               <div className="mt-1 text-sm text-fd-muted-foreground">
-                Architecture
+                Open Sources
               </div>
             </div>
           </div>
