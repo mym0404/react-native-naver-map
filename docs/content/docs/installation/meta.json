@@ -1,0 +1,9 @@
+{
+  "title": "Installation",
+  "icon": "Download",
+  "pages": [
+    "android",
+    "ios", 
+    "expo"
+  ]
+}

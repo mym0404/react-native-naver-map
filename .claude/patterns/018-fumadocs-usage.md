@@ -54,6 +54,15 @@ Use `meta.json` files to control folder structure and page ordering:
 
 ## Usage
 
+### Icons
+
+You can use Lucide Icon in MDX
+
+```
+import { Apple, Smartphone, Zap } from 'lucide-react'
+...
+```
+
 ### Tabs
 ```mdx
 <Tabs items={['React', 'Vue', 'Svelte']}>
