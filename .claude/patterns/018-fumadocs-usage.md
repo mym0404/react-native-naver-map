@@ -35,7 +35,7 @@ Use `meta.json` files to control folder structure and page ordering:
       "icon": "PageIcon",
       "href": "/custom-path"
     },
-    "---", 
+    "---",
     {
       "title": "External Link",
       "href": "https://external.com",
@@ -56,10 +56,26 @@ Use `meta.json` files to control folder structure and page ordering:
 
 ### Tabs
 ```mdx
-<Tabs items={['npm', 'pnpm', 'yarn']}>
-  <Tab value="npm">npm install package</Tab>
-  <Tab value="pnpm">pnpm add package</Tab>
-  <Tab value="yarn">yarn add package</Tab>
+<Tabs items={['React', 'Vue', 'Svelte']}>
+  <Tab value="React">
+    ```tsx
+    import { useState } from 'react';
+    ```
+  </Tab>
+  <Tab value="Vue">
+    ```vue
+    <script setup>
+    import { ref } from 'vue';
+    </script>
+    ```
+  </Tab>
+  <Tab value="Svelte">
+    ```svelte
+    <script>
+    let count = 0;
+    </script>
+    ```
+  </Tab>
 </Tabs>
 
 <Tabs groupId="lang" items={['JS', 'TS']} persist>
@@ -403,9 +419,12 @@ export { withArticle as default } from 'fumadocs-ui/page';
 ```
 
 ### NPM Install Commands
+
+For npm package installation, use npm language tag for syntax highlighting:
+
 ```mdx
-```package-install
-npm i fumadocs-ui fumadocs-core
+```npm
+npm install package-name
 ```
 ```
 
