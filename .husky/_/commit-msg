@@ -32,6 +32,30 @@ call_lefthook()
     elif test -f "$dir/node_modules/lefthook/bin/index.js"
     then
       "$dir/node_modules/lefthook/bin/index.js" "$@"
+    elif test -f "$dir/example/node_modules/lefthook-${osArch}-${cpuArch}/bin/lefthook"
+    then
+      "$dir/example/node_modules/lefthook-${osArch}-${cpuArch}/bin/lefthook" "$@"
+    elif test -f "$dir/example/node_modules/@evilmartians/lefthook/bin/lefthook-${osArch}-${cpuArch}/lefthook"
+    then
+      "$dir/example/node_modules/@evilmartians/lefthook/bin/lefthook-${osArch}-${cpuArch}/lefthook" "$@"
+    elif test -f "$dir/example/node_modules/@evilmartians/lefthook-installer/bin/lefthook"
+    then
+      "$dir/example/node_modules/@evilmartians/lefthook-installer/bin/lefthook" "$@"
+    elif test -f "$dir/example/node_modules/lefthook/bin/index.js"
+    then
+      "$dir/example/node_modules/lefthook/bin/index.js" "$@"
+    elif test -f "$dir/docs/node_modules/lefthook-${osArch}-${cpuArch}/bin/lefthook"
+    then
+      "$dir/docs/node_modules/lefthook-${osArch}-${cpuArch}/bin/lefthook" "$@"
+    elif test -f "$dir/docs/node_modules/@evilmartians/lefthook/bin/lefthook-${osArch}-${cpuArch}/lefthook"
+    then
+      "$dir/docs/node_modules/@evilmartians/lefthook/bin/lefthook-${osArch}-${cpuArch}/lefthook" "$@"
+    elif test -f "$dir/docs/node_modules/@evilmartians/lefthook-installer/bin/lefthook"
+    then
+      "$dir/docs/node_modules/@evilmartians/lefthook-installer/bin/lefthook" "$@"
+    elif test -f "$dir/docs/node_modules/lefthook/bin/index.js"
+    then
+      "$dir/docs/node_modules/lefthook/bin/index.js" "$@"
     
     elif go tool lefthook -h >/dev/null 2>&1
     then

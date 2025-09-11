@@ -1,20 +1,271 @@
+import {
+  ArrowRight,
+  Code2,
+  Layers,
+  MapPin,
+  Package,
+  StarIcon,
+} from 'lucide-react';
 import Link from 'next/link';
+import { TerminalCodeBlock } from '@/components/terminal-codeblock';
 
-export default async function HomePage({ params }: PageProps<'/[lang]'>) {
-  const { lang } = await params;
+const quickStartCode = `import { NaverMapView } from '@mj-studio/react-native-naver-map';
+
+const App = () => {
   return (
-    <main className="flex flex-1 flex-col justify-center text-center">
-      <h1 className="mb-4 text-2xl font-bold">Hello World</h1>
-      <p className="text-fd-muted-foreground">
-        You can open{' '}
-        <Link
-          href={`/${lang}/docs`}
-          className="text-fd-foreground font-semibold underline"
-        >
-          /docs
-        </Link>{' '}
-        and see the documentation.
-      </p>
+    <NaverMapView
+      style={{ flex: 1 }}
+      camera={{
+        latitude: 37.5666102,
+        longitude: 126.9783881,
+        zoom: 14,
+      }}
+    />
+  );
+};`;
+
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+
+  return (
+    <main className="flex min-h-[calc(100vh-3.5rem)] flex-col">
+      {/* Hero Section */}
+      <section className="relative flex flex-col items-center justify-center px-6 py-32 text-center">
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-b from-green-500/10 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-500/20 via-transparent to-transparent" />
+        </div>
+
+        <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-green-600 shadow-lg">
+          <MapPin className="h-10 w-10 text-white" />
+        </div>
+
+        <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-6xl lg:text-7xl">
+          <span className="bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">
+            Naver Map
+          </span>
+          <span className="block mt-2 text-2xl text-fd-muted-foreground md:text-3xl lg:text-4xl font-normal">
+            for React Native
+          </span>
+        </h1>
+
+        <p className="mb-10 max-w-3xl text-lg text-fd-muted-foreground md:text-xl leading-relaxed">
+          High-performance native map component with full TypeScript support,
+          built exclusively on React Native's{' '}
+          <span className="font-semibold text-fd-foreground">
+            New Architecture (Fabric)
+          </span>
+        </p>
+
+        <div className="flex flex-col gap-4 sm:flex-row">
+          <Link
+            href={`/${lang}/docs`}
+            className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-green-600 to-green-500 px-8 py-3.5 font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-105"
+          >
+            Get Started
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <a
+            href="https://github.com/mj-studio-library/react-native-naver-map"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-lg border border-fd-border bg-fd-background px-8 py-3.5 font-medium transition-all hover:bg-fd-muted hover:scale-105"
+          >
+            <StarIcon />
+            Star on GitHub
+          </a>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="px-6 py-16">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="mb-12 text-center text-3xl font-bold">
+            Why Choose This Library?
+          </h2>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div className="group relative overflow-hidden rounded-xl border border-green-500/20 bg-gradient-to-br from-green-500/5 to-transparent p-6 transition-all hover:border-green-500/40 hover:shadow-lg hover:shadow-green-500/10">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/10">
+                <Layers className="h-6 w-6 text-green-500" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold">
+                Fabric Architecture
+              </h3>
+              <p className="text-sm text-fd-muted-foreground">
+                Built exclusively on React Native's New Architecture for optimal
+                performance
+              </p>
+            </div>
+            <div className="group relative overflow-hidden rounded-xl border border-green-500/20 bg-gradient-to-br from-green-500/5 to-transparent p-6 transition-all hover:border-green-500/40 hover:shadow-lg hover:shadow-green-500/10">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/10">
+                <MapPin className="h-6 w-6 text-green-500" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold">Native Performance</h3>
+              <p className="text-sm text-fd-muted-foreground">
+                Direct bindings to Naver Maps SDK ensuring smooth 60fps
+                interactions
+              </p>
+            </div>
+            <div className="group relative overflow-hidden rounded-xl border border-green-500/20 bg-gradient-to-br from-green-500/5 to-transparent p-6 transition-all hover:border-green-500/40 hover:shadow-lg hover:shadow-green-500/10">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/10">
+                <Code2 className="h-6 w-6 text-green-500" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold">TypeScript First</h3>
+              <p className="text-sm text-fd-muted-foreground">
+                Complete type definitions with codegen for type-safe
+                interactions
+              </p>
+            </div>
+            <div className="group relative overflow-hidden rounded-xl border border-green-500/20 bg-gradient-to-br from-green-500/5 to-transparent p-6 transition-all hover:border-green-500/40 hover:shadow-lg hover:shadow-green-500/10">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/10">
+                <Package className="h-6 w-6 text-green-500" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold">Expo Compatible</h3>
+              <p className="text-sm text-fd-muted-foreground">
+                Config plugin for seamless Expo managed and bare workflows
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Start Section */}
+      <section className="bg-fd-muted/30 px-6 py-16">
+        an
+        <div className="mx-auto max-w-4xl">
+          <h2 className="mb-8 text-center text-3xl font-bold">Quick Start</h2>
+
+          <div className="space-y-8">
+            <h3 className="text-center mb-4 text-lg font-semibold">
+              Install the package
+            </h3>
+            <TerminalCodeBlock
+              code={`npm install @mj-studio/react-native-naver-map\n\n# pod install, add expo plugin, etc`}
+              lang={'bash'}
+              variant="install"
+            />
+
+            <h3 className="mb-4 text-lg font-semibold text-center">
+              Use in your app
+            </h3>
+            <TerminalCodeBlock
+              code={quickStartCode}
+              lang="tsx"
+              filename="App.tsx"
+              variant="code"
+            />
+
+            <div className="rounded-lg border border-fd-border bg-fd-muted/50 p-4">
+              <p className="text-sm text-fd-muted-foreground">
+                <strong className="text-fd-foreground">Note:</strong> You'll
+                need to configure your Naver Maps API keys for both iOS and
+                Android platforms.{' '}
+                <Link
+                  href={`/${lang}/docs/getting-started`}
+                  className="text-fd-primary underline underline-offset-2 hover:no-underline"
+                >
+                  See the installation guide
+                </Link>{' '}
+                for detailed setup instructions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="border-y border-fd-border bg-fd-muted/30 px-6 py-12">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid gap-8 text-center md:grid-cols-4">
+            <div>
+              <div className="text-3xl font-bold text-green-500">v2.0+</div>
+              <div className="mt-1 text-sm text-fd-muted-foreground">
+                Latest Version
+              </div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-green-500">0.74+</div>
+              <div className="mt-1 text-sm text-fd-muted-foreground">
+                React Native
+              </div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-green-500">100%</div>
+              <div className="mt-1 text-sm text-fd-muted-foreground">
+                TypeScript
+              </div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-green-500">Fabric</div>
+              <div className="mt-1 text-sm text-fd-muted-foreground">
+                Architecture
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Resources Section */}
+      <section className="px-6 py-16">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="mb-12 text-center text-3xl font-bold">Explore More</h2>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <Link
+              href={`/${lang}/docs`}
+              className="group rounded-lg border border-fd-border bg-fd-card p-6 transition-all hover:border-fd-primary/50 hover:bg-fd-muted/50"
+            >
+              <h3 className="font-semibold group-hover:text-fd-primary">
+                Documentation
+              </h3>
+              <p className="text-sm text-fd-muted-foreground">
+                Complete API reference and guides
+              </p>
+            </Link>
+            <Link
+              href={`/${lang}/docs/examples`}
+              className="group rounded-lg border border-fd-border bg-fd-card p-6 transition-all hover:border-fd-primary/50 hover:bg-fd-muted/50"
+            >
+              <h3 className="font-semibold group-hover:text-fd-primary">
+                Examples
+              </h3>
+              <p className="text-sm text-fd-muted-foreground">
+                Sample implementations and demos
+              </p>
+            </Link>
+            <a
+              href="https://navermaps.github.io/ios-map-sdk/guide-ko/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group rounded-lg border border-fd-border bg-fd-card p-6 transition-all hover:border-fd-primary/50 hover:bg-fd-muted/50"
+            >
+              <h3 className="font-semibold group-hover:text-fd-primary">
+                iOS SDK
+              </h3>
+              <p className="text-sm text-fd-muted-foreground">
+                Native iOS documentation
+              </p>
+            </a>
+            <a
+              href="https://navermaps.github.io/android-map-sdk/guide-ko/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group rounded-lg border border-fd-border bg-fd-card p-6 transition-all hover:border-fd-primary/50 hover:bg-fd-muted/50"
+            >
+              <h3 className="font-semibold group-hover:text-fd-primary">
+                Android SDK
+              </h3>
+              <p className="text-sm text-fd-muted-foreground">
+                Native Android documentation
+              </p>
+            </a>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

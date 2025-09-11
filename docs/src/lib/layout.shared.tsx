@@ -19,7 +19,7 @@ export function baseOptions(): BaseLayoutProps {
             className={'w-8 h-8 rounded-full bg-fd-accent center relative p-1'}
           >
             <Image
-              src={'/logo.png'}
+              src={'/logo-180.png'}
               alt={'logo'}
               width={24}
               height={24}
@@ -34,7 +34,17 @@ export function baseOptions(): BaseLayoutProps {
       ),
     },
     // see https://fumadocs.dev/docs/ui/navigation/links
-    links: [{ text: 'Documentation', url: '/docs' }],
+    links: [
+      { text: 'Documentation', url: '/docs' },
+      {
+        text: 'Changelog',
+        url: 'https://github.com/mym0404/react-native-naver-map/releases',
+      },
+      {
+        text: 'Buy me a Coffee',
+        url: 'https://github.com/sponsors/mym0404',
+      },
+    ],
     githubUrl: 'https://github.com/mym0404/react-native-naver-map',
     searchToggle: {
       enabled: true,
