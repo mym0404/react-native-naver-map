@@ -6,19 +6,11 @@ description: "카메라 제어 문서"
 import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
 import { Callout } from 'fumadocs-ui/components/callout'
 
-카메라 제어
-
-
+## 개요
 
 네이버 지도의 카메라를 제어하여 지도의 중심점, 줌 레벨, 회전, 기울기 등을 조정하는 방법을 안내합니다.
 
-## 기본 카메라 설정
-
-
-
-## Camera vs Region
-
-
+### Camera vs Region
 
 네이버 지도에서는 두 가지 방식으로 지도 위치를 설정할 수 있습니다:
 
@@ -68,11 +60,7 @@ import { Callout } from 'fumadocs-ui/components/callout'
 
 ## 프로그래매틱 카메라 제어
 
-
-
-## Ref를 통한 카메라 조작
-
-
+### Ref를 통한 카메라 조작
 
 ```tsx title="CameraControlExample.tsx"
 import React, { useRef } from 'react';
@@ -131,11 +119,7 @@ const CameraControlExample = () => {
 
 ## 카메라 애니메이션 메서드
 
-
-
-## 1. animateCameraTo - 특정 위치로 이동
-
-
+### 1. animateCameraTo - 특정 위치로 이동
 
 ```tsx title="AnimateCameraTo.tsx"
 // 기본 사용법
@@ -159,9 +143,7 @@ mapRef.current?.animateCameraTo({
 
 
 
-## 2. animateCameraBy - 상대적 이동
-
-
+### 2. animateCameraBy - 상대적 이동
 
 ```tsx title="AnimateCameraBy.tsx"
 // 화면 픽셀 단위로 상대 이동
@@ -175,9 +157,7 @@ mapRef.current?.animateCameraBy({
 
 
 
-## 3. animateRegionTo - 영역 기반 이동
-
-
+### 3. animateRegionTo - 영역 기반 이동
 
 ```tsx title="AnimateRegionTo.tsx"
 // 특정 영역을 화면에 맞춰 표시
@@ -192,9 +172,7 @@ mapRef.current?.animateRegionTo({
 
 
 
-## 4. animateCameraWithTwoCoords - 두 지점을 포함하는 영역으로 이동
-
-
+### 4. animateCameraWithTwoCoords - 두 지점을 포함하는 영역으로 이동
 
 ```tsx title="TwoCoordsAnimation.tsx"
 // 두 좌표를 모두 포함하는 최적 카메라 위치로 이동
@@ -211,11 +189,7 @@ mapRef.current?.animateCameraWithTwoCoords({
 
 ## 애니메이션 제어
 
-
-
-## 애니메이션 취소
-
-
+### 애니메이션 취소
 
 ```tsx title="CancelAnimation.tsx"
 const handleCancelAnimation = () => {
@@ -234,11 +208,7 @@ const handleCancelAnimation = () => {
 
 ## 카메라 상태 감지
 
-
-
-## 카메라 변경 이벤트
-
-
+### 카메라 변경 이벤트
 
 ```tsx title="CameraEvents.tsx"
 <NaverMapView
@@ -276,11 +246,7 @@ const handleCancelAnimation = () => {
 
 ## 실용적인 카메라 제어 패턴
 
-
-
-## 마커들을 모두 포함하는 영역으로 이동
-
-
+### 마커들을 모두 포함하는 영역으로 이동
 
 ```tsx title="FitToMarkers.tsx"
 const fitToMarkers = (markers: Array<{ latitude: number; longitude: number }>) => {
@@ -333,9 +299,7 @@ const fitToMarkers = (markers: Array<{ latitude: number; longitude: number }>) =
 
 
 
-## 현재 위치로 이동
-
-
+### 현재 위치로 이동
 
 ```tsx title="MoveToCurrentLocation.tsx"
 import { getCurrentLocation } from '@mj-studio/react-native-naver-map';
@@ -360,11 +324,7 @@ const moveToCurrentLocation = async () => {
 
 ## 좌표 변환 유틸리티
 
-
-
-## 화면 좌표 ↔ 지도 좌표 변환
-
-
+### 화면 좌표 ↔ 지도 좌표 변환
 
 ```tsx title="CoordinateConversion.tsx"
 // 화면 좌표를 지도 좌표로 변환
@@ -407,9 +367,7 @@ const handleCoordinateToScreen = async () => {
 
 
 
-## 카메라 변경 디바운싱
-
-
+### 카메라 변경 디바운싱
 
 ```tsx title="DebouncedCameraChange.tsx"
 import { useMemo } from 'react';
