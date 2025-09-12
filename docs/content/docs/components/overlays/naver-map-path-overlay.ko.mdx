@@ -1,0 +1,41 @@
+---
+title: "NaverMapPathOverlay"
+description: "지도에 경로 오버레이를 표시하는 컴포넌트"
+---
+
+## Overview
+
+NaverMapPathOverlay는 지도 위에 경로 오버레이를 표시하는 컴포넌트입니다.
+좌표 배열을 통해 경로를 표시하며, 경로의 색상, 두께, 패턴 등을 설정할 수 있습니다.
+
+## Basic Usage
+
+```tsx
+import { NaverMapView, NaverMapPathOverlay } from '@mj-studio/react-native-naver-map';
+
+function MapWithPath() {
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      <NaverMapPathOverlay // [!code highlight:12]
+        coords={[
+          { latitude: 37.5, longitude: 126.9 },
+          { latitude: 37.51, longitude: 126.91 },
+          { latitude: 37.52, longitude: 126.92 },
+        ]}
+        width={8}
+        color={'white'}
+        progress={0.5}
+        passedColor={'black'}
+        outlineWidth={1}
+        onTap={() => console.log('Path tapped')}
+      />
+    </NaverMapView>
+  );
+}
+```
+
+## Props
+
+`NaverMapPathOverlayProps`
+
+<AutoTypeTable path="../src/component/NaverMapPathOverlay.tsx" name="NaverMapPathOverlayProps" />

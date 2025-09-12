@@ -1,0 +1,220 @@
+---
+title: "성능 최적화"
+description: "성능 최적화 문서"
+---
+
+## 개요
+
+React Native Naver Map에서 대량의 마커와 오버레이를 효율적으로 렌더링하고 성능을 최적화하는 방법을 안내합니다.
+
+## 마커 렌더링 최적화
+
+### 1. 줌 레벨 기반 마커 밀도 조절
+
+줌 레벨에 따라 표시할 마커 수를 조절합니다.
+
+```tsx title="ZoomBasedFiltering.tsx"
+const useZoomBasedMarkers = (allMarkers, zoom) => {
+  return useMemo(() => {
+    if (zoom >= 15) {
+      // 고줌: 모든 마커 표시
+      return allMarkers;
+    } else if (zoom >= 12) {
+      // 중줌: 중요한 마커만 표시
+      return allMarkers.filter(marker => marker.priority >= 2);
+    } else {
+      // 저줌: 최상위 마커만 표시
+      return allMarkers.filter(marker => marker.priority >= 4);
+    }
+  }, [allMarkers, zoom]);
+};
+
+const ZoomOptimizedMap = ({ markers }) => {
+  const [zoom, setZoom] = useState(10);
+  const filteredMarkers = useZoomBasedMarkers(markers, zoom);
+
+  return (
+    <NaverMapView
+      onCameraChanged={({ zoom: newZoom }) => {
+        setZoom(newZoom);
+      }}
+    >
+      {filteredMarkers.map(marker => (
+        <NaverMapMarkerOverlay
+          key={marker.id}
+          latitude={marker.latitude}
+          longitude={marker.longitude}
+          image={{ symbol: marker.priority >= 4 ? 'red' : 'blue' }}
+        />
+      ))}
+    </NaverMapView>
+  );
+};
+```
+
+## 마커 타입별 성능 최적화
+
+### 성능 비교표
+
+| 마커 타입 | 렌더링 속도 | 메모리 사용량 | 캐싱 지원 | 권장 사용량 |
+|----------|-------------|---------------|-----------|------------|
+| 기본 심볼 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ✅ | 무제한 |
+| 네이티브 에셋 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ✅ | 수천 개 |
+| 웹 이미지 | ⭐⭐⭐ | ⭐⭐⭐ | ✅ | 수백 개 |
+| 로컬 리소스 | ⭐⭐⭐⭐ | ⭐⭐⭐ | ✅ | 수백 개 |
+| 커스텀 뷰 | ⭐⭐ | ⭐⭐ | ❌ | 50개 이하 |
+
+
+### 클러스터링을 통한 최적화
+
+대량의 마커를 클러스터로 그룹화하여 성능을 향상시킵니다.
+
+```tsx title="BuiltinClustering.tsx"
+import { useMemo } from 'react';
+import { NaverMapView, ClusterMarkerProp } from '@mj-studio/react-native-naver-map';
+
+const ClusteredMap = ({ markers }) => {
+  const clusters = useMemo(() => {
+    // 마커를 지역별로 그룹화
+    const groupedMarkers = groupMarkersByRegion(markers);
+
+    return groupedMarkers.map(group => ({
+      width: 40,
+      height: 40,
+      screenDistance: 100, // 클러스터링 거리 (픽셀)
+      minZoom: 0,
+      maxZoom: 16,
+      animate: true,
+      markers: group.markers.map(marker => ({
+        identifier: marker.id,
+        latitude: marker.latitude,
+        longitude: marker.longitude,
+        image: { symbol: 'blue' },
+        width: 24,
+        height: 24,
+      })),
+    }));
+  }, [markers]);
+
+  return (
+    <NaverMapView
+      style={{ flex: 1 }}
+      clusters={clusters}
+      onTapClusterLeaf={({ markerIdentifier }) => {
+        console.log('Marker tapped:', markerIdentifier);
+      }}
+    />
+  );
+};
+
+const groupMarkersByRegion = (markers) => {
+  // 지역별 마커 그룹화 로직
+  const groups = [];
+  const groupSize = 50; // 그룹당 최대 마커 수
+
+  for (let i = 0; i < markers.length; i += groupSize) {
+    groups.push({
+      id: `group-${i}`,
+      markers: markers.slice(i, i + groupSize),
+    });
+  }
+
+  return groups;
+};
+```
+
+## 이벤트 핸들링 최적화
+
+### 1. 카메라 변경 디바운싱
+
+```tsx title="DebouncedCameraEvents.tsx"
+import { debounce } from 'lodash';
+
+const OptimizedMapEvents = () => {
+  const [region, setRegion] = useState(null);
+
+  // 카메라 변경 이벤트 디바운싱
+  const debouncedCameraChange = useMemo(
+    () => debounce((newRegion) => {
+      setRegion(newRegion);
+      // 서버에서 새 데이터 로드 등 무거운 작업
+      loadMarkersForRegion(newRegion);
+    }, 300),
+    []
+  );
+
+  return (
+    <NaverMapView
+      onCameraChanged={({ region }) => {
+        debouncedCameraChange(region);
+      }}
+      onCameraIdle={() => {
+        // 카메라 이동 완료 후 실행할 작업
+        console.log('Camera idle');
+      }}
+    />
+  );
+};
+```
+
+
+
+### 2. 배치 업데이트
+
+```tsx title="BatchUpdates.tsx"
+import { startTransition } from 'react';
+
+const BatchUpdatedMap = () => {
+  const [markers, setMarkers] = useState([]);
+
+  const handleCameraChanged = ({ region }) => {
+    // 비긴급 상태 업데이트를 배치로 처리
+    startTransition(() => {
+      const visibleMarkers = filterVisibleMarkers(allMarkers, region);
+      setMarkers(visibleMarkers);
+    });
+  };
+
+  return (
+    <NaverMapView
+      onCameraChanged={handleCameraChanged}
+    >
+      {markers.map(marker => (
+        <NaverMapMarkerOverlay key={marker.id} {...marker} />
+      ))}
+    </NaverMapView>
+  );
+};
+```
+
+## 렌더링 최적화 전략
+
+### 1. 조건부 렌더링
+
+
+
+```tsx title="ConditionalRendering.tsx"
+const ConditionalMap = ({ showMarkers, showOverlays, zoom }) => {
+  return (
+    <NaverMapView>
+      {/* 줌 레벨이 높을 때만 마커 표시 */}
+      {zoom >= 12 && showMarkers && (
+        <>
+          {markers.map(marker => (
+            <NaverMapMarkerOverlay key={marker.id} {...marker} />
+          ))}
+        </>
+      )}
+
+      {/* 오버레이는 별도 조건으로 제어 */}
+      {showOverlays && (
+        <>
+          {overlays.map(overlay => (
+            <NaverMapCircleOverlay key={overlay.id} {...overlay} />
+          ))}
+        </>
+      )}
+    </NaverMapView>
+  );
+};
+```

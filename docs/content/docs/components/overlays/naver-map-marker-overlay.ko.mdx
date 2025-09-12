@@ -1,0 +1,44 @@
+---
+title: "NaverMapMarkerOverlay"
+description: "지도에 마커를 표시하는 컴포넌트"
+---
+
+## Overview
+
+NaverMapMarkerOverlay는 지도 위에 마커를 표시하는 컴포넌트입니다.
+아이콘, 캡션, 서브 캡션 등을 설정할 수 있으며, 탭 이벤트 처리도 지원합니다.
+
+## Basic Usage
+
+```tsx
+import { NaverMapView, NaverMapMarkerOverlay } from '@mj-studio/react-native-naver-map';
+
+function MapWithMarker() {
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      <NaverMapMarkerOverlay // [!code highlight:6]
+        latitude={37.5665}
+        longitude={126.9780}
+        caption={{ text: 'Seoul City Hall' }}
+        onTap={() => console.log('Marker tapped')}
+      />
+    </NaverMapView>
+  );
+}
+```
+
+## Props
+
+`NaverMapMarkerOverlayProps`
+
+<AutoTypeTable path="../src/component/NaverMapMarkerOverlay.tsx" name="NaverMapMarkerOverlayProps" />
+
+## 관련 타입
+
+`CaptionType`
+
+<AutoTypeTable path="../src/component/NaverMapMarkerOverlay.tsx" name="CaptionType" />
+
+`SubCaptionType`
+
+<AutoTypeTable path="../src/component/NaverMapMarkerOverlay.tsx" name="SubCaptionType" />
