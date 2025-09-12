@@ -1,5 +1,6 @@
 {
   "title": "Installation",
   "icon": "Download",
-  "pages": ["api-key", "android", "ios", "expo"]
+  "pages": ["api-key", "android", "ios", "expo"],
+  "defaultOpen": true
 }
