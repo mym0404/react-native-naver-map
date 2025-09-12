@@ -252,66 +252,8 @@ iOS에선 단순히 `UIView`를 `UIImage`로 캔버스에 그려 표시해줍니
 두 방법 모두가 이미지 캐싱이 아직 지원되지 않고(추후에 `reuseableIdentifier`같은 속성으로 지원이 가능할 것으로 보입니다), 마커 하나당 많은 리소스를 차지하게 됩니다.
 
 
-## TODO - Props & Commands
-
-- ✅ Done
-- 📦 Planned
-- ❓ Maybe Planned
-- ❌ Not Planned
-
-### `NaverMapView`
-
-#### Props
-
-| Prop                     | iOS | Android |
-|--------------------------|-----|---------|
-| isLogoInteractionEnabled | ❌   | ❌       |
-| gestureFrictions         | 📦  | 📦      |
-
-#### Events
-
-| Event            | iOS | Android |
-|------------------|-----|---------|
-| onTapSymbol      | 📦  | 📦      |
-| onAuthFailed     | ❌   | ❌       |
-| onLocationChange | 📦  | 📦      |
 
 
-### Marker Common
-
-#### Events
-
-|           | iOS | Android |
-|-----------|-----|---------|
-| onLongTap | ❌   | 📦      |
-
-### `NaverMapMarkerOverlay`
-
-#### Props
-
-| Prop                      | iOS                                                | Android |
-|---------------------------|----------------------------------------------------|---------|
-| caption-fontFamily        | ❓                                                  | ❓       |
-| subcaption-fontFamily     | ❓                                                  | ❓       |
-
-
-## Milestone
-
-- [x] Project Started (23.04.01)
-- [x] Project Setup & Component Structure (23.04.03)
-- [x] General Props & Commands (23.04.05)
-- [x] Camera, Region, Commands, Events (23.04.07)
-- [x] Implement Basic Overlays (23.04.10)
-- [x] Location Service (23.04.10)
-- [x] Support Paper(Old Arch) (23.04.11)
-- [x] Release (23.04.11)
-- [x] Support Expo with config plugin (23.04.12)
-- [x] Docs
-- [x] Implement Clustering (23.04.24)
-- [x] Implement ArrowheadPath Overlay (23.05.01)
-- [x] Implement Ground Overlay (23.05.01)
-- [x] Implement MutlPath Overlay (25.08.25)
-- [ ] Implement Location Overlay Commands <- 🔥
 
 ## Contributing
 

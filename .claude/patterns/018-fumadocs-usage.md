@@ -39,6 +39,8 @@ Content for detailed section...
 - **Avoid "Next Steps" sections**: Don't include generic "다음 단계" or "Next Steps" sections at the end of documents
 - **Focus on core content**: Keep documentation focused on the main topic without unnecessary navigation aids
 - **Use cross-references naturally**: Link to related content inline rather than in dedicated sections
+- **Avoid congratulatory callouts**: Don't use success callouts like "축하합니다!" or "Congratulations!" at the end of setup/completion sections
+- **Avoid completion celebration callouts**: Remove callouts that celebrate task completion (e.g., "설정이 완료되었습니다!") - let the content speak for itself
 
 ### Meta.json Configuration
 Use `meta.json` files to control folder structure and page ordering:
@@ -150,6 +152,7 @@ import { Apple, Smartphone, Zap } from 'lucide-react'
 <Callout>Default info message</Callout>
 <Callout type="warn" title="Warning">Warning message</Callout>
 <Callout type="error">Error message</Callout>
+<Callout type="success">Error message</Callout>
 ```
 
 ### Files
