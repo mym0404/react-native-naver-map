@@ -129,7 +129,7 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
   width={100}
   height={100}
 >
-  <View 
+  <View
     key={`${text}/${color}`} // 변경사항 추적을 위한 key
     collapsable={false}       // iOS New Architecture 필수
     style={styles.customMarker}
@@ -219,8 +219,6 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 
 ## 표시 설정
 
-
-
 ```tsx
 <NaverMapMarkerOverlay
   isHidden={false}           // 마커 숨김/표시
@@ -245,13 +243,7 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 />
 ```
 
-## 성능 최적화
-
-
-
 ## 이미지 캐싱
-
-
 
 동일한 이미지를 사용하는 마커들에 대해 자동으로 캐싱이 적용됩니다:
 
@@ -261,144 +253,4 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
   image={require('./marker.png')}
   // 동일한 이미지는 캐싱되어 재사용
 />
-```
-
-
-
-## 대량 마커 처리
-
-
-
-```tsx
-function OptimizedMarkers({ markers }) {
-  // 보이는 영역의 마커만 렌더링
-  const visibleMarkers = useMemo(() => {
-    return markers.filter(marker => 
-      isInViewport(marker, currentRegion)
-    );
-  }, [markers, currentRegion]);
-
-  return (
-    <NaverMapView>
-      {visibleMarkers.map(marker => (
-        <NaverMapMarkerOverlay
-          key={marker.id}
-          latitude={marker.lat}
-          longitude={marker.lng}
-          image={{ symbol: 'green' }}
-        />
-      ))}
-    </NaverMapView>
-  );
-}
-```
-
-## 애니메이션
-
-마커 위치 변경 시 애니메이션:
-
-```tsx
-const AnimatedMarker = () => {
-  const [position, setPosition] = useState({ lat: 37.5665, lng: 126.9780 });
-
-  useEffect(() => {
-    // 위치가 변경되면 자동으로 애니메이션 적용
-    const timer = setTimeout(() => {
-      setPosition({ lat: 37.5670, lng: 126.9785 });
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <NaverMapMarkerOverlay
-      latitude={position.lat}
-      longitude={position.lng}
-      // 위치 변경 시 부드럽게 이동
-    />
-  );
-};
-```
-
-## 전체 예제
-
-```tsx
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { 
-  NaverMapView, 
-  NaverMapMarkerOverlay 
-} from '@mj-studio/react-native-naver-map';
-
-export default function MarkerExample() {
-  const [selectedMarker, setSelectedMarker] = useState(null);
-
-  const markers = [
-    { id: 1, lat: 37.5665, lng: 126.9780, name: "서울시청", type: "gov" },
-    { id: 2, lat: 37.5651, lng: 126.9785, name: "덕수궁", type: "palace" },
-    { id: 3, lat: 37.5660, lng: 126.9770, name: "광화문", type: "landmark" },
-  ];
-
-  const getMarkerColor = (type) => {
-    switch(type) {
-      case 'gov': return 'blue';
-      case 'palace': return 'green';
-      case 'landmark': return 'red';
-      default: return 'gray';
-    }
-  };
-
-  return (
-    <NaverMapView style={styles.map}>
-      {markers.map(marker => (
-        <NaverMapMarkerOverlay
-          key={marker.id}
-          latitude={marker.lat}
-          longitude={marker.lng}
-          image={{ symbol: getMarkerColor(marker.type) }}
-          anchor={{ x: 0.5, y: 1 }}
-          caption={{
-            text: marker.name,
-            textSize: selectedMarker?.id === marker.id ? 16 : 14,
-            color: selectedMarker?.id === marker.id ? '#FF0000' : '#000000',
-          }}
-          width={selectedMarker?.id === marker.id ? 50 : 40}
-          height={selectedMarker?.id === marker.id ? 50 : 40}
-          onTap={() => setSelectedMarker(marker)}
-        />
-      ))}
-      
-      {/* 커스텀 마커 예제 */}
-      <NaverMapMarkerOverlay
-        latitude={37.5675}
-        longitude={126.9790}
-        width={80}
-        height={80}
-      >
-        <View style={styles.customMarker} collapsable={false}>
-          <Text style={styles.markerText}>커스텀</Text>
-        </View>
-      </NaverMapMarkerOverlay>
-    </NaverMapView>
-  );
-}
-
-const styles = StyleSheet.create({
-  map: {
-    flex: 1,
-  },
-  customMarker: {
-    width: 80,
-    height: 80,
-    backgroundColor: 'white',
-    borderRadius: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: 'blue',
-  },
-  markerText: {
-    color: 'blue',
-    fontWeight: 'bold',
-  },
-});
 ```

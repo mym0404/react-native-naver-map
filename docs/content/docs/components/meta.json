@@ -1,5 +1,10 @@
 {
   "title": "Components",
   "icon": "Component",
-  "pages": ["map-view", "marker", "overlays"]
+  "pages": [
+    "index",
+    "naver-map-view",
+    "marker",
+    "overlays"
+  ]
 }

@@ -1,0 +1,14 @@
+{
+  "title": "Overlays",
+  "icon": "Layers",
+  "pages": [
+    "naver-map-marker-overlay",
+    "naver-map-circle-overlay",
+    "naver-map-polygon-overlay",
+    "naver-map-polyline-overlay",
+    "naver-map-path-overlay",
+    "naver-map-multi-path-overlay",
+    "naver-map-arrowhead-path-overlay",
+    "naver-map-ground-overlay"
+  ]
+}
