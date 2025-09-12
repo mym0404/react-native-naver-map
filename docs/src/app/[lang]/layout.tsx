@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import type { PropsWithChildren } from 'react';
 import { i18n } from '@/lib/i18n';
 
+const webUrl = 'https://rnnavermap.mjstudio.net';
 const { provider } = defineI18nUI(i18n, {
   translations: {
     ko: {
@@ -49,13 +50,13 @@ export const metadata: Metadata = {
     title: 'React Native Naver Map',
     description:
       'Native-performance map component with seamless Naver SDK integration, complete TypeScript support, and easy-to-use API designed for React Native developers.',
-    url: 'https://rnnavermap.mjstudio.net',
+    url: webUrl,
     siteName: 'React Native Naver Map',
-    locale: 'ko_KR',
+    locale: 'en_US',
     type: 'website',
     images: [
       {
-        url: '/social-image.png',
+        url: `${webUrl}/social-image.png`,
         width: 1200,
         height: 675,
         alt: 'React Native Naver Map',
@@ -67,7 +68,7 @@ export const metadata: Metadata = {
     title: 'React Native Naver Map',
     description:
       'Native-performance map component with seamless Naver SDK integration, complete TypeScript support, and easy-to-use API designed for React Native developers.',
-    images: ['/social-image.png'],
+    images: [`${webUrl}/social-image.png`],
   },
   robots: {
     index: true,
