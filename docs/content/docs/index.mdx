@@ -53,33 +53,23 @@ npm install @mj-studio/react-native-naver-map
 
 플랫폼별 설정이 완료되면 지도를 표시할 수 있습니다:
 
-```tsx title="App.tsx" lineNumbers focus=8,17
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { NaverMapView } from '@mj-studio/react-native-naver-map';
+```tsx title="App.tsx" lineNumbers
+import { NaverMapView } from '@mj-studio/react-native-naver-map'; // [!code focus]
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <NaverMapView
-        style={styles.map}
-        initialRegion={{
-          latitude: 37.5665,
-          longitude: 126.9780,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
-        }}
+      <NaverMapView // [!code focus]
+        style={styles.map} // [!code focus]
+        initialRegion={{// [!code focus]
+          latitude: 37.5665,// [!code focus]
+          longitude: 126.9780,// [!code focus]
+          latitudeDelta: 0.01,// [!code focus]
+          longitudeDelta: 0.01,// [!code focus]
+        }} // [!code focus]
+ {/* [!code focus] */}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  map: {
-    flex: 1,
-  },
-});
 ```

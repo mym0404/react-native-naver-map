@@ -1,9 +1,5 @@
 {
   "title": "Components",
   "icon": "Component",
-  "pages": [
-    "map-view",
-    "marker", 
-    "overlays"
-  ]
+  "pages": ["map-view", "marker", "overlays"]
 }
