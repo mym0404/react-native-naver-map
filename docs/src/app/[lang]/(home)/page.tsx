@@ -1,6 +1,7 @@
 import {
   ArrowRight,
   Code2,
+  GithubIcon,
   Layers,
   MapPin,
   Package,
@@ -9,6 +10,30 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { TerminalCodeBlock } from '@/components/terminal-codeblock';
+
+const getStarCount = async (): Promise<number | undefined> => {
+  try {
+    const response = await fetch(
+      'https://api.github.com/repos/mym0404/react-native-naver-map',
+      {
+        headers: {
+          Accept: 'application/vnd.github.v3+json',
+          'User-Agent': 'NaverMap-Docs',
+        },
+        next: {
+          revalidate: 3600, // 1 hour cache
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`GitHub API responded with ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.stargazers_count;
+  } catch {}
+};
 
 const quickStartCode = `import { NaverMapView } from '@mj-studio/react-native-naver-map';
 
@@ -32,6 +57,7 @@ export default async function HomePage({
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
+  const starCount = await getStarCount();
 
   return (
     <main className="flex min-h-[calc(100vh-3.5rem)] flex-col">
@@ -79,8 +105,9 @@ export default async function HomePage({
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-lg border border-fd-border bg-fd-background px-8 py-3.5 font-medium transition-all hover:bg-fd-muted hover:scale-105"
           >
-            <StarIcon />
             Star on GitHub
+            <StarIcon size={14} />
+            {starCount && starCount > 0 ? starCount.toLocaleString() : ''}
           </a>
         </div>
       </section>
