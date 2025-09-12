@@ -10,7 +10,7 @@ import { Callout } from 'fumadocs-ui/components/callout'
 React Native Naver Map의 전체 API 문서입니다.
 
 <Callout type="info">
-  더 상세한 API 문서는 [TypeScript 자동 생성 문서](https://mym0404.github.io/react-native-naver-map/interfaces/NaverMapViewProps.html)에서 확인할 수 있습니다.
+  더 상세한 API 문서는 [TypeScript 자동 생성 문서](https://rnnavermap.mjstudio.net/docs/api)에서 확인할 수 있습니다.
 </Callout>
 
 ## 주요 컴포넌트
@@ -30,30 +30,30 @@ interface NaverMapViewProps {
   initialRegion?: Region;
   mapType?: MapType;
   layerGroups?: LayerGroups;
-  
+
   // UI 컨트롤
   isShowCompass?: boolean;
   isShowScaleBar?: boolean;
   isShowZoomControls?: boolean;
   isShowLocationButton?: boolean;
   isShowIndoorLevelPicker?: boolean;
-  
+
   // 지도 설정
   isIndoorEnabled?: boolean;
   isNightModeEnabled?: boolean;
   isLiteModeEnabled?: boolean;
   isExtentBoundedInKorea?: boolean;
-  
+
   // 스타일
   symbolScale?: number;
   lightness?: number;
   logoAlign?: LogoAlign;
   logoMargin?: Point;
-  
+
   // 제약
   minZoom?: number;
   maxZoom?: number;
-  
+
   // 이벤트
   onInitialized?: () => void;
   onCameraChanged?: (event: CameraChangedEvent) => void;
@@ -75,22 +75,22 @@ interface NaverMapMarkerOverlayProps {
   // 위치
   latitude: number;
   longitude: number;
-  
+
   // 이미지
   image?: MarkerImage;
   width?: number;
   height?: number;
-  
+
   // 설정
   anchor?: Point;
   angle?: number;
   alpha?: number;
   zIndex?: number;
-  
+
   // 캡션
   caption?: MarkerCaption;
   subCaption?: MarkerCaption;
-  
+
   // 표시 제어
   isHidden?: boolean;
   isIconPerspectiveEnabled?: boolean;
@@ -99,14 +99,14 @@ interface NaverMapMarkerOverlayProps {
   isHideCollidedCaptions?: boolean;
   isForceShowIcon?: boolean;
   isForceShowCaption?: boolean;
-  
+
   // 줌 제한
   minZoom?: number;
   maxZoom?: number;
-  
+
   // 이벤트
   onTap?: () => void;
-  
+
   // 커스텀 뷰
   children?: React.ReactNode;
 }
@@ -170,7 +170,7 @@ interface Point {
 지도 유형을 정의합니다.
 
 ```tsx
-type MapType = 
+type MapType =
   | 'Basic'     // 기본 지도
   | 'Navi'      // 내비게이션 지도
   | 'Satellite' // 위성 지도
@@ -187,14 +187,14 @@ type MapType =
 마커 이미지 타입을 정의합니다.
 
 ```tsx
-type MarkerImage = 
+type MarkerImage =
   | { symbol: MarkerSymbol }           // 기본 심볼
   | ImageSourcePropType                // 로컬 이미지
   | { assetName: string }              // 네이티브 리소스
   | { httpUri: string };               // 네트워크 이미지
 
-type MarkerSymbol = 
-  | 'red' | 'green' | 'blue' | 'yellow' 
+type MarkerSymbol =
+  | 'red' | 'green' | 'blue' | 'yellow'
   | 'gray' | 'pink' | 'lightblue';
 ```
 
@@ -232,7 +232,7 @@ interface LayerGroups {
   TRAFFIC?: boolean;    // 교통 정보
   TRANSIT?: boolean;    // 대중교통
   BICYCLE?: boolean;    // 자전거 도로
-  MOUNTAIN?: boolean;   // 등산로  
+  MOUNTAIN?: boolean;   // 등산로
   CADASTRAL?: boolean;  // 지적도
 }
 ```
@@ -257,7 +257,7 @@ interface CameraChangedEvent {
   reason: CameraChangeReason; // 변경 이유
 }
 
-type CameraChangeReason = 
+type CameraChangeReason =
   | 'gesture'   // 사용자 제스처
   | 'control'   // UI 컨트롤
   | 'location'  // 위치 추적
@@ -296,10 +296,10 @@ interface NaverMapViewRef {
   animateRegionTo(region: Region, duration?: number): void;
   setCameraTo(params: CameraParams): void;
   setRegionTo(region: Region): void;
-  
+
   // 위치 추적
   setLocationTrackingMode(mode: LocationTrackingMode): void;
-  
+
   // 유틸리티
   takeSnapshot(options?: SnapshotOptions): Promise<string>;
   screenToCoordinate(point: { x: number; y: number }): Promise<Coord>;
@@ -459,7 +459,3 @@ const coord = await mapRef.current?.screenToCoordinate({
   y: 200
 });
 ```
-
-<Callout type="info">
-  모든 API에 대한 자세한 JSDoc 주석과 예제는 [온라인 문서](https://mym0404.github.io/react-native-naver-map/)에서 확인할 수 있습니다.
-</Callout>
