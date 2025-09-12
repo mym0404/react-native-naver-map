@@ -35,7 +35,7 @@ const clusterMarkers: ClusterMarkerProp[] = [
     height: 40,
   },
   {
-    identifier: 'marker-2', 
+    identifier: 'marker-2',
     latitude: 37.5675,
     longitude: 126.9785,
     image: { symbol: 'blue' },
@@ -127,25 +127,6 @@ const multiClusters = useMemo(() => [
 ], [regularMarkers, specialMarkers]);
 ```
 
-### 동적 마커 이미지
-
-마커 이미지를 동적으로 생성하여 사용할 수 있습니다:
-
-```tsx
-const dynamicMarkers = useMemo(() => {
-  return markerData.map((marker, index) => ({
-    identifier: marker.id,
-    latitude: marker.latitude,
-    longitude: marker.longitude,
-    image: {
-      httpUri: `https://api.example.com/marker-image/${marker.category}/${marker.id}`,
-    },
-    width: 40,
-    height: 40,
-  }));
-}, [markerData]);
-```
-
 ## 클러스터 이벤트 처리
 
 ### 개별 마커 클릭 이벤트
@@ -163,102 +144,8 @@ const dynamicMarkers = useMemo(() => {
 />
 ```
 
-## 성능 최적화
+## Props
 
-### 화면 영역 기반 마커 필터링
+`ClusterMarkerProp`
 
-많은 수의 마커가 있을 때는 현재 화면에 보이는 영역의 마커만 클러스터링에 포함시켜 성능을 향상시킬 수 있습니다:
-
-```tsx
-const useViewportMarkers = (allMarkers: MarkerData[], region: Region) => {
-  return useMemo(() => {
-    const padding = 0.1; // 화면 영역 패딩
-    
-    return allMarkers.filter(marker => {
-      const isInView = 
-        marker.latitude >= region.latitude - region.latitudeDelta - padding &&
-        marker.latitude <= region.latitude + region.latitudeDelta + padding &&
-        marker.longitude >= region.longitude - region.longitudeDelta - padding &&
-        marker.longitude <= region.longitude + region.longitudeDelta + padding;
-      
-      return isInView;
-    });
-  }, [allMarkers, region]);
-};
-
-const OptimizedClusteringExample = () => {
-  const [currentRegion, setCurrentRegion] = useState(initialRegion);
-  const viewportMarkers = useViewportMarkers(allMarkers, currentRegion);
-  
-  const clusters = useMemo(() => [
-    {
-      width: 40,
-      height: 40,
-      markers: viewportMarkers.map(marker => ({
-        identifier: marker.id,
-        latitude: marker.latitude,
-        longitude: marker.longitude,
-        image: marker.image,
-        width: 40,
-        height: 40,
-      })),
-      screenDistance: 40,
-      animate: true,
-    }
-  ], [viewportMarkers]);
-
-  return (
-    <NaverMapView
-      clusters={clusters}
-      onCameraChanged={({ region }) => {
-        setCurrentRegion(region);
-      }}
-    />
-  );
-};
-```
-
-## 클러스터링 파라미터 가이드
-
-<Callout type="info">
-  **클러스터링 파라미터 설명:**
-  
-  - `width`, `height`: 클러스터 마커의 크기 (픽셀)
-  - `screenDistance`: 두 마커가 화면상에서 이 거리(픽셀) 이내에 있으면 클러스터링됨
-  - `minZoom`: 이 줌 레벨보다 낮으면 클러스터링하지 않음
-  - `maxZoom`: 이 줌 레벨보다 높으면 클러스터링하지 않음 
-  - `animate`: 줌 변경 시 클러스터 펼침/합침 애니메이션 여부
-</Callout>
-
-### 권장 설정값
-
-```tsx
-const recommendedClusterConfig = {
-  width: 50,           // 적당한 클러스터 마커 크기
-  height: 50,
-  screenDistance: 40,  // 너무 작으면 클러스터링이 적게 됨, 너무 크면 과도하게 됨
-  minZoom: 5,          // 너무 축소된 상태에서는 클러스터링 비활성화
-  maxZoom: 18,         // 충분히 확대된 상태에서는 개별 마커 표시
-  animate: true,       // 사용자 경험 향상을 위한 애니메이션
-};
-```
-
-## 문제 해결
-
-### 클러스터가 표시되지 않는 경우
-
-- `ClusterMarkerProp`의 `identifier` 값이 고유한지 확인
-- `latitude`, `longitude` 좌표값이 올바른지 확인
-- `width`, `height` 값이 0보다 큰 값인지 확인
-- 마커 이미지 경로가 올바른지 확인
-
-### 성능이 느린 경우
-
-- `screenDistance` 값을 늘려 클러스터 생성을 줄임
-- 화면 영역 기반 필터링 적용
-- 마커 수를 줄이거나 페이지네이션 적용
-- `animate: false`로 설정하여 애니메이션 비활성화
-
-### 클러스터 마커가 원하는 모양이 아닌 경우
-
-현재 네이버 지도 라이브러리는 기본 클러스터 마커 스타일을 사용합니다. 커스텀 클러스터 마커 디자인이 필요한 경우, 클러스터링 레벨에 따라 개별 마커를 조건부로 표시하는 방법을 고려해보세요.
+<AutoTypeTable path="../src/types/ClusterMarkerProp.ts" name="ClusterMarkerProp" />
