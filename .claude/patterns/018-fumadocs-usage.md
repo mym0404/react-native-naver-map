@@ -86,6 +86,9 @@ import { Apple, Smartphone, Zap } from 'lucide-react'
 ```
 
 ### Tabs
+
+**Note**: `<Tabs>` and `<Tab>` components are available globally in Fumadocs MDX - no import required.
+
 ```mdx
 <Tabs items={['React', 'Vue', 'Svelte']}>
   <Tab value="React">
@@ -108,6 +111,23 @@ import { Apple, Smartphone, Zap } from 'lucide-react'
     ```
   </Tab>
 </Tabs>
+
+**IMPORTANT**: The `value` prop of `<Tab>` must exactly match the items in the `items` array of `<Tabs>`. Case-sensitive matching is required.
+
+**Common Issue**: Using different values than items array will cause tabs content not to display:
+```mdx
+<!-- ❌ Wrong - Tab values don't match items -->
+<Tabs items={['Camera', 'Region']}>
+  <Tab value="Basic">Content 1</Tab>  <!-- Wrong value -->
+  <Tab value="Basic">Content 2</Tab>  <!-- Wrong + duplicate value -->
+</Tabs>
+
+<!-- ✅ Correct - Tab values match items exactly -->
+<Tabs items={['Camera', 'Region']}>
+  <Tab value="Camera">Content 1</Tab>
+  <Tab value="Region">Content 2</Tab>
+</Tabs>
+```
 
 <Tabs groupId="lang" items={['JS', 'TS']} persist>
   <Tab value="JS">JavaScript code</Tab>
