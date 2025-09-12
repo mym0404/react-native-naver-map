@@ -66,10 +66,9 @@ export default async function HomePage({
       <div className={'absolute-fill  dark:opacity-100 dark:block hidden'}>
         <Prism
           animationType={'rotate'}
-          scale={1}
-          offset={{ y: 120 }}
+          scale={1.2}
+          offset={{ y: 180 }}
           noise={0}
-          hueShift={0.7}
         />
       </div>
       {/* Hero Section */}
