@@ -145,7 +145,7 @@ To test the library, you need to configure API keys:
 
 ## Code Quality & Testing
 - `pnpm typecheck` - Run TypeScript type checking without emitting files
-- `pnpm lint` / `pnpm run t` - Run all linting checks (uses Lefthook)
+- `pnpm run t` - Run all linting checks (uses Lefthook)
 - `pnpm format` - Format code using configured formatters (Biome)
 
 ## Build & Release
@@ -162,37 +162,3 @@ To test the library, you need to configure API keys:
 - `pnpm pod` - Install iOS dependencies via CocoaPods
 - `pnpm pod:update` - Update iOS dependencies via CocoaPods
 
-## CI/CD Scripts
-- `pnpm ci:ios` - Build iOS project for CI (xcodebuild)
-- `pnpm ci:android` - Build Android project for CI (gradlew assembleDebug)
-- `pnpm turbo:android` - Run Android CI with Turbo caching
-- `pnpm turbo:ios` - Run iOS CI with Turbo caching
-
-# Self Reference Context Management System (cc-self-refer cli and context storage project sturcture)
-
-This project uses `cc-self-refer` for intelligent self-reference capabilities.
-Claude Code agents should use these CLI commands to access and manage project context automatically:
-
-## Keyword Detection and Command Intent Recognition
-
-**When users use natural language prompts, agents should READ the corresponding command documentation and EXECUTE the instructions within:**
-
-**CRITICAL: Always monitor for these keywords in user prompts regardless of language:**
-- **pattern**
-
-When these keywords appear in user prompts, determine if the user intends to use the corresponding cc-self-refer commands below.
-
-**Response Format for Self-Reference Actions**: If you determine that the user's natural language prompt requires using cc-self-refer functionality, prefix your response with `Pattern Refering... ♦️` to indicate self-reference action execution.
-
-### Pattern Commands
-- "use pattern" / "apply pattern" / "use existing patterns" → **Read and execute** `.claude/commands/pattern-use.md`
-- "create pattern" / "save as pattern" → **Read and execute** `.claude/commands/pattern-create.md`
-- "find Redux pattern" / "search API patterns" → **Read and execute** `.claude/commands/pattern-use.md` for search
-- "use pattern #5" / "apply pattern 005" → **Read and execute** `.claude/commands/pattern-use.md` with specific ID
-
-**IMPORTANT Agent Behavior:**
-1. **Identify** the user's intent from natural language
-2. **Read** the appropriate `.claude/commands/*.md` file
-3. **Execute** all instructions and commands specified in that file
-4. **Use** the retrieved context to complete the user's request
-5. **Follow** the exact workflow described in the command documentation

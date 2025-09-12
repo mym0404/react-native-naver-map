@@ -1,8 +1,10 @@
-# native-color-parsing-validation-typescript
+---
+keywords: color, parsing, validation, typescript, react-native
+language: typescript
+explanation: TypeScript color prop handling with processColor and native color utilities
+---
 
 # Native Color Parsing and Validation Pattern with TypeScript
-
-[EXPLANATION] TypeScript color prop handling with processColor and native color utilities
 
 ## Usage
 

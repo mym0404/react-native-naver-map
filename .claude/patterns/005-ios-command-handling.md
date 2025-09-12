@@ -1,8 +1,10 @@
-# ios-command-handling
+---
+keywords: ios, command, handling, objective-c, fabric
+language: objc
+explanation: iOS command handling implementation for processing imperative native commands
+---
 
 # iOS Command Handling
-
-[EXPLANATION] iOS command handling implementation for processing imperative native commands
 
 ## Usage
 

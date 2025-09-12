@@ -1,8 +1,10 @@
-# android-native-utilities
+---
+keywords: android, utilities, kotlin, validation, conversion
+language: kotlin
+explanation: Android native utility functions for event emission, prop validation, and conversions
+---
 
 # Android Native Utilities
-
-[EXPLANATION] Android native utility functions for event emission, prop validation, and conversions
 
 ## Usage
 

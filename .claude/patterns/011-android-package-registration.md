@@ -1,8 +1,10 @@
-# android-package-registration
+---
+keywords: android, package, registration, kotlin, react-native
+language: kotlin
+explanation: Android ReactPackage registration for native modules and ViewManagers
+---
 
 # Android Package Registration
-
-[EXPLANATION] Android ReactPackage registration for native modules and ViewManagers
 
 ## Usage
 

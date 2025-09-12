@@ -1,8 +1,10 @@
-# codegen-native-commands
+---
+keywords: codegen, native, commands, react-native, async, sync
+language: typescript
+explanation: Defines imperative native methods using codegenNativeCommands for async/sync operations
+---
 
 # React Native Codegen Commands
-
-[EXPLANATION] Defines imperative native methods using codegenNativeCommands for async/sync operations
 
 ## Usage
 

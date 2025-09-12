@@ -1,6 +1,10 @@
-# Fumadocs Usage
+---
+keywords: fumadocs, mdx, documentation, components
+language: mdx
+explanation: Concise usage patterns for Fumadocs components and features in MDX
+---
 
-[EXPLANATION] Concise usage patterns for Fumadocs components and features in MDX
+# Fumadocs Usage
 
 ## Page Conventions (Basic Setup)
 

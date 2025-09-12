@@ -13,13 +13,16 @@ Extract code snippet or common pattern in project and run cc-self-refer pattern 
 ### CLI Command Used
 
 ```bash
-npx -y cc-self-refer pattern create "<pattern-name>" <<'EOF'
+npx -y cc-self-refer pattern create "<pattern-name>" "<keyword1>,<keyword2>,<keyword3>" "<language>" "<explanation>" <<'EOF'
 <pattern-content>
 EOF
 ```
 
 ### Command Arguments
-- `pattern-name`: Name of the code pattern
+- `pattern-name`: Name of the code pattern, Don't include `pattern` in the name
+- `keywords`: Comma-separated **specific** keywords for pattern search and CLAUDE.md listing (required). Use only unique, pattern-specific terms. Avoid generic language names (javascript, nodejs, python) or broad categories. Focus on the distinctive aspects of the pattern (e.g., "commander", "subcommands", "cli-options" rather than "javascript, nodejs, cli")
+- `language`: Programming language (e.g., javascript, typescript, python, go, rust)
+- `explanation`: Brief explanation (1-2 sentences) of what this pattern does and when to use it
 - `pattern-content`: Complete code snippet or pattern content
 
 
@@ -36,8 +39,6 @@ EOF
 ````markdown
 # <Pattern Name>
 
-[EXPLANATION] one or two line of excerpt, explanation of this code pattern
-
 ## Usage
 
 ```[language]
@@ -51,8 +52,6 @@ Example:
 
 ````markdown
 # Zod Schema Definition
-
-[EXPLANATION] how to create a zod schema definition
 
 ## Usage
 
@@ -71,8 +70,6 @@ Example - Utility Function Usage:
 
 ````markdown
 # API Error Handler Usage
-
-[EXPLANATION] handle api error with apiErrorHandler utility
 
 ## Usage
 
@@ -101,8 +98,6 @@ Example with multiple variants:
 
 ````markdown
 # Button Component
-
-[EXPLANATION] Button component usage
 
 ## Usage
 
@@ -148,7 +143,7 @@ Claude will:
 2. Generate <formatted content> with the above rules.
 3. Execute: 
    ```bash
-   npx -y cc-self-refer pattern create "api-error-handler" <<'EOF'
+   npx -y cc-self-refer pattern create "api-error-handler" "error,handler,api,utilities" "typescript" "Utility pattern for handling API errors in TypeScript applications with proper error typing." <<'EOF'
    <formatted content>
    EOF
    ```

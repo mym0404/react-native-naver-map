@@ -1,8 +1,10 @@
-# jsdoc
+---
+keywords: jsdoc, documentation, typescript, comments
+language: typescript
+explanation: JSDoc documentation patterns for TypeScript components and methods
+---
 
 # JSDoc Documentation
-
-[EXPLANATION] JSDoc documentation patterns for TypeScript components and methods
 
 ## Usage
 

@@ -1,8 +1,10 @@
-# ios-turbo-module
+---
+keywords: ios, turbo-module, objective-c, bridge, react-native
+language: objc
+explanation: iOS TurboModule implementation with conditional Bridge/TurboModule support
+---
 
 # iOS TurboModule Implementation
-
-[EXPLANATION] iOS TurboModule implementation with conditional Bridge/TurboModule support
 
 ## Usage
 

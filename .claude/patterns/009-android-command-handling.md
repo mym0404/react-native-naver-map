@@ -1,8 +1,10 @@
-# android-command-handling
+---
+keywords: android, command, handling, kotlin, react-native
+language: kotlin
+explanation: Android command handling using receiveCommand method with command ID matching
+---
 
 # Android Command Handling
-
-[EXPLANATION] Android command handling using receiveCommand method with command ID matching
 
 ## Usage
 

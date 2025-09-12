@@ -1,8 +1,10 @@
-# ios-event-emission
+---
+keywords: ios, event, emission, objective-c, fabric
+language: objc
+explanation: iOS event emission using generated event emitter for sending events to JavaScript
+---
 
 # iOS Event Emission
-
-[EXPLANATION] iOS event emission using generated event emitter for sending events to JavaScript
 
 ## Usage
 

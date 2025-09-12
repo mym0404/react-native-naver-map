@@ -1,4 +1,8 @@
-# ios-overlay-integration
+---
+keywords: ios, overlay, integration, objective-c, naver-maps
+language: objc
+explanation: iOS overlay integration pattern for Naver Maps SDK
+---
 
 # iOS Overlay Integration Pattern
 
