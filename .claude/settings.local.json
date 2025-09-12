@@ -17,7 +17,8 @@
       "mcp__playwright__init-browser",
       "mcp__playwright__get-screenshot",
       "mcp__playwright__execute-code",
-      "Bash(sed:*)"
+      "Bash(sed:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []
