@@ -1,40 +1,44 @@
-import hash from 'object-hash';
+import {
+  default as NativeNaverMapView,
+  Commands,
+  type NativeClustersProp,
+  type NativeClusterProp,
+} from '../spec/RNCNaverMapViewNativeComponent';
 
 import React, {
-  type ForwardedRef,
   forwardRef,
-  useEffect,
+  type ForwardedRef,
   useImperativeHandle,
-  useMemo,
   useRef,
+  useMemo,
+  useEffect,
 } from 'react';
-import { type NativeSyntheticEvent, type ViewProps } from 'react-native';
-import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
-import {
-  cameraChangeReasonFromNumber,
-  cameraEasingToNumber,
-  convertJsImagePropToNativeProp,
-  createCameraInstance,
-} from '../internal/Util';
-import { Const } from '../internal/util/Const';
-import { useStableCallback } from '../internal/util/useStableCallback';
-import {
-  Commands,
-  type NativeClusterProp,
-  type NativeClustersProp,
-  default as NativeNaverMapView,
-} from '../spec/RNCNaverMapViewNativeComponent';
-import type { Camera } from '../types/Camera';
-import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
-import type { CameraChangeReason } from '../types/CameraChangeReason';
-import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
-import type { ClusterMarkerProp } from '../types/ClusterMarkerProp';
-import type { Coord } from '../types/Coord';
-import type { LocationTrackingMode } from '../types/LocationTrackingMode';
-import type { LogoAlign } from '../types/LogoAlign';
+import { type ViewProps, type NativeSyntheticEvent, processColor } from 'react-native';
 import type { MapType } from '../types/MapType';
-import type { Rect } from '../types/Rect';
+import type { Camera } from '../types/Camera';
 import type { Region } from '../types/Region';
+import type { Rect } from '../types/Rect';
+import type { LogoAlign } from '../types/LogoAlign';
+import { type CameraChangeReason } from '../types/CameraChangeReason';
+import type { Coord } from '../types/Coord';
+import { useStableCallback } from '../internal/util/useStableCallback';
+import { Const } from '../internal/util/Const';
+import type { LocationTrackingMode } from '../types/LocationTrackingMode';
+import {
+  cameraEasingToNumber,
+  cameraChangeReasonFromNumber,
+  createCameraInstance,
+  convertJsImagePropToNativeProp,
+  getAlignIntValue,
+} from '../internal/Util';
+import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
+import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
+import type { ClusterMarkerProp } from '../types/ClusterMarkerProp';
+import hash from 'object-hash';
+import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
+import type { MarkerImageProp } from '../types/MarkerImageProp';
+import type { CaptionType } from './NaverMapMarkerOverlay';
+import type { NativeCaptionProp } from '../spec/RNCNaverMapMarkerNativeComponent';
 
 /**
  * @category Hell
@@ -359,6 +363,7 @@ export interface NaverMapViewProps extends ViewProps {
     height?: number;
     markers: ClusterMarkerProp[];
     screenDistance?: number;
+    image?: MarkerImageProp;
     /**
      * 클러스터링할 최소 줌 레벨.
      *
@@ -589,6 +594,16 @@ const nullCamera: Camera = {
   bearing: Const.NULL_NUMBER,
 };
 
+const defaultCaptionProps = {
+  text: '',
+  textSize: 12,
+  minZoom: Const.MIN_ZOOM,
+  maxZoom: Const.MAX_ZOOM,
+  color: 'black',
+  haloColor: 'transparent',
+  requestedWidth: 0,
+} satisfies Partial<CaptionType>;
+
 export const NaverMapView = forwardRef(
   (
     {
@@ -661,6 +676,7 @@ export const NaverMapView = forwardRef(
       for (const {
         animate = true,
         markers,
+        image,
         // eslint-disable-next-line @typescript-eslint/no-shadow
         minZoom = Const.MIN_ZOOM,
         // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -673,6 +689,7 @@ export const NaverMapView = forwardRef(
           animate,
           maxZoom,
           minZoom,
+          image,
           screenDistance,
           markers,
           width,
@@ -682,12 +699,30 @@ export const NaverMapView = forwardRef(
         ret.push({
           key,
           animate,
-          markers: markers.map((m) => ({
-            ...m,
-            image: convertJsImagePropToNativeProp(
-              m.image ?? { symbol: 'green' }
-            ),
-          })),
+          image: convertJsImagePropToNativeProp(image ?? { symbol: 'green' }),
+          markers: markers.map(({ caption, ...m }) => {
+            const _caption: NativeCaptionProp = (() => {
+              const inner = {
+                ...defaultCaptionProps,
+                ...caption,
+                align: getAlignIntValue(caption?.align),
+                color: processColor(
+                  caption?.color ?? defaultCaptionProps.color,
+                ) as number,
+                haloColor: processColor(
+                  caption?.haloColor ?? defaultCaptionProps.haloColor,
+                ) as number,
+              } satisfies Omit<NativeCaptionProp, 'key'>;
+              return { ...inner, key: hash(inner) };
+            })();
+            return ({
+              ...m,
+              caption: _caption,
+              image: convertJsImagePropToNativeProp(
+                m.image ?? { symbol: 'green' }
+              ),
+            })
+          }),
           maxZoom,
           minZoom,
           screenDistance,
@@ -740,26 +775,26 @@ export const NaverMapView = forwardRef(
 
     const onCameraChanged = useStableCallback(
       ({
-        nativeEvent: {
-          bearing,
-          latitude,
-          longitude,
-          reason,
-          tilt,
-          zoom,
-          regionLatitude,
-          regionLatitudeDelta,
-          regionLongitude,
-          regionLongitudeDelta,
-        },
-      }: NativeSyntheticEvent<
+         nativeEvent: {
+           bearing,
+           latitude,
+           longitude,
+           reason,
+           tilt,
+           zoom,
+           regionLatitude,
+           regionLatitudeDelta,
+           regionLongitude,
+           regionLongitudeDelta,
+         },
+       }: NativeSyntheticEvent<
         Camera & {
-          reason: number;
-          regionLatitude: Double;
-          regionLongitude: Double;
-          regionLatitudeDelta: Double;
-          regionLongitudeDelta: Double;
-        }
+        reason: number;
+        regionLatitude: Double;
+        regionLongitude: Double;
+        regionLatitudeDelta: Double;
+        regionLongitudeDelta: Double;
+      }
       >) => {
         onCameraChangedProp?.({
           zoom,
@@ -780,24 +815,24 @@ export const NaverMapView = forwardRef(
 
     const onCameraIdle = useStableCallback(
       ({
-        nativeEvent: {
-          bearing,
-          latitude,
-          longitude,
-          tilt,
-          zoom,
-          regionLatitude,
-          regionLatitudeDelta,
-          regionLongitude,
-          regionLongitudeDelta,
-        },
-      }: NativeSyntheticEvent<
+         nativeEvent: {
+           bearing,
+           latitude,
+           longitude,
+           tilt,
+           zoom,
+           regionLatitude,
+           regionLatitudeDelta,
+           regionLongitude,
+           regionLongitudeDelta,
+         },
+       }: NativeSyntheticEvent<
         Camera & {
-          regionLatitude: Double;
-          regionLongitude: Double;
-          regionLatitudeDelta: Double;
-          regionLongitudeDelta: Double;
-        }
+        regionLatitude: Double;
+        regionLongitude: Double;
+        regionLatitudeDelta: Double;
+        regionLongitudeDelta: Double;
+      }
       >) => {
         onCameraIdleProp?.({
           zoom,
@@ -817,8 +852,8 @@ export const NaverMapView = forwardRef(
 
     const onTapMap = useStableCallback(
       ({
-        nativeEvent: { longitude, latitude, x, y },
-      }: NativeSyntheticEvent<Coord & { x: number; y: number }>) => {
+         nativeEvent: { longitude, latitude, x, y },
+       }: NativeSyntheticEvent<Coord & { x: number; y: number }>) => {
         onTapMapProp?.({
           longitude,
           latitude,
@@ -835,7 +870,7 @@ export const NaverMapView = forwardRef(
         longitude: number;
       }) => void;
       reject: (e: any) => void;
-    }>(undefined);
+    }>();
 
     const coordinateToScreenPromise = useRef<{
       resolve: (params: {
@@ -844,7 +879,7 @@ export const NaverMapView = forwardRef(
         screenY: number;
       }) => void;
       reject: (e: any) => void;
-    }>(undefined);
+    }>();
 
     useEffect(() => {
       return () => {
@@ -864,8 +899,8 @@ export const NaverMapView = forwardRef(
     }, []);
     const onScreenToCoordinate = useStableCallback(
       ({
-        nativeEvent,
-      }: NativeSyntheticEvent<{
+         nativeEvent,
+       }: NativeSyntheticEvent<{
         isValid: boolean;
         latitude: number;
         longitude: number;
@@ -876,8 +911,8 @@ export const NaverMapView = forwardRef(
     );
     const onCoordinateToScreen = useStableCallback(
       ({
-        nativeEvent,
-      }: NativeSyntheticEvent<{
+         nativeEvent,
+       }: NativeSyntheticEvent<{
         isValid: boolean;
         screenX: number;
         screenY: number;
@@ -891,13 +926,13 @@ export const NaverMapView = forwardRef(
       ref,
       () => ({
         animateCameraTo: ({
-          duration,
-          easing,
-          latitude,
-          longitude,
-          pivot,
-          zoom = Const.NULL_NUMBER,
-        }) => {
+                            duration,
+                            easing,
+                            latitude,
+                            longitude,
+                            pivot,
+                            zoom = Const.NULL_NUMBER,
+                          }) => {
           if (innerRef.current) {
             Commands.animateCameraTo(
               innerRef.current,
@@ -925,14 +960,14 @@ export const NaverMapView = forwardRef(
           }
         },
         animateRegionTo: ({
-          easing,
-          longitude,
-          latitude,
-          duration,
-          latitudeDelta,
-          longitudeDelta,
-          pivot,
-        }) => {
+                            easing,
+                            longitude,
+                            latitude,
+                            duration,
+                            latitudeDelta,
+                            longitudeDelta,
+                            pivot,
+                          }) => {
           if (innerRef.current) {
             Commands.animateRegionTo(
               innerRef.current,
@@ -948,12 +983,12 @@ export const NaverMapView = forwardRef(
           }
         },
         animateCameraWithTwoCoords: ({
-          duration,
-          easing,
-          coord1,
-          coord2,
-          pivot,
-        }) => {
+                                       duration,
+                                       easing,
+                                       coord1,
+                                       coord2,
+                                       pivot,
+                                     }) => {
           if (innerRef.current) {
             const latitude = Math.min(coord1.latitude, coord2.latitude);
             const longitude = Math.min(coord1.longitude, coord2.longitude);
@@ -1105,7 +1140,7 @@ export const NaverMapView = forwardRef(
         onTapClusterLeaf={
           onTapClusterLeaf
             ? ({ nativeEvent: { markerIdentifier } }) =>
-                onTapClusterLeaf({ markerIdentifier })
+              onTapClusterLeaf({ markerIdentifier })
             : undefined
         }
         {...rest}

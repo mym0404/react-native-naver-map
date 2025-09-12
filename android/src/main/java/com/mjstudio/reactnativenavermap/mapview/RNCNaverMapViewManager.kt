@@ -557,6 +557,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
       val clusterWidth = it["width"] as? Double
       val clusterHeight = it["height"] as? Double
       val screenDistance = it["screenDistance"] as? Double
+      val image = it["image"] as? Map<*, *>
       val minZoom = it["minZoom"] as? Double
       val maxZoom = it["maxZoom"] as? Double
       val animate = it["animate"] as? Boolean
@@ -565,7 +566,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
       val clusterer =
         Clusterer
           .Builder<RNCNaverMapClusterKey>()
-          .clusterMarkerUpdater(RNCNaverMapClusterMarkerUpdater(RNCNaverMapClusterDataHolder(clusterWidth, clusterHeight)))
+          .clusterMarkerUpdater(RNCNaverMapClusterMarkerUpdater(RNCNaverMapClusterDataHolder(context = reactAppContext, image, clusterWidth, clusterHeight)))
           .leafMarkerUpdater(RNCNaverMapLeafMarkerUpdater())
           .also { cluster ->
             if (screenDistance != null) {
@@ -590,6 +591,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
           val image = marker["image"] as? Map<*, *>
           val width = marker["width"] as? Double
           val height = marker["height"] as? Double
+          val caption = marker["caption"] as? Map<*, *>
 
           RNCNaverMapClusterKey(
             RNCNaverMapLeafMarkerHolder(
@@ -599,6 +601,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
               image,
               width,
               height,
+              caption,
               onTapLeaf =
                 if (isLeafTapCallbackExist) {
                   {

@@ -42,7 +42,18 @@
   } else {
     marker.height = NMF_MARKER_SIZE_AUTO;
   }
-
+  if (!key.caption.text.empty()) {
+      auto caption = key.caption;
+      marker.captionText = getNsStr(caption.text);
+      marker.captionRequestedWidth = caption.requestedWidth;
+      marker.captionAligns = @[ nmap::createAlign(caption.align) ];
+      marker.captionOffset = caption.offset;
+      marker.captionColor = nmap::intToColor(caption.color);
+      marker.captionHaloColor = nmap::intToColor(caption.haloColor);
+      marker.captionTextSize = caption.textSize;
+      marker.captionMinZoom = caption.minZoom;
+      marker.captionMaxZoom = caption.maxZoom;
+    }
   std::string idStr = [identifier UTF8String];
 
   RCTBridge* bridge = [RCTBridge currentBridge];
