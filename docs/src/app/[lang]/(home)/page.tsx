@@ -65,6 +65,7 @@ export default async function HomePage({
     <main className="flex min-h-[calc(100vh-3.5rem)] flex-col">
       <div className={'absolute-fill  dark:opacity-100 dark:block hidden'}>
         <Prism
+          suspendWhenOffscreen
           animationType={'rotate'}
           scale={1.2}
           offset={{ y: 180 }}
