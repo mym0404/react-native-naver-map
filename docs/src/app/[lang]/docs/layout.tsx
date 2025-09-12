@@ -9,7 +9,11 @@ export default async function Layout({
 }: PropsWithChildren<{ params: Promise<{ lang: string }> }>) {
   const { lang } = await params;
   return (
-    <DocsLayout tree={source.pageTree[lang]} {...baseOptions()} links={[]}>
+    <DocsLayout
+      tree={source.pageTree[lang]}
+      {...baseOptions({ lang })}
+      links={[]}
+    >
       {children}
     </DocsLayout>
   );

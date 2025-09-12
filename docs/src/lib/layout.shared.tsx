@@ -2,6 +2,21 @@ import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import Image from 'next/image';
 import { i18n } from '@/lib/i18n';
 
+const localeTexts = {
+  en: {
+    documentation: 'Documentation',
+    changelog: 'Changelog',
+    milestone: 'Milestone',
+    donate: 'Donate',
+  },
+  ko: {
+    documentation: '문서',
+    changelog: '변경사항',
+    milestone: '마일스톤',
+    donate: '후원',
+  },
+} as const;
+
 /**
  * Shared layout configurations
  *
@@ -9,7 +24,8 @@ import { i18n } from '@/lib/i18n';
  * Home Layout: app/(home)/layout.tsx
  * Docs Layout: app/docs/layout.tsx
  */
-export function baseOptions(): BaseLayoutProps {
+export function baseOptions({ lang }: { lang: string }): BaseLayoutProps {
+  const texts = localeTexts[lang as keyof typeof localeTexts] || localeTexts.en;
   return {
     i18n,
     nav: {
@@ -37,17 +53,17 @@ export function baseOptions(): BaseLayoutProps {
     },
     // see https://fumadocs.dev/docs/ui/navigation/links
     links: [
-      { text: 'Documentation', url: '/docs' },
+      { text: texts.documentation, url: `/${lang}/docs` },
       {
-        text: 'Changelog',
+        text: texts.changelog,
         url: 'https://github.com/mym0404/react-native-naver-map/releases',
       },
       {
-        text: 'Milestone',
+        text: texts.milestone,
         url: '/docs/milestone',
       },
       {
-        text: 'Donate',
+        text: texts.donate,
         url: 'https://github.com/sponsors/mym0404',
       },
     ],
