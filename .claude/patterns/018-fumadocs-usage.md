@@ -53,11 +53,6 @@ Use `meta.json` files to control folder structure and page ordering:
   "pages": [
     "index",
     "getting-started",
-    {
-      "title": "Custom Page Title",
-      "icon": "PageIcon",
-      "href": "/custom-path"
-    },
     "---",
     {
       "title": "External Link",
@@ -338,7 +333,7 @@ const newVar = 'new'; // [!code ++]
 ##### Focus Highlighting
 ```mdx
 \`\`\`javascript
-const observer = new ResizeObserver(() => {}); // [!code focus]
+const observer = new ResizeObserver(() => {}); // [!code highlight]
 const element = document.getElementById('target');
 observer.observe(element);
 \`\`\`
