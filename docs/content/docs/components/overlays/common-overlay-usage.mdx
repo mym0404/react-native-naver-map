@@ -1,16 +1,92 @@
 ---
-title: "Marker"
-description: "마커 (NaverMapMarkerOverlay) 문서"
+title: "Common Overlay Usage"
+description: "Common usage patterns for map overlays"
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout'
 import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
 
- 마커 (NaverMapMarkerOverlay)
+오버레이는 지도 위에 추가 정보를 표시하는 컴포넌트들입니다. 모든 오버레이는 공통 속성들을 공유하며, 각각의 고유한 기능을 제공합니다.
+
+## Base Overlay Properties
+
+모든 오버레이 컴포넌트는 `BaseOverlayProps`를 상속받아 다음 공통 속성들을 지원합니다:
+
+<AutoTypeTable path="../src/types/BaseOverlayProps.ts" name="BaseOverlayProps" />
+
+## Z-Index 레이어 시스템
+
+오버레이들은 계층 구조로 렌더링되며, 두 가지 Z-Index로 렌더링 순서를 제어할 수 있습니다.
+
+### Global Z-Index vs Z-Index
+
+- **`globalZIndex`**: 전역 렌더링 순서를 결정하며, 오버레이 타입 간의 계층을 제어합니다
+  - 기본값: 오버레이 타입별로 고정 (마커: 200000, 폴리곤: -200000 등)
+  - 0 이상: 지도 심벌 위에 렌더링
+  - 0 미만: 지도 심벌 아래에 렌더링
+
+- **`zIndex`**: 같은 globalZIndex를 가진 오버레이들 간의 순서를 제어합니다
+  - 기본값: 0
+  - 높은 값이 위에 표시됨
+  - 같은 타입의 오버레이들 간 우선순위 결정
+
+### Global Z-Index 기본값
+```tsx
+// 오버레이 타입별 기본 globalZIndex 값들
+정보 창: 400000          // 가장 위
+위치 오버레이: 300000
+마커: 200000
+화살표 오버레이: 100000
+// (지도 심벌 = 0)
+경로선 오버레이: -100000
+셰이프(폴리곤, 폴리라인, 서클): -200000
+지상 오버레이: -300000    // 가장 아래
+// (지도 배경)
+```
+
+<Callout>
+  zIndex 속성을 사용하면 globalZIndex가 동일한 오버레이간의 겹침 우선순위를 지정할 수 있습니다. 즉, 두 오버레이의 globalZIndex가 동일하다면 zIndex가 큰 오버레이가 작은 오버레이를 덮습니다. 예를 들어 마커의 zIndex를 1로 지정하고, 지상 오버레이의 zIndex를 2로 지정했다 하더라도 마커의 기본 globalZIndex는 200000, 지상 오버레이의 기본 globalZIndex는 -300000 이므로 마커가 지상 오버레이를 덮습니다. zIndex의 기본값은 오버레이의 유형과 무관하게 0이므로, 동일한 유형의 오버레이간의 우선순위만을 지정하고자 하는 경우 globalZIndex보다 직관적으로 사용할 수 있습니다.
+</Callout>
+
+## 줌 레벨 제어
+
+오버레이의 표시 여부를 줌 레벨에 따라 제어할 수 있습니다:
+
+```tsx
+<NaverMapMarkerOverlay
+  // 줌 레벨 10-15에서만 표시
+  minZoom={10}
+  maxZoom={15}
+  isMinZoomInclusive={true}
+  isMaxZoomInclusive={false}
+/>
+
+<NaverMapPolygonOverlay
+  // 줌 레벨 8 이상에서만 표시
+  minZoom={8}
+  // 줌 레벨 8은 포함하여 표시
+  isMinZoomInclusive={true}
+/>
+```
+
+## 이벤트 처리
+
+모든 오버레이는 `onTap` 이벤트를 지원합니다:
+
+```tsx
+<NaverMapCircleOverlay
+  onTap={() => {
+    console.log('Circle overlay tapped');
+    // 상세 정보 표시, 상태 변경 등
+  }}
+/>
+```
+
+## 마커 (NaverMapMarkerOverlay)
 
 마커는 지도 위의 특정 위치를 표시하는 가장 기본적인 오버레이입니다.
 
-## 기본 사용법
+### 기본 사용법
 
 ```tsx
 import { NaverMapView, NaverMapMarkerOverlay } from '@mj-studio/react-native-naver-map';
@@ -29,15 +105,11 @@ function MapWithMarker() {
 }
 ```
 
-## 마커 이미지 타입
+### 마커 이미지 타입
 
 React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 
-
-
-## 1. 기본 심볼
-
-
+#### 1. 기본 심볼
 
 네이버 지도가 제공하는 기본 심볼을 사용합니다:
 
@@ -51,11 +123,7 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 
 사용 가능한 심볼: `green`, `red`, `blue`, `yellow`, `gray`, `pink`, `lightblue`
 
-
-
-## 2. 로컬 이미지 리소스
-
-
+#### 2. 로컬 이미지 리소스
 
 ```tsx
 <NaverMapMarkerOverlay
@@ -71,11 +139,7 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
   Debug/Release 빌드 시 크기가 다르게 나올 수 있으므로 `width`와 `height`를 명시하는 것을 권장합니다.
 </Callout>
 
-
-
-## 3. 네이티브 리소스
-
-
+#### 3. 네이티브 리소스
 
 <Tabs items={['iOS', 'Android']}>
   <Tab value="Basic">
@@ -100,11 +164,7 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
   </Tab>
 </Tabs>
 
-
-
-## 4. 네트워크 이미지
-
-
+#### 4. 네트워크 이미지
 
 ```tsx
 <NaverMapMarkerOverlay
@@ -116,11 +176,7 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 />
 ```
 
-
-
-## 5. 커스텀 React View
-
-
+#### 5. 커스텀 React View
 
 ```tsx
 <NaverMapMarkerOverlay
@@ -166,11 +222,7 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 />
 ```
 
-
-
-## 캡션 속성
-
-
+#### 캡션 속성
 
 | 속성 | 타입 | 설명 |
 |---|---|---|
@@ -182,13 +234,9 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 | `minZoom` | `number` | 최소 줌 레벨 |
 | `maxZoom` | `number` | 최대 줌 레벨 |
 
-## 마커 설정
+### 마커 설정
 
-
-
-## 앵커 포인트
-
-
+#### 앵커 포인트
 
 앵커는 마커 이미지의 어느 지점이 좌표에 위치할지 결정합니다:
 
@@ -200,24 +248,16 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 />
 ```
 
-
-
-## Z-Index
-
-
-
-마커의 렌더링 순서를 제어합니다:
+#### 기타 설정
 
 ```tsx
 <NaverMapMarkerOverlay
-  zIndex={1000} // 높을수록 위에 표시
   isIconPerspectiveEnabled={true} // 원근감 적용
+  angle={45} // 회전 각도
 />
 ```
 
-
-
-## 표시 설정
+#### 표시 설정
 
 ```tsx
 <NaverMapMarkerOverlay
@@ -230,20 +270,8 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 />
 ```
 
-## 이벤트 처리
 
-```tsx
-<NaverMapMarkerOverlay
-  latitude={37.5665}
-  longitude={126.9780}
-  onTap={() => {
-    console.log('마커가 탭되었습니다');
-    // 정보 창 표시, 상세 화면 이동 등
-  }}
-/>
-```
-
-## 이미지 캐싱
+#### 이미지 캐싱
 
 동일한 이미지를 사용하는 마커들에 대해 자동으로 캐싱이 적용됩니다:
 
