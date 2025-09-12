@@ -1,0 +1,75 @@
+---
+title: "Getting Started"
+description: "React Native용 네이버 지도 라이브러리"
+icon: "Rocket"
+---
+
+import { Apple, Smartphone, Zap } from 'lucide-react'
+import { Callout } from 'fumadocs-ui/components/callout'
+import { Cards, Card } from 'fumadocs-ui/components/card'
+
+## 시작하기
+
+React Native Naver Map을 프로젝트에 설치하고 설정하는 방법을 안내합니다.
+
+## 사전 요구사항
+
+- New Architecture(+0.74)
+- Expo(Bare, CNG both supported, not Expo Go) or Bare React Native Project.
+
+## 설치
+
+```npm
+npm install @mj-studio/react-native-naver-map
+```
+
+## 네이버 클라우드 프로젝트 설정 및 API 키 발급
+
+- [가이드](/docs/installation/api-key)를 따라 네이버 클라우드 Naver Map의 프로젝트를 설정하고 API 키를 발급받아주세요.
+
+## 플랫폼별 설정
+
+<Callout type={'warning'}>
+  Expo를 사용해도 `.gitignore`에 `android`, `ios`가 존재해서 네이티브 프로젝트를 계속해서 만들어서 사용하는 [Continuous Native Generation (CNG)](https://docs.expo.dev/workflow/continuous-native-generation/)모드와 그렇지 않은 모드는 차이가 있습니다.
+
+  권한 설정이 Documentation엔 Android, iOS는 `react-native-permission`을, Expo CNG에선 `expo-location`을 사용하고 있지만 기호에 맞게 자신의 프로젝트에 호환되는 권한 관리 방식을 사용해도 무관합니다.
+</Callout>
+
+설치가 완료되면 플랫폼별로 추가 설정이 필요합니다. 해당하는 플랫폼의 가이드를 따라 설정해주세요.
+
+<Cards className={'mb-8'}>
+  <Card href="/docs/installation/android" title="Android 설정" icon={<Smartphone/>}>
+    Expo CNG를 쓴다면 Expo CNG설정을 따라주세요.
+  </Card>
+  <Card href="/docs/installation/ios" title="iOS 설정" icon={<Apple/>}>
+    Expo CNG를 쓴다면 Expo CNG설정을 따라주세요.
+  </Card>
+  <Card href="/docs/installation/expo" title="Expo CNG 환경 설정" icon={<Zap/>}>
+    Expo CNG환경에선 Android, iOS설정이 따로 필요하지 않고 이 가이드만 따라주시면 됩니다.
+  </Card>
+</Cards>
+
+## 첫 번째 지도 만들기
+
+플랫폼별 설정이 완료되면 지도를 표시할 수 있습니다:
+
+```tsx title="App.tsx" lineNumbers
+import { NaverMapView } from '@mj-studio/react-native-naver-map'; // [!code focus]
+
+export default function App() {
+  return (
+    <View style={styles.container}>
+      <NaverMapView // [!code focus]
+        style={styles.map} // [!code focus]
+        initialRegion={{// [!code focus]
+          latitude: 37.5665,// [!code focus]
+          longitude: 126.9780,// [!code focus]
+          latitudeDelta: 0.01,// [!code focus]
+          longitudeDelta: 0.01,// [!code focus]
+        }} // [!code focus]
+ {/* [!code focus] */}
+      />
+    </View>
+  );
+}
+```

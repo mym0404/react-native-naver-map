@@ -1,0 +1,20 @@
+{
+  "title": "Documentation",
+  "icon": "Book",
+  "pages": [
+    "---Setup---",
+    "index",
+    "installation",
+    "---Components---",
+    "components",
+    "api",
+    "---Guides (Working In Progress)---",
+    "marker-clustering",
+    "camera-control",
+    "custom-markers",
+    "optimization",
+    "---More---",
+    "[Changelog](https://github.com/mym0404/react-native-naver-map/releases)",
+    "[Donate](https://github.com/sponsors/mym0404)"
+  ]
+}

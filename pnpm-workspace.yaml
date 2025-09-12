@@ -1,8 +1,7 @@
 packages:
   - example
   - docs
-
-shamefullyHoist: true
+  - docs2
 
 catalog:
   '@babel/core': ^7.28.4
@@ -15,19 +14,21 @@ catalog:
   '@react-native/metro-config': 0.80.0
   '@react-native/new-app-screen': 0.80.0
   '@react-native/typescript-config': 0.80.0
-  '@tailwindcss/postcss': ^4
-  '@types/node': ^20
+  '@tailwindcss/postcss': ^4.1.13
+  '@types/node': ^20.19.13
   '@types/react': 19.1.0
-  '@types/react-dom': ^19
+  '@types/react-dom': ^19.1.9
   '@types/react-test-renderer': ^19.1.0
   next: 15.5.2
   react: 19.1.0
   react-dom: 19.1.0
   react-native: 0.80.0
   react-test-renderer: 19.1.0
-  tailwindcss: ^4
-  typescript: 5.3.3
+  tailwindcss: ^4.1.13
+  typescript: ^5.9.2
 
 onlyBuiltDependencies:
   - lefthook
   - unrs-resolver
+
+shamefullyHoist: true

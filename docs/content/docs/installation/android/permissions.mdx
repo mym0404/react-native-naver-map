@@ -1,0 +1,83 @@
+---
+title: "Permissions"
+description: "Android에서 위치 권한 설정 방법"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+# Android 권한 설정
+
+현재 위치를 표시하기 위한 위치 권한 설정 방법을 안내합니다.
+
+<Callout type="info">
+네이버 맵 SDK에서 내부적으로 사용하는 `FusedLocationSource`는 사용자가 [isShowLocationButton prop](https://rnnavermap.mjstudio.net/docs/api#isShowLocationButton)을 `true`로 설정하는 순간 자동으로 권한을 요청합니다.
+</Callout>
+
+## AndroidManifest.xml 권한 추가
+
+`AndroidManifest.xml`에 다음 권한을 추가합니다:
+
+```xml title="android/app/src/main/AndroidManifest.xml"
+<manifest>
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <!-- 백그라운드 위치 권한 (선택사항) -->
+  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+</manifest>
+```
+
+### 권한 설명
+
+- **`ACCESS_FINE_LOCATION`**: 정확한 위치 정보 접근 권한
+- **`ACCESS_COARSE_LOCATION`**: 대략적인 위치 정보 접근 권한
+- **`ACCESS_BACKGROUND_LOCATION`**: 백그라운드에서 위치 정보 접근 권한 (선택사항)
+
+## 코드에서 권한 요청하기
+
+### react-native-permissions 사용
+
+```bash
+pnpm add react-native-permissions
+```
+
+```tsx
+import { requestMultiple, PERMISSIONS } from 'react-native-permissions';
+
+useEffect(() => {
+  if (Platform.OS === 'android') {
+    requestMultiple([
+      PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
+    ])
+      .then((status) => {
+        console.log(`Location request status: ${status}`);
+      })
+      .catch((e) => {
+        console.error(`Location request has been failed: ${e}`);
+      });
+  }
+}, []);
+```
+
+### Expo 프로젝트 (expo-location 사용)
+
+```tsx
+import * as Location from 'expo-location';
+
+useEffect(() => {
+  (async () => {
+    try {
+      const {granted} = await Location.requestForegroundPermissionsAsync();
+      /**
+       * Note: Foreground permissions should be granted before asking for the background permissions
+       * (your app can't obtain background permission without foreground permission).
+       */
+      if(granted) {
+        await Location.requestBackgroundPermissionsAsync();
+      }
+    } catch(e) {
+      console.error(`Location request has been failed: ${e}`);
+    }
+  })();
+}, []);
+```

@@ -1,0 +1,308 @@
+---
+title: "Overlays"
+description: "오버레이 문서"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
+import { Cards, Card } from 'fumadocs-ui/components/card'
+import { Circle, Minus, Route, Navigation, Image, LucideSquare } from 'lucide-react';
+
+ 오버레이
+
+지도 위에 다양한 도형과 경로를 그릴 수 있는 오버레이 컴포넌트들을 소개합니다.
+
+## 지원 오버레이
+
+<Cards>
+  <Card title="Circle" href="#원형-오버레이" icon={<Circle className="w-5 h-5" />}>
+    원형 영역 표시
+  </Card>
+  <Card title="Polygon" href="#다각형-오버레이" icon={<LucideSquare className="w-5 h-5" />}>
+    다각형 영역 표시
+  </Card>
+  <Card title="Polyline" href="#폴리라인-오버레이" icon={<Minus className="w-5 h-5" />}>
+    선 그리기
+  </Card>
+  <Card title="Path" href="#경로-오버레이" icon={<Route className="w-5 h-5" />}>
+    진행도가 있는 경로
+  </Card>
+  <Card title="ArrowheadPath" href="#화살표-경로-오버레이" icon={<Navigation className="w-5 h-5" />}>
+    화살표가 있는 경로
+  </Card>
+  <Card title="Ground" href="#지면-오버레이" icon={<Image className="w-5 h-5" />}>
+    이미지 오버레이
+  </Card>
+</Cards>
+
+## 원형 오버레이
+
+지정한 중심점과 반지름으로 원을 그립니다:
+
+```tsx
+import { NaverMapCircleOverlay } from '@mj-studio/react-native-naver-map';
+
+<NaverMapCircleOverlay
+  latitude={37.5665}
+  longitude={126.9780}
+  radius={1000}           // 미터 단위
+  color="#ff000033"       // 채우기 색상 (alpha 포함)
+  outlineColor="#ff0000"  // 테두리 색상
+  outlineWidth={2}        // 테두리 두께
+  onTap={() => console.log('Circle tapped')}
+/>
+```
+
+## 다각형 오버레이
+
+좌표 배열로 다각형을 그립니다:
+
+```tsx
+import { NaverMapPolygonOverlay } from '@mj-studio/react-native-naver-map';
+
+<NaverMapPolygonOverlay
+  coords={[
+    { latitude: 37.5665, longitude: 126.9780 },
+    { latitude: 37.5670, longitude: 126.9790 },
+    { latitude: 37.5675, longitude: 126.9785 },
+    // 자동으로 첫 번째 점과 연결
+  ]}
+  color="#00ff0033"
+  outlineColor="#00ff00"
+  outlineWidth={3}
+  holes={[
+    // 구멍 좌표 배열 (선택사항)
+    [
+      { latitude: 37.5667, longitude: 126.9782 },
+      { latitude: 37.5668, longitude: 126.9784 },
+      { latitude: 37.5669, longitude: 126.9783 },
+    ]
+  ]}
+/>
+```
+
+## 폴리라인 오버레이
+
+점들을 연결한 선을 그립니다:
+
+```tsx
+import { NaverMapPolylineOverlay } from '@mj-studio/react-native-naver-map';
+
+<NaverMapPolylineOverlay
+  coords={[
+    { latitude: 37.5665, longitude: 126.9780 },
+    { latitude: 37.5670, longitude: 126.9790 },
+    { latitude: 37.5675, longitude: 126.9785 },
+  ]}
+  width={5}
+  color="#0000ff"
+  pattern={[10, 5]}  // 점선 패턴 [실선길이, 공백길이]
+  lineCap="round"    // "butt" | "round" | "square"
+  lineJoin="round"   // "miter" | "round" | "bevel"
+/>
+```
+
+## 경로 오버레이
+
+진행도를 시각화할 수 있는 경로입니다:
+
+```tsx
+import { NaverMapPathOverlay } from '@mj-studio/react-native-naver-map';
+
+<NaverMapPathOverlay
+  coords={[
+    { latitude: 37.5665, longitude: 126.9780 },
+    { latitude: 37.5670, longitude: 126.9790 },
+    { latitude: 37.5675, longitude: 126.9785 },
+  ]}
+  width={8}
+  color="blue"         // 기본 경로 색상
+  progress={0.6}       // 진행도 (0.0 ~ 1.0)
+  passedColor="green"  // 지나간 경로 색상
+  passedOutlineColor="darkgreen"
+  outlineWidth={2}
+/>
+```
+
+## 화살표 경로 오버레이
+
+진행 방향을 나타내는 화살표가 있는 경로입니다:
+
+```tsx
+import { NaverMapArrowheadPathOverlay } from '@mj-studio/react-native-naver-map';
+
+<NaverMapArrowheadPathOverlay
+  coords={[
+    { latitude: 37.5665, longitude: 126.9780 },
+    { latitude: 37.5670, longitude: 126.9790 },
+    { latitude: 37.5675, longitude: 126.9785 },
+  ]}
+  width={6}
+  color="#ff6b00"
+  outlineWidth={1}
+  outlineColor="black"
+  arrowheadSizeRatio={3}  // 화살표 크기 비율
+/>
+```
+
+## 지면 오버레이
+
+지도 위에 이미지를 오버레이로 표시합니다:
+
+```tsx
+import { NaverMapGroundOverlay } from '@mj-studio/react-native-naver-map';
+
+<NaverMapGroundOverlay
+  // 이미지가 표시될 영역의 남서쪽과 북동쪽 좌표
+  bounds={{
+    southwest: { latitude: 37.5660, longitude: 126.9770 },
+    northeast: { latitude: 37.5670, longitude: 126.9790 },
+  }}
+  image={require('./overlay-image.png')}
+  // 또는 네트워크 이미지
+  // image={{ uri: 'https://example.com/overlay.png' }}
+  alpha={0.8}  // 투명도 (0.0 ~ 1.0)
+/>
+```
+
+## 공통 속성
+
+모든 오버레이 컴포넌트는 다음 공통 속성을 지원합니다:
+
+
+
+## 표시 제어
+
+
+
+```tsx
+<SomeOverlay
+  isHidden={false}     // 오버레이 숨김/표시
+  minZoom={5}          // 최소 표시 줌 레벨
+  maxZoom={18}         // 최대 표시 줌 레벨
+  zIndex={0}           // 렌더링 순서 (높을수록 위에)
+/>
+```
+
+
+
+## 이벤트 처리
+
+
+
+```tsx
+<SomeOverlay
+  onTap={(event) => {
+    console.log('Overlay tapped at:', event.latitude, event.longitude);
+  }}
+/>
+```
+
+## 스타일링 팁
+
+
+
+## 색상 지정
+
+
+
+```tsx
+// HEX 색상 (alpha 포함)
+color="#ff000080"  // 빨강, 50% 투명
+
+// RGB/RGBA
+color="rgba(255, 0, 0, 0.5)"
+
+// 색상 이름
+color="red"
+```
+
+
+
+## 패턴 활용
+
+
+
+```tsx
+// 점선
+pattern={[10, 5]}        // 10px 실선, 5px 공백
+
+// 복잡한 패턴
+pattern={[20, 5, 5, 5]}  // 긴실선-짧은공백-짧은실선-짧은공백
+```
+
+## 성능 고려사항
+
+<Callout type="info">
+  대량의 오버레이를 사용할 때는 성능을 위해 다음을 고려하세요:
+</Callout>
+
+1. **불필요한 오버레이 제거**: 현재 화면에 보이지 않는 오버레이는 렌더링하지 않음
+2. **줌 레벨 활용**: `minZoom`, `maxZoom`으로 적절한 레벨에서만 표시
+3. **좌표 최적화**: 불필요하게 많은 좌표점은 성능에 영향
+
+## 실제 사용 예제
+
+```tsx
+import React from 'react';
+import {
+  NaverMapView,
+  NaverMapCircleOverlay,
+  NaverMapPathOverlay,
+  NaverMapMarkerOverlay,
+} from '@mj-studio/react-native-naver-map';
+
+export default function DeliveryMap() {
+  const route = [
+    { latitude: 37.5665, longitude: 126.9780 },
+    { latitude: 37.5670, longitude: 126.9785 },
+    { latitude: 37.5675, longitude: 126.9790 },
+  ];
+
+  const deliveryZones = [
+    { lat: 37.5665, lng: 126.9780, radius: 500 },
+    { lat: 37.5675, lng: 126.9790, radius: 300 },
+  ];
+
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      {/* 배송 구역 표시 */}
+      {deliveryZones.map((zone, index) => (
+        <NaverMapCircleOverlay
+          key={index}
+          latitude={zone.lat}
+          longitude={zone.lng}
+          radius={zone.radius}
+          color="#4285f433"
+          outlineColor="#4285f4"
+          outlineWidth={1}
+        />
+      ))}
+
+      {/* 배송 경로 */}
+      <NaverMapPathOverlay
+        coords={route}
+        width={6}
+        color="#34a853"
+        progress={0.7} // 70% 완료
+        passedColor="#0d7727"
+      />
+
+      {/* 시작점과 끝점 마커 */}
+      <NaverMapMarkerOverlay
+        latitude={route[0].latitude}
+        longitude={route[0].longitude}
+        image={{ symbol: 'green' }}
+        caption={{ text: "출발지" }}
+      />
+
+      <NaverMapMarkerOverlay
+        latitude={route[route.length - 1].latitude}
+        longitude={route[route.length - 1].longitude}
+        image={{ symbol: 'red' }}
+        caption={{ text: "도착지" }}
+      />
+    </NaverMapView>
+  );
+}
+```

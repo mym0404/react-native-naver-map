@@ -1,0 +1,434 @@
+---
+title: "Camera Control"
+description: "카메라 제어 문서"
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
+import { Callout } from 'fumadocs-ui/components/callout'
+
+카메라 제어
+
+
+
+네이버 지도의 카메라를 제어하여 지도의 중심점, 줌 레벨, 회전, 기울기 등을 조정하는 방법을 안내합니다.
+
+## 기본 카메라 설정
+
+
+
+## Camera vs Region
+
+
+
+네이버 지도에서는 두 가지 방식으로 지도 위치를 설정할 수 있습니다:
+
+<Tabs items={['Camera', 'Region']}>
+  <Tab value="Basic">
+    **Camera**: 정확한 줌 레벨과 각도 제어
+    ```tsx title="CameraExample.tsx"
+    import { NaverMapView, Camera } from '@mj-studio/react-native-naver-map';
+
+    const camera: Camera = {
+      latitude: 37.5665,
+      longitude: 126.9780,
+      zoom: 14,
+      tilt: 30,     // 기울기 (0-60도)
+      bearing: 45,  // 회전 (0-360도)
+    };
+
+    <NaverMapView
+      style={{ flex: 1 }}
+      camera={camera}
+      // 또는 초기값만 설정
+      // initialCamera={camera}
+    />
+    ```
+  </Tab>
+  <Tab value="Basic">
+    **Region**: 표시할 영역 범위로 설정
+    ```tsx title="RegionExample.tsx"
+    import { NaverMapView, Region } from '@mj-studio/react-native-naver-map';
+
+    const region: Region = {
+      latitude: 37.5665,
+      longitude: 126.9780,
+      latitudeDelta: 0.05,  // 위도 범위
+      longitudeDelta: 0.05, // 경도 범위
+    };
+
+    <NaverMapView
+      style={{ flex: 1 }}
+      region={region}
+      // 또는 초기값만 설정
+      // initialRegion={region}
+    />
+    ```
+  </Tab>
+</Tabs>
+
+## 프로그래매틱 카메라 제어
+
+
+
+## Ref를 통한 카메라 조작
+
+
+
+```tsx title="CameraControlExample.tsx"
+import React, { useRef } from 'react';
+import { View, Button } from 'react-native';
+import { NaverMapView, NaverMapViewRef, Camera } from '@mj-studio/react-native-naver-map';
+
+const CameraControlExample = () => {
+  const mapRef = useRef<NaverMapViewRef>(null);
+
+  const moveToSeoul = () => {
+    const seoulCamera: Camera = {
+      latitude: 37.5665,
+      longitude: 126.9780,
+      zoom: 14,
+    };
+
+    mapRef.current?.animateCameraTo(seoulCamera);
+  };
+
+  const moveToBusan = () => {
+    const busanCamera: Camera = {
+      latitude: 35.1796,
+      longitude: 129.0756,
+      zoom: 12,
+      tilt: 45,
+      bearing: 30,
+    };
+
+    // 애니메이션 옵션 포함
+    mapRef.current?.animateCameraTo({
+      ...busanCamera,
+      duration: 2000,  // 2초 동안 애니메이션
+      easing: 'EaseInOut',
+    });
+  };
+
+  return (
+    <View style={{ flex: 1 }}>
+      <NaverMapView
+        ref={mapRef}
+        style={{ flex: 1 }}
+        initialCamera={{
+          latitude: 37.5665,
+          longitude: 126.9780,
+          zoom: 10,
+        }}
+      />
+      <View style={{ position: 'absolute', top: 50, left: 20 }}>
+        <Button title="서울로 이동" onPress={moveToSeoul} />
+        <Button title="부산으로 이동" onPress={moveToBusan} />
+      </View>
+    </View>
+  );
+};
+```
+
+## 카메라 애니메이션 메서드
+
+
+
+## 1. animateCameraTo - 특정 위치로 이동
+
+
+
+```tsx title="AnimateCameraTo.tsx"
+// 기본 사용법
+mapRef.current?.animateCameraTo({
+  latitude: 35.1796,
+  longitude: 129.0756,
+  zoom: 15,
+});
+
+// 애니메이션 옵션 포함
+mapRef.current?.animateCameraTo({
+  latitude: 35.1796,
+  longitude: 129.0756,
+  zoom: 15,
+  tilt: 30,
+  bearing: 45,
+  duration: 1500,        // 애니메이션 지속 시간 (ms)
+  easing: 'EaseInOut',   // 'Linear', 'EaseIn', 'EaseOut', 'EaseInOut'
+});
+```
+
+
+
+## 2. animateCameraBy - 상대적 이동
+
+
+
+```tsx title="AnimateCameraBy.tsx"
+// 화면 픽셀 단위로 상대 이동
+mapRef.current?.animateCameraBy({
+  x: 100,     // 오른쪽으로 100픽셀
+  y: -50,     // 위로 50픽셀
+  duration: 1000,
+  pivot: { x: 0.5, y: 0.5 }, // 회전 중심점 (0.0-1.0)
+});
+```
+
+
+
+## 3. animateRegionTo - 영역 기반 이동
+
+
+
+```tsx title="AnimateRegionTo.tsx"
+// 특정 영역을 화면에 맞춰 표시
+mapRef.current?.animateRegionTo({
+  latitude: 37.5665,
+  longitude: 126.9780,
+  latitudeDelta: 0.1,
+  longitudeDelta: 0.1,
+  duration: 2000,
+});
+```
+
+
+
+## 4. animateCameraWithTwoCoords - 두 지점을 포함하는 영역으로 이동
+
+
+
+```tsx title="TwoCoordsAnimation.tsx"
+// 두 좌표를 모두 포함하는 최적 카메라 위치로 이동
+mapRef.current?.animateCameraWithTwoCoords({
+  coord1: { latitude: 37.5665, longitude: 126.9780 }, // 서울
+  coord2: { latitude: 35.1796, longitude: 129.0756 }, // 부산
+  duration: 2000,
+  paddingTop: 100,
+  paddingBottom: 100,
+  paddingLeft: 50,
+  paddingRight: 50,
+});
+```
+
+## 애니메이션 제어
+
+
+
+## 애니메이션 취소
+
+
+
+```tsx title="CancelAnimation.tsx"
+const handleCancelAnimation = () => {
+  mapRef.current?.cancelAnimation();
+};
+
+// 사용 예시: 사용자가 지도를 직접 조작할 때 자동 애니메이션 취소
+<NaverMapView
+  ref={mapRef}
+  onTapMap={() => {
+    mapRef.current?.cancelAnimation();
+  }}
+  // ... 기타 props
+/>
+```
+
+## 카메라 상태 감지
+
+
+
+## 카메라 변경 이벤트
+
+
+
+```tsx title="CameraEvents.tsx"
+<NaverMapView
+  onCameraChanged={({
+    latitude,
+    longitude,
+    zoom,
+    tilt,
+    bearing,
+    reason,  // 'Developer' | 'Gesture' | 'Control' | 'Location'
+    contentBounds, // 현재 화면에 표시되는 영역의 경계
+    coveringBounds, // 지도 타일이 덮고 있는 영역
+  }) => {
+    console.log('Camera changed:', {
+      position: { latitude, longitude },
+      zoom,
+      tilt,
+      bearing,
+      reason,
+    });
+
+    // 화면에 표시되는 영역 정보
+    console.log('Content bounds:', {
+      northEast: contentBounds.northEast,
+      southWest: contentBounds.southWest,
+    });
+  }}
+
+  onCameraIdle={() => {
+    console.log('Camera movement finished');
+    // 카메라 이동이 완료된 후 필요한 작업 수행
+  }}
+/>
+```
+
+## 실용적인 카메라 제어 패턴
+
+
+
+## 마커들을 모두 포함하는 영역으로 이동
+
+
+
+```tsx title="FitToMarkers.tsx"
+const fitToMarkers = (markers: Array<{ latitude: number; longitude: number }>) => {
+  if (markers.length === 0) return;
+
+  if (markers.length === 1) {
+    // 마커가 하나인 경우 해당 위치로 이동
+    mapRef.current?.animateCameraTo({
+      latitude: markers[0].latitude,
+      longitude: markers[0].longitude,
+      zoom: 15,
+    });
+  } else if (markers.length === 2) {
+    // 마커가 두 개인 경우 두 지점을 포함하는 영역으로 이동
+    mapRef.current?.animateCameraWithTwoCoords({
+      coord1: markers[0],
+      coord2: markers[1],
+      paddingTop: 100,
+      paddingBottom: 100,
+      paddingLeft: 100,
+      paddingRight: 100,
+    });
+  } else {
+    // 여러 마커인 경우 모든 마커를 포함하는 영역 계산
+    const latitudes = markers.map(m => m.latitude);
+    const longitudes = markers.map(m => m.longitude);
+
+    const minLat = Math.min(...latitudes);
+    const maxLat = Math.max(...latitudes);
+    const minLng = Math.min(...longitudes);
+    const maxLng = Math.max(...longitudes);
+
+    const center = {
+      latitude: (minLat + maxLat) / 2,
+      longitude: (minLng + maxLng) / 2,
+    };
+
+    const delta = {
+      latitudeDelta: (maxLat - minLat) * 1.2, // 여유 공간 추가
+      longitudeDelta: (maxLng - minLng) * 1.2,
+    };
+
+    mapRef.current?.animateRegionTo({
+      ...center,
+      ...delta,
+    });
+  }
+};
+```
+
+
+
+## 현재 위치로 이동
+
+
+
+```tsx title="MoveToCurrentLocation.tsx"
+import { getCurrentLocation } from '@mj-studio/react-native-naver-map';
+
+const moveToCurrentLocation = async () => {
+  try {
+    const position = await getCurrentLocation({
+      timeout: 10000,
+      maximumAge: 60000,
+    });
+
+    mapRef.current?.animateCameraTo({
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude,
+      zoom: 16,
+    });
+  } catch (error) {
+    console.error('위치 정보를 가져올 수 없습니다:', error);
+  }
+};
+```
+
+## 좌표 변환 유틸리티
+
+
+
+## 화면 좌표 ↔ 지도 좌표 변환
+
+
+
+```tsx title="CoordinateConversion.tsx"
+// 화면 좌표를 지도 좌표로 변환
+const handleScreenToCoordinate = async () => {
+  try {
+    const coordinate = await mapRef.current?.screenToCoordinate({
+      screenX: 100,
+      screenY: 200,
+    });
+    console.log('Map coordinate:', coordinate);
+  } catch (error) {
+    console.error('좌표 변환 실패:', error);
+  }
+};
+
+// 지도 좌표를 화면 좌표로 변환
+const handleCoordinateToScreen = async () => {
+  try {
+    const screenPoint = await mapRef.current?.coordinateToScreen({
+      latitude: 37.5665,
+      longitude: 126.9780,
+    });
+    console.log('Screen point:', screenPoint);
+  } catch (error) {
+    console.error('좌표 변환 실패:', error);
+  }
+};
+```
+
+## 성능 최적화 팁
+
+<Callout type="info">
+  **카메라 제어 성능 최적화:**
+
+  1. **애니메이션 duration 최적화**: 너무 긴 애니메이션은 사용자 경험을 해칠 수 있습니다
+  2. **onCameraChanged 콜백 최적화**: 불필요한 연산을 피하고 디바운싱 적용
+  3. **애니메이션 중첩 방지**: 이전 애니메이션이 완료되기 전에 새로운 애니메이션 시작 시 취소
+  4. **적절한 줌 레벨**: 너무 높은 줌 레벨은 성능에 영향을 줄 수 있습니다
+</Callout>
+
+
+
+## 카메라 변경 디바운싱
+
+
+
+```tsx title="DebouncedCameraChange.tsx"
+import { useMemo } from 'react';
+import { debounce } from 'lodash';
+
+const MapWithDebouncedCamera = () => {
+  const debouncedCameraChange = useMemo(
+    () => debounce((cameraData) => {
+      // 실제 처리할 로직
+      console.log('Debounced camera change:', cameraData);
+    }, 300),
+    []
+  );
+
+  return (
+    <NaverMapView
+      onCameraChanged={debouncedCameraChange}
+      // ... 기타 props
+    />
+  );
+};
+```

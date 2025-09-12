@@ -11,7 +11,12 @@
       "Bash(gh pr view:*)",
       "Bash(pnpm add:*)",
       "Bash(pnpm install:*)",
-      "Read(//Users/mj/Desktop/expo-release-it/docs/src/**)"
+      "Read(//Users/mj/Desktop/expo-release-it/docs/src/**)",
+      "Bash(git checkout:*)",
+      "Bash(find:*)",
+      "mcp__playwright__init-browser",
+      "mcp__playwright__get-screenshot",
+      "mcp__playwright__execute-code"
     ],
     "deny": [],
     "ask": []

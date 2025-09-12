@@ -1,0 +1,577 @@
+---
+title: "Custom Markers"
+description: "커스텀 마커 문서"
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
+import { Callout } from 'fumadocs-ui/components/callout'
+
+ 커스텀 마커
+
+
+
+React Native Naver Map에서 제공하는 다양한 마커 타입과 커스텀 마커를 만드는 방법을 안내합니다.
+
+<Callout type="info">
+  **총 5가지 마커 이미지 타입을 지원합니다:**
+  - 네이버 지도 기본 심볼
+  - React Native 로컬 리소스
+  - 네이티브 에셋 (성능 최적화)
+  - HTTP 웹 이미지
+  - React 커스텀 뷰 컴포넌트
+</Callout>
+
+## 1. 기본 심볼 마커
+
+네이버 지도에서 제공하는 기본 마커 심볼을 사용합니다.
+
+```tsx title="SymbolMarker.tsx"
+import { NaverMapMarkerOverlay } from '@mj-studio/react-native-naver-map';
+
+// 기본 색상 심볼
+<NaverMapMarkerOverlay
+  latitude={37.5665}
+  longitude={126.9780}
+  image={{ symbol: 'green' }}  // 'green', 'red', 'blue', 'gray', 'yellow' 등
+  anchor={{ x: 0.5, y: 1 }}
+  caption={{ text: '기본 심볼 마커' }}
+/>
+```
+
+<Callout type="info">
+  **지원되는 심볼 색상**: green, red, blue, gray, yellow, lightblue, pink, black
+
+  기본 심볼은 자동으로 캐싱되어 성능이 우수합니다.
+</Callout>
+
+## 2. 로컬 리소스 마커
+
+React Native 프로젝트의 이미지 파일을 마커로 사용합니다.
+
+```tsx title="LocalImageMarker.tsx"
+<NaverMapMarkerOverlay
+  latitude={37.5665}
+  longitude={126.9780}
+  image={require('./assets/marker.png')}
+  width={40}
+  height={40}
+  anchor={{ x: 0.5, y: 1 }}
+  caption={{ text: '로컬 이미지 마커' }}
+/>
+```
+
+<Callout type="warn">
+  **중요**: 로컬 리소스 마커는 반드시 `width`와 `height`를 지정해야 합니다.
+  지정하지 않으면 Debug와 Release 빌드에서 크기가 다르게 나올 수 있습니다.
+</Callout>
+
+## 3. 네이티브 에셋 마커
+
+성능 최적화를 위해 네이티브 프로젝트의 에셋을 직접 사용합니다.
+
+<Tabs items={['Android', 'iOS']}>
+  <Tab value="Basic">
+
+
+## Android Drawable 사용
+
+
+
+    1. `android/app/src/main/res/drawable/`에 이미지 파일 추가
+    2. 파일명을 `assetName`으로 지정
+
+    ```tsx title="AndroidAssetMarker.tsx"
+    <NaverMapMarkerOverlay
+      latitude={37.5665}
+      longitude={126.9780}
+      image={{ assetName: 'marker_icon' }}  // marker_icon.png
+      width={32}
+      height={32}
+      anchor={{ x: 0.5, y: 1 }}
+    />
+    ```
+  </Tab>
+  <Tab value="Basic">
+
+
+## iOS Bundle Asset 사용
+
+
+
+    1. iOS 프로젝트의 main bundle에 이미지 추가
+    2. Asset Catalog 또는 직접 bundle에 추가
+
+    ```tsx title="iOSAssetMarker.tsx"
+    <NaverMapMarkerOverlay
+      latitude={37.5665}
+      longitude={126.9780}
+      image={{ assetName: 'marker-icon' }}  // main bundle의 이미지
+      width={32}
+      height={32}
+      anchor={{ x: 0.5, y: 1 }}
+    />
+    ```
+  </Tab>
+</Tabs>
+
+## 4. 웹 이미지 마커
+
+HTTP/HTTPS URL을 통해 네트워크 이미지를 마커로 사용합니다.
+
+```tsx title="NetworkImageMarker.tsx"
+<NaverMapMarkerOverlay
+  latitude={37.5665}
+  longitude={126.9780}
+  image={{ httpUri: 'https://picsum.photos/40/40' }}
+  width={40}
+  height={40}
+  anchor={{ x: 0.5, y: 1 }}
+  caption={{ text: '웹 이미지 마커' }}
+/>
+
+// 고해상도 이미지 사용 예시
+<NaverMapMarkerOverlay
+  latitude={37.5665}
+  longitude={126.9780}
+  image={{ httpUri: 'https://example.com/marker-icon@2x.png' }}
+  width={30}
+  height={30}
+  anchor={{ x: 0.5, y: 1 }}
+/>
+```
+
+<Callout type="info">
+  웹 이미지는 자동으로 캐싱됩니다. 단, 현재는 커스텀 헤더를 지원하지 않습니다.
+</Callout>
+
+## 5. 커스텀 뷰 마커
+
+React Native 컴포넌트를 직접 마커로 사용할 수 있습니다.
+
+
+
+## 기본 커스텀 뷰
+
+
+
+```tsx title="CustomViewMarker.tsx"
+import { View, Text } from 'react-native';
+
+const CustomMarkerExample = () => {
+  return (
+    <NaverMapMarkerOverlay
+      latitude={37.5665}
+      longitude={126.9780}
+      width={80}
+      height={40}
+      anchor={{ x: 0.5, y: 1 }}
+    >
+      <View
+        style={{
+          backgroundColor: '#FF6B6B',
+          paddingHorizontal: 12,
+          paddingVertical: 8,
+          borderRadius: 20,
+          borderWidth: 2,
+          borderColor: 'white',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+        }}
+        collapsable={false}  // iOS New Architecture에서 필수
+      >
+        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 12 }}>
+          커스텀 마커
+        </Text>
+      </View>
+    </NaverMapMarkerOverlay>
+  );
+};
+```
+
+
+
+## 동적 커스텀 마커
+
+
+
+```tsx title="DynamicCustomMarker.tsx"
+interface DynamicMarkerProps {
+  latitude: number;
+  longitude: number;
+  count: number;
+  type: 'restaurant' | 'cafe' | 'shop';
+}
+
+const DynamicCustomMarker: React.FC<DynamicMarkerProps> = ({
+  latitude,
+  longitude,
+  count,
+  type,
+}) => {
+  const getMarkerStyle = () => {
+    switch (type) {
+      case 'restaurant':
+        return { backgroundColor: '#FF6B6B', icon: '🍽️' };
+      case 'cafe':
+        return { backgroundColor: '#4ECDC4', icon: '☕' };
+      case 'shop':
+        return { backgroundColor: '#45B7D1', icon: '🛍️' };
+      default:
+        return { backgroundColor: '#6C5CE7', icon: '📍' };
+    }
+  };
+
+  const style = getMarkerStyle();
+  const size = count > 10 ? 60 : count > 5 ? 50 : 40;
+
+  return (
+    <NaverMapMarkerOverlay
+      latitude={latitude}
+      longitude={longitude}
+      width={size}
+      height={size}
+      anchor={{ x: 0.5, y: 0.5 }}
+    >
+      <View
+        key={`${type}-${count}-${size}`} // 의존성이 변경될 때 리렌더링
+        style={{
+          width: size,
+          height: size,
+          backgroundColor: style.backgroundColor,
+          borderRadius: size / 2,
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderWidth: 3,
+          borderColor: 'white',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+        }}
+        collapsable={false}
+      >
+        <Text style={{ fontSize: size > 50 ? 16 : 12 }}>{style.icon}</Text>
+        {count > 1 && (
+          <Text
+            style={{
+              color: 'white',
+              fontSize: size > 50 ? 12 : 10,
+              fontWeight: 'bold',
+              marginTop: 2,
+            }}
+          >
+            {count}
+          </Text>
+        )}
+      </View>
+    </NaverMapMarkerOverlay>
+  );
+};
+```
+
+
+
+## 애니메이션 커스텀 마커
+
+
+
+```tsx title="AnimatedMarker.tsx"
+import { useEffect, useRef } from 'react';
+import { Animated, View, Text } from 'react-native';
+
+const AnimatedCustomMarker = ({ latitude, longitude, isActive }) => {
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+  const rotateAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (isActive) {
+      // 활성화 시 펄스 효과
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(scaleAnim, {
+            toValue: 1.2,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(scaleAnim, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+
+      // 회전 효과
+      Animated.loop(
+        Animated.timing(rotateAnim, {
+          toValue: 1,
+          duration: 3000,
+          useNativeDriver: true,
+        })
+      ).start();
+    } else {
+      scaleAnim.stopAnimation();
+      rotateAnim.stopAnimation();
+      scaleAnim.setValue(1);
+      rotateAnim.setValue(0);
+    }
+  }, [isActive, scaleAnim, rotateAnim]);
+
+  const rotate = rotateAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
+
+  return (
+    <NaverMapMarkerOverlay
+      latitude={latitude}
+      longitude={longitude}
+      width={50}
+      height={50}
+      anchor={{ x: 0.5, y: 0.5 }}
+    >
+      <Animated.View
+        style={{
+          width: 50,
+          height: 50,
+          transform: [{ scale: scaleAnim }, { rotate }],
+        }}
+        collapsable={false}
+      >
+        <View
+          style={{
+            width: 50,
+            height: 50,
+            backgroundColor: isActive ? '#FF6B6B' : '#6C5CE7',
+            borderRadius: 25,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderWidth: 3,
+            borderColor: 'white',
+          }}
+        >
+          <Text style={{ fontSize: 20 }}>{isActive ? '🎯' : '📍'}</Text>
+        </View>
+      </Animated.View>
+    </NaverMapMarkerOverlay>
+  );
+};
+```
+
+## 마커 상호작용
+
+
+
+## 마커 이벤트 처리
+
+
+
+```tsx title="MarkerEvents.tsx"
+<NaverMapMarkerOverlay
+  latitude={37.5665}
+  longitude={126.9780}
+  image={{ symbol: 'red' }}
+  onTap={() => {
+    console.log('마커가 탭되었습니다!');
+    // 상세 정보 표시, 모달 열기 등
+  }}
+  caption={{
+    text: '탭 가능한 마커',
+    textSize: 14,
+    color: '#333333',
+    haloColor: '#FFFFFF',
+  }}
+  subCaption={{
+    text: '부제목',
+    textSize: 12,
+    color: '#666666',
+  }}
+/>
+```
+
+
+
+## 마커 상태 관리
+
+
+
+```tsx title="MarkerStateManagement.tsx"
+const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(null);
+
+const markers = [
+  { id: '1', latitude: 37.5665, longitude: 126.9780, title: '서울시청' },
+  { id: '2', latitude: 37.5651, longitude: 126.9895, title: '명동' },
+  { id: '3', latitude: 37.5547, longitude: 126.9706, title: '용산역' },
+];
+
+return (
+  <NaverMapView style={{ flex: 1 }}>
+    {markers.map((marker) => (
+      <NaverMapMarkerOverlay
+        key={marker.id}
+        latitude={marker.latitude}
+        longitude={marker.longitude}
+        image={{
+          symbol: selectedMarkerId === marker.id ? 'red' : 'blue'
+        }}
+        onTap={() => setSelectedMarkerId(marker.id)}
+        caption={{ text: marker.title }}
+        width={selectedMarkerId === marker.id ? 40 : 30}
+        height={selectedMarkerId === marker.id ? 40 : 30}
+      />
+    ))}
+  </NaverMapView>
+);
+```
+
+## 성능 최적화 가이드
+
+
+
+## 1. 마커 타입별 성능 비교
+
+
+
+| 마커 타입 | 성능 | 캐싱 | 사용 권장 |
+|----------|------|------|-----------|
+| 기본 심볼 | ⭐⭐⭐⭐⭐ | ✅ | 대량의 단순 마커 |
+| 네이티브 에셋 | ⭐⭐⭐⭐⭐ | ✅ | 커스텀 아이콘이 필요한 경우 |
+| 웹 이미지 | ⭐⭐⭐ | ✅ | 동적 이미지가 필요한 경우 |
+| 로컬 리소스 | ⭐⭐⭐⭐ | ✅ | React Native 에셋 활용 |
+| 커스텀 뷰 | ⭐⭐ | ❌ | 복잡한 UI가 필요한 소량 마커 |
+
+
+
+## 2. 커스텀 뷰 마커 최적화
+
+
+
+<Callout type="warn">
+  **커스텀 뷰 마커 주의사항:**
+
+  - 많은 수의 커스텀 뷰 마커는 성능에 큰 영향을 미칩니다
+  - 가능하면 이미지 마커 사용을 권장합니다
+  - iOS New Architecture에서는 `collapsable={false}` 필수
+  - 의존성이 변경될 때는 최상위 View의 `key` prop 업데이트 필수
+</Callout>
+
+```tsx title="OptimizedCustomMarker.tsx"
+// ❌ 잘못된 예시
+<NaverMapMarkerOverlay latitude={lat} longitude={lng}>
+  <View style={{ backgroundColor: dynamicColor }}>
+    <Text>{dynamicText}</Text>
+  </View>
+</NaverMapMarkerOverlay>
+
+// ✅ 올바른 예시
+<NaverMapMarkerOverlay latitude={lat} longitude={lng}>
+  <View
+    key={`${dynamicColor}-${dynamicText}`}  // 의존성 변경 시 key 업데이트
+    style={{ backgroundColor: dynamicColor }}
+    collapsable={false}  // iOS New Architecture 필수
+  >
+    <Text>{dynamicText}</Text>
+  </View>
+</NaverMapMarkerOverlay>
+```
+
+
+
+## 3. 대량 마커 처리
+
+
+
+```tsx title="LargeMarkerSet.tsx"
+import { useMemo } from 'react';
+
+const LargeMarkerExample = ({ markers, region }) => {
+  // 화면에 표시되는 마커만 필터링
+  const visibleMarkers = useMemo(() => {
+    const padding = 0.01;
+    return markers.filter(marker =>
+      marker.latitude >= region.latitude - region.latitudeDelta - padding &&
+      marker.latitude <= region.latitude + region.latitudeDelta + padding &&
+      marker.longitude >= region.longitude - region.longitudeDelta - padding &&
+      marker.longitude <= region.longitude + region.longitudeDelta + padding
+    );
+  }, [markers, region]);
+
+  return (
+    <NaverMapView
+      onCameraChanged={({ region: newRegion }) => {
+        // 지역 상태 업데이트
+      }}
+    >
+      {visibleMarkers.map(marker => (
+        <NaverMapMarkerOverlay
+          key={marker.id}
+          latitude={marker.latitude}
+          longitude={marker.longitude}
+          image={{ symbol: 'blue' }}
+        />
+      ))}
+    </NaverMapView>
+  );
+};
+```
+
+## 마커 애니메이션
+
+
+
+## 마커 위치 애니메이션
+
+
+
+```tsx title="AnimatedMarkerPosition.tsx"
+import { useEffect, useRef } from 'react';
+
+const AnimatedPositionMarker = ({
+  startPosition,
+  endPosition,
+  duration = 2000
+}) => {
+  const [currentPosition, setCurrentPosition] = useState(startPosition);
+
+  useEffect(() => {
+    const startTime = Date.now();
+    const startLat = startPosition.latitude;
+    const startLng = startPosition.longitude;
+    const deltaLat = endPosition.latitude - startLat;
+    const deltaLng = endPosition.longitude - startLng;
+
+    const animatePosition = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Easing function (easeInOutQuad)
+      const eased = progress < 0.5
+        ? 2 * progress * progress
+        : -1 + (4 - 2 * progress) * progress;
+
+      setCurrentPosition({
+        latitude: startLat + deltaLat * eased,
+        longitude: startLng + deltaLng * eased,
+      });
+
+      if (progress < 1) {
+        requestAnimationFrame(animatePosition);
+      }
+    };
+
+    requestAnimationFrame(animatePosition);
+  }, [startPosition, endPosition, duration]);
+
+  return (
+    <NaverMapMarkerOverlay
+      latitude={currentPosition.latitude}
+      longitude={currentPosition.longitude}
+      image={{ symbol: 'red' }}
+    />
+  );
+};
+```

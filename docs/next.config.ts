@@ -1,19 +1,45 @@
-import nextra from 'nextra';
+import { createMDX } from 'fumadocs-mdx/next';
+import type { NextConfig } from 'next';
 
-// Set up Nextra with its configuration
-const withNextra = nextra({
-  // contentDirBasePath: '/docs',
-  defaultShowCopyCode: true,
-  codeHighlight: true,
-  readingTime: true,
-});
+const withMDX = createMDX();
 
-// Export the final Next.js config with Nextra included
-export default withNextra({
-  turbopack: {
-    resolveAlias: {
-      // Path to your `mdx-components` file with extension
-      // 'next-mdx-import-source-file': './src/mdx-components.tsx',
-    },
+const config: NextConfig = {
+  reactStrictMode: true,
+  images: {
+    minimumCacheTTL: 60 * 60 * 5,
+    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+      },
+      {
+        protocol: 'https',
+        hostname: 'firebasestorage.googleapis.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+        pathname: '/mym0404/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'play-lh.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'user-images.githubusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ps.mjstudio.net',
+      },
+    ],
   },
-});
+};
+
+export default withMDX(config);
