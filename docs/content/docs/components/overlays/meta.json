@@ -2,6 +2,7 @@
   "title": "Overlays",
   "icon": "Layers",
   "pages": [
+    "common-overlay-usage",
     "naver-map-marker-overlay",
     "naver-map-circle-overlay",
     "naver-map-polygon-overlay",

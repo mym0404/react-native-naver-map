@@ -1,10 +1,6 @@
 {
   "title": "Components",
   "icon": "Component",
-  "pages": [
-    "index",
-    "naver-map-view",
-    "marker",
-    "overlays"
-  ]
+  "pages": ["naver-map-view", "overlays"],
+  "defaultOpen": true
 }
