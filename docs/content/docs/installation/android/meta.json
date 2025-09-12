@@ -1,0 +1,5 @@
+{
+  "title": "Android",
+  "icon": "Bot",
+  "pages": ["index", "permissions"]
+}

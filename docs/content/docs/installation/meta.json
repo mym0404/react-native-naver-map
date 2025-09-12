@@ -2,8 +2,9 @@
   "title": "Installation",
   "icon": "Download",
   "pages": [
+    "api-key",
     "android",
-    "ios", 
+    "ios",
     "expo"
   ]
 }

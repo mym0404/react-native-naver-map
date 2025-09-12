@@ -1,0 +1,94 @@
+---
+title: "Setup"
+description: "Expo 프로젝트에서 React Native Naver Map 기초 설정 방법"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+# Expo 기초 설정
+
+Expo 프로젝트에서 React Native Naver Map을 사용하기 위한 기초 설정 방법을 안내합니다.
+
+<Callout type="warn">
+Expo Go는 네이티브 모듈을 지원하지 않으므로 [Development Build](https://docs.expo.dev/develop/development-builds/introduction/)가 필요합니다.
+</Callout>
+
+## 1. expo-build-properties 패키지 추가
+
+네이버 Maven 저장소를 주입하기 위해 필요합니다:
+
+```bash
+npx expo install expo-build-properties
+```
+
+## 2. app.json에 Config Plugin 추가
+
+발급받은 Client ID와 함께 Config Plugin을 설정합니다:
+
+```json title="app.json"
+{
+  "expo": {
+    "name": "your-app-name",
+    "plugins": [
+      [
+        "@mj-studio/react-native-naver-map",
+        {
+          "client_id": "YOUR_CLIENT_ID_HERE"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "extraMavenRepos": ["https://repository.map.naver.com/archive/maven"]
+          }
+        }
+      ]
+    ]
+  }
+}
+```
+
+<Callout type="warn">
+`YOUR_CLIENT_ID_HERE` 부분을 네이버 클라우드 플랫폼에서 발급받은 실제 Client ID로 교체해주세요.
+</Callout>
+
+## 3. Prebuild 실행
+
+네이티브 프로젝트 파일을 생성합니다:
+
+```bash
+npx expo prebuild -p android
+npx expo prebuild -p ios
+```
+
+## 4. Development Build 생성
+
+### 로컬 빌드
+
+```bash
+# iOS
+npx expo run:ios
+
+# Android
+npx expo run:android
+```
+
+### EAS Build (클라우드 빌드)
+
+```bash
+# EAS Build 설정
+npx eas build:configure
+
+# Development Build 생성
+npx eas build --profile development --platform ios
+npx eas build --profile development --platform android
+```
+
+## 5. 개발 서버 실행
+
+Development Build가 완료되면 개발 서버를 시작합니다:
+
+```bash
+npx expo start --dev-client
+```
