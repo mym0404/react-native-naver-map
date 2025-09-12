@@ -63,7 +63,7 @@ export default async function HomePage({
 
   return (
     <main className="flex min-h-[calc(100vh-3.5rem)] flex-col">
-      <div className={'absolute-fill  dark:opacity-100 opacity-60'}>
+      <div className={'absolute-fill  dark:opacity-100 dark:block hidden'}>
         <Prism
           animationType={'rotate'}
           scale={1}
