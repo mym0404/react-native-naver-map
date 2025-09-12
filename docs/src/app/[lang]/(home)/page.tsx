@@ -1,15 +1,17 @@
 import {
   ArrowRight,
   Code2,
-  GithubIcon,
   Layers,
   MapPin,
   Package,
   StarIcon,
 } from 'lucide-react';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import { TerminalCodeBlock } from '@/components/terminal-codeblock';
+import Prism from '@/lib/components/bits/prism';
+import { ResourceCards } from '@/lib/components/resource-cards';
+import { TerminalCodeBlock } from '@/lib/components/terminal-codeblock';
 
 const getStarCount = async (): Promise<number | undefined> => {
   try {
@@ -61,10 +63,19 @@ export default async function HomePage({
 
   return (
     <main className="flex min-h-[calc(100vh-3.5rem)] flex-col">
+      <div className={'absolute-fill  dark:opacity-100 opacity-60'}>
+        <Prism
+          animationType={'rotate'}
+          scale={1}
+          offset={{ y: 120 }}
+          noise={0}
+          hueShift={0.7}
+        />
+      </div>
       {/* Hero Section */}
       <section className="relative flex flex-col items-center justify-center px-6 py-32 text-center">
         <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-b from-green-500/10 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-green-500/50 dark:from-green-500/20 via-transparent to-transparent" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-500/20 via-transparent to-transparent" />
         </div>
 
@@ -73,11 +84,11 @@ export default async function HomePage({
           src="/logo.png"
           width={200}
           height={200}
-          className="relative z-10 drop-shadow-xl transition-transform duration-300 hover:scale-105 drop-shadow-orange-400 dark:drop-shadow-blue-400"
+          className="relative z-10 drop-shadow-xl transition-transform duration-300 hover:scale-105 drop-shadow-slate-100 dark:drop-shadow-slate-50"
         />
 
         <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-6xl lg:text-7xl">
-          <span className="bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">
+          <span className=" dark:text-shadow-neutral-200  dark:text-shadow-lg bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">
             Naver Map
           </span>
           <span className="block mt-2 text-2xl text-fd-muted-foreground md:text-3xl lg:text-4xl font-normal">
@@ -229,61 +240,7 @@ export default async function HomePage({
       </section>
 
       {/* Resources Section */}
-      <section className="px-6 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-12 text-center text-3xl font-bold">Explore More</h2>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <Link
-              href={`/${lang}/docs`}
-              className="group rounded-lg border border-fd-border bg-fd-card p-6 transition-all hover:border-fd-primary/50 hover:bg-fd-muted/50"
-            >
-              <h3 className="font-semibold group-hover:text-fd-primary">
-                Documentation
-              </h3>
-              <p className="text-sm text-fd-muted-foreground">
-                Complete API reference and guides
-              </p>
-            </Link>
-            <Link
-              href={`/${lang}/docs/examples`}
-              className="group rounded-lg border border-fd-border bg-fd-card p-6 transition-all hover:border-fd-primary/50 hover:bg-fd-muted/50"
-            >
-              <h3 className="font-semibold group-hover:text-fd-primary">
-                Examples
-              </h3>
-              <p className="text-sm text-fd-muted-foreground">
-                Sample implementations and demos
-              </p>
-            </Link>
-            <a
-              href="https://navermaps.github.io/ios-map-sdk/guide-ko/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group rounded-lg border border-fd-border bg-fd-card p-6 transition-all hover:border-fd-primary/50 hover:bg-fd-muted/50"
-            >
-              <h3 className="font-semibold group-hover:text-fd-primary">
-                iOS SDK
-              </h3>
-              <p className="text-sm text-fd-muted-foreground">
-                Native iOS documentation
-              </p>
-            </a>
-            <a
-              href="https://navermaps.github.io/android-map-sdk/guide-ko/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group rounded-lg border border-fd-border bg-fd-card p-6 transition-all hover:border-fd-primary/50 hover:bg-fd-muted/50"
-            >
-              <h3 className="font-semibold group-hover:text-fd-primary">
-                Android SDK
-              </h3>
-              <p className="text-sm text-fd-muted-foreground">
-                Native Android documentation
-              </p>
-            </a>
-          </div>
-        </div>
-      </section>
+      <ResourceCards lang={lang} />
     </main>
   );
 }
