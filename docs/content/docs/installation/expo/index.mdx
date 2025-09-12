@@ -1,29 +1,29 @@
 ---
 title: "Setup"
-description: "Expo 프로젝트에서 React Native Naver Map 기초 설정 방법"
+description: "Basic setup for React Native Naver Map in Expo projects"
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout'
 
-# Expo 기초 설정
+# Expo Basic Setup
 
-Expo 프로젝트에서 React Native Naver Map을 사용하기 위한 기초 설정 방법을 안내합니다.
+This guide explains how to configure React Native Naver Map in Expo projects.
 
 <Callout type="warn">
-Expo Go는 네이티브 모듈을 지원하지 않으므로 [Development Build](https://docs.expo.dev/develop/development-builds/introduction/)가 필요합니다.
+Expo Go does not support native modules, so you need a [Development Build](https://docs.expo.dev/develop/development-builds/introduction/).
 </Callout>
 
-## 1. expo-build-properties 패키지 추가
+## 1. Add expo-build-properties Package
 
-네이버 Maven 저장소를 주입하기 위해 필요합니다:
+This is required to inject the Naver Maven repository:
 
 ```bash
 npx expo install expo-build-properties
 ```
 
-## 2. app.json에 Config Plugin 추가
+## 2. Add Config Plugin to app.json
 
-발급받은 Client ID와 함께 Config Plugin을 설정합니다:
+Configure the Config Plugin with your issued Client ID:
 
 ```json title="app.json"
 {
@@ -50,21 +50,21 @@ npx expo install expo-build-properties
 ```
 
 <Callout type="warn">
-`YOUR_CLIENT_ID_HERE` 부분을 네이버 클라우드 플랫폼에서 발급받은 실제 Client ID로 교체해주세요.
+Replace `YOUR_CLIENT_ID_HERE` with your actual Client ID issued from Naver Cloud Platform.
 </Callout>
 
-## 3. Prebuild 실행
+## 3. Run Prebuild
 
-네이티브 프로젝트 파일을 생성합니다:
+Generate native project files:
 
 ```bash
 npx expo prebuild -p android
 npx expo prebuild -p ios
 ```
 
-## 4. Development Build 생성
+## 4. Create Development Build
 
-### 로컬 빌드
+### Local Build
 
 ```bash
 # iOS
@@ -74,20 +74,20 @@ npx expo run:ios
 npx expo run:android
 ```
 
-### EAS Build (클라우드 빌드)
+### EAS Build (Cloud Build)
 
 ```bash
-# EAS Build 설정
+# Configure EAS Build
 npx eas build:configure
 
-# Development Build 생성
+# Create Development Build
 npx eas build --profile development --platform ios
 npx eas build --profile development --platform android
 ```
 
-## 5. 개발 서버 실행
+## 5. Start Development Server
 
-Development Build가 완료되면 개발 서버를 시작합니다:
+Once the Development Build is complete, start the development server:
 
 ```bash
 npx expo start --dev-client

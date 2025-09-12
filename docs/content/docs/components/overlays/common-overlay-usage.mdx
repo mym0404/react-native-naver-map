@@ -6,55 +6,55 @@ description: "Common usage patterns for map overlays"
 import { Callout } from 'fumadocs-ui/components/callout'
 import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
 
-오버레이는 지도 위에 추가 정보를 표시하는 컴포넌트들입니다. 모든 오버레이는 공통 속성들을 공유하며, 각각의 고유한 기능을 제공합니다.
+Overlays are components that display additional information on top of the map. All overlays share common properties while providing their own unique functionality.
 
 ## Base Overlay Properties
 
-모든 오버레이 컴포넌트는 `BaseOverlayProps`를 상속받아 다음 공통 속성들을 지원합니다:
+All overlay components inherit `BaseOverlayProps` and support the following common properties:
 
 <AutoTypeTable path="../src/types/BaseOverlayProps.ts" name="BaseOverlayProps" />
 
-## Z-Index 레이어 시스템
+## Z-Index Layer System
 
-오버레이들은 계층 구조로 렌더링되며, 두 가지 Z-Index로 렌더링 순서를 제어할 수 있습니다.
+Overlays are rendered in a hierarchical structure, and you can control the rendering order with two types of Z-Index.
 
 ### Global Z-Index vs Z-Index
 
-- **`globalZIndex`**: 전역 렌더링 순서를 결정하며, 오버레이 타입 간의 계층을 제어합니다
-  - 기본값: 오버레이 타입별로 고정 (마커: 200000, 폴리곤: -200000 등)
-  - 0 이상: 지도 심벌 위에 렌더링
-  - 0 미만: 지도 심벌 아래에 렌더링
+- **`globalZIndex`**: Determines the global rendering order and controls the hierarchy between overlay types
+  - Default: Fixed per overlay type (marker: 200000, polygon: -200000, etc.)
+  - 0 or higher: Rendered above map symbols
+  - Below 0: Rendered below map symbols
 
-- **`zIndex`**: 같은 globalZIndex를 가진 오버레이들 간의 순서를 제어합니다
-  - 기본값: 0
-  - 높은 값이 위에 표시됨
-  - 같은 타입의 오버레이들 간 우선순위 결정
+- **`zIndex`**: Controls the order among overlays with the same globalZIndex
+  - Default: 0
+  - Higher values are displayed on top
+  - Determines priority among overlays of the same type
 
-### Global Z-Index 기본값
+### Default Global Z-Index Values
 ```tsx
-// 오버레이 타입별 기본 globalZIndex 값들
-정보 창: 400000          // 가장 위
-위치 오버레이: 300000
-마커: 200000
-화살표 오버레이: 100000
-// (지도 심벌 = 0)
-경로선 오버레이: -100000
-셰이프(폴리곤, 폴리라인, 서클): -200000
-지상 오버레이: -300000    // 가장 아래
-// (지도 배경)
+// Default globalZIndex values by overlay type
+Info Windows: 400000          // Topmost
+Location Overlay: 300000
+Markers: 200000
+Arrow Overlays: 100000
+// (Map Symbols = 0)
+Path Overlays: -100000
+Shapes (Polygon, Polyline, Circle): -200000
+Ground Overlays: -300000    // Bottommost
+// (Map Background)
 ```
 
 <Callout>
-  zIndex 속성을 사용하면 globalZIndex가 동일한 오버레이간의 겹침 우선순위를 지정할 수 있습니다. 즉, 두 오버레이의 globalZIndex가 동일하다면 zIndex가 큰 오버레이가 작은 오버레이를 덮습니다. 예를 들어 마커의 zIndex를 1로 지정하고, 지상 오버레이의 zIndex를 2로 지정했다 하더라도 마커의 기본 globalZIndex는 200000, 지상 오버레이의 기본 globalZIndex는 -300000 이므로 마커가 지상 오버레이를 덮습니다. zIndex의 기본값은 오버레이의 유형과 무관하게 0이므로, 동일한 유형의 오버레이간의 우선순위만을 지정하고자 하는 경우 globalZIndex보다 직관적으로 사용할 수 있습니다.
+  The zIndex property allows you to specify overlap priority among overlays with the same globalZIndex. If two overlays have the same globalZIndex, the overlay with a higher zIndex will cover the one with a lower zIndex. For example, even if you set a marker's zIndex to 1 and a ground overlay's zIndex to 2, the marker will still cover the ground overlay because the marker's default globalZIndex is 200000 while the ground overlay's default globalZIndex is -300000. Since the default zIndex value is 0 regardless of overlay type, it can be used more intuitively than globalZIndex when you only want to specify priority among overlays of the same type.
 </Callout>
 
-## 줌 레벨 제어
+## Zoom Level Control
 
-오버레이의 표시 여부를 줌 레벨에 따라 제어할 수 있습니다:
+You can control overlay visibility based on zoom levels:
 
 ```tsx
 <NaverMapMarkerOverlay
-  // 줌 레벨 10-15에서만 표시
+  // Display only between zoom levels 10-15
   minZoom={10}
   maxZoom={15}
   isMinZoomInclusive={true}
@@ -62,31 +62,31 @@ import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
 />
 
 <NaverMapPolygonOverlay
-  // 줌 레벨 8 이상에서만 표시
+  // Display only at zoom level 8 and above
   minZoom={8}
-  // 줌 레벨 8은 포함하여 표시
+  // Include zoom level 8
   isMinZoomInclusive={true}
 />
 ```
 
-## 이벤트 처리
+## Event Handling
 
-모든 오버레이는 `onTap` 이벤트를 지원합니다:
+All overlays support the `onTap` event:
 
 ```tsx
 <NaverMapCircleOverlay
   onTap={() => {
     console.log('Circle overlay tapped');
-    // 상세 정보 표시, 상태 변경 등
+    // Show details, change state, etc.
   }}
 />
 ```
 
-## 마커 (NaverMapMarkerOverlay)
+## Markers (NaverMapMarkerOverlay)
 
-마커는 지도 위의 특정 위치를 표시하는 가장 기본적인 오버레이입니다.
+Markers are the most basic overlays that indicate specific locations on the map.
 
-### 기본 사용법
+### Basic Usage
 
 ```tsx
 import { NaverMapView, NaverMapMarkerOverlay } from '@mj-studio/react-native-naver-map';
@@ -98,20 +98,20 @@ function MapWithMarker() {
         latitude={37.5665}
         longitude={126.9780}
         anchor={{ x: 0.5, y: 1 }}
-        caption={{ text: "서울시청" }}
+        caption={{ text: "Seoul City Hall" }}
       />
     </NaverMapView>
   );
 }
 ```
 
-### 마커 이미지 타입
+### Marker Image Types
 
-React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
+React Native Naver Map supports 5 types of marker images:
 
-#### 1. 기본 심볼
+#### 1. Default Symbols
 
-네이버 지도가 제공하는 기본 심볼을 사용합니다:
+Use default symbols provided by Naver Maps:
 
 ```tsx
 <NaverMapMarkerOverlay
@@ -121,9 +121,9 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 />
 ```
 
-사용 가능한 심볼: `green`, `red`, `blue`, `yellow`, `gray`, `pink`, `lightblue`
+Available symbols: `green`, `red`, `blue`, `yellow`, `gray`, `pink`, `lightblue`
 
-#### 2. 로컬 이미지 리소스
+#### 2. Local Image Resources
 
 ```tsx
 <NaverMapMarkerOverlay
@@ -136,15 +136,15 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 ```
 
 <Callout type="info">
-  Debug/Release 빌드 시 크기가 다르게 나올 수 있으므로 `width`와 `height`를 명시하는 것을 권장합니다.
+  It's recommended to specify `width` and `height` as sizes may differ between Debug/Release builds.
 </Callout>
 
-#### 3. 네이티브 리소스
+#### 3. Native Resources
 
 <Tabs items={['iOS', 'Android']}>
   <Tab value="Basic">
     ```tsx
-    // iOS: Bundle의 이미지 asset
+    // iOS: Image asset from Bundle
     <NaverMapMarkerOverlay
       image={{ assetName: 'marker_icon' }}
       width={40}
@@ -154,7 +154,7 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
   </Tab>
   <Tab value="Basic">
     ```tsx
-    // Android: drawable 리소스
+    // Android: drawable resource
     <NaverMapMarkerOverlay
       image={{ assetName: 'ic_marker' }}
       width={40}
@@ -164,7 +164,7 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
   </Tab>
 </Tabs>
 
-#### 4. 네트워크 이미지
+#### 4. Network Images
 
 ```tsx
 <NaverMapMarkerOverlay
@@ -176,7 +176,7 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 />
 ```
 
-#### 5. 커스텀 React View
+#### 5. Custom React View
 
 ```tsx
 <NaverMapMarkerOverlay
@@ -186,8 +186,8 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
   height={100}
 >
   <View
-    key={`${text}/${color}`} // 변경사항 추적을 위한 key
-    collapsable={false}       // iOS New Architecture 필수
+    key={`${text}/${color}`} // Key for tracking changes
+    collapsable={false}       // Required for iOS New Architecture
     style={styles.customMarker}
   >
     <Text>{text}</Text>
@@ -197,88 +197,88 @@ React Native Naver Map은 5가지 마커 이미지 타입을 지원합니다:
 ```
 
 <Callout type="warn">
-  커스텀 View는 성능에 영향을 줄 수 있습니다. 대량의 마커에는 이미지 사용을 권장합니다.
+  Custom Views can impact performance. Using images is recommended for a large number of markers.
 </Callout>
 
-## 캡션과 서브캡션
+## Captions and Sub-Captions
 
-마커에 텍스트 라벨을 추가할 수 있습니다:
+You can add text labels to markers:
 
 ```tsx
 <NaverMapMarkerOverlay
   latitude={37.5665}
   longitude={126.9780}
   caption={{
-    text: "메인 텍스트",
+    text: "Main Text",
     textSize: 16,
     color: '#000000',
     haloColor: '#FFFFFF',
   }}
   subCaption={{
-    text: "서브 텍스트",
+    text: "Sub Text",
     textSize: 12,
     color: '#666666',
   }}
 />
 ```
 
-#### 캡션 속성
+#### Caption Properties
 
-| 속성 | 타입 | 설명 |
+| Property | Type | Description |
 |---|---|---|
-| `text` | `string` | 표시할 텍스트 |
-| `textSize` | `number` | 텍스트 크기 |
-| `color` | `string` | 텍스트 색상 |
-| `haloColor` | `string` | 텍스트 테두리 색상 |
-| `requestedWidth` | `number` | 요청 너비 |
-| `minZoom` | `number` | 최소 줌 레벨 |
-| `maxZoom` | `number` | 최대 줌 레벨 |
+| `text` | `string` | Text to display |
+| `textSize` | `number` | Text size |
+| `color` | `string` | Text color |
+| `haloColor` | `string` | Text outline color |
+| `requestedWidth` | `number` | Requested width |
+| `minZoom` | `number` | Minimum zoom level |
+| `maxZoom` | `number` | Maximum zoom level |
 
-### 마커 설정
+### Marker Configuration
 
-#### 앵커 포인트
+#### Anchor Point
 
-앵커는 마커 이미지의 어느 지점이 좌표에 위치할지 결정합니다:
-
-```tsx
-<NaverMapMarkerOverlay
-  anchor={{ x: 0.5, y: 1 }} // 하단 중앙
-  // x: 0 (왼쪽) ~ 1 (오른쪽)
-  // y: 0 (상단) ~ 1 (하단)
-/>
-```
-
-#### 기타 설정
+The anchor determines which point of the marker image will be positioned at the coordinates:
 
 ```tsx
 <NaverMapMarkerOverlay
-  isIconPerspectiveEnabled={true} // 원근감 적용
-  angle={45} // 회전 각도
+  anchor={{ x: 0.5, y: 1 }} // Bottom center
+  // x: 0 (left) ~ 1 (right)
+  // y: 0 (top) ~ 1 (bottom)
 />
 ```
 
-#### 표시 설정
+#### Other Settings
 
 ```tsx
 <NaverMapMarkerOverlay
-  isHidden={false}           // 마커 숨김/표시
-  isHideCollidedSymbols={true} // 충돌하는 심볼 숨김
-  isHideCollidedMarkers={false} // 충돌하는 마커 숨김
-  isHideCollidedCaptions={true} // 충돌하는 캡션 숨김
-  isForceShowIcon={false}     // 아이콘 강제 표시
-  isForceShowCaption={false}  // 캡션 강제 표시
+  isIconPerspectiveEnabled={true} // Apply perspective
+  angle={45} // Rotation angle
+/>
+```
+
+#### Display Settings
+
+```tsx
+<NaverMapMarkerOverlay
+  isHidden={false}           // Hide/show marker
+  isHideCollidedSymbols={true} // Hide colliding symbols
+  isHideCollidedMarkers={false} // Hide colliding markers
+  isHideCollidedCaptions={true} // Hide colliding captions
+  isForceShowIcon={false}     // Force show icon
+  isForceShowCaption={false}  // Force show caption
 />
 ```
 
 
-#### 이미지 캐싱
+#### Image Caching
 
-동일한 이미지를 사용하는 마커들에 대해 자동으로 캐싱이 적용됩니다:
+Automatic caching is applied for markers using the same image:
 
 ```tsx
-// reuseIdentifier는 자동으로 처리됨
+// reuseIdentifier is automatically handled
 <NaverMapMarkerOverlay
   image={require('./marker.png')}
-  // 동일한 이미지는 캐싱되어 재사용
+  // Same images are cached and reused
 />
 ```

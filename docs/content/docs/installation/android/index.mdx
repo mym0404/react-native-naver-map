@@ -1,17 +1,17 @@
 ---
 title: "Setup"
-description: "Android 플랫폼에서 React Native Naver Map 기초 설정 방법"
+description: "Basic setup for React Native Naver Map on Android platform"
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout'
 
-# Android 기초 설정
+# Android Basic Setup
 
-Android 플랫폼에서 React Native Naver Map을 사용하기 위한 기초 설정 방법을 안내합니다.
+This guide explains how to configure React Native Naver Map for Android platform.
 
-## 1. Maven 저장소 추가
+## 1. Add Maven Repository
 
-`android/build.gradle` 파일에 네이버 Maven 저장소를 추가합니다:
+Add the Naver Maven repository to your `android/build.gradle` file:
 
 ```groovy title="android/build.gradle"
 allprojects {
@@ -23,9 +23,9 @@ allprojects {
 }
 ```
 
-## 2. AndroidManifest.xml에 Naver SDK 키 추가
+## 2. Add Naver SDK Key to AndroidManifest.xml
 
-발급받은 Client ID를 AndroidManifest.xml에 추가합니다:
+Add your issued Client ID to AndroidManifest.xml:
 
 ```xml title="android/app/src/main/AndroidManifest.xml"
 <manifest>
@@ -33,7 +33,7 @@ allprojects {
         <meta-data
             android:name="com.naver.maps.map.NCP_KEY_ID"
             android:value="YOUR_CLIENT_ID_HERE" />
-        <!-- (legacy) 2024년 4월 17일 이전에 AI NAVER API를 사용하던 지도 API 고객 전용 -->
+        <!-- (legacy) For map API customers who used AI NAVER API before April 17, 2024 -->
         <!-- https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1 -->
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
@@ -43,5 +43,5 @@ allprojects {
 ```
 
 <Callout type="warn">
-`YOUR_CLIENT_ID_HERE` 부분을 네이버 클라우드 플랫폼에서 발급받은 실제 Client ID로 교체해주세요.
+Replace `YOUR_CLIENT_ID_HERE` with your actual Client ID issued from Naver Cloud Platform.
 </Callout>

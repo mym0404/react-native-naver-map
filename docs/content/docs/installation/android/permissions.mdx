@@ -1,40 +1,40 @@
 ---
 title: "Permissions"
-description: "Android에서 위치 권한 설정 방법"
+description: "How to set up location permissions on Android"
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout'
 
-# Android 권한 설정
+# Android Permission Setup
 
-현재 위치를 표시하기 위한 위치 권한 설정 방법을 안내합니다.
+This guide explains how to set up location permissions to display the current location.
 
 <Callout type="info">
-네이버 맵 SDK에서 내부적으로 사용하는 `FusedLocationSource`는 사용자가 [isShowLocationButton prop](https://rnnavermap.mjstudio.net/docs/api#isShowLocationButton)을 `true`로 설정하는 순간 자동으로 권한을 요청합니다.
+The `FusedLocationSource` used internally by the Naver Maps SDK automatically requests permissions when the user sets the [isShowLocationButton prop](https://rnnavermap.mjstudio.net/docs/api#isShowLocationButton) to `true`.
 </Callout>
 
-## AndroidManifest.xml 권한 추가
+## Add Permissions to AndroidManifest.xml
 
-`AndroidManifest.xml`에 다음 권한을 추가합니다:
+Add the following permissions to your `AndroidManifest.xml`:
 
 ```xml title="android/app/src/main/AndroidManifest.xml"
 <manifest>
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-  <!-- 백그라운드 위치 권한 (선택사항) -->
+  <!-- Background location permission (optional) -->
   <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 </manifest>
 ```
 
-### 권한 설명
+### Permission Descriptions
 
-- **`ACCESS_FINE_LOCATION`**: 정확한 위치 정보 접근 권한
-- **`ACCESS_COARSE_LOCATION`**: 대략적인 위치 정보 접근 권한
-- **`ACCESS_BACKGROUND_LOCATION`**: 백그라운드에서 위치 정보 접근 권한 (선택사항)
+- **`ACCESS_FINE_LOCATION`**: Permission to access precise location information
+- **`ACCESS_COARSE_LOCATION`**: Permission to access approximate location information  
+- **`ACCESS_BACKGROUND_LOCATION`**: Permission to access location information in background (optional)
 
-## 코드에서 권한 요청하기
+## Request Permissions in Code
 
-### react-native-permissions 사용
+### Using react-native-permissions
 
 ```bash
 pnpm add react-native-permissions
@@ -59,7 +59,7 @@ useEffect(() => {
 }, []);
 ```
 
-### Expo 프로젝트 (expo-location 사용)
+### Expo Project (using expo-location)
 
 ```tsx
 import * as Location from 'expo-location';

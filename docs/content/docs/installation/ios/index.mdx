@@ -1,25 +1,25 @@
 ---
 title: "Setup"
-description: "iOS 플랫폼에서 React Native Naver Map 기초 설정 방법"
+description: "Basic setup for React Native Naver Map on iOS platform"
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout'
 
-# iOS 기초 설정
+# iOS Basic Setup
 
-iOS 플랫폼에서 React Native Naver Map을 사용하기 위한 기초 설정 방법을 안내합니다.
+This guide explains how to configure React Native Naver Map for iOS platform.
 
-## 1. CocoaPods 설치
+## 1. Install CocoaPods
 
-iOS의 경우 CocoaPods 설치가 필요합니다:
+CocoaPods installation is required for iOS:
 
 ```bash
 cd ios && pod install
 ```
 
-## 2. Info.plist에 Naver SDK 키 설정
+## 2. Configure Naver SDK Key in Info.plist
 
-발급받은 Client ID를 Info.plist 파일에 추가합니다:
+Add your issued Client ID to the Info.plist file:
 
 ```xml title="ios/YourProject/Info.plist"
 <?xml version="1.0" encoding="UTF-8"?>
@@ -28,7 +28,7 @@ cd ios && pod install
 <dict>
   <key>NMFNcpKeyId</key>
   <string>YOUR_CLIENT_ID_HERE</string>
-  <!-- (legacy) 2024년 4월 17일 이전에 AI NAVER API를 사용하던 지도 API 고객 전용 -->
+  <!-- (legacy) For map API customers who used AI NAVER API before April 17, 2024 -->
   <!-- https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1 -->
   <key>NMFClientId</key>
   <string>YOUR_CLIENT_ID_HERE</string>
@@ -37,5 +37,5 @@ cd ios && pod install
 ```
 
 <Callout type="warn">
-`YOUR_CLIENT_ID_HERE` 부분을 네이버 클라우드 플랫폼에서 발급받은 실제 Client ID로 교체해주세요.
+Replace `YOUR_CLIENT_ID_HERE` with your actual Client ID issued from Naver Cloud Platform.
 </Callout>

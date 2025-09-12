@@ -1,26 +1,26 @@
 ---
 title: "Marker Clustering"
-description: "네이버 지도에서 제공하는 마커 클러스터링 기능 사용법"
+description: "How to use marker clustering feature provided by Naver Map"
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout'
 
-# 마커 클러스터링
+# Marker Clustering
 
-네이버 지도 라이브러리에서 제공하는 내장 마커 클러스터링 기능을 사용하여 많은 수의 마커를 효율적으로 표시할 수 있습니다.
+You can efficiently display a large number of markers using the built-in marker clustering feature provided by the Naver Map library.
 
 <Callout type="info">
-  마커 클러스터링은 지도 상의 가까운 거리에 있는 여러 마커들을 하나의 클러스터로 묶어 표시하는 기법입니다.
-  네이버 지도 라이브러리는 이 기능을 네이티브 레벨에서 지원하므로 별도의 외부 라이브러리가 필요하지 않습니다.
+  Marker clustering is a technique that groups multiple markers at close distances on the map into a single cluster for display.
+  The Naver Map library supports this feature at the native level, so no additional external libraries are needed.
 </Callout>
 
-## 기본 클러스터링 구현
+## Basic Clustering Implementation
 
-네이버 지도의 클러스터링은 `NaverMapView` 컴포넌트의 `clusters` 속성을 통해 설정할 수 있습니다.
+Naver Map clustering can be configured through the `clusters` property of the `NaverMapView` component.
 
-### 1. ClusterMarkerProp 타입 정의
+### 1. ClusterMarkerProp Type Definition
 
-클러스터에 포함될 각 마커는 `ClusterMarkerProp` 타입을 준수해야 합니다:
+Each marker to be included in the cluster must comply with the `ClusterMarkerProp` type:
 
 ```tsx
 import type { ClusterMarkerProp } from '@mj-studio/react-native-naver-map';
@@ -30,7 +30,7 @@ const clusterMarkers: ClusterMarkerProp[] = [
     identifier: 'marker-1',
     latitude: 37.5665,
     longitude: 126.9780,
-    image: { symbol: 'red' }, // 또는 { httpUri: 'https://...' }, { assetName: 'marker' } 등
+    image: { symbol: 'red' }, // Or { httpUri: 'https://...' }, { assetName: 'marker' } etc.
     width: 40,
     height: 40,
   },
@@ -42,11 +42,11 @@ const clusterMarkers: ClusterMarkerProp[] = [
     width: 40,
     height: 40,
   },
-  // ... 더 많은 마커들
+  // ... more markers
 ];
 ```
 
-### 2. 기본 클러스터링 구현
+### 2. Basic Clustering Implementation
 
 ```tsx
 import React, { useState, useMemo } from 'react';
@@ -54,7 +54,7 @@ import { View } from 'react-native';
 import { NaverMapView, type ClusterMarkerProp } from '@mj-studio/react-native-naver-map';
 
 const ClusteredMapExample = () => {
-  // 마커 데이터 생성
+  // Generate marker data
   const clusterMarkers = useMemo<ClusterMarkerProp[]>(() => {
     return generateMarkerData().map((marker, index) => ({
       identifier: `marker-${index}`,
@@ -66,16 +66,16 @@ const ClusteredMapExample = () => {
     }));
   }, []);
 
-  // 클러스터 설정
+  // Cluster configuration
   const clusters = useMemo(() => [
     {
-      width: 50,          // 클러스터 마커의 너비
-      height: 50,         // 클러스터 마커의 높이
+      width: 50,          // Width of cluster marker
+      height: 50,         // Height of cluster marker
       markers: clusterMarkers,
-      screenDistance: 40, // 클러스터링 기준 화면 거리 (픽셀)
-      minZoom: 5,         // 클러스터링할 최소 줌 레벨
-      maxZoom: 18,        // 클러스터링할 최대 줌 레벨
-      animate: true,      // 클러스터 펼침/합침 애니메이션
+      screenDistance: 40, // Screen distance criteria for clustering (pixels)
+      minZoom: 5,         // Minimum zoom level for clustering
+      maxZoom: 18,        // Maximum zoom level for clustering
+      animate: true,      // Cluster expand/collapse animation
     }
   ], [clusterMarkers]);
 
@@ -89,23 +89,23 @@ const ClusteredMapExample = () => {
       }}
       clusters={clusters}
       onTapClusterLeaf={({ markerIdentifier }) => {
-        console.log('마커 클릭됨:', markerIdentifier);
+        console.log('Marker clicked:', markerIdentifier);
       }}
     />
   );
 };
 ```
 
-## 고급 클러스터링 설정
+## Advanced Clustering Configuration
 
-### 다중 클러스터 그룹
+### Multiple Cluster Groups
 
-서로 다른 설정을 가진 여러 클러스터 그룹을 동시에 사용할 수 있습니다:
+You can use multiple cluster groups with different configurations simultaneously:
 
 ```tsx
 const multiClusters = useMemo(() => [
   {
-    // 첫 번째 클러스터 그룹 - 일반 마커들
+    // First cluster group - regular markers
     width: 40,
     height: 40,
     markers: regularMarkers,
@@ -115,7 +115,7 @@ const multiClusters = useMemo(() => [
     animate: true,
   },
   {
-    // 두 번째 클러스터 그룹 - 특별한 마커들
+    // Second cluster group - special markers
     width: 60,
     height: 60,
     markers: specialMarkers,
@@ -127,17 +127,17 @@ const multiClusters = useMemo(() => [
 ], [regularMarkers, specialMarkers]);
 ```
 
-## 클러스터 이벤트 처리
+## Cluster Event Handling
 
-### 개별 마커 클릭 이벤트
+### Individual Marker Click Events
 
-클러스터에 포함된 개별 마커가 클릭되었을 때의 이벤트를 처리할 수 있습니다:
+You can handle events when individual markers included in clusters are clicked:
 
 ```tsx
 <NaverMapView
   clusters={clusters}
   onTapClusterLeaf={({ markerIdentifier }) => {
-    // markerIdentifier를 사용하여 해당 마커의 상세 정보 표시
+    // Use markerIdentifier to display detailed information about the marker
     const markerData = findMarkerById(markerIdentifier);
     showMarkerDetail(markerData);
   }}

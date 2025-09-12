@@ -1,15 +1,15 @@
 ---
 title: "Permissions"
-description: "Expo에서 위치 권한 설정 방법"
+description: "How to set up location permissions in Expo"
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout'
 
-# Expo 권한 설정
+# Expo Permission Setup
 
-Expo 프로젝트에서 위치 권한을 설정하는 방법을 안내합니다.
+This guide explains how to set up location permissions in Expo projects.
 
-## Config Plugin에 사용할 권한 선언
+## Declare Permissions in Config Plugin
 
 ```json title="app.json"
 {
@@ -19,13 +19,13 @@ Expo 프로젝트에서 위치 권한을 설정하는 방법을 안내합니다.
         "@mj-studio/react-native-naver-map",
         {
           "client_id": "{{Naver Map Client Key}}",
-          // (선택사항, expo-location 대신 이 패키지로 설정 가능)
+          // (Optional, can be configured with this package instead of expo-location)
           "android": {
             "ACCESS_FINE_LOCATION": true,
             "ACCESS_COARSE_LOCATION": true,
             "ACCESS_BACKGROUND_LOCATION": true
           },
-          // (선택사항, expo-location 대신 이 패키지로 설정 가능)
+          // (Optional, can be configured with this package instead of expo-location)
           "ios": {
             "NSLocationAlwaysAndWhenInUseUsageDescription": "{{ your location usage description }}",
             "NSLocationWhenInUseUsageDescription": "{{ your location usage description }}",
@@ -42,12 +42,12 @@ Expo 프로젝트에서 위치 권한을 설정하는 방법을 안내합니다.
 ```
 
 <Callout type="info">
-위치 권한 선언은 선택사항입니다. expo-location 패키지를 사용하여 별도로 설정할 수도 있습니다.
+Location permission declarations are optional. You can also set them separately using the expo-location package.
 </Callout>
 
-## expo-location을 사용하여 런타임 권한 요청
+## Request Runtime Permissions Using expo-location
 
-### 1. expo-location 설치
+### 1. Install expo-location
 
 - [expo-location docs](https://docs.expo.dev/versions/latest/sdk/location/)
 
@@ -55,7 +55,7 @@ Expo 프로젝트에서 위치 권한을 설정하는 방법을 안내합니다.
 npx expo install expo-location
 ```
 
-### 2. 코드에서 권한 요청
+### 2. Request Permissions in Code
 
 ```tsx
 import * as Location from 'expo-location';
@@ -78,7 +78,7 @@ useEffect(() => {
 }, []);
 ```
 
-### 3. app.json 권한 설정 (expo-location 사용 시)
+### 3. Permission Settings in app.json (when using expo-location)
 
 ```json title="app.json"
 {
@@ -96,25 +96,25 @@ useEffect(() => {
 }
 ```
 
-## 권한 종류
+## Permission Types
 
-### Android 권한
+### Android Permissions
 
-- **`ACCESS_FINE_LOCATION`**: 정확한 위치 정보 접근
-- **`ACCESS_COARSE_LOCATION`**: 대략적인 위치 정보 접근
-- **`ACCESS_BACKGROUND_LOCATION`**: 백그라운드 위치 정보 접근
+- **`ACCESS_FINE_LOCATION`**: Access to precise location information
+- **`ACCESS_COARSE_LOCATION`**: Access to approximate location information
+- **`ACCESS_BACKGROUND_LOCATION`**: Access to background location information
 
-### iOS 권한
+### iOS Permissions
 
-- **`NSLocationAlwaysAndWhenInUseUsageDescription`**: 항상 및 사용 중 위치 접근
-- **`NSLocationWhenInUseUsageDescription`**: 사용 중 위치 접근
-- **`NSLocationTemporaryUsageDescriptionDictionary`**: 임시 정확한 위치 접근
+- **`NSLocationAlwaysAndWhenInUseUsageDescription`**: Always and when-in-use location access
+- **`NSLocationWhenInUseUsageDescription`**: When-in-use location access
+- **`NSLocationTemporaryUsageDescriptionDictionary`**: Temporary precise location access
 
-## 권한 요청 UI
+## Permission Request UI
 
 ![permission-result-1](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161733072.webp)
 ![permission-result-2](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161737907.webp)
 
 <Callout>
-[expo-location](https://docs.expo.dev/versions/latest/sdk/location/) 문서를 참고하여 더 자세한 권한 설정 방법을 확인할 수 있습니다.
+You can check more detailed permission setup methods by referring to the [expo-location](https://docs.expo.dev/versions/latest/sdk/location/) documentation.
 </Callout>

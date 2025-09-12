@@ -26,13 +26,13 @@ Implement support for Naver Map's custom styling feature using Style Editor.
 
 <Tabs items={['Feature Overview', 'Implementation Details']}>
 <Tab value="Feature Overview">
-Custom Styling을 통해 개발자가 [Naver Style Editor](https://style-editor.map.naver.com)에서 생성한 커스텀 스타일을 지도에 적용할 수 있습니다.
+Through Custom Styling, developers can apply custom styles created with [Naver Style Editor](https://style-editor.map.naver.com) to their maps.
 
 ```typescript
-// 기본 커스텀 스타일 적용
+// Apply basic custom style
 naverMapRef.current?.setCustomStyleId("MY_STYLE_ID");
 
-// 콜백과 함께 스타일 적용
+// Apply style with callbacks
 naverMapRef.current?.setCustomStyleId("MY_STYLE_ID", {
   onLoaded: () => {
     console.log("Custom style loaded successfully");
@@ -42,7 +42,7 @@ naverMapRef.current?.setCustomStyleId("MY_STYLE_ID", {
   }
 });
 
-// 초기 옵션으로 스타일 설정
+// Set style as initial option
 <NaverMapView
   customStyleId="MY_STYLE_ID"
   // ... other props
@@ -66,18 +66,18 @@ Implement imperative API control for Location Overlay manipulation.
 
 <Tabs items={['Feature Overview', 'Implementation Details']}>
 <Tab value="Feature Overview">
-Location Overlay는 지도에서 사용자의 현재 위치를 표시하는 특수한 오버레이입니다. 지도당 단 하나만 존재하며, imperative command를 통해 제어할 수 있습니다.
+Location Overlay is a special overlay that displays the user's current location on the map. Only one exists per map and can be controlled through imperative commands.
 
 ```typescript
-// 기본 위치 및 가시성 제어
+// Basic location and visibility control
 naverMapRef.current?.locationOverlay.setVisible(true);
 naverMapRef.current?.locationOverlay.setPosition({
   latitude: 37.5665,
   longitude: 126.9780
 });
-naverMapRef.current?.locationOverlay.setBearing(45); // 방향 각도
+naverMapRef.current?.locationOverlay.setBearing(45); // Direction angle
 
-// 아이콘 커스터마이징
+// Icon customization
 naverMapRef.current?.locationOverlay.setIcon({
   source: require('./user-location.png'),
   width: 24,
@@ -85,7 +85,7 @@ naverMapRef.current?.locationOverlay.setIcon({
   anchor: { x: 0.5, y: 0.5 }
 });
 
-// 정확도 원 표시
+// Accuracy circle display
 naverMapRef.current?.locationOverlay.setCircleRadius(100);
 naverMapRef.current?.locationOverlay.setCircleColor('#4285F4');
 naverMapRef.current?.locationOverlay.setCircleOutlineWidth(2);

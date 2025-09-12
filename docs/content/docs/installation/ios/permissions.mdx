@@ -1,17 +1,17 @@
 ---
 title: "Permissions"
-description: "iOS에서 위치 권한 설정 방법"
+description: "How to set up location permissions on iOS"
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout'
 
-# iOS 권한 설정
+# iOS Permission Setup
 
-현재 위치를 표시하기 위한 위치 권한 설정 방법을 안내합니다.
+This guide explains how to set up location permissions to display the current location.
 
-## Info.plist 위치 권한 설명 추가
+## Add Location Permission Descriptions to Info.plist
 
-`Info.plist`에 위치 권한 사용 설명을 추가합니다:
+Add location permission usage descriptions to your `Info.plist`:
 
 ```xml title="ios/YourProject/Info.plist"
 <plist version="1.0">
@@ -29,38 +29,38 @@ import { Callout } from 'fumadocs-ui/components/callout'
 </plist>
 ```
 
-### 권한 키 설명
+### Permission Key Descriptions
 
 - **`NSLocationAlwaysAndWhenInUseUsageDescription`** (iOS 11+)
-  - 앱이 포그라운드와 백그라운드 모두에서 위치 정보에 접근할 수 있도록 허용
-  - iOS 11부터는 NSLocationAlwaysUsageDescription 대신 이 키를 사용해야 합니다
+  - Allows the app to access location information both in foreground and background
+  - Since iOS 11, this key must be used instead of NSLocationAlwaysUsageDescription
 
 - **`NSLocationWhenInUseUsageDescription`**
-  - 앱이 포그라운드에서만 위치 정보에 접근할 수 있도록 허용
-  - 사용자가 앱을 활발히 사용할 때만 위치 정보 접근
+  - Allows the app to access location information only in foreground
+  - Access to location information only when the user is actively using the app
 
 - **`NSLocationTemporaryUsageDescriptionDictionary`** (iOS 14+)
-  - 앱이 일시적으로 정확한 위치 데이터에 접근할 수 있도록 허용
-  - 특정 작업에만 정확한 위치가 필요한 경우 사용
+  - Allows the app to temporarily access precise location data
+  - Used when precise location is needed only for specific tasks
 
 <Callout type="info">
-iOS 11 미만을 지원하는 경우 `NSLocationAlwaysUsageDescription`도 함께 설정해야 합니다.
+If supporting iOS 11 or earlier, you should also set `NSLocationAlwaysUsageDescription`.
 </Callout>
 
-## 백그라운드 모드 설정 (선택사항)
+## Background Mode Configuration (Optional)
 
-백그라운드 위치 업데이트가 필요한 경우:
+If background location updates are required:
 
-1. Xcode에서 프로젝트 선택
-2. **Signing & Capabilities** 탭으로 이동
-3. **Background Modes** 추가
-4. **Location updates** 체크
+1. Select your project in Xcode
+2. Go to **Signing & Capabilities** tab
+3. Add **Background Modes**
+4. Check **Location updates**
 
 ![Xcode config result](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161737676.webp)
 
-## Podfile 권한 설정 (react-native-permissions 사용 시)
+## Podfile Permission Configuration (when using react-native-permissions)
 
-`react-native-permissions`를 사용하는 경우 Podfile에 다음 권한을 허용합니다:
+When using `react-native-permissions`, allow the following permissions in your Podfile:
 
 ```ruby title="ios/Podfile"
 setup_permissions([
@@ -71,9 +71,9 @@ setup_permissions([
 ])
 ```
 
-## 코드에서 권한 요청하기
+## Request Permissions in Code
 
-### react-native-permissions 사용
+### Using react-native-permissions
 
 ```tsx
 import { request, requestLocationAccuracy, PERMISSIONS } from 'react-native-permissions';
@@ -84,7 +84,7 @@ useEffect(() => {
       console.log(`Location request status: ${status}`);
       if (status === 'granted') {
         requestLocationAccuracy({
-          purposeKey: 'common-purpose', // Info.plist의 purposeKey로 교체
+          purposeKey: 'common-purpose', // Replace with purposeKey from Info.plist
         })
           .then((accuracy) => {
             console.log(`Location accuracy is: ${accuracy}`);
@@ -98,7 +98,7 @@ useEffect(() => {
 }, []);
 ```
 
-### Expo 프로젝트 (expo-location 사용)
+### Expo Project (using expo-location)
 
 ```tsx
 import * as Location from 'expo-location';
@@ -121,7 +121,7 @@ useEffect(() => {
 }, []);
 ```
 
-## 권한 요청 UI
+## Permission Request UI
 
 ![permission-result-1](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161733072.webp)
 ![permission-result-2](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161737907.webp)

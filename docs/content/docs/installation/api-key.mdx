@@ -1,165 +1,165 @@
 ---
 title: "API Key"
-description: "네이버 클라우드 플랫폼 계정 생성 및 Maps API Key 발급 과정"
+description: "Naver Cloud Platform account creation and Maps API Key issuance process"
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout'
 import { Steps, Step } from 'fumadocs-ui/components/steps'
 
-# API Key 발급
+# API Key Issuance
 
-React Native Naver Map을 사용하기 위해서는 네이버 클라우드 플랫폼에서 AI·NAVER API Key를 발급받아야 합니다.
+To use React Native Naver Map, you need to obtain an AI·NAVER API Key from Naver Cloud Platform.
 
 <Callout type="important">
-2024년 4월 17일 이후 신규 발급되는 API Key는 AI·NAVER API를 사용합니다.
-기존 Web Dynamic Map API를 사용하던 고객은 [공지사항](https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1)을 참고하세요.
+API Keys issued after April 17, 2024 use AI·NAVER API.
+Customers using the existing Web Dynamic Map API should refer to the [notice](https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1).
 </Callout>
 
-## 네이버 클라우드 플랫폼 계정 생성
+## Create Naver Cloud Platform Account
 
-네이버 지도 API를 사용하기 위해서는 먼저 네이버 클라우드 플랫폼 계정이 필요합니다.
+To use Naver Maps API, you first need a Naver Cloud Platform account.
 
 <Steps>
 
 <Step>
 
-### 1. 네이버 클라우드 플랫폼 접속
+### 1. Access Naver Cloud Platform
 
-[네이버 클라우드 플랫폼 홈페이지](https://www.ncloud.com/)에 접속합니다.
-
-</Step>
-
-<Step>
-
-### 2. 회원가입
-
-홈페이지 우상단의 "회원가입" 버튼을 클릭하여 계정을 생성합니다.
-
-- 개인 회원가입 또는 사업자 회원가입 중 선택
-- 필요한 정보를 입력하여 가입 완료
-- 이메일 인증 필수
+Visit the [Naver Cloud Platform homepage](https://www.ncloud.com/).
 
 </Step>
 
 <Step>
 
-### 3. 본인인증 및 결제수단 등록
+### 2. Sign Up
 
-API 사용을 위해서는 본인인증과 결제수단 등록이 필요합니다.
+Click the "Sign Up" button at the top right of the homepage to create an account.
 
-- 휴대폰 본인인증 완료
-- 신용카드 또는 계좌이체 결제수단 등록
+- Choose between individual or business account registration
+- Complete registration by entering required information
+- Email verification is mandatory
+
+</Step>
+
+<Step>
+
+### 3. Identity Verification and Payment Method Registration
+
+Identity verification and payment method registration are required to use APIs.
+
+- Complete mobile phone identity verification
+- Register credit card or bank transfer payment method
 
 <Callout type="info">
-무료 크레딧이 제공되며, 기본적인 테스트 용도로는 무료로 사용할 수 있습니다.
+Free credits are provided, and basic testing purposes can be used for free.
 </Callout>
 
 </Step>
 
 </Steps>
 
-## AI·NAVER API Key 발급
+## Issue AI·NAVER API Key
 
-계정 생성이 완료되면 AI·NAVER API 서비스에서 지도 API Key를 발급받을 수 있습니다.
+Once account creation is complete, you can obtain a Maps API Key from the AI·NAVER API service.
 
 <Steps>
 
 <Step>
 
-### 1. AI·NAVER API 콘솔 접속
+### 1. Access AI·NAVER API Console
 
-[AI·NAVER API 콘솔](https://www.ncloud.com/product/aiService/aiNaverApi)에 로그인합니다.
-
-</Step>
-
-<Step>
-
-### 2. Application 등록
-
-"Application 등록" 버튼을 클릭하여 새로운 애플리케이션을 생성합니다.
-
-- **Application 이름**: 프로젝트를 구분할 수 있는 이름 입력
-- **Service 선택**: "Maps" 서비스 선택
+Log in to the [AI·NAVER API Console](https://www.ncloud.com/product/aiService/aiNaverApi).
 
 </Step>
 
 <Step>
 
-### 3. 서비스 환경 설정
+### 2. Register Application
 
-모바일 앱에서 사용할 것이므로 다음과 같이 설정합니다:
+Click the "Register Application" button to create a new application.
 
-- **서비스 환경**: "Mobile App" 선택
-- **Bundle ID (iOS)**: iOS 앱의 Bundle Identifier 입력
-- **Package Name (Android)**: Android 앱의 Package Name 입력
+- **Application Name**: Enter a name that can identify your project
+- **Service Selection**: Select "Maps" service
+
+</Step>
+
+<Step>
+
+### 3. Configure Service Environment
+
+Since you'll be using it in a mobile app, configure as follows:
+
+- **Service Environment**: Select "Mobile App"
+- **Bundle ID (iOS)**: Enter your iOS app's Bundle Identifier
+- **Package Name (Android)**: Enter your Android app's Package Name
 
 <Callout type="warning">
-Bundle ID와 Package Name은 실제 앱 설정과 정확히 일치해야 합니다.
+Bundle ID and Package Name must exactly match your actual app settings.
 </Callout>
 
 </Step>
 
 <Step>
 
-### 4. API Key 확인
+### 4. Check API Key
 
-Application 등록이 완료되면 다음 정보를 확인할 수 있습니다:
+Once application registration is complete, you can check the following information:
 
-- **Client ID**: API 호출 시 사용할 클라이언트 ID
-- **Client Secret**: API 호출 시 사용할 클라이언트 시크릿
+- **Client ID**: Client ID to use for API calls
+- **Client Secret**: Client secret to use for API calls
 
 </Step>
 
 </Steps>
 
-## API Key 설정
+## API Key Configuration
 
-발급받은 API Key를 React Native 프로젝트에 설정하는 방법은 다음 문서를 참고하세요:
+Refer to the following documents for setting up the issued API Key in your React Native project:
 
-- [iOS 설정](/installation/ios)
-- [Android 설정](/installation/android)
-- [Expo 설정](/installation/expo)
+- [iOS Setup](/installation/ios)
+- [Android Setup](/installation/android)
+- [Expo Setup](/installation/expo)
 
-## 사용량 및 요금
+## Usage and Pricing
 
-### 무료 사용량
+### Free Usage Quota
 
-- **일일 API 호출 한도**: 25,000건
-- **월간 API 호출 한도**: 300,000건
+- **Daily API call limit**: 25,000 calls
+- **Monthly API call limit**: 300,000 calls
 
-### 요금 정책
+### Pricing Policy
 
-무료 한도를 초과하는 경우 다음과 같은 요금이 부과됩니다:
+If you exceed the free quota, the following charges apply:
 
-- **Maps API**: 1,000건당 2원
-- **Static Map API**: 1,000건당 20원
-- **Directions API**: 1,000건당 5원
-- **Geocoding API**: 1,000건당 5원
+- **Maps API**: 2 KRW per 1,000 calls
+- **Static Map API**: 20 KRW per 1,000 calls
+- **Directions API**: 5 KRW per 1,000 calls
+- **Geocoding API**: 5 KRW per 1,000 calls
 
 <Callout type="info">
-자세한 요금 정책은 [네이버 클라우드 플랫폼 요금 안내](https://www.ncloud.com/product/aiService/aiNaverApi)를 참고하세요.
+For detailed pricing policies, refer to [Naver Cloud Platform Pricing Guide](https://www.ncloud.com/product/aiService/aiNaverApi).
 </Callout>
 
-## 문제 해결
+## Troubleshooting
 
-### 자주 발생하는 오류
+### Common Errors
 
-#### 1. 403 Forbidden 오류
+#### 1. 403 Forbidden Error
 
-- Bundle ID 또는 Package Name이 올바르게 설정되지 않은 경우
-- API Key가 올바르게 입력되지 않은 경우
-- 사용량 한도를 초과한 경우
+- Bundle ID or Package Name not configured correctly
+- API Key not entered correctly
+- Usage quota exceeded
 
-#### 2. API Key 인식 오류
+#### 2. API Key Recognition Error
 
-- 네트워크 연결 상태 확인
-- API Key 복사 시 공백이나 특수문자 포함 여부 확인
-- 앱 재빌드 후 테스트
+- Check network connection status
+- Check for spaces or special characters when copying API Key
+- Test after rebuilding the app
 
-### 지원 및 문의
+### Support and Inquiries
 
-기술적인 문제나 API 관련 문의사항이 있다면:
+For technical issues or API-related inquiries:
 
-- [네이버 클라우드 플랫폼 고객지원](https://www.ncloud.com/support)
-- [네이버 개발자센터 Q&A](https://developers.naver.com/forum)
+- [Naver Cloud Platform Customer Support](https://www.ncloud.com/support)
+- [Naver Developer Center Q&A](https://developers.naver.com/forum)
 - [GitHub Issues](https://github.com/mym0404/react-native-naver-map/issues)
