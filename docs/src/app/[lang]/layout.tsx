@@ -2,6 +2,7 @@ import '@/app/global.css';
 import { defineI18nUI } from 'fumadocs-ui/i18n';
 import { RootProvider } from 'fumadocs-ui/provider';
 import type { Metadata } from 'next';
+import type { PropsWithChildren } from 'react';
 import { i18n } from '@/lib/i18n';
 
 const { provider } = defineI18nUI(i18n, {
@@ -84,7 +85,7 @@ export const metadata: Metadata = {
 export default async function Layout({
   children,
   params,
-}: LayoutProps<'/[lang]'>) {
+}: PropsWithChildren<{ params: Promise<{ lang: string }> }>) {
   const lang = (await params).lang;
   return (
     <html lang={lang} suppressHydrationWarning>
