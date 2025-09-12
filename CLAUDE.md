@@ -190,6 +190,7 @@ Claude Code agents should use these CLI commands to access and manage project co
 | 015 | iOS Native Utilities | objc | ios, utilities, objective-c, validation, conversion | iOS native utility functions for color conversion, validation, and object creation |
 | 016 | iOS Overlay Integration Pattern | objc | ios, overlay, integration, objective-c, naver-maps | iOS overlay integration pattern for Naver Maps SDK |
 | 018 | Fumadocs Usage | mdx | fumadocs, mdx, documentation, components | Concise usage patterns for Fumadocs components and features in MDX |
+| 019 | Fumadocs I18n File Structure | markdown | fumadocs, i18n, file-structure, meta, mdx, korean | File structure pattern for Fumadocs i18n with default and Korean translation files using dot-style naming. |
 
 [PATTERN LIST END]
 
