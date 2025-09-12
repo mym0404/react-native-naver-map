@@ -3,19 +3,62 @@ title: "Camera Control"
 description: "카메라 제어 문서"
 ---
 
-import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
 import { Callout } from 'fumadocs-ui/components/callout'
 
 ## 개요
 
 네이버 지도의 카메라를 제어하여 지도의 중심점, 줌 레벨, 회전, 기울기 등을 조정하는 방법을 안내합니다.
 
+## Initial vs Controlled Props
+
+NaverMapView는 초기 설정용과 제어용 props를 구분하여 제공합니다:
+
+- **Initial props** (`initialCamera`, `initialRegion`): 지도가 처음 로드될 때만 적용되는 초기값
+- **Controlled props** (`camera`, `region`): 값이 변경될 때마다 지도가 해당 위치로 이동하는 제어된 속성
+
+### 제어된 속성 사용 패턴
+
+제어된 속성을 사용할 때는 React state와 콜백을 조합하여 양방향 데이터 바인딩을 구현합니다:
+
+```tsx title="ControlledCameraExample.tsx"
+import React, { useState } from 'react';
+import { NaverMapView, Camera } from '@mj-studio/react-native-naver-map';
+
+const ControlledCameraExample = () => {
+  const [camera, setCamera] = useState<Camera>({
+    latitude: 37.5665,
+    longitude: 126.9780,
+    zoom: 14,
+  });
+
+  return (
+    <NaverMapView
+      style={{ flex: 1 }}
+      camera={camera}  // 제어된 속성: state 변경 시 지도 이동
+      onCameraChanged={({ latitude, longitude, zoom, bearing, tilt }) => {
+        // 사용자가 지도를 조작하면 state 업데이트
+        setCamera({ latitude, longitude, zoom, bearing, tilt });
+      }}
+    />
+  );
+};
+```
+
+<Callout type="warn">
+  **성능 최적화 권장사항**: `onCameraChanged`와 같은 카메라 콜백은 사용자가 지도를 조작할 때 매우 빈번하게 호출됩니다. 성능상의 이유로 debounce를 적용하여 과도한 state 업데이트나 API 호출을 방지하는 것을 권장합니다.
+</Callout>
+
+### 사용 시나리오
+
+- **초기값만 설정** (`initialCamera`/`initialRegion`): 지도 첫 로딩 시 위치만 지정하고, 이후 사용자가 자유롭게 조작
+- **완전 제어** (`camera`/`region`): 앱에서 지도 위치를 완전히 제어하고, props 변경 시마다 지도 이동
+
 ### Camera vs Region
 
 네이버 지도에서는 두 가지 방식으로 지도 위치를 설정할 수 있습니다:
 
 <Tabs items={['Camera', 'Region']}>
-  <Tab value="Basic">
+  <Tab value="Camera">
     **Camera**: 정확한 줌 레벨과 각도 제어
     ```tsx title="CameraExample.tsx"
     import { NaverMapView, Camera } from '@mj-studio/react-native-naver-map';
@@ -36,7 +79,7 @@ import { Callout } from 'fumadocs-ui/components/callout'
     />
     ```
   </Tab>
-  <Tab value="Basic">
+  <Tab value="Region">
     **Region**: 표시할 영역 범위로 설정
     ```tsx title="RegionExample.tsx"
     import { NaverMapView, Region } from '@mj-studio/react-native-naver-map';
