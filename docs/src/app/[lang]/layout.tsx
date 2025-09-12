@@ -91,7 +91,12 @@ export default async function Layout({
   return (
     <html lang={lang} suppressHydrationWarning>
       <body className="flex flex-col min-h-screen">
-        <RootProvider i18n={provider(lang)}>{children}</RootProvider>
+        <RootProvider
+          i18n={provider(lang)}
+          theme={{ defaultTheme: 'dark', enableSystem: false }}
+        >
+          {children}
+        </RootProvider>
       </body>
     </html>
   );
