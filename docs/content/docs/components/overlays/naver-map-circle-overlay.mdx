@@ -16,14 +16,14 @@ import { NaverMapView, NaverMapCircleOverlay } from '@mj-studio/react-native-nav
 function MapWithCircle() {
   return (
     <NaverMapView style={{ flex: 1 }}>
-      <NaverMapCircleOverlay // [!code highlight]
-        latitude={37.5665} // [!code highlight]
-        longitude={126.9780} // [!code highlight]
-        radius={1000} // [!code highlight]
-        color={'#ff00ff33'} // [!code highlight]
-        outlineColor={'#ff00ff'} // [!code highlight]
-        outlineWidth={2} // [!code highlight]
-      /> // [!code highlight]
+      <NaverMapCircleOverlay // [!code highlight:7]
+        latitude={37.5665}
+        longitude={126.9780}
+        radius={1000}
+        color={'#ff00ff33'}
+        outlineColor={'#ff00ff'}
+        outlineWidth={2}
+      />
     </NaverMapView>
   );
 }

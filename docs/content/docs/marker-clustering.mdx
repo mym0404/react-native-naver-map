@@ -1,330 +1,264 @@
 ---
 title: "Marker Clustering"
-description: "마커 클러스터링 문서"
+description: "네이버 지도에서 제공하는 마커 클러스터링 기능 사용법"
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout'
 
- 마커 클러스터링
+# 마커 클러스터링
 
-
-
-많은 수의 마커를 효율적으로 표시하기 위한 클러스터링 구현 방법을 안내합니다.
+네이버 지도 라이브러리에서 제공하는 내장 마커 클러스터링 기능을 사용하여 많은 수의 마커를 효율적으로 표시할 수 있습니다.
 
 <Callout type="info">
   마커 클러스터링은 지도 상의 가까운 거리에 있는 여러 마커들을 하나의 클러스터로 묶어 표시하는 기법입니다.
-  성능 향상과 더 나은 사용자 경험을 제공합니다.
+  네이버 지도 라이브러리는 이 기능을 네이티브 레벨에서 지원하므로 별도의 외부 라이브러리가 필요하지 않습니다.
 </Callout>
 
 ## 기본 클러스터링 구현
 
+네이버 지도의 클러스터링은 `NaverMapView` 컴포넌트의 `clusters` 속성을 통해 설정할 수 있습니다.
 
+### 1. ClusterMarkerProp 타입 정의
 
-## 1. 클러스터링 라이브러리 설치
+클러스터에 포함될 각 마커는 `ClusterMarkerProp` 타입을 준수해야 합니다:
 
+```tsx
+import type { ClusterMarkerProp } from '@mj-studio/react-native-naver-map';
 
-
-```bash
-npm install react-native-super-cluster
- 또는
-yarn add react-native-super-cluster
+const clusterMarkers: ClusterMarkerProp[] = [
+  {
+    identifier: 'marker-1',
+    latitude: 37.5665,
+    longitude: 126.9780,
+    image: { symbol: 'red' }, // 또는 { httpUri: 'https://...' }, { assetName: 'marker' } 등
+    width: 40,
+    height: 40,
+  },
+  {
+    identifier: 'marker-2', 
+    latitude: 37.5675,
+    longitude: 126.9785,
+    image: { symbol: 'blue' },
+    width: 40,
+    height: 40,
+  },
+  // ... 더 많은 마커들
+];
 ```
 
+### 2. 기본 클러스터링 구현
 
+```tsx
+import React, { useState, useMemo } from 'react';
+import { View } from 'react-native';
+import { NaverMapView, type ClusterMarkerProp } from '@mj-studio/react-native-naver-map';
 
-## 2. 클러스터링 Hook 구현
-
-
-
-```tsx title="useMarkerClustering.ts"
-import { useMemo } from 'react';
-import SuperCluster from 'react-native-super-cluster';
-
-interface MarkerData {
-  id: string;
-  latitude: number;
-  longitude: number;
-  title?: string;
-}
-
-interface ClusterPoint {
-  type: 'Feature';
-  properties: MarkerData & {
-    cluster?: boolean;
-    cluster_id?: number;
-    point_count?: number;
-  };
-  geometry: {
-    type: 'Point';
-    coordinates: [number, number];
-  };
-}
-
-export const useMarkerClustering = (
-  markers: MarkerData[],
-  region: {
-    latitude: number;
-    longitude: number;
-    latitudeDelta: number;
-    longitudeDelta: number;
-  }
-) => {
-  const superCluster = useMemo(() => {
-    return new SuperCluster({
-      radius: 40,
-      maxZoom: 16,
-      minZoom: 0,
-      extent: 512,
-      nodeSize: 64,
-    });
+const ClusteredMapExample = () => {
+  // 마커 데이터 생성
+  const clusterMarkers = useMemo<ClusterMarkerProp[]>(() => {
+    return generateMarkerData().map((marker, index) => ({
+      identifier: `marker-${index}`,
+      latitude: marker.latitude,
+      longitude: marker.longitude,
+      image: { httpUri: `https://picsum.photos/32/32?random=${index}` },
+      width: 32,
+      height: 32,
+    }));
   }, []);
 
-  const clusters = useMemo(() => {
-    const points: ClusterPoint[] = markers.map(marker => ({
-      type: 'Feature',
-      properties: marker,
-      geometry: {
-        type: 'Point',
-        coordinates: [marker.longitude, marker.latitude],
-      },
-    }));
-
-    superCluster.load(points);
-
-    const bbox = [
-      region.longitude - region.longitudeDelta,
-      region.latitude - region.latitudeDelta,
-      region.longitude + region.longitudeDelta,
-      region.latitude + region.latitudeDelta,
-    ];
-
-    const zoom = Math.round(Math.log(360 / region.longitudeDelta) / Math.LN2);
-
-    return superCluster.getClusters(bbox, zoom);
-  }, [markers, region, superCluster]);
-
-  return clusters;
-};
-```
-
-
-
-## 3. 클러스터링 적용된 지도 컴포넌트
-
-
-
-```tsx title="ClusteredMapView.tsx"
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { NaverMapView, NaverMapMarkerOverlay, Region } from '@mj-studio/react-native-naver-map';
-import { useMarkerClustering } from './useMarkerClustering';
-
-interface MarkerData {
-  id: string;
-  latitude: number;
-  longitude: number;
-  title?: string;
-}
-
-interface Props {
-  markers: MarkerData[];
-  initialRegion: Region;
-}
-
-export const ClusteredMapView: React.FC<Props> = ({ markers, initialRegion }) => {
-  const [region, setRegion] = useState(initialRegion);
-
-  const clusters = useMarkerClustering(markers, region);
-
-  const renderClusterMarker = (cluster: any) => {
-    const { cluster: isCluster, point_count } = cluster.properties;
-    const [longitude, latitude] = cluster.geometry.coordinates;
-
-    if (isCluster) {
-      return (
-        <NaverMapMarkerOverlay
-          key={`cluster-${cluster.properties.cluster_id}`}
-          latitude={latitude}
-          longitude={longitude}
-          anchor={{ x: 0.5, y: 0.5 }}
-          width={50}
-          height={50}
-        >
-          <View style={styles.clusterContainer}>
-            <Text style={styles.clusterText}>{point_count}</Text>
-          </View>
-        </NaverMapMarkerOverlay>
-      );
+  // 클러스터 설정
+  const clusters = useMemo(() => [
+    {
+      width: 50,          // 클러스터 마커의 너비
+      height: 50,         // 클러스터 마커의 높이
+      markers: clusterMarkers,
+      screenDistance: 40, // 클러스터링 기준 화면 거리 (픽셀)
+      minZoom: 5,         // 클러스터링할 최소 줌 레벨
+      maxZoom: 18,        // 클러스터링할 최대 줌 레벨
+      animate: true,      // 클러스터 펼침/합침 애니메이션
     }
-
-    return (
-      <NaverMapMarkerOverlay
-        key={cluster.properties.id}
-        latitude={latitude}
-        longitude={longitude}
-        anchor={{ x: 0.5, y: 1 }}
-        caption={{ text: cluster.properties.title || '' }}
-      />
-    );
-  };
+  ], [clusterMarkers]);
 
   return (
     <NaverMapView
       style={{ flex: 1 }}
-      initialRegion={initialRegion}
-      onCameraChanged={(event) => {
-        setRegion({
-          latitude: event.latitude,
-          longitude: event.longitude,
-          latitudeDelta: event.contentBounds.northEast.latitude - event.contentBounds.southWest.latitude,
-          longitudeDelta: event.contentBounds.northEast.longitude - event.contentBounds.southWest.longitude,
-        });
+      initialCamera={{
+        latitude: 37.5665,
+        longitude: 126.9780,
+        zoom: 10,
       }}
-    >
-      {clusters.map(renderClusterMarker)}
-    </NaverMapView>
+      clusters={clusters}
+      onTapClusterLeaf={({ markerIdentifier }) => {
+        console.log('마커 클릭됨:', markerIdentifier);
+      }}
+    />
   );
 };
+```
 
-const styles = StyleSheet.create({
-  clusterContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#FF6B6B',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 3,
-    borderColor: 'white',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+## 고급 클러스터링 설정
+
+### 다중 클러스터 그룹
+
+서로 다른 설정을 가진 여러 클러스터 그룹을 동시에 사용할 수 있습니다:
+
+```tsx
+const multiClusters = useMemo(() => [
+  {
+    // 첫 번째 클러스터 그룹 - 일반 마커들
+    width: 40,
+    height: 40,
+    markers: regularMarkers,
+    screenDistance: 50,
+    minZoom: 5,
+    maxZoom: 15,
+    animate: true,
   },
-  clusterText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
-```
-
-## 고급 클러스터링 기능
-
-
-
-## 클러스터 터치 이벤트 처리
-
-
-
-```tsx title="InteractiveClusteredMap.tsx"
-const handleClusterPress = (cluster: any) => {
-  const { cluster: isCluster, cluster_id } = cluster.properties;
-
-  if (isCluster) {
-    // 클러스터를 확대하여 개별 마커들을 표시
-    const expansionZoom = Math.min(
-      superCluster.getClusterExpansionZoom(cluster_id),
-      16
-    );
-
-    // 카메라를 해당 위치로 이동
-    mapRef.current?.animateCameraTo({
-      latitude: cluster.geometry.coordinates[1],
-      longitude: cluster.geometry.coordinates[0],
-      zoom: expansionZoom,
-    });
-  } else {
-    // 개별 마커 터치 처리
-    console.log('Marker tapped:', cluster.properties);
+  {
+    // 두 번째 클러스터 그룹 - 특별한 마커들
+    width: 60,
+    height: 60,
+    markers: specialMarkers,
+    screenDistance: 80,
+    minZoom: 8,
+    maxZoom: 20,
+    animate: false,
   }
-};
+], [regularMarkers, specialMarkers]);
 ```
 
+### 동적 마커 이미지
 
+마커 이미지를 동적으로 생성하여 사용할 수 있습니다:
 
-## 동적 클러스터 스타일링
-
-
-
-```tsx title="DynamicClusterStyling.tsx"
-const getClusterStyle = (pointCount: number) => {
-  if (pointCount >= 100) {
-    return {
-      backgroundColor: '#FF4444',
-      width: 60,
-      height: 60,
-      borderRadius: 30,
-    };
-  } else if (pointCount >= 10) {
-    return {
-      backgroundColor: '#FF8800',
-      width: 50,
-      height: 50,
-      borderRadius: 25,
-    };
-  } else {
-    return {
-      backgroundColor: '#44AA44',
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-    };
-  }
-};
+```tsx
+const dynamicMarkers = useMemo(() => {
+  return markerData.map((marker, index) => ({
+    identifier: marker.id,
+    latitude: marker.latitude,
+    longitude: marker.longitude,
+    image: {
+      httpUri: `https://api.example.com/marker-image/${marker.category}/${marker.id}`,
+    },
+    width: 40,
+    height: 40,
+  }));
+}, [markerData]);
 ```
 
-## 성능 최적화 팁
+## 클러스터 이벤트 처리
 
-<Callout type="info">
-  **성능 최적화를 위한 권장사항:**
+### 개별 마커 클릭 이벤트
 
-  1. **적절한 클러스터 반경 설정**: `radius` 값을 40-80 사이로 설정
-  2. **최대 줌 레벨 제한**: `maxZoom`을 16 이하로 설정하여 과도한 클러스터링 방지
-  3. **메모이제이션 활용**: `useMemo`를 사용하여 불필요한 재계산 방지
-  4. **마커 데이터 최적화**: 화면에 표시되는 영역의 마커만 로드
-</Callout>
+클러스터에 포함된 개별 마커가 클릭되었을 때의 이벤트를 처리할 수 있습니다:
 
+```tsx
+<NaverMapView
+  clusters={clusters}
+  onTapClusterLeaf={({ markerIdentifier }) => {
+    // markerIdentifier를 사용하여 해당 마커의 상세 정보 표시
+    const markerData = findMarkerById(markerIdentifier);
+    showMarkerDetail(markerData);
+  }}
+/>
+```
 
+## 성능 최적화
 
-## 화면 영역 기반 마커 필터링
+### 화면 영역 기반 마커 필터링
 
+많은 수의 마커가 있을 때는 현재 화면에 보이는 영역의 마커만 클러스터링에 포함시켜 성능을 향상시킬 수 있습니다:
 
-
-```tsx title="ViewportBasedFiltering.tsx"
+```tsx
 const useViewportMarkers = (allMarkers: MarkerData[], region: Region) => {
   return useMemo(() => {
     const padding = 0.1; // 화면 영역 패딩
-
+    
     return allMarkers.filter(marker => {
-      return (
+      const isInView = 
         marker.latitude >= region.latitude - region.latitudeDelta - padding &&
         marker.latitude <= region.latitude + region.latitudeDelta + padding &&
         marker.longitude >= region.longitude - region.longitudeDelta - padding &&
-        marker.longitude <= region.longitude + region.longitudeDelta + padding
-      );
+        marker.longitude <= region.longitude + region.longitudeDelta + padding;
+      
+      return isInView;
     });
   }, [allMarkers, region]);
+};
+
+const OptimizedClusteringExample = () => {
+  const [currentRegion, setCurrentRegion] = useState(initialRegion);
+  const viewportMarkers = useViewportMarkers(allMarkers, currentRegion);
+  
+  const clusters = useMemo(() => [
+    {
+      width: 40,
+      height: 40,
+      markers: viewportMarkers.map(marker => ({
+        identifier: marker.id,
+        latitude: marker.latitude,
+        longitude: marker.longitude,
+        image: marker.image,
+        width: 40,
+        height: 40,
+      })),
+      screenDistance: 40,
+      animate: true,
+    }
+  ], [viewportMarkers]);
+
+  return (
+    <NaverMapView
+      clusters={clusters}
+      onCameraChanged={({ region }) => {
+        setCurrentRegion(region);
+      }}
+    />
+  );
+};
+```
+
+## 클러스터링 파라미터 가이드
+
+<Callout type="info">
+  **클러스터링 파라미터 설명:**
+  
+  - `width`, `height`: 클러스터 마커의 크기 (픽셀)
+  - `screenDistance`: 두 마커가 화면상에서 이 거리(픽셀) 이내에 있으면 클러스터링됨
+  - `minZoom`: 이 줌 레벨보다 낮으면 클러스터링하지 않음
+  - `maxZoom`: 이 줌 레벨보다 높으면 클러스터링하지 않음 
+  - `animate`: 줌 변경 시 클러스터 펼침/합침 애니메이션 여부
+</Callout>
+
+### 권장 설정값
+
+```tsx
+const recommendedClusterConfig = {
+  width: 50,           // 적당한 클러스터 마커 크기
+  height: 50,
+  screenDistance: 40,  // 너무 작으면 클러스터링이 적게 됨, 너무 크면 과도하게 됨
+  minZoom: 5,          // 너무 축소된 상태에서는 클러스터링 비활성화
+  maxZoom: 18,         // 충분히 확대된 상태에서는 개별 마커 표시
+  animate: true,       // 사용자 경험 향상을 위한 애니메이션
 };
 ```
 
 ## 문제 해결
 
+### 클러스터가 표시되지 않는 경우
 
+- `ClusterMarkerProp`의 `identifier` 값이 고유한지 확인
+- `latitude`, `longitude` 좌표값이 올바른지 확인
+- `width`, `height` 값이 0보다 큰 값인지 확인
+- 마커 이미지 경로가 올바른지 확인
 
-## 클러스터가 제대로 표시되지 않는 경우
+### 성능이 느린 경우
 
-
-- SuperCluster 초기화 옵션 확인
-- 마커 데이터 형식이 올바른지 확인
-- 좌표 순서가 [longitude, latitude]인지 확인
-
-
-
-## 성능이 느린 경우
-
-
-- 클러스터링 반경을 늘려 클러스터 수 감소
+- `screenDistance` 값을 늘려 클러스터 생성을 줄임
 - 화면 영역 기반 필터링 적용
-- 마커 데이터를 청크 단위로 로드
+- 마커 수를 줄이거나 페이지네이션 적용
+- `animate: false`로 설정하여 애니메이션 비활성화
+
+### 클러스터 마커가 원하는 모양이 아닌 경우
+
+현재 네이버 지도 라이브러리는 기본 클러스터 마커 스타일을 사용합니다. 커스텀 클러스터 마커 디자인이 필요한 경우, 클러스터링 레벨에 따라 개별 마커를 조건부로 표시하는 방법을 고려해보세요.

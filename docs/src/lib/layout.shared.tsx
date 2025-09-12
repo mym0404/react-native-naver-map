@@ -43,6 +43,10 @@ export function baseOptions(): BaseLayoutProps {
         url: 'https://github.com/mym0404/react-native-naver-map/releases',
       },
       {
+        text: 'Milestone',
+        url: '/docs/milestone',
+      },
+      {
         text: 'Donate',
         url: 'https://github.com/sponsors/mym0404',
       },

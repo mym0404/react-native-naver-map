@@ -16,16 +16,16 @@ import { NaverMapView, NaverMapGroundOverlay } from '@mj-studio/react-native-nav
 function MapWithGroundOverlay() {
   return (
     <NaverMapView style={{ flex: 1 }}>
-      <NaverMapGroundOverlay // [!code highlight]
-        image={{ assetName: 'thumbnail' }} // [!code highlight]
-        region={{ // [!code highlight]
-          latitude: 37.5, // [!code highlight]
-          longitude: 126.9, // [!code highlight]
-          latitudeDelta: 0.1, // [!code highlight]
-          longitudeDelta: 0.1, // [!code highlight]
-        }} // [!code highlight]
-        onTap={() => console.log('Ground overlay tapped')} // [!code highlight]
-      /> // [!code highlight]
+      <NaverMapGroundOverlay // [!code highlight:9]
+        image={{ assetName: 'thumbnail' }}
+        region={{
+          latitude: 37.5,
+          longitude: 126.9,
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.1,
+        }}
+        onTap={() => console.log('Ground overlay tapped')}
+      />
     </NaverMapView>
   );
 }

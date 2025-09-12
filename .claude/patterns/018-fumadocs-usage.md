@@ -395,17 +395,6 @@ export { withArticle as default } from 'fumadocs-ui/page';
 ## Article Content
 ```
 
-### Headings with Custom Anchors
-```mdx
-## Normal Heading
-
-## Heading with Custom ID [#custom-id]
-
-## Hidden from TOC [!toc]
-
-## Only in TOC [toc]
-```
-
 ### Links
 ```mdx
 [Internal Link](./other-page.mdx)

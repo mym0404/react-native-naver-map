@@ -16,18 +16,18 @@ import { NaverMapView, NaverMapPolygonOverlay } from '@mj-studio/react-native-na
 function MapWithPolygon() {
   return (
     <NaverMapView style={{ flex: 1 }}>
-      <NaverMapPolygonOverlay // [!code highlight]
-        coords={[ // [!code highlight]
-          { latitude: 37.5, longitude: 126.9 }, // [!code highlight]
-          { latitude: 37.51, longitude: 126.91 }, // [!code highlight]
-          { latitude: 37.52, longitude: 126.9 }, // [!code highlight]
-          { latitude: 37.51, longitude: 126.89 }, // [!code highlight]
-        ]} // [!code highlight]
-        color={'#00ff0033'} // [!code highlight]
-        outlineColor={'#00ff00'} // [!code highlight]
-        outlineWidth={2} // [!code highlight]
-        onTap={() => console.log('Polygon tapped')} // [!code highlight]
-      /> // [!code highlight]
+      <NaverMapPolygonOverlay // [!code highlight:11]
+        coords={[
+          { latitude: 37.5, longitude: 126.9 },
+          { latitude: 37.51, longitude: 126.91 },
+          { latitude: 37.52, longitude: 126.9 },
+          { latitude: 37.51, longitude: 126.89 },
+        ]}
+        color={'#00ff0033'}
+        outlineColor={'#00ff00'}
+        outlineWidth={2}
+        onTap={() => console.log('Polygon tapped')}
+      />
     </NaverMapView>
   );
 }

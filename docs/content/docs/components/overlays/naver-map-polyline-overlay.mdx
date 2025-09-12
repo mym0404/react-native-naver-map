@@ -16,16 +16,16 @@ import { NaverMapView, NaverMapPolylineOverlay } from '@mj-studio/react-native-n
 function MapWithPolyline() {
   return (
     <NaverMapView style={{ flex: 1 }}>
-      <NaverMapPolylineOverlay // [!code highlight]
-        coords={[ // [!code highlight]
-          { latitude: 37.5, longitude: 126.9 }, // [!code highlight]
-          { latitude: 37.51, longitude: 126.91 }, // [!code highlight]
-          { latitude: 37.52, longitude: 126.92 }, // [!code highlight]
-        ]} // [!code highlight]
-        width={5} // [!code highlight]
-        color={'#ff0000'} // [!code highlight]
-        onTap={() => console.log('Polyline tapped')} // [!code highlight]
-      /> // [!code highlight]
+      <NaverMapPolylineOverlay // [!code highlight:9]
+        coords={[
+          { latitude: 37.5, longitude: 126.9 },
+          { latitude: 37.51, longitude: 126.91 },
+          { latitude: 37.52, longitude: 126.92 },
+        ]}
+        width={5}
+        color={'#ff0000'}
+        onTap={() => console.log('Polyline tapped')}
+      />
     </NaverMapView>
   );
 }

@@ -16,12 +16,12 @@ import { NaverMapView, NaverMapMarkerOverlay } from '@mj-studio/react-native-nav
 function MapWithMarker() {
   return (
     <NaverMapView style={{ flex: 1 }}>
-      <NaverMapMarkerOverlay // [!code highlight]
-        latitude={37.5665} // [!code highlight]
-        longitude={126.9780} // [!code highlight]
-        caption={{ text: 'Seoul City Hall' }} // [!code highlight]
-        onTap={() => console.log('Marker tapped')} // [!code highlight]
-      /> // [!code highlight]
+      <NaverMapMarkerOverlay // [!code highlight:6]
+        latitude={37.5665}
+        longitude={126.9780}
+        caption={{ text: 'Seoul City Hall' }}
+        onTap={() => console.log('Marker tapped')}
+      />
     </NaverMapView>
   );
 }
@@ -38,3 +38,7 @@ function MapWithMarker() {
 `CaptionType`
 
 <AutoTypeTable path="../src/component/NaverMapMarkerOverlay.tsx" name="CaptionType" />
+
+`SubCaptionType`
+
+<AutoTypeTable path="../src/component/NaverMapMarkerOverlay.tsx" name="SubCaptionType" />

@@ -16,19 +16,19 @@ import { NaverMapView, NaverMapArrowheadPathOverlay } from '@mj-studio/react-nat
 function MapWithArrowPath() {
   return (
     <NaverMapView style={{ flex: 1 }}>
-      <NaverMapArrowheadPathOverlay // [!code highlight]
-        coords={[ // [!code highlight]
-          { latitude: 37.5, longitude: 126.9 }, // [!code highlight]
-          { latitude: 37.51, longitude: 126.91 }, // [!code highlight]
-          { latitude: 37.52, longitude: 126.92 }, // [!code highlight]
-        ]} // [!code highlight]
-        headSizeRatio={2.5} // [!code highlight]
-        width={8} // [!code highlight]
-        color={'red'} // [!code highlight]
-        outlineColor={'blue'} // [!code highlight]
-        outlineWidth={2} // [!code highlight]
-        onTap={() => console.log('Arrow path tapped')} // [!code highlight]
-      /> // [!code highlight]
+      <NaverMapArrowheadPathOverlay // [!code highlight:12]
+        coords={[
+          { latitude: 37.5, longitude: 126.9 },
+          { latitude: 37.51, longitude: 126.91 },
+          { latitude: 37.52, longitude: 126.92 },
+        ]}
+        headSizeRatio={2.5}
+        width={8}
+        color={'red'}
+        outlineColor={'blue'}
+        outlineWidth={2}
+        onTap={() => console.log('Arrow path tapped')}
+      />
     </NaverMapView>
   );
 }

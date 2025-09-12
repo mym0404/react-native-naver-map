@@ -4,20 +4,162 @@ description: "네이버 클라우드 플랫폼 계정 생성 및 Maps API Key �
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout'
+import { Steps, Step } from 'fumadocs-ui/components/steps'
 
 # API Key 발급
 
 React Native Naver Map을 사용하기 위해서는 네이버 클라우드 플랫폼에서 AI·NAVER API Key를 발급받아야 합니다.
 
-## 네이버 클라우드 플랫폼 계정 생성
-
-(계정 생성 과정 내용이 여기에 들어갑니다)
-
-## AI·NAVER API Key 발급
-
-(AI·NAVER API Key 발급 과정 내용이 여기에 들어갑니다)
-
 <Callout type="important">
 2024년 4월 17일 이후 신규 발급되는 API Key는 AI·NAVER API를 사용합니다.
 기존 Web Dynamic Map API를 사용하던 고객은 [공지사항](https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1)을 참고하세요.
 </Callout>
+
+## 네이버 클라우드 플랫폼 계정 생성
+
+네이버 지도 API를 사용하기 위해서는 먼저 네이버 클라우드 플랫폼 계정이 필요합니다.
+
+<Steps>
+
+<Step>
+
+### 1. 네이버 클라우드 플랫폼 접속
+
+[네이버 클라우드 플랫폼 홈페이지](https://www.ncloud.com/)에 접속합니다.
+
+</Step>
+
+<Step>
+
+### 2. 회원가입
+
+홈페이지 우상단의 "회원가입" 버튼을 클릭하여 계정을 생성합니다.
+
+- 개인 회원가입 또는 사업자 회원가입 중 선택
+- 필요한 정보를 입력하여 가입 완료
+- 이메일 인증 필수
+
+</Step>
+
+<Step>
+
+### 3. 본인인증 및 결제수단 등록
+
+API 사용을 위해서는 본인인증과 결제수단 등록이 필요합니다.
+
+- 휴대폰 본인인증 완료
+- 신용카드 또는 계좌이체 결제수단 등록
+
+<Callout type="info">
+무료 크레딧이 제공되며, 기본적인 테스트 용도로는 무료로 사용할 수 있습니다.
+</Callout>
+
+</Step>
+
+</Steps>
+
+## AI·NAVER API Key 발급
+
+계정 생성이 완료되면 AI·NAVER API 서비스에서 지도 API Key를 발급받을 수 있습니다.
+
+<Steps>
+
+<Step>
+
+### 1. AI·NAVER API 콘솔 접속
+
+[AI·NAVER API 콘솔](https://www.ncloud.com/product/aiService/aiNaverApi)에 로그인합니다.
+
+</Step>
+
+<Step>
+
+### 2. Application 등록
+
+"Application 등록" 버튼을 클릭하여 새로운 애플리케이션을 생성합니다.
+
+- **Application 이름**: 프로젝트를 구분할 수 있는 이름 입력
+- **Service 선택**: "Maps" 서비스 선택
+
+</Step>
+
+<Step>
+
+### 3. 서비스 환경 설정
+
+모바일 앱에서 사용할 것이므로 다음과 같이 설정합니다:
+
+- **서비스 환경**: "Mobile App" 선택
+- **Bundle ID (iOS)**: iOS 앱의 Bundle Identifier 입력
+- **Package Name (Android)**: Android 앱의 Package Name 입력
+
+<Callout type="warning">
+Bundle ID와 Package Name은 실제 앱 설정과 정확히 일치해야 합니다.
+</Callout>
+
+</Step>
+
+<Step>
+
+### 4. API Key 확인
+
+Application 등록이 완료되면 다음 정보를 확인할 수 있습니다:
+
+- **Client ID**: API 호출 시 사용할 클라이언트 ID
+- **Client Secret**: API 호출 시 사용할 클라이언트 시크릿
+
+</Step>
+
+</Steps>
+
+## API Key 설정
+
+발급받은 API Key를 React Native 프로젝트에 설정하는 방법은 다음 문서를 참고하세요:
+
+- [iOS 설정](/installation/ios)
+- [Android 설정](/installation/android)
+- [Expo 설정](/installation/expo)
+
+## 사용량 및 요금
+
+### 무료 사용량
+
+- **일일 API 호출 한도**: 25,000건
+- **월간 API 호출 한도**: 300,000건
+
+### 요금 정책
+
+무료 한도를 초과하는 경우 다음과 같은 요금이 부과됩니다:
+
+- **Maps API**: 1,000건당 2원
+- **Static Map API**: 1,000건당 20원
+- **Directions API**: 1,000건당 5원
+- **Geocoding API**: 1,000건당 5원
+
+<Callout type="info">
+자세한 요금 정책은 [네이버 클라우드 플랫폼 요금 안내](https://www.ncloud.com/product/aiService/aiNaverApi)를 참고하세요.
+</Callout>
+
+## 문제 해결
+
+### 자주 발생하는 오류
+
+#### 1. 403 Forbidden 오류
+
+- Bundle ID 또는 Package Name이 올바르게 설정되지 않은 경우
+- API Key가 올바르게 입력되지 않은 경우
+- 사용량 한도를 초과한 경우
+
+#### 2. API Key 인식 오류
+
+- 네트워크 연결 상태 확인
+- API Key 복사 시 공백이나 특수문자 포함 여부 확인
+- 앱 재빌드 후 테스트
+
+### 지원 및 문의
+
+기술적인 문제나 API 관련 문의사항이 있다면:
+
+- [네이버 클라우드 플랫폼 고객지원](https://www.ncloud.com/support)
+- [네이버 개발자센터 Q&A](https://developers.naver.com/forum)
+- [GitHub Issues](https://github.com/mym0404/react-native-naver-map/issues)
