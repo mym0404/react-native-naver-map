@@ -1,5 +1,5 @@
 ---
-keywords: android, command, handling, kotlin, react-native
+keywords: android-commands,receiveCommand,imperative,command-dispatch
 language: kotlin
 explanation: Android command handling using receiveCommand method with command ID matching
 ---

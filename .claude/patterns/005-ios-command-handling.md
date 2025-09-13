@@ -1,5 +1,5 @@
 ---
-keywords: ios, command, handling, objective-c, fabric
+keywords: ios-commands,imperative,command-dispatch,native-calls
 language: objc
 explanation: iOS command handling implementation for processing imperative native commands
 ---

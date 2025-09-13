@@ -1,5 +1,5 @@
 ---
-keywords: ios, fabric, component, objective-c, react-native
+keywords: ios-fabric,component,props-handling,view-lifecycle
 language: objc
 explanation: iOS Fabric component implementation extending RCTViewComponentView with props handling
 ---

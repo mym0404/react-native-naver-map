@@ -1,5 +1,5 @@
 ---
-keywords: jsdoc, documentation, typescript, comments
+keywords: jsdoc,documentation,api-docs,comments
 language: typescript
 explanation: JSDoc documentation patterns for TypeScript components and methods
 ---

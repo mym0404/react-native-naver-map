@@ -1,5 +1,5 @@
 ---
-keywords: ios, turbo-module, objective-c, bridge, react-native
+keywords: ios-turbo-module,bridge-compatibility,new-arch,module-implementation
 language: objc
 explanation: iOS TurboModule implementation with conditional Bridge/TurboModule support
 ---

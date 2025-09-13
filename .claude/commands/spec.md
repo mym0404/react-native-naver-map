@@ -16,7 +16,7 @@ This command initiates a comprehensive specification creation process through ex
 
 ```bash
 # Create each specification file after planning:
-npx -y cc-self-refer spec create "<spec-title>" <<'EOF'
+npx cc-self-refer spec create "<spec-title>" <<'EOF'
 <spec-content>
 EOF
 ```
@@ -80,7 +80,7 @@ Execute CLI commands to create each specification:
 
 ```bash
 # Example for e-commerce platform specifications
-npx -y cc-self-refer spec create "E-commerce Product Vision" <<'EOF'
+npx cc-self-refer spec create "E-commerce Product Vision" <<'EOF'
 # E-commerce Platform Product Vision
 
 ## Executive Summary
@@ -91,7 +91,7 @@ npx -y cc-self-refer spec create "E-commerce Product Vision" <<'EOF'
 ...
 EOF
 
-npx -y cc-self-refer spec create "User Personas and Journeys" <<'EOF'
+npx cc-self-refer spec create "User Personas and Journeys" <<'EOF'
 # User Personas and Customer Journeys
 
 ## Primary Personas

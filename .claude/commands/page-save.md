@@ -13,7 +13,7 @@ This commadns run `cc-self-refer page create` commands with title
 ### CLI Command Used
 
 ```bash
-npx -y cc-self-refer page create "<title>"
+npx cc-self-refer page create "<title>"
 ```
 
 ### Command Arguments

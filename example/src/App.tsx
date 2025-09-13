@@ -105,6 +105,7 @@ export default function App() {
   const [zoomControls, setZoomControls] = useState(true);
   const [indoorLevelPicker, setIndoorLevelPicker] = useState(true);
   const [myLocation, setMyLocation] = useState(true);
+  const [customStyle, setCustomStyle] = useState(false);
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -417,6 +418,15 @@ export default function App() {
           onTapClusterLeaf={({ markerIdentifier }) => {
             console.log('onTapClusterLeaf', markerIdentifier);
           }}
+          customStyleId={
+            customStyle ? 'bf462d9f-fa82-413d-ab7c-df9c5e3c9f7f' : undefined
+          }
+          onCustomStyleLoaded={() => {
+            console.log('Custom style loaded successfully!');
+          }}
+          onCustomStyleLoadFailed={({ message }) => {
+            console.log('Custom style load failed:', message);
+          }}
         >
           {renderOverlays()}
           {cities.map((city, i) => (
@@ -588,6 +598,11 @@ export default function App() {
           value={rerenderKey % 2 === 0}
           onChange={() => setRerenderKey((k) => k + 1)}
           text={'show'}
+        />
+        <Toggle
+          value={customStyle}
+          onChange={setCustomStyle}
+          text={'Custom Style'}
         />
       </View>
     </View>

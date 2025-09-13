@@ -1,0 +1,28 @@
+---
+title: "커스텀 스타일"
+description: "네이버 스타일 에디터로 생성한 커스텀 지도 스타일 적용"
+---
+
+## 커스텀 스타일
+
+[네이버 스타일 에디터](https://style-editor.map.naver.com)로 생성한 커스텀 지도 스타일을 적용합니다.
+
+### 기본 사용법
+
+```tsx
+<NaverMapView
+  customStyleId="your-style-id-here"
+  onCustomStyleLoaded={() => {
+    console.log('스타일 로드 완료');
+  }}
+  onCustomStyleLoadFailed={({ message }) => {
+    console.log('스타일 로드 실패:', message);
+  }}
+/>
+```
+
+### Props
+
+- `customStyleId?: string` - 네이버 스타일 에디터에서 생성한 스타일 ID
+- `onCustomStyleLoaded?: () => void` - 스타일 로드 성공 시 호출
+- `onCustomStyleLoadFailed?: (params: {message: string}) => void` - 스타일 로드 실패 시 호출

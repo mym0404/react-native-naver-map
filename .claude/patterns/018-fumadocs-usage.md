@@ -1,5 +1,5 @@
 ---
-keywords: fumadocs, mdx, documentation, components
+keywords: fumadocs,mdx,documentation,components,ui-patterns
 language: mdx
 explanation: Concise usage patterns for Fumadocs components and features in MDX
 ---
