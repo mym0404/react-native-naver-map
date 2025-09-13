@@ -162,6 +162,18 @@ To test the library, you need to configure API keys:
 - `pnpm pod` - Install iOS dependencies via CocoaPods
 - `pnpm pod:update` - Update iOS dependencies via CocoaPods
 
+## CI/CD & Turbo Scripts
+- `pnpm ci:ios` - Build iOS project for CI (xcodebuild with optimized settings)
+- `pnpm ci:android` - Build Android project for CI (gradlew assembleDebug)
+- `pnpm turbo:ios` - Run iOS CI build with Turbo cache (cached in .turbo/ios)
+- `pnpm turbo:android` - Run Android CI build with Turbo cache (cached in .turbo/android)
+
+**Turbo Scripts Usage:**
+- Turbo scripts provide cached builds for faster development iteration
+- `turbo:ios` and `turbo:android` use single-package mode with platform-specific cache directories
+- Cache helps avoid repeated builds when no source changes occur
+- Useful for CI/CD pipelines and local development optimization
+
 # Self Reference Context Management System (cc-self-refer cli and context storage project sturcture)
 
 This project uses `cc-self-refer` for intelligent self-reference capabilities.
@@ -227,7 +239,7 @@ When these keywords appear in user prompts, determine if the user intends to use
 When user requests involve coding tasks that align with existing pattern Names, Keywords, or Explanations:
 
 1. **Identify Match**: Compare user's request against the [PATTERN LIST]
-2. **Retrieve Pattern**: Use `npx -y cc-self-refer pattern view <id>` for matching patterns
+2. **Retrieve Pattern**: Use `npx cc-self-refer pattern view <id>` for matching patterns
 3. **Apply Pattern**: Implement user's request using the pattern's principles and structure
 4. **Inform User**: Use this format to indicate pattern usage:
    ```
@@ -246,6 +258,6 @@ When user requests involve coding tasks that align with existing pattern Names, 
 
 **IMPORTANT Agent Behavior:**
 1. **Scan** [PATTERN LIST] for relevant matches during any coding request
-2. **Retrieve** matching patterns using `npx -y cc-self-refer pattern view <id>`
+2. **Retrieve** matching patterns using `npx cc-self-refer pattern view <id>`
 3. **Apply** pattern principles to implement user's actual requirements
 

@@ -15,7 +15,10 @@
       "mcp__playwright__get-screenshot",
       "mcp__playwright__execute-code",
       "Bash(sed:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(pnpm format:*)",
+      "Bash(pnpm turbo:android:*)",
+      "Bash(git init:*)"
     ],
     "deny": [],
     "ask": []

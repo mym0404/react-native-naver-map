@@ -266,6 +266,32 @@ using namespace facebook::react;
     }
   }
 
+  if (prev.customStyleId != next.customStyleId) {
+    NSString* customStyleId = getNsStr(next.customStyleId);
+    if (customStyleId && customStyleId.length > 0) {
+      __weak __typeof__(self) weakSelf = self;
+      [self.map setCustomStyleId:customStyleId
+          loadHandler:^{
+            __strong __typeof__(self) strongSelf = weakSelf;
+            if (strongSelf && [strongSelf emitter]) {
+              [strongSelf emitter]->onCustomStyleLoaded({});
+            }
+          }
+          failHandler:^(NSError* _Nonnull error) {
+            __strong __typeof__(self) strongSelf = weakSelf;
+            if (strongSelf && [strongSelf emitter]) {
+              std::string message = error.localizedDescription
+                                        ? std::string([error.localizedDescription UTF8String])
+                                        : "Unknown error occurred while loading custom style";
+              [strongSelf emitter]->onCustomStyleLoadFailed({.message = message});
+            }
+          }];
+    } else {
+      // Clear custom style when customStyleId is nil or empty
+      [self.map setCustomStyleId:nil loadHandler:nil failHandler:nil];
+    }
+  }
+
   [super updateProps:props oldProps:oldProps];
   _isRecycled = NO;
 }

@@ -150,6 +150,8 @@ interface Props extends ViewProps {
   fpsLimit?: Int32;
   locationOverlay?: Readonly<NativeLocationOverlayProp>;
 
+  customStyleId?: string;
+
   onInitialized?: DirectEventHandler<Readonly<{}>>;
   onOptionChanged?: DirectEventHandler<
     Readonly<{
@@ -192,6 +194,9 @@ interface Props extends ViewProps {
     }>
   >;
   onTapClusterLeaf?: DirectEventHandler<Readonly<{ markerIdentifier: string }>>;
+
+  onCustomStyleLoaded?: DirectEventHandler<Readonly<{}>>;
+  onCustomStyleLoadFailed?: DirectEventHandler<Readonly<{ message: string }>>;
 
   onScreenToCoordinate?: DirectEventHandler<
     Readonly<{
