@@ -1,5 +1,5 @@
 ---
-keywords: android, event, emission, kotlin, react-native
+keywords: android-events,event-emission,RCTEventEmitter,native-to-js
 language: kotlin
 explanation: Android event emission using ReactContext and RCTEventEmitter
 ---

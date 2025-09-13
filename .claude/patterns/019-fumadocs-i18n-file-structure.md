@@ -1,5 +1,5 @@
 ---
-keywords: fumadocs, i18n, file-structure, meta, mdx, korean
+keywords: fumadocs-i18n,file-structure,translation,meta-files,localization
 language: markdown
 explanation: File structure pattern for Fumadocs i18n with default and Korean translation files using dot-style naming.
 ---

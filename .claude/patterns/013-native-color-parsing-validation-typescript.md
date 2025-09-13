@@ -1,5 +1,5 @@
 ---
-keywords: color, parsing, validation, typescript, react-native
+keywords: color,processColor,ColorValue,validation,props
 language: typescript
 explanation: TypeScript color prop handling with processColor and native color utilities
 ---

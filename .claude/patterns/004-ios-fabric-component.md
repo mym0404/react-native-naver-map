@@ -1,5 +1,5 @@
 ---
-keywords: RCTViewComponentView,updateProps,initWithFrame,contentView,emitter
+keywords: ios-fabric,component,props-handling,view-lifecycle
 language: objc
 explanation: iOS Fabric component implementation extending RCTViewComponentView with props handling
 ---

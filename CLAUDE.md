@@ -171,26 +171,26 @@ Claude Code agents should use these CLI commands to access and manage project co
 
 [PATTERN LIST]
 
-| ID  | Name                                                        | Language   | Keywords                                                | Explanation                                                                                                |
-|-----|:------------------------------------------------------------|------------|---------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-| 001 | Fabric Native Component Definition                          | typescript | fabric, native, component, react-native, codegen        | Defines React Native Fabric component using codegenNativeComponent with TypeScript props interface         |
-| 002 | React Native Codegen Commands                               | typescript | codegen, native, commands, react-native, async, sync    | Defines imperative native methods using codegenNativeCommands for async/sync operations                    |
-| 003 | TurboModule Specification                                   | typescript | turbo-module, native, module, react-native, type-safety | Defines TurboModule interface for native module access with type safety                                    |
-| 004 | iOS Fabric Component Implementation                         | objc       | ios, fabric, component, objective-c, react-native       | iOS Fabric component implementation extending RCTViewComponentView with props handling                     |
-| 005 | iOS Command Handling                                        | objc       | ios, command, handling, objective-c, fabric             | iOS command handling implementation for processing imperative native commands                              |
-| 006 | iOS Event Emission                                          | objc       | ios, event, emission, objective-c, fabric               | iOS event emission using generated event emitter for sending events to JavaScript                          |
-| 007 | iOS TurboModule Implementation                              | objc       | ios, turbo-module, objective-c, bridge, react-native    | iOS TurboModule implementation with conditional Bridge/TurboModule support                                 |
-| 008 | Android ViewManager with Codegen                            | kotlin     | android, view-manager, kotlin, codegen, react-native    | Android ViewManager implementation using codegen delegate pattern                                          |
-| 009 | Android Command Handling                                    | kotlin     | android, command, handling, kotlin, react-native        | Android command handling using receiveCommand method with command ID matching                              |
-| 010 | Android Event Emission                                      | kotlin     | android, event, emission, kotlin, react-native          | Android event emission using ReactContext and RCTEventEmitter                                              |
-| 011 | Android Package Registration                                | kotlin     | android, package, registration, kotlin, react-native    | Android ReactPackage registration for native modules and ViewManagers                                      |
-| 012 | JSDoc Documentation                                         | typescript | jsdoc, documentation, typescript, comments              | JSDoc documentation patterns for TypeScript components and methods                                         |
-| 013 | Native Color Parsing and Validation Pattern with TypeScript | typescript | color, parsing, validation, typescript, react-native    | TypeScript color prop handling with processColor and native color utilities                                |
-| 014 | Android Native Utilities                                    | kotlin     | android, utilities, kotlin, validation, conversion      | Android native utility functions for event emission, prop validation, and conversions                      |
-| 015 | iOS Native Utilities                                        | objc       | ios, utilities, objective-c, validation, conversion     | iOS native utility functions for color conversion, validation, and object creation                         |
-| 016 | iOS Overlay Integration Pattern                             | objc       | ios, overlay, integration, objective-c, naver-maps      | iOS overlay integration pattern for Naver Maps SDK                                                         |
-| 018 | Fumadocs Usage                                              | mdx        | fumadocs, mdx, documentation, components                | Concise usage patterns for Fumadocs components and features in MDX                                         |
-| 019 | Fumadocs I18n File Structure                                | markdown   | fumadocs, i18n, file-structure, meta, mdx, korean       | File structure pattern for Fumadocs i18n with default and Korean translation files using dot-style naming. |
+| ID | Name | Language | Keywords | Explanation |
+|----|------|----------|----------|-------------|
+| 001 | Fabric Native Component Definition | typescript | fabric, component, props, events, codegen | Defines React Native Fabric component using codegenNativeComponent with TypeScript props interface |
+| 002 | React Native Codegen Commands | typescript | commands, imperative, async, native-methods, codegen | Defines imperative native methods using codegenNativeCommands for async/sync operations |
+| 003 | TurboModule Specification | typescript | turbo-module, native-module, spec, type-safety | Defines TurboModule interface for native module access with type safety |
+| 004 | iOS Fabric Component Implementation | objc | ios-fabric, component, props-handling, view-lifecycle | iOS Fabric component implementation extending RCTViewComponentView with props handling |
+| 005 | iOS Command Handling | objc | ios-commands, imperative, command-dispatch, native-calls | iOS command handling implementation for processing imperative native commands |
+| 006 | iOS Event Emission | objc | ios-events, event-emission, callbacks, native-to-js | iOS event emission using generated event emitter for sending events to JavaScript |
+| 007 | iOS TurboModule Implementation | objc | ios-turbo-module, bridge-compatibility, new-arch, module-implementation | iOS TurboModule implementation with conditional Bridge/TurboModule support |
+| 008 | Android ViewManager with Codegen | kotlin | android-viewmanager, codegen-delegate, props-handling, view-lifecycle | Android ViewManager implementation using codegen delegate pattern |
+| 009 | Android Command Handling | kotlin | android-commands, receiveCommand, imperative, command-dispatch | Android command handling using receiveCommand method with command ID matching |
+| 010 | Android Event Emission | kotlin | android-events, event-emission, RCTEventEmitter, native-to-js | Android event emission using ReactContext and RCTEventEmitter |
+| 011 | Android Package Registration | kotlin | android-package, ReactPackage, module-registration, native-modules | Android ReactPackage registration for native modules and ViewManagers |
+| 012 | JSDoc Documentation | typescript | jsdoc, documentation, api-docs, comments | JSDoc documentation patterns for TypeScript components and methods |
+| 013 | Native Color Parsing and Validation Pattern with TypeScript | typescript | color, processColor, ColorValue, validation, props | TypeScript color prop handling with processColor and native color utilities |
+| 014 | Android Native Utilities | kotlin | android-utils, event-emission, prop-validation, coordinate-conversion | Android native utility functions for event emission, prop validation, and conversions |
+| 015 | iOS Native Utilities | objc | ios-utils, color-conversion, validation, object-creation | iOS native utility functions for color conversion, validation, and object creation |
+| 016 | iOS Overlay Integration Pattern | objc | ios-overlay, integration, mapview-subview, native-overlays | iOS overlay integration pattern for Naver Maps SDK |
+| 018 | Fumadocs Usage | mdx | fumadocs, mdx, documentation, components, ui-patterns | Concise usage patterns for Fumadocs components and features in MDX |
+| 019 | Fumadocs I18n File Structure | markdown | fumadocs-i18n, file-structure, translation, meta-files, localization | File structure pattern for Fumadocs i18n with default and Korean translation files using dot-style naming. |
 
 [PATTERN LIST END]
 

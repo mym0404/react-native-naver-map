@@ -1,5 +1,5 @@
 ---
-keywords: handleCommand,RCTRNCNaverMapViewHandleCommand,commandName,screenToCoordinate
+keywords: ios-commands,imperative,command-dispatch,native-calls
 language: objc
 explanation: iOS command handling implementation for processing imperative native commands
 ---

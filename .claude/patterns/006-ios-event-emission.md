@@ -1,5 +1,5 @@
 ---
-keywords: EventEmitter,onCameraChanged,NMFCameraPosition,emitter-callback
+keywords: ios-events,event-emission,callbacks,native-to-js
 language: objc
 explanation: iOS event emission using generated event emitter for sending events to JavaScript
 ---
