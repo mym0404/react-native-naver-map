@@ -13,7 +13,6 @@ class ViewAttacherGroup(
     alpha = 0.0f
     removeClippedSubviews = false
     clipBounds = Rect(0, 0, 0, 0)
-    setOverflow("hidden") // Change to ViewProps.HIDDEN until RN 0.57 is base
   }
 
   // This should make it more performant, avoid trying to hard to overlap layers
