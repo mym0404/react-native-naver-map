@@ -1,5 +1,5 @@
 ---
-keywords: codegen, native, commands, react-native, async, sync
+keywords: codegenNativeCommands,imperative,async-commands,sync-commands,ElementRef
 language: typescript
 explanation: Defines imperative native methods using codegenNativeCommands for async/sync operations
 ---

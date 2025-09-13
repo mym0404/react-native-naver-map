@@ -1,5 +1,5 @@
 ---
-keywords: ios, command, handling, objective-c, fabric
+keywords: handleCommand,RCTRNCNaverMapViewHandleCommand,commandName,screenToCoordinate
 language: objc
 explanation: iOS command handling implementation for processing imperative native commands
 ---

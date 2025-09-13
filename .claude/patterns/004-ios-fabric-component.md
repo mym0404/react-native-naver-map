@@ -1,5 +1,5 @@
 ---
-keywords: ios, fabric, component, objective-c, react-native
+keywords: RCTViewComponentView,updateProps,initWithFrame,contentView,emitter
 language: objc
 explanation: iOS Fabric component implementation extending RCTViewComponentView with props handling
 ---

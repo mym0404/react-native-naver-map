@@ -1,5 +1,5 @@
 ---
-keywords: fabric, native, component, react-native, codegen
+keywords: fabric,codegenNativeComponent,HostComponent,ViewProps,DirectEventHandler
 language: typescript
 explanation: Defines React Native Fabric component using codegenNativeComponent with TypeScript props interface
 ---

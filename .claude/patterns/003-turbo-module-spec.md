@@ -1,5 +1,5 @@
 ---
-keywords: turbo-module, native, module, react-native, type-safety
+keywords: TurboModule,TurboModuleRegistry,getEnforcing,spec-interface
 language: typescript
 explanation: Defines TurboModule interface for native module access with type safety
 ---

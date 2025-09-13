@@ -1,5 +1,5 @@
 ---
-keywords: ios, event, emission, objective-c, fabric
+keywords: EventEmitter,onCameraChanged,NMFCameraPosition,emitter-callback
 language: objc
 explanation: iOS event emission using generated event emitter for sending events to JavaScript
 ---
