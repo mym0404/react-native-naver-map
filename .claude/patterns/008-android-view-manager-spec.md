@@ -1,5 +1,5 @@
 ---
-keywords: android, view-manager, kotlin, codegen, react-native
+keywords: android-viewmanager,codegen-delegate,props-handling,view-lifecycle
 language: kotlin
 explanation: Android ViewManager implementation using codegen delegate pattern
 ---

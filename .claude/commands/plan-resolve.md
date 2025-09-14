@@ -38,7 +38,7 @@ This command facilitates comprehensive execution of strategic plans by:
 
 ```bash
 # Step 1: Load the plan for implementation reference
-npx -y cc-self-refer plan view <id_or_keyword> 
+npx cc-self-refer plan view <id_or_keyword> 
 ```
 
 ### Command Arguments

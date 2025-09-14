@@ -10,55 +10,9 @@ import { Steps, Step } from 'fumadocs-ui/components/steps';
 import { Card, Cards } from 'fumadocs-ui/components/card';
 import { CheckCircle, Clock, Target, Package, Cloud, Navigation } from 'lucide-react';
 
-## Current Progress
-
-<Callout type="info">
-Currently focusing on implementing Custom Map Styling and Location Overlay Command functionality.
-</Callout>
-
 ## Development Milestones
 
 <Steps>
-<Step>
-### Custom Map Styling Implementation
-
-Implement support for Naver Map's custom styling feature using Style Editor.
-
-<Tabs items={['Feature Overview', 'Implementation Details']}>
-<Tab value="Feature Overview">
-Through Custom Styling, developers can apply custom styles created with [Naver Style Editor](https://style-editor.map.naver.com) to their maps.
-
-```typescript
-// Apply basic custom style
-naverMapRef.current?.setCustomStyleId("MY_STYLE_ID");
-
-// Apply style with callbacks
-naverMapRef.current?.setCustomStyleId("MY_STYLE_ID", {
-  onLoaded: () => {
-    console.log("Custom style loaded successfully");
-  },
-  onError: (error) => {
-    console.error("Failed to load custom style:", error);
-  }
-});
-
-// Set style as initial option
-<NaverMapView
-  customStyleId="MY_STYLE_ID"
-  // ... other props
-/>
-```
-</Tab>
-<Tab value="Implementation Details">
-- Implement native command interface for style loading
-- Add TypeScript interfaces for style callbacks
-- Support both imperative and declarative style application
-- Handle loading states and error cases
-- Add example integration with Style Editor workflow
-</Tab>
-</Tabs>
-</Step>
-
 <Step>
 ### Location Overlay Command Implementation
 

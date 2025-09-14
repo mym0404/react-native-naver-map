@@ -1,5 +1,5 @@
 ---
-keywords: ios, utilities, objective-c, validation, conversion
+keywords: ios-utils,color-conversion,validation,object-creation
 language: objc
 explanation: iOS native utility functions for color conversion, validation, and object creation
 ---

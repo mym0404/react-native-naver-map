@@ -72,8 +72,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@babel/runtime": "catalog:",
     "@babel/core": "catalog:",
+    "@babel/runtime": "catalog:",
     "@biomejs/biome": "catalog:",
     "@commitlint/config-conventional": "17.0.2",
     "@expo/config-plugins": "10.0.3",
@@ -81,6 +81,7 @@
     "@types/fs-extra": "^11",
     "@types/object-hash": "^3",
     "@types/react": "catalog:",
+    "cc-self-refer": "^1.0.44",
     "commitlint": "17.0.2",
     "fs-extra": "^11.3.1",
     "lefthook": "^1.12.3",

@@ -2,11 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(git add:*)",
-      "Bash(npx cc-self-refer:*)",
-      "Bash(npx -y cc-self-refer:*)",
-      "Bash(npx -y cc-self-refer)",
-      "Bash(cc-self-refer:*)",
-      "Bash(npx -y cc-self-refer)",
+      "Bash(npx cc-self-refer *)",
+      "Bash(cc-self-refer *)",
       "Bash(mkdir:*)",
       "Bash(gh pr view:*)",
       "Bash(pnpm add:*)",
@@ -18,7 +15,10 @@
       "mcp__playwright__get-screenshot",
       "mcp__playwright__execute-code",
       "Bash(sed:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(pnpm format:*)",
+      "Bash(pnpm turbo:android:*)",
+      "Bash(git init:*)"
     ],
     "deny": [],
     "ask": []

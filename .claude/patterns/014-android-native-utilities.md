@@ -1,5 +1,5 @@
 ---
-keywords: android, utilities, kotlin, validation, conversion
+keywords: android-utils,event-emission,prop-validation,coordinate-conversion
 language: kotlin
 explanation: Android native utility functions for event emission, prop validation, and conversions
 ---

@@ -14,23 +14,23 @@ Retrieve and apply code patterns with `cc-self-refer pattern search` command
 
 ```bash
 # Search for patterns first
-npx -y cc-self-refer pattern search <keyword>
+npx cc-self-refer pattern search <keyword>
 
 # View specific pattern
-npx -y cc-self-refer pattern view <id>
+npx cc-self-refer pattern view <id>
 
 # List all patterns
-npx -y cc-self-refer pattern list
+npx cc-self-refer pattern list
 ```
 
 ### Command Arguments
 - `id_or_keyword`: Pattern ID number or search keyword
 
 ### Expected Workflow
-1. Search for relevant patterns using `npx -y cc-self-refer pattern search`
+1. Search for relevant patterns using `npx cc-self-refer pattern search`
 2. Check search results:
   - If search result contains full pattern content, use that content directly
-  - If search result only shows summary/metadata, use `npx -y cc-self-refer pattern view <number>` for complete content
+  - If search result only shows summary/metadata, use `npx cc-self-refer pattern view <number>` for complete content
 3. **IMPLEMENT the actual code** using the printed content:
   - Apply the pattern's architectural principles and design decisions
   - **Focus on implementing working code, not just creating examples or documentation**

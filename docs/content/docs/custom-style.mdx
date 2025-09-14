@@ -1,0 +1,28 @@
+---
+title: "Custom Style"
+description: "Apply custom map styles created with Naver Style Editor"
+---
+
+## Custom Style
+
+Apply custom map styles created with [Naver Style Editor](https://style-editor.map.naver.com).
+
+### Basic Usage
+
+```tsx
+<NaverMapView
+  customStyleId="your-style-id-here"
+  onCustomStyleLoaded={() => {
+    console.log('Style loaded');
+  }}
+  onCustomStyleLoadFailed={({ message }) => {
+    console.log('Style failed:', message);
+  }}
+/>
+```
+
+### Props
+
+- `customStyleId?: string` - Style ID from Naver Style Editor
+- `onCustomStyleLoaded?: () => void` - Called when style loads successfully  
+- `onCustomStyleLoadFailed?: (params: {message: string}) => void` - Called when style loading fails
