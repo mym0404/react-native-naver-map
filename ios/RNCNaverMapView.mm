@@ -7,7 +7,6 @@ using namespace facebook::react;
 @end
 
 @implementation RNCNaverMapView {
-  BOOL _isRecycled;
   RNCNaverMapViewImpl* _view;
 
   std::unordered_map<std::string, NMCClusterer*> _clustererRecord;
@@ -36,7 +35,6 @@ using namespace facebook::react;
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
-    _isRecycled = YES;
     static const auto defaultProps = std::make_shared<const RNCNaverMapViewProps>();
     _props = defaultProps;
 
@@ -80,7 +78,6 @@ using namespace facebook::react;
 
 - (void)prepareForRecycle {
   [_view prepareForRecycle];
-  _isRecycled = YES;
   [super prepareForRecycle];
 }
 
@@ -268,16 +265,17 @@ using namespace facebook::react;
 
   if (prev.customStyleId != next.customStyleId) {
     NSString* customStyleId = getNsStr(next.customStyleId);
+    auto mapView = [self map];
     if (customStyleId && customStyleId.length > 0) {
       __weak __typeof__(self) weakSelf = self;
-      [self.map setCustomStyleId:customStyleId
-          loadHandler:^{
+      [mapView setCustomStyleId:customStyleId
+          LoadHandler:^{
             __strong __typeof__(self) strongSelf = weakSelf;
             if (strongSelf && [strongSelf emitter]) {
               [strongSelf emitter]->onCustomStyleLoaded({});
             }
           }
-          failHandler:^(NSError* _Nonnull error) {
+          FailHandler:^(NSError* _Nonnull error) {
             __strong __typeof__(self) strongSelf = weakSelf;
             if (strongSelf && [strongSelf emitter]) {
               std::string message = error.localizedDescription
@@ -288,12 +286,11 @@ using namespace facebook::react;
           }];
     } else {
       // Clear custom style when customStyleId is nil or empty
-      [self.map setCustomStyleId:nil loadHandler:nil failHandler:nil];
+      [mapView setCustomStyleId:nil];
     }
   }
 
   [super updateProps:props oldProps:oldProps];
-  _isRecycled = NO;
 }
 - (void)addClusterer:(const RNCNaverMapViewClustersClustersStruct)dict
     isLeafTapCallbackExist:(BOOL)isLeafTapCallbackExist {
