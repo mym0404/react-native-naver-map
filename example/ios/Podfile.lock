@@ -8,7 +8,7 @@ PODS:
   - hermes-engine (0.80.0):
     - hermes-engine/Pre-built (= 0.80.0)
   - hermes-engine/Pre-built (0.80.0)
-  - mj-studio-react-native-naver-map (2.5.6):
+  - mj-studio-react-native-naver-map (2.6.1):
     - boost
     - DoubleConversion
     - fast_float
@@ -2492,7 +2492,7 @@ SPEC CHECKSUMS:
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   hermes-engine: 7068e976238b29e97b3bafd09a994542af7d5c0b
-  mj-studio-react-native-naver-map: 81613c41f7a7c691e189736d23c9cd1148380f93
+  mj-studio-react-native-naver-map: 84d1c102c9c4ec1772a35945cf670a57739faa9e
   NMapsGeometry: 4e02554fa9880ef02ed96b075dc84355d6352479
   NMapsMap: 09552eb050059e13b4c8fc294055760713cfdad8
   RCT-Folly: 59ec0ac1f2f39672a0c6e6cecdd39383b764646f
@@ -2558,7 +2558,7 @@ SPEC CHECKSUMS:
   React-timing: a275a1c2e6112dba17f8f7dd496d439213bbea0d
   React-utils: 257f8c08cb0559e458a9a9254967058434198ced
   ReactAppDependencyProvider: cd55f820247d424280ae0b94e1ffb38963410c01
-  ReactCodegen: dda2d01bf73dc527f1b04fd2fb5f6f017a86f3f7
+  ReactCodegen: a85e0d5e81e01cdc6dc4e84888e023371f5f4828
   ReactCommon: 658874decaf8c4fd76cfa3a878b94a869db85b1c
   RNPermissions: 95c9378d2de4d18f8540a979dbe4895f31101a24
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
