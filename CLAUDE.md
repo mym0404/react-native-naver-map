@@ -206,17 +206,6 @@ Claude Code agents should use these CLI commands to access and manage project co
 
 [PATTERN LIST END]
 
-## Keyword Detection and Command Intent Recognition
-
-**When users use natural language prompts, agents should READ the corresponding command documentation and EXECUTE the instructions within:**
-
-**CRITICAL: Always monitor for these keywords in user prompts regardless of language:**
-- **pattern**
-
-When these keywords appear in user prompts, determine if the user intends to use the corresponding cc-self-refer commands below.
-
-**Response Format for Self-Reference Actions**: If you determine that the user's natural language prompt requires using cc-self-refer functionality, prefix your response with `Pattern Refering... ♦️` to indicate self-reference action execution.
-
 ## Pattern Commands
 
 ### Pattern Matching Intelligence
