@@ -36,9 +36,6 @@ import type { MapType } from '../types/MapType';
 import type { Rect } from '../types/Rect';
 import type { Region } from '../types/Region';
 
-/**
- * @category Hell
- */
 export interface NaverMapViewProps extends ViewProps {
   /**
    * mapType 속성을 지정하면 지도의 유형을 변경할 수 있습니다.
@@ -404,7 +401,6 @@ export interface NaverMapViewProps extends ViewProps {
    * 네이버 스타일 에디터에서 생성한 커스텀 스타일 ID를 지정하면 해당 스타일이 지도에 적용됩니다.
    *
    * @see https://style-editor.map.naver.com
-   * @group Map Look & Feel
    */
   customStyleId?: string;
 
@@ -422,7 +418,6 @@ export interface NaverMapViewProps extends ViewProps {
    *
    * 커스텀 스타일 로딩이 실패했을 때 호출되는 콜백입니다.
    *
-   * @param params Error information with message
    * @event
    */
   onCustomStyleLoadFailed?: (params: { message: string }) => void;
