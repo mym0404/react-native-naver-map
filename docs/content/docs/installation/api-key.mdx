@@ -1,0 +1,165 @@
+---
+title: "API Key"
+description: "Naver Cloud Platform account creation and Maps API Key issuance process"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+import { Steps, Step } from 'fumadocs-ui/components/steps'
+
+# API Key Issuance
+
+To use React Native Naver Map, you need to obtain an AI·NAVER API Key from Naver Cloud Platform.
+
+<Callout type="important">
+API Keys issued after April 17, 2024 use AI·NAVER API.
+Customers using the existing Web Dynamic Map API should refer to the [notice](https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1).
+</Callout>
+
+## Create Naver Cloud Platform Account
+
+To use Naver Maps API, you first need a Naver Cloud Platform account.
+
+<Steps>
+
+<Step>
+
+### 1. Access Naver Cloud Platform
+
+Visit the [Naver Cloud Platform homepage](https://www.ncloud.com/).
+
+</Step>
+
+<Step>
+
+### 2. Sign Up
+
+Click the "Sign Up" button at the top right of the homepage to create an account.
+
+- Choose between individual or business account registration
+- Complete registration by entering required information
+- Email verification is mandatory
+
+</Step>
+
+<Step>
+
+### 3. Identity Verification and Payment Method Registration
+
+Identity verification and payment method registration are required to use APIs.
+
+- Complete mobile phone identity verification
+- Register credit card or bank transfer payment method
+
+<Callout type="info">
+Free credits are provided, and basic testing purposes can be used for free.
+</Callout>
+
+</Step>
+
+</Steps>
+
+## Issue AI·NAVER API Key
+
+Once account creation is complete, you can obtain a Maps API Key from the AI·NAVER API service.
+
+<Steps>
+
+<Step>
+
+### 1. Access AI·NAVER API Console
+
+Log in to the [AI·NAVER API Console](https://www.ncloud.com/product/aiService/aiNaverApi).
+
+</Step>
+
+<Step>
+
+### 2. Register Application
+
+Click the "Register Application" button to create a new application.
+
+- **Application Name**: Enter a name that can identify your project
+- **Service Selection**: Select "Maps" service
+
+</Step>
+
+<Step>
+
+### 3. Configure Service Environment
+
+Since you'll be using it in a mobile app, configure as follows:
+
+- **Service Environment**: Select "Mobile App"
+- **Bundle ID (iOS)**: Enter your iOS app's Bundle Identifier
+- **Package Name (Android)**: Enter your Android app's Package Name
+
+<Callout type="warning">
+Bundle ID and Package Name must exactly match your actual app settings.
+</Callout>
+
+</Step>
+
+<Step>
+
+### 4. Check API Key
+
+Once application registration is complete, you can check the following information:
+
+- **Client ID**: Client ID to use for API calls
+- **Client Secret**: Client secret to use for API calls
+
+</Step>
+
+</Steps>
+
+## API Key Configuration
+
+Refer to the following documents for setting up the issued API Key in your React Native project:
+
+- [iOS Setup](/installation/ios)
+- [Android Setup](/installation/android)
+- [Expo Setup](/installation/expo)
+
+## Usage and Pricing
+
+### Free Usage Quota
+
+- **Daily API call limit**: 25,000 calls
+- **Monthly API call limit**: 300,000 calls
+
+### Pricing Policy
+
+If you exceed the free quota, the following charges apply:
+
+- **Maps API**: 2 KRW per 1,000 calls
+- **Static Map API**: 20 KRW per 1,000 calls
+- **Directions API**: 5 KRW per 1,000 calls
+- **Geocoding API**: 5 KRW per 1,000 calls
+
+<Callout type="info">
+For detailed pricing policies, refer to [Naver Cloud Platform Pricing Guide](https://www.ncloud.com/product/aiService/aiNaverApi).
+</Callout>
+
+## Troubleshooting
+
+### Common Errors
+
+#### 1. 403 Forbidden Error
+
+- Bundle ID or Package Name not configured correctly
+- API Key not entered correctly
+- Usage quota exceeded
+
+#### 2. API Key Recognition Error
+
+- Check network connection status
+- Check for spaces or special characters when copying API Key
+- Test after rebuilding the app
+
+### Support and Inquiries
+
+For technical issues or API-related inquiries:
+
+- [Naver Cloud Platform Customer Support](https://www.ncloud.com/support)
+- [Naver Developer Center Q&A](https://developers.naver.com/forum)
+- [GitHub Issues](https://github.com/mym0404/react-native-naver-map/issues)

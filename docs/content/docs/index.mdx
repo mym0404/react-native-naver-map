@@ -1,0 +1,75 @@
+---
+title: "Getting Started"
+description: "Naver Map library for React Native"
+icon: "Rocket"
+---
+
+import { Apple, Smartphone, Zap } from 'lucide-react'
+import { Callout } from 'fumadocs-ui/components/callout'
+import { Cards, Card } from 'fumadocs-ui/components/card'
+
+## Getting Started
+
+This guide will walk you through installing and setting up React Native Naver Map in your project.
+
+## Prerequisites
+
+- New Architecture(+0.74)
+- Expo(Bare, CNG both supported, not Expo Go) or Bare React Native Project.
+
+## Installation
+
+```npm
+npm install @mj-studio/react-native-naver-map
+```
+
+## Naver Cloud Project Setup and API Key Generation
+
+- Please follow the [guide](/docs/installation/api-key) to set up your Naver Cloud Naver Map project and generate an API key.
+
+## Platform-specific Configuration
+
+<Callout type={'warning'}>
+  Even when using Expo, there is a difference between [Continuous Native Generation (CNG)](https://docs.expo.dev/workflow/continuous-native-generation/) mode, where `android` and `ios` exist in `.gitignore` and native projects are continuously created and used, and modes that don't follow this approach.
+
+  For permission configuration, the Documentation uses `react-native-permission` for Android and iOS, and `expo-location` for Expo CNG, but you can use any permission management method compatible with your project as preferred.
+</Callout>
+
+After installation is complete, additional platform-specific configuration is required. Please follow the guide for your corresponding platform.
+
+<Cards className={'mb-8'}>
+  <Card href="/docs/installation/android" title="Android Setup" icon={<Smartphone/>}>
+    If you're using Expo CNG, please follow the Expo CNG configuration.
+  </Card>
+  <Card href="/docs/installation/ios" title="iOS Setup" icon={<Apple/>}>
+    If you're using Expo CNG, please follow the Expo CNG configuration.
+  </Card>
+  <Card href="/docs/installation/expo" title="Expo CNG Environment Setup" icon={<Zap/>}>
+    In Expo CNG environment, separate Android and iOS configuration is not needed - just follow this guide.
+  </Card>
+</Cards>
+
+## Creating Your First Map
+
+Once platform-specific configuration is complete, you can display the map:
+
+```tsx title="App.tsx" lineNumbers
+import { NaverMapView } from '@mj-studio/react-native-naver-map'; // [!code highlight]
+
+export default function App() {
+  return (
+    <View style={styles.container}>
+      <NaverMapView // [!code highlight]
+        style={styles.map} // [!code highlight]
+        initialRegion={{// [!code highlight]
+          latitude: 37.5665,// [!code highlight]
+          longitude: 126.9780,// [!code highlight]
+          latitudeDelta: 0.01,// [!code highlight]
+          longitudeDelta: 0.01,// [!code highlight]
+        }} // [!code highlight]
+ {/* [!code highlight] */}
+      />
+    </View>
+  );
+}
+```

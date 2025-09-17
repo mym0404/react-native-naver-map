@@ -1,0 +1,47 @@
+---
+title: "Setup"
+description: "Basic setup for React Native Naver Map on Android platform"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+# Android Basic Setup
+
+This guide explains how to configure React Native Naver Map for Android platform.
+
+## 1. Add Maven Repository
+
+Add the Naver Maven repository to your `android/build.gradle` file:
+
+```groovy title="android/build.gradle"
+allprojects {
+    repositories {
+        maven {
+            url "https://repository.map.naver.com/archive/maven"
+        }
+    }
+}
+```
+
+## 2. Add Naver SDK Key to AndroidManifest.xml
+
+Add your issued Client ID to AndroidManifest.xml:
+
+```xml title="android/app/src/main/AndroidManifest.xml"
+<manifest>
+    <application>
+        <meta-data
+            android:name="com.naver.maps.map.NCP_KEY_ID"
+            android:value="YOUR_CLIENT_ID_HERE" />
+        <!-- (legacy) For map API customers who used AI NAVER API before April 17, 2024 -->
+        <!-- https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1 -->
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="YOUR_CLIENT_ID_HERE" />
+    </application>
+</manifest>
+```
+
+<Callout type="warn">
+Replace `YOUR_CLIENT_ID_HERE` with your actual Client ID issued from Naver Cloud Platform.
+</Callout>

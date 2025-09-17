@@ -1,0 +1,127 @@
+---
+title: "Permissions"
+description: "How to set up location permissions on iOS"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+# iOS Permission Setup
+
+This guide explains how to set up location permissions to display the current location.
+
+## Add Location Permission Descriptions to Info.plist
+
+Add location permission usage descriptions to your `Info.plist`:
+
+```xml title="ios/YourProject/Info.plist"
+<plist version="1.0">
+<dict>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>{{usage description}}</string>
+  <key>NSLocationTemporaryUsageDescriptionDictionary</key>
+  <dict>
+    <key>{{your purpose key}}</key>
+    <string>{{usage description}}</string>
+  </dict>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>{{usage description}}</string>
+</dict>
+</plist>
+```
+
+### Permission Key Descriptions
+
+- **`NSLocationAlwaysAndWhenInUseUsageDescription`** (iOS 11+)
+  - Allows the app to access location information both in foreground and background
+  - Since iOS 11, this key must be used instead of NSLocationAlwaysUsageDescription
+
+- **`NSLocationWhenInUseUsageDescription`**
+  - Allows the app to access location information only in foreground
+  - Access to location information only when the user is actively using the app
+
+- **`NSLocationTemporaryUsageDescriptionDictionary`** (iOS 14+)
+  - Allows the app to temporarily access precise location data
+  - Used when precise location is needed only for specific tasks
+
+<Callout type="info">
+If supporting iOS 11 or earlier, you should also set `NSLocationAlwaysUsageDescription`.
+</Callout>
+
+## Background Mode Configuration (Optional)
+
+If background location updates are required:
+
+1. Select your project in Xcode
+2. Go to **Signing & Capabilities** tab
+3. Add **Background Modes**
+4. Check **Location updates**
+
+![Xcode config result](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161737676.webp)
+
+## Podfile Permission Configuration (when using react-native-permissions)
+
+When using `react-native-permissions`, allow the following permissions in your Podfile:
+
+```ruby title="ios/Podfile"
+setup_permissions([
+  'LocationAccuracy',
+  'LocationAlways',
+  'LocationWhenInUse',
+  ...
+])
+```
+
+## Request Permissions in Code
+
+### Using react-native-permissions
+
+```tsx
+import { request, requestLocationAccuracy, PERMISSIONS } from 'react-native-permissions';
+
+useEffect(() => {
+  if (Platform.OS === 'ios') {
+    request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((status) => {
+      console.log(`Location request status: ${status}`);
+      if (status === 'granted') {
+        requestLocationAccuracy({
+          purposeKey: 'common-purpose', // Replace with purposeKey from Info.plist
+        })
+          .then((accuracy) => {
+            console.log(`Location accuracy is: ${accuracy}`);
+          })
+          .catch((e) => {
+            console.error(`Location accuracy request has been failed: ${e}`);
+          });
+      }
+    });
+  }
+}, []);
+```
+
+### Expo Project (using expo-location)
+
+```tsx
+import * as Location from 'expo-location';
+
+useEffect(() => {
+  (async () => {
+    try {
+      const {granted} = await Location.requestForegroundPermissionsAsync();
+      /**
+       * Note: Foreground permissions should be granted before asking for the background permissions
+       * (your app can't obtain background permission without foreground permission).
+       */
+      if(granted) {
+        await Location.requestBackgroundPermissionsAsync();
+      }
+    } catch(e) {
+      console.error(`Location request has been failed: ${e}`);
+    }
+  })();
+}, []);
+```
+
+## Permission Request UI
+
+![permission-result-1](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161733072.webp)
+![permission-result-2](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161737907.webp)

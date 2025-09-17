@@ -1,8 +1,10 @@
-# fabric-native-component
+---
+keywords: fabric,component,props,events,codegen
+language: typescript
+explanation: Defines React Native Fabric component using codegenNativeComponent with TypeScript props interface
+---
 
 # Fabric Native Component Definition
-
-[EXPLANATION] Defines React Native Fabric component using codegenNativeComponent with TypeScript props interface
 
 ## Usage
 

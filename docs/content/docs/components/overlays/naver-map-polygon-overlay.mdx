@@ -1,0 +1,40 @@
+---
+title: "NaverMapPolygonOverlay"
+description: "Component for displaying polygon overlays on the map"
+---
+
+## Overview
+
+NaverMapPolygonOverlay is a component that displays polygon (multi-sided shape) overlays on the map.
+You can define polygonal areas using coordinate arrays and configure fill colors and outline styles.
+
+## Basic Usage
+
+```tsx
+import { NaverMapView, NaverMapPolygonOverlay } from '@mj-studio/react-native-naver-map';
+
+function MapWithPolygon() {
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      <NaverMapPolygonOverlay // [!code highlight:11]
+        coords={[
+          { latitude: 37.5, longitude: 126.9 },
+          { latitude: 37.51, longitude: 126.91 },
+          { latitude: 37.52, longitude: 126.9 },
+          { latitude: 37.51, longitude: 126.89 },
+        ]}
+        color={'#00ff0033'}
+        outlineColor={'#00ff00'}
+        outlineWidth={2}
+        onTap={() => console.log('Polygon tapped')}
+      />
+    </NaverMapView>
+  );
+}
+```
+
+## Props
+
+`NaverMapPolygonOverlayProps`
+
+<AutoTypeTable path="../src/component/NaverMapPolygonOverlay.tsx" name="NaverMapPolygonOverlayProps" />

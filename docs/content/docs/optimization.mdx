@@ -1,0 +1,220 @@
+---
+title: "Optimization"
+description: "Performance optimization documentation"
+---
+
+## Overview
+
+This guide explains how to efficiently render large numbers of markers and overlays while optimizing performance in React Native Naver Map.
+
+## Marker Rendering Optimization
+
+### 1. Zoom Level-based Marker Density Control
+
+Control the number of markers displayed based on zoom level.
+
+```tsx title="ZoomBasedFiltering.tsx"
+const useZoomBasedMarkers = (allMarkers, zoom) => {
+  return useMemo(() => {
+    if (zoom >= 15) {
+      // High zoom: show all markers
+      return allMarkers;
+    } else if (zoom >= 12) {
+      // Medium zoom: show important markers only
+      return allMarkers.filter(marker => marker.priority >= 2);
+    } else {
+      // Low zoom: show top priority markers only
+      return allMarkers.filter(marker => marker.priority >= 4);
+    }
+  }, [allMarkers, zoom]);
+};
+
+const ZoomOptimizedMap = ({ markers }) => {
+  const [zoom, setZoom] = useState(10);
+  const filteredMarkers = useZoomBasedMarkers(markers, zoom);
+
+  return (
+    <NaverMapView
+      onCameraChanged={({ zoom: newZoom }) => {
+        setZoom(newZoom);
+      }}
+    >
+      {filteredMarkers.map(marker => (
+        <NaverMapMarkerOverlay
+          key={marker.id}
+          latitude={marker.latitude}
+          longitude={marker.longitude}
+          image={{ symbol: marker.priority >= 4 ? 'red' : 'blue' }}
+        />
+      ))}
+    </NaverMapView>
+  );
+};
+```
+
+## Performance Optimization by Marker Type
+
+### Performance Comparison Table
+
+| Marker Type | Rendering Speed | Memory Usage | Caching Support | Recommended Usage |
+|------------|----------------|---------------|-----------------|------------------|
+| Basic Symbol | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ✅ | Unlimited |
+| Native Asset | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ✅ | Thousands |
+| Web Image | ⭐⭐⭐ | ⭐⭐⭐ | ✅ | Hundreds |
+| Local Resource | ⭐⭐⭐⭐ | ⭐⭐⭐ | ✅ | Hundreds |
+| Custom View | ⭐⭐ | ⭐⭐ | ❌ | Under 50 |
+
+
+### Optimization through Clustering
+
+Group large numbers of markers into clusters to improve performance.
+
+```tsx title="BuiltinClustering.tsx"
+import { useMemo } from 'react';
+import { NaverMapView, ClusterMarkerProp } from '@mj-studio/react-native-naver-map';
+
+const ClusteredMap = ({ markers }) => {
+  const clusters = useMemo(() => {
+    // Group markers by region
+    const groupedMarkers = groupMarkersByRegion(markers);
+
+    return groupedMarkers.map(group => ({
+      width: 40,
+      height: 40,
+      screenDistance: 100, // Clustering distance (pixels)
+      minZoom: 0,
+      maxZoom: 16,
+      animate: true,
+      markers: group.markers.map(marker => ({
+        identifier: marker.id,
+        latitude: marker.latitude,
+        longitude: marker.longitude,
+        image: { symbol: 'blue' },
+        width: 24,
+        height: 24,
+      })),
+    }));
+  }, [markers]);
+
+  return (
+    <NaverMapView
+      style={{ flex: 1 }}
+      clusters={clusters}
+      onTapClusterLeaf={({ markerIdentifier }) => {
+        console.log('Marker tapped:', markerIdentifier);
+      }}
+    />
+  );
+};
+
+const groupMarkersByRegion = (markers) => {
+  // Region-based marker grouping logic
+  const groups = [];
+  const groupSize = 50; // Maximum markers per group
+
+  for (let i = 0; i < markers.length; i += groupSize) {
+    groups.push({
+      id: `group-${i}`,
+      markers: markers.slice(i, i + groupSize),
+    });
+  }
+
+  return groups;
+};
+```
+
+## Event Handling Optimization
+
+### 1. Camera Change Debouncing
+
+```tsx title="DebouncedCameraEvents.tsx"
+import { debounce } from 'lodash';
+
+const OptimizedMapEvents = () => {
+  const [region, setRegion] = useState(null);
+
+  // Debounce camera change events
+  const debouncedCameraChange = useMemo(
+    () => debounce((newRegion) => {
+      setRegion(newRegion);
+      // Heavy operations like loading new data from server
+      loadMarkersForRegion(newRegion);
+    }, 300),
+    []
+  );
+
+  return (
+    <NaverMapView
+      onCameraChanged={({ region }) => {
+        debouncedCameraChange(region);
+      }}
+      onCameraIdle={() => {
+        // Tasks to execute after camera movement is complete
+        console.log('Camera idle');
+      }}
+    />
+  );
+};
+```
+
+
+
+### 2. Batch Updates
+
+```tsx title="BatchUpdates.tsx"
+import { startTransition } from 'react';
+
+const BatchUpdatedMap = () => {
+  const [markers, setMarkers] = useState([]);
+
+  const handleCameraChanged = ({ region }) => {
+    // Process non-urgent state updates in batches
+    startTransition(() => {
+      const visibleMarkers = filterVisibleMarkers(allMarkers, region);
+      setMarkers(visibleMarkers);
+    });
+  };
+
+  return (
+    <NaverMapView
+      onCameraChanged={handleCameraChanged}
+    >
+      {markers.map(marker => (
+        <NaverMapMarkerOverlay key={marker.id} {...marker} />
+      ))}
+    </NaverMapView>
+  );
+};
+```
+
+## Rendering Optimization Strategies
+
+### 1. Conditional Rendering
+
+
+
+```tsx title="ConditionalRendering.tsx"
+const ConditionalMap = ({ showMarkers, showOverlays, zoom }) => {
+  return (
+    <NaverMapView>
+      {/* Show markers only when zoom level is high */}
+      {zoom >= 12 && showMarkers && (
+        <>
+          {markers.map(marker => (
+            <NaverMapMarkerOverlay key={marker.id} {...marker} />
+          ))}
+        </>
+      )}
+
+      {/* Control overlays with separate conditions */}
+      {showOverlays && (
+        <>
+          {overlays.map(overlay => (
+            <NaverMapCircleOverlay key={overlay.id} {...overlay} />
+          ))}
+        </>
+      )}
+    </NaverMapView>
+  );
+};
+```

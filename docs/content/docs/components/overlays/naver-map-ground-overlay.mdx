@@ -1,0 +1,38 @@
+---
+title: "NaverMapGroundOverlay"
+description: "Component for displaying ground overlays on the map"
+---
+
+## Overview
+
+NaverMapGroundOverlay is a component that displays ground overlays on the map.
+You can overlay images on specific geographical areas.
+
+## Basic Usage
+
+```tsx
+import { NaverMapView, NaverMapGroundOverlay } from '@mj-studio/react-native-naver-map';
+
+function MapWithGroundOverlay() {
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      <NaverMapGroundOverlay // [!code highlight:9]
+        image={{ assetName: 'thumbnail' }}
+        region={{
+          latitude: 37.5,
+          longitude: 126.9,
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.1,
+        }}
+        onTap={() => console.log('Ground overlay tapped')}
+      />
+    </NaverMapView>
+  );
+}
+```
+
+## Props
+
+`NaverMapGroundOverlayProps`
+
+<AutoTypeTable path="../src/component/NaverMapGroundOverlay.tsx" name="NaverMapGroundOverlayProps" />

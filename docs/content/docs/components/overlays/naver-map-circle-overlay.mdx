@@ -1,0 +1,36 @@
+---
+title: "NaverMapCircleOverlay"
+description: "Component for displaying circle overlays on the map"
+---
+
+## Overview
+
+NaverMapCircleOverlay is a component that displays circular overlays on the map.
+You can display circular areas by setting center coordinates, radius, colors, and other properties.
+
+## Basic Usage
+
+```tsx
+import { NaverMapView, NaverMapCircleOverlay } from '@mj-studio/react-native-naver-map';
+
+function MapWithCircle() {
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      <NaverMapCircleOverlay // [!code highlight:7]
+        latitude={37.5665}
+        longitude={126.9780}
+        radius={1000}
+        color={'#ff00ff33'}
+        outlineColor={'#ff00ff'}
+        outlineWidth={2}
+      />
+    </NaverMapView>
+  );
+}
+```
+
+## Props
+
+`NaverMapCircleOverlayProps`
+
+<AutoTypeTable path="../src/component/NaverMapCircleOverlay.tsx" name="NaverMapCircleOverlayProps" />

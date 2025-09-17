@@ -1,0 +1,44 @@
+---
+title: "NaverMapMarkerOverlay"
+description: "Component for displaying markers on the map"
+---
+
+## Overview
+
+NaverMapMarkerOverlay is a component that displays markers on the map.
+You can configure icons, captions, sub-captions, and also handle tap events.
+
+## Basic Usage
+
+```tsx
+import { NaverMapView, NaverMapMarkerOverlay } from '@mj-studio/react-native-naver-map';
+
+function MapWithMarker() {
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      <NaverMapMarkerOverlay // [!code highlight:6]
+        latitude={37.5665}
+        longitude={126.9780}
+        caption={{ text: 'Seoul City Hall' }}
+        onTap={() => console.log('Marker tapped')}
+      />
+    </NaverMapView>
+  );
+}
+```
+
+## Props
+
+`NaverMapMarkerOverlayProps`
+
+<AutoTypeTable path="../src/component/NaverMapMarkerOverlay.tsx" name="NaverMapMarkerOverlayProps" />
+
+## Related Types
+
+`CaptionType`
+
+<AutoTypeTable path="../src/component/NaverMapMarkerOverlay.tsx" name="CaptionType" />
+
+`SubCaptionType`
+
+<AutoTypeTable path="../src/component/NaverMapMarkerOverlay.tsx" name="SubCaptionType" />

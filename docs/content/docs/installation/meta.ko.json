@@ -1,0 +1,6 @@
+{
+  "title": "설치",
+  "icon": "Download",
+  "pages": ["api-key", "android", "ios", "expo"],
+  "defaultOpen": true
+}

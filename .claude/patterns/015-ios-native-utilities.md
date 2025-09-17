@@ -1,8 +1,10 @@
-# ios-native-utilities
+---
+keywords: ios-utils,color-conversion,validation,object-creation
+language: objc
+explanation: iOS native utility functions for color conversion, validation, and object creation
+---
 
 # iOS Native Utilities
-
-[EXPLANATION] iOS native utility functions for color conversion, validation, and object creation
 
 ## Usage
 

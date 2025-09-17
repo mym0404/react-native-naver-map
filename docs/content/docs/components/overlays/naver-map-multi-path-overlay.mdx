@@ -1,0 +1,54 @@
+---
+title: "NaverMapMultiPathOverlay"
+description: "Component for displaying multiple path overlays on the map"
+---
+
+## Overview
+
+NaverMapMultiPathOverlay is a component that displays multiple paths as a single overlay on the map.
+You can display multiple paths simultaneously using multiple coordinate arrays.
+
+## Basic Usage
+
+```tsx
+import { NaverMapView, NaverMapMultiPathOverlay } from '@mj-studio/react-native-naver-map';
+
+function MapWithMultiPath() {
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      <NaverMapMultiPathOverlay // [!code highlight:25]
+        width={40}
+        patternInterval={120}
+        progress={0.5}
+        outlineWidth={10}
+        patternImage={{ symbol: 'blue' }}
+        pathParts={[
+          {
+            coords: [
+              { latitude: 37.5, longitude: 126.9 },
+              { latitude: 37.51, longitude: 126.91 },
+              { latitude: 37.52, longitude: 126.92 },
+            ],
+            color: '#ff0000',
+          },
+          {
+            coords: [
+              { latitude: 37.52, longitude: 126.92 },
+              { latitude: 37.53, longitude: 126.93 },
+              { latitude: 37.54, longitude: 126.94 },
+            ],
+            color: '#00ff00',
+          },
+        ]}
+        onTap={() => console.log('Multi path tapped')}
+      />
+    </NaverMapView>
+  );
+}
+```
+
+## Props
+
+`NaverMapMultiPathOverlayProps`
+
+<AutoTypeTable path="../src/component/NaverMapMultiPathOverlay.tsx" name="NaverMapMultiPathOverlayProps" />

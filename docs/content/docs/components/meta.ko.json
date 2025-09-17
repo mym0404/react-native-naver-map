@@ -1,0 +1,6 @@
+{
+  "title": "컴포넌트",
+  "icon": "Component",
+  "pages": ["naver-map-view", "overlays"],
+  "defaultOpen": true
+}

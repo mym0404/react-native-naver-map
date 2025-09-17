@@ -1,0 +1,41 @@
+---
+title: "Setup"
+description: "Basic setup for React Native Naver Map on iOS platform"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+# iOS Basic Setup
+
+This guide explains how to configure React Native Naver Map for iOS platform.
+
+## 1. Install CocoaPods
+
+CocoaPods installation is required for iOS:
+
+```bash
+cd ios && pod install
+```
+
+## 2. Configure Naver SDK Key in Info.plist
+
+Add your issued Client ID to the Info.plist file:
+
+```xml title="ios/YourProject/Info.plist"
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>NMFNcpKeyId</key>
+  <string>YOUR_CLIENT_ID_HERE</string>
+  <!-- (legacy) For map API customers who used AI NAVER API before April 17, 2024 -->
+  <!-- https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1 -->
+  <key>NMFClientId</key>
+  <string>YOUR_CLIENT_ID_HERE</string>
+</dict>
+</plist>
+```
+
+<Callout type="warn">
+Replace `YOUR_CLIENT_ID_HERE` with your actual Client ID issued from Naver Cloud Platform.
+</Callout>

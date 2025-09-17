@@ -34,7 +34,11 @@
     "rules": {
       "recommended": false,
       "correctness": {
-        "noUnusedVariables": "off"
+        "noUnusedVariables": "off",
+        "noEmptyPattern": "off"
+      },
+      "complexity": {
+        "noBannedTypes": "off"
       },
       "suspicious": {
         "noExplicitAny": "off"

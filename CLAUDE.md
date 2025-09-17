@@ -145,7 +145,7 @@ To test the library, you need to configure API keys:
 
 ## Code Quality & Testing
 - `pnpm typecheck` - Run TypeScript type checking without emitting files
-- `pnpm lint` / `pnpm run t` - Run all linting checks (uses Lefthook)
+- `pnpm run t` - Run all linting checks (uses Lefthook)
 - `pnpm format` - Format code using configured formatters (Biome)
 
 ## Build & Release
@@ -162,37 +162,91 @@ To test the library, you need to configure API keys:
 - `pnpm pod` - Install iOS dependencies via CocoaPods
 - `pnpm pod:update` - Update iOS dependencies via CocoaPods
 
-## CI/CD Scripts
-- `pnpm ci:ios` - Build iOS project for CI (xcodebuild)
+## CI/CD & Turbo Scripts
+- `pnpm ci:ios` - Build iOS project for CI (xcodebuild with optimized settings)
 - `pnpm ci:android` - Build Android project for CI (gradlew assembleDebug)
-- `pnpm turbo:android` - Run Android CI with Turbo caching
-- `pnpm turbo:ios` - Run iOS CI with Turbo caching
+- `pnpm turbo:ios` - Run iOS CI build with Turbo cache (cached in .turbo/ios)
+- `pnpm turbo:android` - Run Android CI build with Turbo cache (cached in .turbo/android)
+
+**Turbo Scripts Usage:**
+- Turbo scripts provide cached builds for faster development iteration
+- `turbo:ios` and `turbo:android` use single-package mode with platform-specific cache directories
+- Cache helps avoid repeated builds when no source changes occur
+- Useful for CI/CD pipelines and local development optimization
 
 # Self Reference Context Management System (cc-self-refer cli and context storage project sturcture)
 
 This project uses `cc-self-refer` for intelligent self-reference capabilities.
 Claude Code agents should use these CLI commands to access and manage project context automatically:
 
-## Keyword Detection and Command Intent Recognition
+## Pattern List Table
 
-**When users use natural language prompts, agents should READ the corresponding command documentation and EXECUTE the instructions within:**
+[PATTERN LIST]
 
-**CRITICAL: Always monitor for these keywords in user prompts regardless of language:**
-- **pattern**
+| ID | Name | Language | Keywords | Explanation |
+|----|------|----------|----------|-------------|
+| 001 | Fabric Native Component Definition | typescript | fabric, component, props, events, codegen | Defines React Native Fabric component using codegenNativeComponent with TypeScript props interface |
+| 002 | React Native Codegen Commands | typescript | commands, imperative, async, native-methods, codegen | Defines imperative native methods using codegenNativeCommands for async/sync operations |
+| 003 | TurboModule Specification | typescript | turbo-module, native-module, spec, type-safety | Defines TurboModule interface for native module access with type safety |
+| 004 | iOS Fabric Component Implementation | objc | ios-fabric, component, props-handling, view-lifecycle | iOS Fabric component implementation extending RCTViewComponentView with props handling |
+| 005 | iOS Command Handling | objc | ios-commands, imperative, command-dispatch, native-calls | iOS command handling implementation for processing imperative native commands |
+| 006 | iOS Event Emission | objc | ios-events, event-emission, callbacks, native-to-js | iOS event emission using generated event emitter for sending events to JavaScript |
+| 007 | iOS TurboModule Implementation | objc | ios-turbo-module, bridge-compatibility, new-arch, module-implementation | iOS TurboModule implementation with conditional Bridge/TurboModule support |
+| 008 | Android ViewManager with Codegen | kotlin | android-viewmanager, codegen-delegate, props-handling, view-lifecycle | Android ViewManager implementation using codegen delegate pattern |
+| 009 | Android Command Handling | kotlin | android-commands, receiveCommand, imperative, command-dispatch | Android command handling using receiveCommand method with command ID matching |
+| 010 | Android Event Emission | kotlin | android-events, event-emission, RCTEventEmitter, native-to-js | Android event emission using ReactContext and RCTEventEmitter |
+| 011 | Android Package Registration | kotlin | android-package, ReactPackage, module-registration, native-modules | Android ReactPackage registration for native modules and ViewManagers |
+| 012 | JSDoc Documentation | typescript | jsdoc, documentation, api-docs, comments | JSDoc documentation patterns for TypeScript components and methods |
+| 013 | Native Color Parsing and Validation Pattern with TypeScript | typescript | color, processColor, ColorValue, validation, props | TypeScript color prop handling with processColor and native color utilities |
+| 014 | Android Native Utilities | kotlin | android-utils, event-emission, prop-validation, coordinate-conversion | Android native utility functions for event emission, prop validation, and conversions |
+| 015 | iOS Native Utilities | objc | ios-utils, color-conversion, validation, object-creation | iOS native utility functions for color conversion, validation, and object creation |
+| 016 | iOS Overlay Integration Pattern | objc | ios-overlay, integration, mapview-subview, native-overlays | iOS overlay integration pattern for Naver Maps SDK |
+| 018 | Fumadocs Usage | mdx | fumadocs, mdx, documentation, components, ui-patterns | Concise usage patterns for Fumadocs components and features in MDX |
+| 019 | Fumadocs I18n File Structure | markdown | fumadocs-i18n, file-structure, translation, meta-files, localization | File structure pattern for Fumadocs i18n with default and Korean translation files using dot-style naming. |
 
-When these keywords appear in user prompts, determine if the user intends to use the corresponding cc-self-refer commands below.
+[PATTERN LIST END]
 
-**Response Format for Self-Reference Actions**: If you determine that the user's natural language prompt requires using cc-self-refer functionality, prefix your response with `Pattern Refering... ♦️` to indicate self-reference action execution.
+## Pattern Commands
 
-### Pattern Commands
-- "use pattern" / "apply pattern" / "use existing patterns" → **Read and execute** `.claude/commands/pattern-use.md`
-- "create pattern" / "save as pattern" → **Read and execute** `.claude/commands/pattern-create.md`
-- "find Redux pattern" / "search API patterns" → **Read and execute** `.claude/commands/pattern-use.md` for search
-- "use pattern #5" / "apply pattern 005" → **Read and execute** `.claude/commands/pattern-use.md` with specific ID
+### Pattern Matching Intelligence
+**CRITICAL**: The CLAUDE.md context includes a [PATTERN LIST] table already with columns: ID, Name, Language, Keywords, Explanation. You should know what I mean.
+
+**When processing ANY user request**, check if the request matches patterns in the [PATTERN LIST] by analyzing:
+- **Name**: Direct pattern name matches
+- **Keywords**: Related terms and concepts
+- **Explanation**: Functional descriptions and use cases
+- **Language**: Technology stack alignment
+
+### Pattern Usage Workflows
+
+**Explicit Pattern Requests:**
+- "use pattern" / "apply pattern X" / "use existing patterns"
+- "find pattern for X" / "search patterns"
+- "use pattern #5" / "apply pattern 005"
+
+**Implicit Pattern Matching:**
+When user requests involve coding tasks that align with existing pattern Names, Keywords, or Explanations:
+
+1. **Identify Match**: Compare user's request against the [PATTERN LIST]
+2. **Retrieve Pattern**: Use `npx cc-self-refer pattern view <id>` for matching patterns
+3. **Apply Pattern**: Implement user's request using the pattern's principles and structure
+4. **Inform User**: Use this format to indicate pattern usage:
+   ```
+   Pattern Refering... ♦️
+   Used Patterns: #002 api-response, #003 error-handling
+   ```
+
+**Example Matching Logic:**
+- "implement todo api" → Extract keywords: "api", "todo" → Match patterns containing these terms
+- "create table component" → Extract keywords: "table", "component" → Match patterns with "table", "markdown", "component"
+- "setup testing" → Extract keywords: "test", "setup" → Match patterns with "test", "example"
+- "build React form" → Extract keywords: "react", "form" → Match patterns with "react", "form", "validation"
+- "add authentication" → Extract keywords: "auth", "authentication" → Match patterns with "auth", "login", "security"
+- "database connection" → Extract keywords: "database", "connection" → Match patterns with "db", "connection", "orm"
+- "error handling" → Extract keywords: "error", "handling" → Match patterns with "error", "exception", "validation"
 
 **IMPORTANT Agent Behavior:**
-1. **Identify** the user's intent from natural language
-2. **Read** the appropriate `.claude/commands/*.md` file
-3. **Execute** all instructions and commands specified in that file
-4. **Use** the retrieved context to complete the user's request
-5. **Follow** the exact workflow described in the command documentation
+1. **Scan** [PATTERN LIST] for relevant matches during any coding request
+2. **Retrieve** matching patterns using `npx cc-self-refer pattern view <id>`
+3. **Apply** pattern principles to implement user's actual requirements
+

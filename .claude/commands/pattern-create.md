@@ -13,13 +13,31 @@ Extract code snippet or common pattern in project and run cc-self-refer pattern 
 ### CLI Command Used
 
 ```bash
-npx -y cc-self-refer pattern create "<pattern-name>" <<'EOF'
+npx cc-self-refer pattern create "<pattern-name>" "<keyword1>,<keyword2>,<keyword3>" "<language>" "<explanation>" <<'EOF'
 <pattern-content>
 EOF
 ```
 
 ### Command Arguments
-- `pattern-name`: Name of the code pattern
+- `pattern-name`: Name of the code pattern, Don't include `pattern` in the name
+- `keywords`: Comma-separated keywords for pattern search (3-5 keywords recommended)
+  - **DO**: Use conceptual terms that describe the pattern's purpose and functionality
+  - **DO**: Include technology-specific terms when they're central to the pattern (e.g., "fabric", "turbo-module", "codegen")
+  - **DO**: Focus on what the pattern DOES, not implementation details
+  - **DON'T**: Use generic language names alone (javascript, typescript, python)
+  - **DON'T**: Use specific class/method names unless they're widely recognized APIs
+  - **DON'T**: Over-specify with implementation details
+
+  Examples:
+  - ✅ GOOD: "fabric,component,props,events" (describes pattern purpose)
+  - ✅ GOOD: "commands,imperative,async" (describes functionality)
+  - ✅ GOOD: "validation,error-handling,schemas" (describes what it does)
+  - ❌ BAD: "javascript,nodejs,function" (too generic)
+  - ❌ BAD: "RCTViewComponentView,updateProps,initWithFrame" (too specific - API names)
+  - ❌ BAD: "ios,objective-c,native" (only platform/language identifiers)
+
+- `language`: Programming language (e.g., javascript, typescript, python, go, rust)
+- `explanation`: Brief explanation (1-2 sentences) of what this pattern does and when to use it
 - `pattern-content`: Complete code snippet or pattern content
 
 
@@ -36,8 +54,6 @@ EOF
 ````markdown
 # <Pattern Name>
 
-[EXPLANATION] one or two line of excerpt, explanation of this code pattern
-
 ## Usage
 
 ```[language]
@@ -51,8 +67,6 @@ Example:
 
 ````markdown
 # Zod Schema Definition
-
-[EXPLANATION] how to create a zod schema definition
 
 ## Usage
 
@@ -71,8 +85,6 @@ Example - Utility Function Usage:
 
 ````markdown
 # API Error Handler Usage
-
-[EXPLANATION] handle api error with apiErrorHandler utility
 
 ## Usage
 
@@ -101,8 +113,6 @@ Example with multiple variants:
 
 ````markdown
 # Button Component
-
-[EXPLANATION] Button component usage
 
 ## Usage
 
@@ -148,7 +158,7 @@ Claude will:
 2. Generate <formatted content> with the above rules.
 3. Execute: 
    ```bash
-   npx -y cc-self-refer pattern create "api-error-handler" <<'EOF'
+   npx cc-self-refer pattern create "api-error-handler" "error,handler,api,utilities" "typescript" "Utility pattern for handling API errors in TypeScript applications with proper error typing." <<'EOF'
    <formatted content>
    EOF
    ```

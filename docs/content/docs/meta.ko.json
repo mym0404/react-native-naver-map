@@ -1,0 +1,21 @@
+{
+  "title": "문서",
+  "icon": "Book",
+  "pages": [
+    "---설정---",
+    "index",
+    "installation",
+    "---사용법---",
+    "components",
+    "---가이드---",
+    "marker-clustering",
+    "camera-control",
+    "custom-style",
+    "optimization",
+    "---더보기---",
+    "[NotepadText][변경 사항](https://github.com/mym0404/react-native-naver-map/releases)",
+    "milestone",
+    "[Book][튜토리얼](https://medium.com/mj-studio/%EB%A6%AC%EC%95%A1%ED%8A%B8-%EB%84%A4%EC%9D%B4%ED%8A%B8%EB%B8%8C%EB%A1%9C-%EB%84%A4%EC%9D%B4%EB%B2%84-%EC%A7%80%EB%8F%84-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-1-%EC%84%A4%EC%B9%98%EC%99%80-%ED%82%A4-%EB%B0%9C%EA%B8%89-%EB%B0%9B%EA%B8%B0-f826d8c0644d)",
+    "[Coffee][후원](https://github.com/sponsors/mym0404)"
+  ]
+}

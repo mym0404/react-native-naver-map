@@ -40,9 +40,6 @@ import type { MarkerImageProp } from '../types/MarkerImageProp';
 import type { CaptionType } from './NaverMapMarkerOverlay';
 import type { NativeCaptionProp } from '../spec/RNCNaverMapMarkerNativeComponent';
 
-/**
- * @category Hell
- */
 export interface NaverMapViewProps extends ViewProps {
   /**
    * mapType 속성을 지정하면 지도의 유형을 변경할 수 있습니다.
@@ -403,6 +400,33 @@ export interface NaverMapViewProps extends ViewProps {
    */
   fpsLimit?: number;
 
+  /**
+   * Custom style ID from Naver Style Editor
+   *
+   * 네이버 스타일 에디터에서 생성한 커스텀 스타일 ID를 지정하면 해당 스타일이 지도에 적용됩니다.
+   *
+   * @see https://style-editor.map.naver.com
+   */
+  customStyleId?: string;
+
+  /**
+   * Called when custom style is successfully loaded
+   *
+   * 커스텀 스타일이 성공적으로 로드되었을 때 호출되는 콜백입니다.
+   *
+   * @event
+   */
+  onCustomStyleLoaded?: () => void;
+
+  /**
+   * Called when custom style loading fails
+   *
+   * 커스텀 스타일 로딩이 실패했을 때 호출되는 콜백입니다.
+   *
+   * @event
+   */
+  onCustomStyleLoadFailed?: (params: { message: string }) => void;
+
   // locationOverlay?: {
   //   isVisible?: boolean;
   //   position?: Coord;
@@ -648,6 +672,9 @@ export const NaverMapView = forwardRef(
       onTapMap: onTapMapProp,
       onInitialized,
       onOptionChanged: onOptionChangedProp,
+      customStyleId,
+      onCustomStyleLoaded: onCustomStyleLoadedProp,
+      onCustomStyleLoadFailed: onCustomStyleLoadFailedProp,
       isScrollGesturesEnabled,
       isZoomGesturesEnabled,
       isTiltGesturesEnabled,
@@ -922,6 +949,18 @@ export const NaverMapView = forwardRef(
       }
     );
 
+    const onCustomStyleLoaded = useStableCallback(() => {
+      onCustomStyleLoadedProp?.();
+    });
+
+    const onCustomStyleLoadFailed = useStableCallback(
+      ({
+        nativeEvent: { message },
+      }: NativeSyntheticEvent<{ message: string }>) => {
+        onCustomStyleLoadFailedProp?.({ message });
+      }
+    );
+
     useImperativeHandle(
       ref,
       () => ({
@@ -1136,6 +1175,13 @@ export const NaverMapView = forwardRef(
         onScreenToCoordinate={onScreenToCoordinate}
         onCoordinateToScreen={onCoordinateToScreen}
         fpsLimit={fpsLimit}
+        customStyleId={customStyleId}
+        onCustomStyleLoaded={
+          onCustomStyleLoadedProp ? onCustomStyleLoaded : undefined
+        }
+        onCustomStyleLoadFailed={
+          onCustomStyleLoadFailedProp ? onCustomStyleLoadFailed : undefined
+        }
         // locationOverlay={_locationOverlay}
         onTapClusterLeaf={
           onTapClusterLeaf

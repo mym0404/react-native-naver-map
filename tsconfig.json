@@ -39,7 +39,11 @@
     "verbatimModuleSyntax": true
   },
   "exclude": [
-    "./expo-config-plugin",
-    "./docs"
+    "expo-config-plugin",
+    "docs",
+    "app.plugin.js",
+    "example",
+    "script",
+    "lib"
   ]
 }

@@ -1,0 +1,54 @@
+---
+title: "NaverMapMultiPathOverlay"
+description: "지도에 다중 경로 오버레이를 표시하는 컴포넌트"
+---
+
+## Overview
+
+NaverMapMultiPathOverlay는 지도 위에 여러 개의 경로를 하나의 오버레이로 표시하는 컴포넌트입니다.
+다중 좌표 배열을 통해 여러 경로를 동시에 표시할 수 있습니다.
+
+## Basic Usage
+
+```tsx
+import { NaverMapView, NaverMapMultiPathOverlay } from '@mj-studio/react-native-naver-map';
+
+function MapWithMultiPath() {
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      <NaverMapMultiPathOverlay // [!code highlight:25]
+        width={40}
+        patternInterval={120}
+        progress={0.5}
+        outlineWidth={10}
+        patternImage={{ symbol: 'blue' }}
+        pathParts={[
+          {
+            coords: [
+              { latitude: 37.5, longitude: 126.9 },
+              { latitude: 37.51, longitude: 126.91 },
+              { latitude: 37.52, longitude: 126.92 },
+            ],
+            color: '#ff0000',
+          },
+          {
+            coords: [
+              { latitude: 37.52, longitude: 126.92 },
+              { latitude: 37.53, longitude: 126.93 },
+              { latitude: 37.54, longitude: 126.94 },
+            ],
+            color: '#00ff00',
+          },
+        ]}
+        onTap={() => console.log('Multi path tapped')}
+      />
+    </NaverMapView>
+  );
+}
+```
+
+## Props
+
+`NaverMapMultiPathOverlayProps`
+
+<AutoTypeTable path="../src/component/NaverMapMultiPathOverlay.tsx" name="NaverMapMultiPathOverlayProps" />

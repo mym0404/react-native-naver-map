@@ -1,0 +1,284 @@
+---
+title: "Common Overlay Usage"
+description: "Common usage patterns for map overlays"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs'
+
+Overlays are components that display additional information on top of the map. All overlays share common properties while providing their own unique functionality.
+
+## Base Overlay Properties
+
+All overlay components inherit `BaseOverlayProps` and support the following common properties:
+
+<AutoTypeTable path="../src/types/BaseOverlayProps.ts" name="BaseOverlayProps" />
+
+## Z-Index Layer System
+
+Overlays are rendered in a hierarchical structure, and you can control the rendering order with two types of Z-Index.
+
+### Global Z-Index vs Z-Index
+
+- **`globalZIndex`**: Determines the global rendering order and controls the hierarchy between overlay types
+  - Default: Fixed per overlay type (marker: 200000, polygon: -200000, etc.)
+  - 0 or higher: Rendered above map symbols
+  - Below 0: Rendered below map symbols
+
+- **`zIndex`**: Controls the order among overlays with the same globalZIndex
+  - Default: 0
+  - Higher values are displayed on top
+  - Determines priority among overlays of the same type
+
+### Default Global Z-Index Values
+```tsx
+// Default globalZIndex values by overlay type
+Info Windows: 400000          // Topmost
+Location Overlay: 300000
+Markers: 200000
+Arrow Overlays: 100000
+// (Map Symbols = 0)
+Path Overlays: -100000
+Shapes (Polygon, Polyline, Circle): -200000
+Ground Overlays: -300000    // Bottommost
+// (Map Background)
+```
+
+<Callout>
+  The zIndex property allows you to specify overlap priority among overlays with the same globalZIndex. If two overlays have the same globalZIndex, the overlay with a higher zIndex will cover the one with a lower zIndex. For example, even if you set a marker's zIndex to 1 and a ground overlay's zIndex to 2, the marker will still cover the ground overlay because the marker's default globalZIndex is 200000 while the ground overlay's default globalZIndex is -300000. Since the default zIndex value is 0 regardless of overlay type, it can be used more intuitively than globalZIndex when you only want to specify priority among overlays of the same type.
+</Callout>
+
+## Zoom Level Control
+
+You can control overlay visibility based on zoom levels:
+
+```tsx
+<NaverMapMarkerOverlay
+  // Display only between zoom levels 10-15
+  minZoom={10}
+  maxZoom={15}
+  isMinZoomInclusive={true}
+  isMaxZoomInclusive={false}
+/>
+
+<NaverMapPolygonOverlay
+  // Display only at zoom level 8 and above
+  minZoom={8}
+  // Include zoom level 8
+  isMinZoomInclusive={true}
+/>
+```
+
+## Event Handling
+
+All overlays support the `onTap` event:
+
+```tsx
+<NaverMapCircleOverlay
+  onTap={() => {
+    console.log('Circle overlay tapped');
+    // Show details, change state, etc.
+  }}
+/>
+```
+
+## Markers (NaverMapMarkerOverlay)
+
+Markers are the most basic overlays that indicate specific locations on the map.
+
+### Basic Usage
+
+```tsx
+import { NaverMapView, NaverMapMarkerOverlay } from '@mj-studio/react-native-naver-map';
+
+function MapWithMarker() {
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      <NaverMapMarkerOverlay
+        latitude={37.5665}
+        longitude={126.9780}
+        anchor={{ x: 0.5, y: 1 }}
+        caption={{ text: "Seoul City Hall" }}
+      />
+    </NaverMapView>
+  );
+}
+```
+
+### Marker Image Types
+
+React Native Naver Map supports 5 types of marker images:
+
+#### 1. Default Symbols
+
+Use default symbols provided by Naver Maps:
+
+```tsx
+<NaverMapMarkerOverlay
+  latitude={37.5665}
+  longitude={126.9780}
+  image={{ symbol: 'green' }}
+/>
+```
+
+Available symbols: `green`, `red`, `blue`, `yellow`, `gray`, `pink`, `lightblue`
+
+#### 2. Local Image Resources
+
+```tsx
+<NaverMapMarkerOverlay
+  latitude={37.5665}
+  longitude={126.9780}
+  image={require('./assets/marker.png')}
+  width={40}
+  height={40}
+/>
+```
+
+<Callout type="info">
+  It's recommended to specify `width` and `height` as sizes may differ between Debug/Release builds.
+</Callout>
+
+#### 3. Native Resources
+
+<Tabs items={['iOS', 'Android']}>
+  <Tab value="Basic">
+    ```tsx
+    // iOS: Image asset from Bundle
+    <NaverMapMarkerOverlay
+      image={{ assetName: 'marker_icon' }}
+      width={40}
+      height={40}
+    />
+    ```
+  </Tab>
+  <Tab value="Basic">
+    ```tsx
+    // Android: drawable resource
+    <NaverMapMarkerOverlay
+      image={{ assetName: 'ic_marker' }}
+      width={40}
+      height={40}
+    />
+    ```
+  </Tab>
+</Tabs>
+
+#### 4. Network Images
+
+```tsx
+<NaverMapMarkerOverlay
+  latitude={37.5665}
+  longitude={126.9780}
+  image={{ httpUri: 'https://example.com/marker.png' }}
+  width={40}
+  height={40}
+/>
+```
+
+#### 5. Custom React View
+
+```tsx
+<NaverMapMarkerOverlay
+  latitude={37.5665}
+  longitude={126.9780}
+  width={100}
+  height={100}
+>
+  <View
+    key={`${text}/${color}`} // Key for tracking changes
+    collapsable={false}       // Required for iOS New Architecture
+    style={styles.customMarker}
+  >
+    <Text>{text}</Text>
+    <Icon name="location" color={color} />
+  </View>
+</NaverMapMarkerOverlay>
+```
+
+<Callout type="warn">
+  Custom Views can impact performance. Using images is recommended for a large number of markers.
+</Callout>
+
+## Captions and Sub-Captions
+
+You can add text labels to markers:
+
+```tsx
+<NaverMapMarkerOverlay
+  latitude={37.5665}
+  longitude={126.9780}
+  caption={{
+    text: "Main Text",
+    textSize: 16,
+    color: '#000000',
+    haloColor: '#FFFFFF',
+  }}
+  subCaption={{
+    text: "Sub Text",
+    textSize: 12,
+    color: '#666666',
+  }}
+/>
+```
+
+#### Caption Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `text` | `string` | Text to display |
+| `textSize` | `number` | Text size |
+| `color` | `string` | Text color |
+| `haloColor` | `string` | Text outline color |
+| `requestedWidth` | `number` | Requested width |
+| `minZoom` | `number` | Minimum zoom level |
+| `maxZoom` | `number` | Maximum zoom level |
+
+### Marker Configuration
+
+#### Anchor Point
+
+The anchor determines which point of the marker image will be positioned at the coordinates:
+
+```tsx
+<NaverMapMarkerOverlay
+  anchor={{ x: 0.5, y: 1 }} // Bottom center
+  // x: 0 (left) ~ 1 (right)
+  // y: 0 (top) ~ 1 (bottom)
+/>
+```
+
+#### Other Settings
+
+```tsx
+<NaverMapMarkerOverlay
+  isIconPerspectiveEnabled={true} // Apply perspective
+  angle={45} // Rotation angle
+/>
+```
+
+#### Display Settings
+
+```tsx
+<NaverMapMarkerOverlay
+  isHidden={false}           // Hide/show marker
+  isHideCollidedSymbols={true} // Hide colliding symbols
+  isHideCollidedMarkers={false} // Hide colliding markers
+  isHideCollidedCaptions={true} // Hide colliding captions
+  isForceShowIcon={false}     // Force show icon
+  isForceShowCaption={false}  // Force show caption
+/>
+```
+
+
+#### Image Caching
+
+Automatic caching is applied for markers using the same image:
+
+```tsx
+// reuseIdentifier is automatically handled
+<NaverMapMarkerOverlay
+  image={require('./marker.png')}
+  // Same images are cached and reused
+/>
+```

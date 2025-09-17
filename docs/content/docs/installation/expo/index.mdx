@@ -1,0 +1,94 @@
+---
+title: "Setup"
+description: "Basic setup for React Native Naver Map in Expo projects"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+# Expo Basic Setup
+
+This guide explains how to configure React Native Naver Map in Expo projects.
+
+<Callout type="warn">
+Expo Go does not support native modules, so you need a [Development Build](https://docs.expo.dev/develop/development-builds/introduction/).
+</Callout>
+
+## 1. Add expo-build-properties Package
+
+This is required to inject the Naver Maven repository:
+
+```bash
+npx expo install expo-build-properties
+```
+
+## 2. Add Config Plugin to app.json
+
+Configure the Config Plugin with your issued Client ID:
+
+```json title="app.json"
+{
+  "expo": {
+    "name": "your-app-name",
+    "plugins": [
+      [
+        "@mj-studio/react-native-naver-map",
+        {
+          "client_id": "YOUR_CLIENT_ID_HERE"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "extraMavenRepos": ["https://repository.map.naver.com/archive/maven"]
+          }
+        }
+      ]
+    ]
+  }
+}
+```
+
+<Callout type="warn">
+Replace `YOUR_CLIENT_ID_HERE` with your actual Client ID issued from Naver Cloud Platform.
+</Callout>
+
+## 3. Run Prebuild
+
+Generate native project files:
+
+```bash
+npx expo prebuild -p android
+npx expo prebuild -p ios
+```
+
+## 4. Create Development Build
+
+### Local Build
+
+```bash
+# iOS
+npx expo run:ios
+
+# Android
+npx expo run:android
+```
+
+### EAS Build (Cloud Build)
+
+```bash
+# Configure EAS Build
+npx eas build:configure
+
+# Create Development Build
+npx eas build --profile development --platform ios
+npx eas build --profile development --platform android
+```
+
+## 5. Start Development Server
+
+Once the Development Build is complete, start the development server:
+
+```bash
+npx expo start --dev-client
+```

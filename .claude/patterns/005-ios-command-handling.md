@@ -1,8 +1,10 @@
-# ios-command-handling
+---
+keywords: ios-commands,imperative,command-dispatch,native-calls
+language: objc
+explanation: iOS command handling implementation for processing imperative native commands
+---
 
 # iOS Command Handling
-
-[EXPLANATION] iOS command handling implementation for processing imperative native commands
 
 ## Usage
 

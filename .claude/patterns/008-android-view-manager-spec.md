@@ -1,8 +1,10 @@
-# android-view-manager-spec
+---
+keywords: android-viewmanager,codegen-delegate,props-handling,view-lifecycle
+language: kotlin
+explanation: Android ViewManager implementation using codegen delegate pattern
+---
 
 # Android ViewManager with Codegen
-
-[EXPLANATION] Android ViewManager implementation using codegen delegate pattern
 
 ## Usage
 

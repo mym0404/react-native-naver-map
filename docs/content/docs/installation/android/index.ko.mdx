@@ -1,0 +1,47 @@
+---
+title: "설정"
+description: "Android 플랫폼에서 React Native Naver Map 기초 설정 방법"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+# Android 기초 설정
+
+Android 플랫폼에서 React Native Naver Map을 사용하기 위한 기초 설정 방법을 안내합니다.
+
+## 1. Maven 저장소 추가
+
+`android/build.gradle` 파일에 네이버 Maven 저장소를 추가합니다:
+
+```groovy title="android/build.gradle"
+allprojects {
+    repositories {
+        maven {
+            url "https://repository.map.naver.com/archive/maven"
+        }
+    }
+}
+```
+
+## 2. AndroidManifest.xml에 Naver SDK 키 추가
+
+발급받은 Client ID를 AndroidManifest.xml에 추가합니다:
+
+```xml title="android/app/src/main/AndroidManifest.xml"
+<manifest>
+    <application>
+        <meta-data
+            android:name="com.naver.maps.map.NCP_KEY_ID"
+            android:value="YOUR_CLIENT_ID_HERE" />
+        <!-- (legacy) 2024년 4월 17일 이전에 AI NAVER API를 사용하던 지도 API 고객 전용 -->
+        <!-- https://www.ncloud.com/support/notice/all/1930?searchKeyword=map&page=1 -->
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="YOUR_CLIENT_ID_HERE" />
+    </application>
+</manifest>
+```
+
+<Callout type="warn">
+`YOUR_CLIENT_ID_HERE` 부분을 네이버 클라우드 플랫폼에서 발급받은 실제 Client ID로 교체해주세요.
+</Callout>

@@ -1,0 +1,120 @@
+---
+title: "Permissions"
+description: "How to set up location permissions in Expo"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+# Expo Permission Setup
+
+This guide explains how to set up location permissions in Expo projects.
+
+## Declare Permissions in Config Plugin
+
+```json title="app.json"
+{
+  "expo": {
+    "plugins": [
+      [
+        "@mj-studio/react-native-naver-map",
+        {
+          "client_id": "{{Naver Map Client Key}}",
+          // (Optional, can be configured with this package instead of expo-location)
+          "android": {
+            "ACCESS_FINE_LOCATION": true,
+            "ACCESS_COARSE_LOCATION": true,
+            "ACCESS_BACKGROUND_LOCATION": true
+          },
+          // (Optional, can be configured with this package instead of expo-location)
+          "ios": {
+            "NSLocationAlwaysAndWhenInUseUsageDescription": "{{ your location usage description }}",
+            "NSLocationWhenInUseUsageDescription": "{{ your location usage description }}",
+            "NSLocationTemporaryUsageDescriptionDictionary": {
+              "purposeKey": "{{ your purpose key }}",
+              "usageDescription": "{{ your location usage description }}"
+            }
+          }
+        }
+      ]
+    ]
+  }
+}
+```
+
+<Callout type="info">
+Location permission declarations are optional. You can also set them separately using the expo-location package.
+</Callout>
+
+## Request Runtime Permissions Using expo-location
+
+### 1. Install expo-location
+
+- [expo-location docs](https://docs.expo.dev/versions/latest/sdk/location/)
+
+```bash
+npx expo install expo-location
+```
+
+### 2. Request Permissions in Code
+
+```tsx
+import * as Location from 'expo-location';
+
+useEffect(() => {
+  (async () => {
+    try {
+      const {granted} = await Location.requestForegroundPermissionsAsync();
+      /**
+       * Note: Foreground permissions should be granted before asking for the background permissions
+       * (your app can't obtain background permission without foreground permission).
+       */
+      if(granted) {
+        await Location.requestBackgroundPermissionsAsync();
+      }
+    } catch(e) {
+      console.error(`Location request has been failed: ${e}`);
+    }
+  })();
+}, []);
+```
+
+### 3. Permission Settings in app.json (when using expo-location)
+
+```json title="app.json"
+{
+  "expo": {
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location.",
+          "locationWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location while you are using the app."
+        }
+      ]
+    ]
+  }
+}
+```
+
+## Permission Types
+
+### Android Permissions
+
+- **`ACCESS_FINE_LOCATION`**: Access to precise location information
+- **`ACCESS_COARSE_LOCATION`**: Access to approximate location information
+- **`ACCESS_BACKGROUND_LOCATION`**: Access to background location information
+
+### iOS Permissions
+
+- **`NSLocationAlwaysAndWhenInUseUsageDescription`**: Always and when-in-use location access
+- **`NSLocationWhenInUseUsageDescription`**: When-in-use location access
+- **`NSLocationTemporaryUsageDescriptionDictionary`**: Temporary precise location access
+
+## Permission Request UI
+
+![permission-result-1](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161733072.webp)
+![permission-result-2](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161737907.webp)
+
+<Callout>
+You can check more detailed permission setup methods by referring to the [expo-location](https://docs.expo.dev/versions/latest/sdk/location/) documentation.
+</Callout>

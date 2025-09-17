@@ -15,6 +15,8 @@ import com.mjstudio.reactnativenavermap.event.NaverMapCameraChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapCameraIdleEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapClusterLeafTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapCoordinateToScreenEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapCustomStyleLoadFailedEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapCustomStyleLoadedEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapScreenToCoordinateEvent
@@ -124,6 +126,8 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
       registerDirectEvent(this, NaverMapScreenToCoordinateEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCoordinateToScreenEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapClusterLeafTapEvent.EVENT_NAME)
+      registerDirectEvent(this, NaverMapCustomStyleLoadedEvent.EVENT_NAME)
+      registerDirectEvent(this, NaverMapCustomStyleLoadFailedEvent.EVENT_NAME)
     }
 
   private fun RNCNaverMapViewWrapper?.withMapView(callback: (mapView: RNCNaverMapView) -> Unit) {
@@ -665,6 +669,37 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
         v.getIntOrNull("circleColor")?.let { o.circleColor = it }
         v.getDoubleOrNull("circleOutlineWidth")?.let { o.circleOutlineWidth = it.px }
         v.getIntOrNull("circleOutlineColor")?.let { o.circleOutlineColor = it }
+      }
+    }
+  }
+
+  @ReactProp(name = "customStyleId")
+  override fun setCustomStyleId(
+    view: RNCNaverMapViewWrapper?,
+    value: String?,
+  ) = view.withMap { map ->
+    view?.let { wrapper ->
+      if (!value.isNullOrEmpty()) {
+        map.setCustomStyleId(
+          value,
+          object : NaverMap.OnCustomStyleLoadCallback {
+            override fun onCustomStyleLoaded() {
+              wrapper.reactContext.emitEvent(wrapper.id) { surfaceId, reactTag ->
+                NaverMapCustomStyleLoadedEvent(surfaceId, reactTag)
+              }
+            }
+
+            override fun onCustomStyleLoadFailed(exception: Exception) {
+              val message = exception.message ?: "Unknown error occurred while loading custom style"
+              wrapper.reactContext.emitEvent(wrapper.id) { surfaceId, reactTag ->
+                NaverMapCustomStyleLoadFailedEvent(surfaceId, reactTag, message)
+              }
+            }
+          },
+        )
+      } else {
+        // Clear custom style when value is null or empty
+        map.setCustomStyleId(null, null)
       }
     }
   }

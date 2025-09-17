@@ -1,0 +1,6 @@
+{
+  "title": "Components",
+  "icon": "Component",
+  "pages": ["naver-map-view", "overlays"],
+  "defaultOpen": true
+}

@@ -1,0 +1,38 @@
+---
+title: "NaverMapPolylineOverlay"
+description: "Component for displaying polyline overlays on the map"
+---
+
+## Overview
+
+NaverMapPolylineOverlay is a component that displays polyline (multi-line) overlays on the map.
+You can draw connected lines using coordinate arrays and configure line color, thickness, patterns, and more.
+
+## Basic Usage
+
+```tsx
+import { NaverMapView, NaverMapPolylineOverlay } from '@mj-studio/react-native-naver-map';
+
+function MapWithPolyline() {
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      <NaverMapPolylineOverlay // [!code highlight:9]
+        coords={[
+          { latitude: 37.5, longitude: 126.9 },
+          { latitude: 37.51, longitude: 126.91 },
+          { latitude: 37.52, longitude: 126.92 },
+        ]}
+        width={5}
+        color={'#ff0000'}
+        onTap={() => console.log('Polyline tapped')}
+      />
+    </NaverMapView>
+  );
+}
+```
+
+## Props
+
+`NaverMapPolylineOverlayProps`
+
+<AutoTypeTable path="../src/component/NaverMapPolylineOverlay.tsx" name="NaverMapPolylineOverlayProps" />

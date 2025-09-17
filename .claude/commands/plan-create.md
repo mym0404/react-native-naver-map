@@ -16,7 +16,7 @@ This command initiates a comprehensive implementation planning process through e
 
 ```bash
 # Create the implementation plan after planning:
-npx -y cc-self-refer plan create "<plan-title>" <<'EOF'
+npx cc-self-refer plan create "<plan-title>" <<'EOF'
 <plan-content>
 EOF
 ```
@@ -26,13 +26,44 @@ EOF
 ## Interactive Planning Process
 
 **Simple Workflow:**
-1. Ask what the user wants to plan
-2. Have a conversation to understand details
-3. Create the plan with CLI command
+1. Load existing patterns for context
+2. Ask what the user wants to plan
+3. Have a conversation to understand details (avoiding questions about existing patterns)
+4. Create the plan with CLI command (referencing patterns when applicable)
+
+**MANDATORY: Load Patterns Before Planning**
+
+**First, load all existing patterns into context:**
+```bash
+# Load pattern list
+npx cc-self-refer pattern list
+
+# Search for relevant patterns based on initial understanding
+npx cc-self-refer pattern search "<relevant-keywords>"
+
+# View specific patterns that might be useful
+npx cc-self-refer pattern view <pattern-id>
+```
+
+**WHY THIS MATTERS:**
+- Avoid asking questions already answered in patterns
+- Reference existing solutions in the implementation plan
+- Use established code templates and architectures
+- Maintain consistency with project conventions
+
+**PATTERN USAGE GUIDELINE:**
+- When writing implementation sections, actively consider if existing patterns apply
+- If a pattern matches the implementation need → Add "Use Pattern #[N]" inline
+- If no pattern exists → Write the implementation details normally
+- Don't force pattern usage where it doesn't naturally fit
+- Examples of when to reference patterns:
+  - Component structure matches existing pattern → "Use Pattern #[N] for component template"
+  - API client implementation exists → "Use Pattern #[N] for API integration"
+  - Error handling pattern available → "Use Pattern #[N] for error handling"
 
 **MANDATORY: Infinite Interactive Dialogue Process**
 
-**Start by asking:**
+**Start by asking (AFTER loading patterns):**
 ```
 What would you like to plan?
 
@@ -45,26 +76,29 @@ Please describe:
 **CRITICAL: After every user response, analyze what implementation details are still missing and ask deeper questions. NEVER stop asking until you know exactly how to implement everything.**
 
 **Self-Assessment Questions - Ask yourself after each user response:**
+- "Can any existing patterns solve this?" → Check patterns first
 - "What files exactly need to be created or modified?"
 - "What specific code changes are required?"
 - "What dependencies need to be installed?"
 - "What configuration changes are needed?"
 - "How will this integrate with existing code?"
 - "What testing approach should be used?"
+- "Which patterns should be referenced in the plan?"
 
-**Continuous Implementation Deep-Dive Pattern:**
-- If user says "add authentication" → Ask: Which files handle auth? What database changes? JWT or sessions? Middleware needed? Registration flow? Password reset?
-- If user says "improve performance" → Ask: What specific bottlenecks? Which components are slow? Database queries? Frontend rendering? API endpoints? Caching strategy?
-- If user says "refactor components" → Ask: Which exact components? What's the new structure? How to maintain backwards compatibility? Migration steps?
+**Continuous Implementation Deep-Dive Pattern (Skip if covered by patterns):**
+- If user says "add authentication" → First check: Any auth patterns exist? If not, ask: Which files handle auth? What database changes? JWT or sessions? Middleware needed? Registration flow? Password reset?
+- If user says "improve performance" → First check: Any performance patterns exist? If not, ask: What specific bottlenecks? Which components are slow? Database queries? Frontend rendering? API endpoints? Caching strategy?
+- If user says "refactor components" → First check: Any refactoring patterns exist? If not, ask: Which exact components? What's the new structure? How to maintain backwards compatibility? Migration steps?
 
-**Keep Digging Until You Know:**
-- Exact file paths that need changes
-- Specific functions/components to create/modify
+**Keep Digging Until You Know (Unless Pattern Already Provides):**
+- Exact file paths that need changes (or pattern references)
+- Specific functions/components to create/modify (or pattern usage)
 - Complete dependency list with versions
 - Step-by-step implementation sequence
 - All configuration changes required
 - Comprehensive testing strategy
 - Success criteria with measurable outcomes
+- Which patterns to apply and where
 
 **Signs You Need More Implementation Details:**
 - You don't know exact file paths → ASK MORE
@@ -79,7 +113,7 @@ Please describe:
 After complete implementation understanding, create the plan using:
 
 ```bash
-npx -y cc-self-refer plan create "<plan-title>" <<'EOF'
+npx cc-self-refer plan create "<plan-title>" <<'EOF'
 <plan-content>
 EOF
 ```

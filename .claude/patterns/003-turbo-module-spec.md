@@ -1,8 +1,10 @@
-# turbo-module-spec
+---
+keywords: turbo-module,native-module,spec,type-safety
+language: typescript
+explanation: Defines TurboModule interface for native module access with type safety
+---
 
 # TurboModule Specification
-
-[EXPLANATION] Defines TurboModule interface for native module access with type safety
 
 ## Usage
 

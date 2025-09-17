@@ -1,0 +1,127 @@
+---
+title: "권한"
+description: "iOS에서 위치 권한 설정 방법"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+# iOS 권한 설정
+
+현재 위치를 표시하기 위한 위치 권한 설정 방법을 안내합니다.
+
+## Info.plist 위치 권한 설명 추가
+
+`Info.plist`에 위치 권한 사용 설명을 추가합니다:
+
+```xml title="ios/YourProject/Info.plist"
+<plist version="1.0">
+<dict>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>{{usage description}}</string>
+  <key>NSLocationTemporaryUsageDescriptionDictionary</key>
+  <dict>
+    <key>{{your purpose key}}</key>
+    <string>{{usage description}}</string>
+  </dict>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>{{usage description}}</string>
+</dict>
+</plist>
+```
+
+### 권한 키 설명
+
+- **`NSLocationAlwaysAndWhenInUseUsageDescription`** (iOS 11+)
+  - 앱이 포그라운드와 백그라운드 모두에서 위치 정보에 접근할 수 있도록 허용
+  - iOS 11부터는 NSLocationAlwaysUsageDescription 대신 이 키를 사용해야 합니다
+
+- **`NSLocationWhenInUseUsageDescription`**
+  - 앱이 포그라운드에서만 위치 정보에 접근할 수 있도록 허용
+  - 사용자가 앱을 활발히 사용할 때만 위치 정보 접근
+
+- **`NSLocationTemporaryUsageDescriptionDictionary`** (iOS 14+)
+  - 앱이 일시적으로 정확한 위치 데이터에 접근할 수 있도록 허용
+  - 특정 작업에만 정확한 위치가 필요한 경우 사용
+
+<Callout type="info">
+iOS 11 미만을 지원하는 경우 `NSLocationAlwaysUsageDescription`도 함께 설정해야 합니다.
+</Callout>
+
+## 백그라운드 모드 설정 (선택사항)
+
+백그라운드 위치 업데이트가 필요한 경우:
+
+1. Xcode에서 프로젝트 선택
+2. **Signing & Capabilities** 탭으로 이동
+3. **Background Modes** 추가
+4. **Location updates** 체크
+
+![Xcode config result](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161737676.webp)
+
+## Podfile 권한 설정 (react-native-permissions 사용 시)
+
+`react-native-permissions`를 사용하는 경우 Podfile에 다음 권한을 허용합니다:
+
+```ruby title="ios/Podfile"
+setup_permissions([
+  'LocationAccuracy',
+  'LocationAlways',
+  'LocationWhenInUse',
+  ...
+])
+```
+
+## 코드에서 권한 요청하기
+
+### react-native-permissions 사용
+
+```tsx
+import { request, requestLocationAccuracy, PERMISSIONS } from 'react-native-permissions';
+
+useEffect(() => {
+  if (Platform.OS === 'ios') {
+    request(PERMISSIONS.IOS.LOCATION_ALWAYS).then((status) => {
+      console.log(`Location request status: ${status}`);
+      if (status === 'granted') {
+        requestLocationAccuracy({
+          purposeKey: 'common-purpose', // Info.plist의 purposeKey로 교체
+        })
+          .then((accuracy) => {
+            console.log(`Location accuracy is: ${accuracy}`);
+          })
+          .catch((e) => {
+            console.error(`Location accuracy request has been failed: ${e}`);
+          });
+      }
+    });
+  }
+}, []);
+```
+
+### Expo 프로젝트 (expo-location 사용)
+
+```tsx
+import * as Location from 'expo-location';
+
+useEffect(() => {
+  (async () => {
+    try {
+      const {granted} = await Location.requestForegroundPermissionsAsync();
+      /**
+       * Note: Foreground permissions should be granted before asking for the background permissions
+       * (your app can't obtain background permission without foreground permission).
+       */
+      if(granted) {
+        await Location.requestBackgroundPermissionsAsync();
+      }
+    } catch(e) {
+      console.error(`Location request has been failed: ${e}`);
+    }
+  })();
+}, []);
+```
+
+## 권한 요청 UI
+
+![permission-result-1](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161733072.webp)
+![permission-result-2](https://raw.githubusercontent.com/mym0404/image-archive/master/202404161737907.webp)

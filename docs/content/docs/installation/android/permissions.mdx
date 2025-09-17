@@ -1,0 +1,83 @@
+---
+title: "Permissions"
+description: "How to set up location permissions on Android"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+# Android Permission Setup
+
+This guide explains how to set up location permissions to display the current location.
+
+<Callout type="info">
+The `FusedLocationSource` used internally by the Naver Maps SDK automatically requests permissions when the user sets the [isShowLocationButton prop](https://rnnavermap.mjstudio.net/docs/api#isShowLocationButton) to `true`.
+</Callout>
+
+## Add Permissions to AndroidManifest.xml
+
+Add the following permissions to your `AndroidManifest.xml`:
+
+```xml title="android/app/src/main/AndroidManifest.xml"
+<manifest>
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <!-- Background location permission (optional) -->
+  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+</manifest>
+```
+
+### Permission Descriptions
+
+- **`ACCESS_FINE_LOCATION`**: Permission to access precise location information
+- **`ACCESS_COARSE_LOCATION`**: Permission to access approximate location information  
+- **`ACCESS_BACKGROUND_LOCATION`**: Permission to access location information in background (optional)
+
+## Request Permissions in Code
+
+### Using react-native-permissions
+
+```bash
+pnpm add react-native-permissions
+```
+
+```tsx
+import { requestMultiple, PERMISSIONS } from 'react-native-permissions';
+
+useEffect(() => {
+  if (Platform.OS === 'android') {
+    requestMultiple([
+      PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
+    ])
+      .then((status) => {
+        console.log(`Location request status: ${status}`);
+      })
+      .catch((e) => {
+        console.error(`Location request has been failed: ${e}`);
+      });
+  }
+}, []);
+```
+
+### Expo Project (using expo-location)
+
+```tsx
+import * as Location from 'expo-location';
+
+useEffect(() => {
+  (async () => {
+    try {
+      const {granted} = await Location.requestForegroundPermissionsAsync();
+      /**
+       * Note: Foreground permissions should be granted before asking for the background permissions
+       * (your app can't obtain background permission without foreground permission).
+       */
+      if(granted) {
+        await Location.requestBackgroundPermissionsAsync();
+      }
+    } catch(e) {
+      console.error(`Location request has been failed: ${e}`);
+    }
+  })();
+}, []);
+```

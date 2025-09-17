@@ -1,0 +1,311 @@
+---
+title: "NaverMapView"
+description: "네이버 지도 렌더링을 위한 메인 컴포넌트"
+---
+
+## Overview
+
+NaverMapView는 네이버 지도 SDK를 React Native에서 사용할 수 있도록 하는 메인 컴포넌트입니다.
+지도 표시, 카메라 제어, 제스처 처리, 오버레이 관리 등 핵심 지도 기능을 제공합니다.
+
+## Basic Usage
+
+```tsx
+import { NaverMapView } from '@mj-studio/react-native-naver-map'; // [!code highlight]
+
+function MyMap() {
+  return (
+    <NaverMapView // [!code highlight]
+      style={{ flex: 1 }} // [!code highlight]
+      initialCamera={{ // [!code highlight]
+        latitude: 37.50497126, // [!code highlight]
+        longitude: 127.04905021, // [!code highlight]
+        zoom: 14, // [!code highlight]
+      }} // [!code highlight]
+      mapType="Basic" // [!code highlight]
+      layerGroups={{ // [!code highlight]
+        BUILDING: true, // [!code highlight]
+        TRAFFIC: false, // [!code highlight]
+      }} // [!code highlight]
+    />
+  );
+}
+```
+
+### With Camera Control
+
+```tsx
+import { useRef, useState } from 'react';
+import { NaverMapView, type NaverMapViewRef } from '@mj-studio/react-native-naver-map';
+import { Button } from 'react-native';
+
+function MapWithControls() {
+  const mapRef = useRef<NaverMapViewRef>(null); // [!code highlight]
+  const [camera, setCamera] = useState({
+    latitude: 37.498040483,
+    longitude: 127.02758183,
+    zoom: 14,
+  });
+
+  const moveToGangnam = () => {
+    mapRef.current?.animateCameraTo({ // [!code highlight]
+      latitude: 37.498040483, // [!code highlight]
+      longitude: 127.02758183, // [!code highlight]
+      zoom: 16, // [!code highlight]
+      duration: 1000, // [!code highlight]
+      easing: 'EaseIn', // [!code highlight]
+    }); // [!code highlight]
+  };
+
+  return (
+    <>
+      <NaverMapView
+        ref={mapRef} // [!code highlight]
+        style={{ flex: 1 }}
+        camera={camera} // [!code highlight]
+        onCameraChanged={(event) => { // [!code highlight]
+          console.log('Camera changed:', event); // [!code highlight]
+          setCamera({ // [!code highlight]
+            latitude: event.latitude, // [!code highlight]
+            longitude: event.longitude, // [!code highlight]
+            zoom: event.zoom, // [!code highlight]
+          }); // [!code highlight]
+        }} // [!code highlight]
+      />
+      <Button onPress={moveToGangnam} title="Move to Gangnam" />
+    </>
+  );
+}
+```
+
+### With Markers
+
+```tsx
+import { NaverMapView, NaverMapMarkerOverlay } from '@mj-studio/react-native-naver-map';
+import { View, Text } from 'react-native';
+
+function MapWithAllMarkerTypes() {
+  return (
+    <NaverMapView
+      style={{ flex: 1 }}
+      initialCamera={{
+        latitude: 33.39530773,
+        longitude: 126.54656715029,
+        zoom: 8,
+      }}
+    >
+      {/* 1. Symbol Marker */}
+      <NaverMapMarkerOverlay
+        latitude={33.39530773}
+        longitude={126.54656715029}
+        image={{ symbol: 'green' }} // [!code highlight]
+        anchor={{ x: 0.5, y: 1 }}
+        caption={{ text: 'Symbol Marker' }}
+      />
+
+      {/* 2. Local Asset Marker */}
+      <NaverMapMarkerOverlay
+        latitude={33.41}
+        longitude={126.55}
+        image={require('./logo.png')} // [!code highlight]
+        width={50}
+        height={50}
+        caption={{ text: 'Local Asset' }}
+      />
+
+      {/* 3. Native Asset Marker */}
+      <NaverMapMarkerOverlay
+        latitude={33.35}
+        longitude={126.53}
+        image={{ assetName: 'thumbnail' }} // [!code highlight]
+        width={40}
+        height={40}
+        caption={{ text: 'Native Asset' }}
+      />
+
+      {/* 4. HTTP Image Marker */}
+      <NaverMapMarkerOverlay
+        latitude={33.32}
+        longitude={126.58}
+        image={{ httpUri: 'https://picsum.photos/100/100' }} // [!code highlight]
+        width={50}
+        height={50}
+        caption={{ text: 'HTTP Image' }}
+      />
+
+      {/* 5. Custom View Marker */}
+      <NaverMapMarkerOverlay
+        latitude={33.38}
+        longitude={126.51}
+        width={80}
+        height={80}
+      >
+        <View
+          collapsable={false} // [!code highlight]
+          style={{
+            backgroundColor: 'white',
+            padding: 10,
+            borderRadius: 8,
+            shadowColor: '#000',
+            shadowOpacity: 0.2,
+          }}
+        >
+          <Text>Custom View</Text>
+        </View>
+      </NaverMapMarkerOverlay>
+    </NaverMapView>
+  );
+}
+```
+
+## With All Overlay Types
+
+```tsx
+import {
+  NaverMapView,
+  NaverMapMarkerOverlay,
+  NaverMapCircleOverlay,
+  NaverMapPolygonOverlay,
+  NaverMapPolylineOverlay,
+  NaverMapPathOverlay,
+  NaverMapMultiPathOverlay,
+  NaverMapArrowheadPathOverlay,
+  NaverMapGroundOverlay,
+} from '@mj-studio/react-native-naver-map';
+
+function MapWithAllOverlays() {
+  return (
+    <NaverMapView
+      style={{ flex: 1 }}
+      initialCamera={{
+        latitude: 33.39530773,
+        longitude: 126.54656715029,
+        zoom: 9,
+      }}
+    >
+      {/* Marker Overlay */}
+      <NaverMapMarkerOverlay
+        latitude={33.39530773}
+        longitude={126.54656715029}
+        anchor={{ x: 0.5, y: 1 }}
+        caption={{ text: 'Jeju Center' }}
+        onTap={() => console.log('Marker tapped')}
+      />
+
+      {/* Circle Overlay */}
+      <NaverMapCircleOverlay // [!code highlight]
+        latitude={33.17827398} // [!code highlight]
+        longitude={126.349895729} // [!code highlight]
+        radius={10000} // [!code highlight]
+        color={'#ff00ff33'} // [!code highlight]
+        outlineColor={'#ff00ff'} // [!code highlight]
+        outlineWidth={2} // [!code highlight]
+        onTap={() => console.log('Circle tapped')} // [!code highlight]
+      /> // [!code highlight]
+
+      {/* Polygon Overlay */}
+      <NaverMapPolygonOverlay // [!code highlight]
+        coords={[ // [!code highlight]
+          { latitude: 33.5, longitude: 126.4 }, // [!code highlight]
+          { latitude: 33.55, longitude: 126.45 }, // [!code highlight]
+          { latitude: 33.52, longitude: 126.5 }, // [!code highlight]
+          { latitude: 33.48, longitude: 126.48 }, // [!code highlight]
+        ]} // [!code highlight]
+        color={'#00ff0033'} // [!code highlight]
+        outlineColor={'#00ff00'} // [!code highlight]
+        outlineWidth={2} // [!code highlight]
+      /> // [!code highlight]
+
+      {/* Polyline Overlay */}
+      <NaverMapPolylineOverlay // [!code highlight]
+        coords={[ // [!code highlight]
+          { latitude: 33.3, longitude: 126.3 }, // [!code highlight]
+          { latitude: 33.35, longitude: 126.35 }, // [!code highlight]
+          { latitude: 33.32, longitude: 126.4 }, // [!code highlight]
+        ]} // [!code highlight]
+        width={5} // [!code highlight]
+        color={'#ff0000'} // [!code highlight]
+      /> // [!code highlight]
+
+      {/* Path Overlay */}
+      <NaverMapPathOverlay // [!code highlight]
+        coords={[ // [!code highlight]
+          { latitude: 32.345332063, longitude: 126.24180047 }, // [!code highlight]
+          { latitude: 32.70066, longitude: 126.2719053 }, // [!code highlight]
+          { latitude: 32.360030018, longitude: 126.37221049 }, // [!code highlight]
+        ]} // [!code highlight]
+        width={8} // [!code highlight]
+        color={'white'} // [!code highlight]
+        progress={0.5} // [!code highlight]
+        passedColor={'black'} // [!code highlight]
+        outlineWidth={1} // [!code highlight]
+      /> // [!code highlight]
+
+      {/* Multi Path Overlay */}
+      <NaverMapMultiPathOverlay // [!code highlight]
+        width={40} // [!code highlight]
+        patternInterval={120} // [!code highlight]
+        progress={0.5} // [!code highlight]
+        outlineWidth={10} // [!code highlight]
+        patternImage={{ symbol: 'blue' }} // [!code highlight]
+        pathParts={[ // [!code highlight]
+          {
+            coords: [
+              { latitude: 33.5744287, longitude: 126.982625 },
+              { latitude: 33.57152, longitude: 126.97714 },
+              { latitude: 33.56607, longitude: 126.98268 },
+            ],
+            color: '#ff0000',
+          },
+          {
+            coords: [
+              { latitude: 33.56607, longitude: 126.98268 },
+              { latitude: 33.56317, longitude: 126.98729 },
+              { latitude: 33.56038, longitude: 126.99108 },
+            ],
+            color: '#00ff00',
+          },
+        ]} // [!code highlight]
+      /> // [!code highlight]
+
+      {/* Arrowhead Path Overlay */}
+      <NaverMapArrowheadPathOverlay // [!code highlight]
+        coords={[ // [!code highlight]
+          { longitude: 126.93240597362552, latitude: 32.433509943138404 }, // [!code highlight]
+          { longitude: 126.93474226289788, latitude: 32.6383463419792 }, // [!code highlight]
+          { longitude: 127.07281803100506, latitude: 32.57085962943823 }, // [!code highlight]
+        ]} // [!code highlight]
+        headSizeRatio={2.5} // [!code highlight]
+        width={8} // [!code highlight]
+        color={'red'} // [!code highlight]
+        outlineColor={'blue'} // [!code highlight]
+        outlineWidth={2} // [!code highlight]
+      /> // [!code highlight]
+
+      {/* Ground Overlay */}
+      <NaverMapGroundOverlay // [!code highlight]
+        image={{ assetName: 'thumbnail' }} // [!code highlight]
+        region={{ // [!code highlight]
+          latitude: 33.2, // [!code highlight]
+          longitude: 126.6, // [!code highlight]
+          latitudeDelta: 0.1, // [!code highlight]
+          longitudeDelta: 0.1, // [!code highlight]
+        }} // [!code highlight]
+        onTap={() => console.log('Ground overlay tapped')} // [!code highlight]
+      /> // [!code highlight]
+    </NaverMapView>
+  );
+}
+```
+
+## Props
+
+`NaverMapViewProps`
+
+<AutoTypeTable path="../src/component/NaverMapView.tsx" name="NaverMapViewProps" />
+
+## Ref Methods
+
+`NaverMapViewRef`
+
+<AutoTypeTable path="../src/component/NaverMapView.tsx" name="NaverMapViewRef" />

@@ -1,0 +1,151 @@
+---
+title: "Marker Clustering"
+description: "How to use marker clustering feature provided by Naver Map"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+# Marker Clustering
+
+You can efficiently display a large number of markers using the built-in marker clustering feature provided by the Naver Map library.
+
+<Callout type="info">
+  Marker clustering is a technique that groups multiple markers at close distances on the map into a single cluster for display.
+  The Naver Map library supports this feature at the native level, so no additional external libraries are needed.
+</Callout>
+
+## Basic Clustering Implementation
+
+Naver Map clustering can be configured through the `clusters` property of the `NaverMapView` component.
+
+### 1. ClusterMarkerProp Type Definition
+
+Each marker to be included in the cluster must comply with the `ClusterMarkerProp` type:
+
+```tsx
+import type { ClusterMarkerProp } from '@mj-studio/react-native-naver-map';
+
+const clusterMarkers: ClusterMarkerProp[] = [
+  {
+    identifier: 'marker-1',
+    latitude: 37.5665,
+    longitude: 126.9780,
+    image: { symbol: 'red' }, // Or { httpUri: 'https://...' }, { assetName: 'marker' } etc.
+    width: 40,
+    height: 40,
+  },
+  {
+    identifier: 'marker-2',
+    latitude: 37.5675,
+    longitude: 126.9785,
+    image: { symbol: 'blue' },
+    width: 40,
+    height: 40,
+  },
+  // ... more markers
+];
+```
+
+### 2. Basic Clustering Implementation
+
+```tsx
+import React, { useState, useMemo } from 'react';
+import { View } from 'react-native';
+import { NaverMapView, type ClusterMarkerProp } from '@mj-studio/react-native-naver-map';
+
+const ClusteredMapExample = () => {
+  // Generate marker data
+  const clusterMarkers = useMemo<ClusterMarkerProp[]>(() => {
+    return generateMarkerData().map((marker, index) => ({
+      identifier: `marker-${index}`,
+      latitude: marker.latitude,
+      longitude: marker.longitude,
+      image: { httpUri: `https://picsum.photos/32/32?random=${index}` },
+      width: 32,
+      height: 32,
+    }));
+  }, []);
+
+  // Cluster configuration
+  const clusters = useMemo(() => [
+    {
+      width: 50,          // Width of cluster marker
+      height: 50,         // Height of cluster marker
+      markers: clusterMarkers,
+      screenDistance: 40, // Screen distance criteria for clustering (pixels)
+      minZoom: 5,         // Minimum zoom level for clustering
+      maxZoom: 18,        // Maximum zoom level for clustering
+      animate: true,      // Cluster expand/collapse animation
+    }
+  ], [clusterMarkers]);
+
+  return (
+    <NaverMapView
+      style={{ flex: 1 }}
+      initialCamera={{
+        latitude: 37.5665,
+        longitude: 126.9780,
+        zoom: 10,
+      }}
+      clusters={clusters}
+      onTapClusterLeaf={({ markerIdentifier }) => {
+        console.log('Marker clicked:', markerIdentifier);
+      }}
+    />
+  );
+};
+```
+
+## Advanced Clustering Configuration
+
+### Multiple Cluster Groups
+
+You can use multiple cluster groups with different configurations simultaneously:
+
+```tsx
+const multiClusters = useMemo(() => [
+  {
+    // First cluster group - regular markers
+    width: 40,
+    height: 40,
+    markers: regularMarkers,
+    screenDistance: 50,
+    minZoom: 5,
+    maxZoom: 15,
+    animate: true,
+  },
+  {
+    // Second cluster group - special markers
+    width: 60,
+    height: 60,
+    markers: specialMarkers,
+    screenDistance: 80,
+    minZoom: 8,
+    maxZoom: 20,
+    animate: false,
+  }
+], [regularMarkers, specialMarkers]);
+```
+
+## Cluster Event Handling
+
+### Individual Marker Click Events
+
+You can handle events when individual markers included in clusters are clicked:
+
+```tsx
+<NaverMapView
+  clusters={clusters}
+  onTapClusterLeaf={({ markerIdentifier }) => {
+    // Use markerIdentifier to display detailed information about the marker
+    const markerData = findMarkerById(markerIdentifier);
+    showMarkerDetail(markerData);
+  }}
+/>
+```
+
+## Props
+
+`ClusterMarkerProp`
+
+<AutoTypeTable path="../src/types/ClusterMarkerProp.ts" name="ClusterMarkerProp" />

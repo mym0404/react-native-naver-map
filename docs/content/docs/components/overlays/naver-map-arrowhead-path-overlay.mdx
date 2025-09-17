@@ -1,0 +1,41 @@
+---
+title: "NaverMapArrowheadPathOverlay"
+description: "Component for displaying arrow path overlays on the map"
+---
+
+## Overview
+
+NaverMapArrowheadPathOverlay is a component that displays path overlays with arrows on the map.
+It can visually represent directionality by including arrows that indicate the direction of the path.
+
+## Basic Usage
+
+```tsx
+import { NaverMapView, NaverMapArrowheadPathOverlay } from '@mj-studio/react-native-naver-map';
+
+function MapWithArrowPath() {
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      <NaverMapArrowheadPathOverlay // [!code highlight:12]
+        coords={[
+          { latitude: 37.5, longitude: 126.9 },
+          { latitude: 37.51, longitude: 126.91 },
+          { latitude: 37.52, longitude: 126.92 },
+        ]}
+        headSizeRatio={2.5}
+        width={8}
+        color={'red'}
+        outlineColor={'blue'}
+        outlineWidth={2}
+        onTap={() => console.log('Arrow path tapped')}
+      />
+    </NaverMapView>
+  );
+}
+```
+
+## Props
+
+`NaverMapArrowheadPathOverlayProps`
+
+<AutoTypeTable path="../src/component/NaverMapArrowheadPathOverlay.tsx" name="NaverMapArrowheadPathOverlayProps" />
