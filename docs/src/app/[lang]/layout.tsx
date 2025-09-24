@@ -2,6 +2,7 @@ import '@/app/global.css';
 import { defineI18nUI } from 'fumadocs-ui/i18n';
 import { RootProvider } from 'fumadocs-ui/provider';
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import type { PropsWithChildren } from 'react';
 import { i18n } from '@/lib/i18n';
 
@@ -90,6 +91,11 @@ export default async function Layout({
   const lang = (await params).lang;
   return (
     <html lang={lang} suppressHydrationWarning>
+      <Script
+        defer
+        src="https://umami.mjstudio.net/script.js"
+        data-website-id="20802a8b-5591-4919-a8af-d20317718fd0"
+      />
       <body className="flex flex-col min-h-screen">
         <RootProvider
           i18n={provider(lang)}
