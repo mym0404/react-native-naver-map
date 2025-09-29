@@ -9,7 +9,6 @@ import {
 
 import Image from 'next/image';
 import Link from 'next/link';
-import Prism from '@/lib/components/bits/prism';
 import { ResourceCards } from '@/lib/components/resource-cards';
 import { TerminalCodeBlock } from '@/lib/components/terminal-codeblock';
 
@@ -63,15 +62,6 @@ export default async function HomePage({
 
   return (
     <main className="flex min-h-[calc(100vh-3.5rem)] flex-col">
-      <div className={'absolute-fill  dark:opacity-100 dark:block hidden'}>
-        <Prism
-          suspendWhenOffscreen
-          animationType={'rotate'}
-          scale={1.2}
-          offset={{ y: 180 }}
-          noise={0}
-        />
-      </div>
       {/* Hero Section */}
       <section className="relative flex flex-col items-center justify-center px-6 py-32 text-center">
         <div className="absolute inset-0 -z-10">
