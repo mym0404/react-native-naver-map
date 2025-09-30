@@ -16,12 +16,14 @@
                           (facebook::react::RNCNaverMapViewClustersClustersMarkersImageStruct)image
                       width:(double)width
                      height:(double)height
+                  caption:(facebook::react::RNCNaverMapViewClustersClustersMarkersCaptionStruct)caption
             onTapLeafMarker:(OnTapLeafMarker _Nullable)onTapLeafMarerk {
   return [[RNCNaverMapClusterKey alloc] initWithIdentifier:identifier
                                                   position:position
                                                      image:image
                                                      width:width
                                                     height:height
+                                                    caption:caption
                                            onTapLeafMarker:onTapLeafMarerk];
 }
 
@@ -31,6 +33,7 @@
                  image:(facebook::react::RNCNaverMapViewClustersClustersMarkersImageStruct)image
                  width:(double)width
                 height:(double)height
+                caption:(facebook::react::RNCNaverMapViewClustersClustersMarkersCaptionStruct)caption
        onTapLeafMarker:(OnTapLeafMarker)onTapLeafMarker {
   if (self = [super init]) {
     _identifier = identifier;
@@ -38,6 +41,7 @@
     _image = image;
     _width = width;
     _height = height;
+    _caption = caption;
     _onTapLeafMarker = onTapLeafMarker;
   }
 
@@ -71,6 +75,7 @@
                                             image:self.image
                                             width:self.width
                                            height:self.height
+                                           caption:self.caption
                                   onTapLeafMarker:self.onTapLeafMarker];
 }
 
