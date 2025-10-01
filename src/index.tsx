@@ -13,6 +13,10 @@ export {
   type NaverMapGroundOverlayProps,
 } from './component/NaverMapGroundOverlay';
 export {
+  NaverMapInfoWindow,
+  type NaverMapInfoWindowProps,
+} from './component/NaverMapInfoWindow';
+export {
   type CaptionType,
   NaverMapMarkerOverlay,
   type NaverMapMarkerOverlayProps,

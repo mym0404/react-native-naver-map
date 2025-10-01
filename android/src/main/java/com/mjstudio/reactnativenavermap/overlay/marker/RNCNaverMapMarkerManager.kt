@@ -273,6 +273,15 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
     }
   }
 
+  @ReactProp(name = "identifier")
+  override fun setIdentifier(
+    view: RNCNaverMapMarker?,
+    value: String?,
+  ) = view.withOverlay {
+    // Set marker tag for InfoWindow to find this marker
+    it.tag = value
+  }
+
   // region PROPS
 
   companion object {
