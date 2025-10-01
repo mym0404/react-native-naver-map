@@ -6,6 +6,7 @@ import {
   NaverMapArrowheadPathOverlay,
   NaverMapCircleOverlay,
   NaverMapGroundOverlay,
+  NaverMapInfoWindow,
   NaverMapMarkerOverlay,
   NaverMapMultiPathOverlay,
   NaverMapPathOverlay,
@@ -106,6 +107,7 @@ export default function App() {
   const [indoorLevelPicker, setIndoorLevelPicker] = useState(true);
   const [myLocation, setMyLocation] = useState(true);
   const [customStyle, setCustomStyle] = useState(false);
+  const [showInfoWindows, setShowInfoWindows] = useState(true);
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -346,6 +348,70 @@ export default function App() {
             { latitude: 33.3332807, longitude: 126.838389399 },
           ]}
         />
+        {showInfoWindows && (
+          <>
+            {/* InfoWindow 1: 기본 스타일 */}
+            <NaverMapInfoWindow
+              latitude={33.5}
+              longitude={126.5}
+              text="제주도 중심부"
+              textSize={16}
+              textColor="black"
+              backgroundColor="white"
+              alpha={0.95}
+              anchor={{ x: 0.5, y: 1 }}
+              offsetY={-10}
+            />
+
+            {/* InfoWindow 2: 큰 텍스트 */}
+            <NaverMapInfoWindow
+              latitude={33.4}
+              longitude={126.6}
+              text="성산일출봉 방향 ➡️"
+              textSize={18}
+              textColor="white"
+              backgroundColor="#ff6b6b"
+              alpha={1}
+              anchor={{ x: 0.5, y: 1 }}
+            />
+
+            {/* InfoWindow 3: 작은 스타일 */}
+            <NaverMapInfoWindow
+              latitude={33.3}
+              longitude={126.4}
+              text="📍 관광지"
+              textSize={12}
+              textColor="#333"
+              backgroundColor="#ffd93d"
+              alpha={0.9}
+              anchor={{ x: 0.5, y: 1 }}
+              offsetY={-5}
+            />
+
+            {/* InfoWindow 4: 마커 근처 */}
+            <NaverMapInfoWindow
+              latitude={30.0565607356}
+              longitude={123.88599018}
+              text="마커 위치 정보"
+              textSize={14}
+              textColor="white"
+              backgroundColor="#4263eb"
+              alpha={0.95}
+              anchor={{ x: 0.5, y: 1 }}
+            />
+
+            {/* InfoWindow 5: 길게 */}
+            <NaverMapInfoWindow
+              latitude={33.6}
+              longitude={126.7}
+              text="이것은 긴 텍스트 정보입니다 📝"
+              textSize={15}
+              textColor="#2d3436"
+              backgroundColor="#dfe6e9"
+              alpha={0.9}
+            />
+          </>
+        )}
       </>
     );
   };
@@ -392,7 +458,10 @@ export default function App() {
           }
           onCameraChanged={({ region }) => {
             console.log(
-              `Camera: ${formatJson({ latitude: region.latitude, longitude: region.longitude })}`
+              `Camera: ${formatJson({
+                latitude: region.latitude,
+                longitude: region.longitude,
+              })}`
             );
 
             startTransition(() => {
@@ -603,6 +672,11 @@ export default function App() {
           value={customStyle}
           onChange={setCustomStyle}
           text={'Custom Style'}
+        />
+        <Toggle
+          value={showInfoWindows}
+          onChange={setShowInfoWindows}
+          text={'Info Windows'}
         />
       </View>
     </View>
