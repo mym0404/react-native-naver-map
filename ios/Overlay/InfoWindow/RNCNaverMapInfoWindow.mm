@@ -20,6 +20,7 @@ using namespace facebook::react;
   NSString* _markerIdentifier;
   BOOL _shouldBeOpen;
   NMFMapView* _currentMapView;
+  RNCNaverMapViewImpl* _parentMapViewImpl;
   NMFInfoWindowDefaultTextSource* _textDataSource;
 }
 
@@ -38,7 +39,7 @@ using namespace facebook::react;
     _inner = [NMFInfoWindow new];
     _shouldBeOpen = YES;  // Default isOpen = true
     
-    // Create text data source
+    // Create text data source (iOS only supports text for now)
     _textDataSource = [NMFInfoWindowDefaultTextSource dataSource];
     _textDataSource.title = @"";
     _inner.dataSource = _textDataSource;
@@ -61,15 +62,9 @@ using namespace facebook::react;
   [self updateInfoWindowState];
 }
 
-- (RNCNaverMapViewImpl*)findMapView {
-  UIView* current = self.superview;
-  while (current) {
-    if ([current isKindOfClass:[RNCNaverMapViewImpl class]]) {
-      return (RNCNaverMapViewImpl*)current;
-    }
-    current = current.superview;
-  }
-  return nil;
+- (void)setParentMapViewImpl:(RNCNaverMapViewImpl*)mapViewImpl {
+  _parentMapViewImpl = mapViewImpl;
+  [self updateInfoWindowState];
 }
 
 - (void)updateInfoWindowState {
@@ -81,15 +76,12 @@ using namespace facebook::react;
   if (!_currentMapView) return;
   
   // Try to find marker by identifier first
-  if (_markerIdentifier && _markerIdentifier.length > 0) {
-    RNCNaverMapViewImpl* mapViewImpl = [self findMapView];
-    if (mapViewImpl) {
-      RNCNaverMapMarker* markerView = mapViewImpl.markerRegistry[_markerIdentifier];
-      if (markerView) {
-        // Open on marker (marker position is used automatically)
-        [_inner openWithMarker:markerView.inner];
-        return;
-      }
+  if (_markerIdentifier && _markerIdentifier.length > 0 && _parentMapViewImpl) {
+    RNCNaverMapMarker* markerView = _parentMapViewImpl.markerRegistry[_markerIdentifier];
+    if (markerView) {
+      // Open on marker (marker position is used automatically)
+      [_inner openWithMarker:markerView.inner];
+      return;
     }
   }
   
@@ -144,11 +136,15 @@ using namespace facebook::react;
     [self updateInfoWindowState];
   }
 
-  // Text content - use simple text source for now
+  // Text content only (iOS custom styling is not supported by NMFInfoWindow API)
+  // For custom styling on iOS, consider using Marker with custom view instead
   if (prev.text != next.text) {
     _textDataSource.title = getNsStr(next.text);
   }
-
+  
+  // Note: fontWeight, borderRadius, borderWidth, borderColor, padding
+  // are ignored on iOS due to NMFInfoWindow limitations
+  // These props work on Android only
 
   [super updateProps:props oldProps:oldProps];
 }
