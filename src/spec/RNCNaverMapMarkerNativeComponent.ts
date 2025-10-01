@@ -55,6 +55,10 @@ export type NativeImageProp = Readonly<{
 ////////////////////
 
 interface Props extends BaseOverlay, ViewProps {
+  /**
+   * 마커의 고유 식별자 (InfoWindow 연결용)
+   */
+  identifier?: string;
   coord: Readonly<{
     latitude: Double;
     longitude: Double;

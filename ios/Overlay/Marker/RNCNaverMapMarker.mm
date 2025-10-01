@@ -227,6 +227,11 @@ using namespace facebook::react;
     _inner.subCaptionMinZoom = caption.minZoom;
     _inner.subCaptionMaxZoom = caption.maxZoom;
   }
+  
+  // Set identifier as tag for InfoWindow lookup
+  if (prev.identifier != next.identifier) {
+    _inner.userInfo = @{@"identifier": getNsStr(next.identifier)};
+  }
 
   [super updateProps:props oldProps:oldProps];
 

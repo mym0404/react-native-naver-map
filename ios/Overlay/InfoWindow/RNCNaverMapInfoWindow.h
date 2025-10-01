@@ -21,7 +21,14 @@
 #import <react/renderer/components/RNCNaverMapSpec/Props.h>
 #import <react/renderer/components/RNCNaverMapSpec/RCTComponentViewHelpers.h>
 
+@class RNCNaverMapViewImpl;
+@class RNCNaverMapMarker;
+
 @interface RNCNaverMapInfoWindow : RCTViewComponentView
 @property(nonatomic, strong) NMFInfoWindow* inner;
+
+- (void)setCurrentMapView:(NMFMapView*)mapView;
+- (void)updateInfoWindowState;
+
 @end
 

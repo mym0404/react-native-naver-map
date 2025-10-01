@@ -13,11 +13,17 @@ export interface NaverMapInfoWindowProps
     Coord,
     PropsWithChildren<{}> {
   /**
-   * InfoWindow가 열릴 마커의 태그 (선택적)
-   * 지정하면 해당 마커 위에 InfoWindow가 열립니다.
-   * 지정하지 않으면 latitude, longitude 좌표에 InfoWindow가 열립니다.
+   * InfoWindow가 열릴 마커의 identifier
+   * 지정하면 해당 identifier를 가진 마커 위에 InfoWindow가 열립니다.
+   * identifier가 없으면 latitude, longitude 좌표에 직접 표시됩니다.
    */
-  markerTag?: string;
+  identifier?: string;
+
+  /**
+   * InfoWindow를 처음부터 열린 상태로 표시할지 여부
+   * @default true
+   */
+  isOpen?: boolean;
 
   /**
    * InfoWindow가 마커에 대해 열릴 때의 정렬 방향
@@ -68,10 +74,52 @@ export interface NaverMapInfoWindowProps
   textColor?: ColorValue;
 
   /**
+   * 폰트 굵기
+   * 'normal' | 'bold' | '100' | '200' | ... | '900'
+   * @default 'normal'
+   */
+  fontWeight?:
+    | 'normal'
+    | 'bold'
+    | '100'
+    | '200'
+    | '300'
+    | '400'
+    | '500'
+    | '600'
+    | '700'
+    | '800'
+    | '900';
+
+  /**
    * 배경 색상
    * @default 'white'
    */
   backgroundColor?: ColorValue;
+
+  /**
+   * 둥근 모서리 반경 (픽셀)
+   * @default 5
+   */
+  borderRadius?: number;
+
+  /**
+   * 테두리 두께 (픽셀)
+   * @default 1
+   */
+  borderWidth?: number;
+
+  /**
+   * 테두리 색상
+   * @default '#ccc'
+   */
+  borderColor?: ColorValue;
+
+  /**
+   * 내부 여백 (픽셀)
+   * @default 10
+   */
+  padding?: number;
 }
 
 /**
@@ -82,7 +130,19 @@ export interface NaverMapInfoWindowProps
  *
  * @example
  * ```tsx
- * // 특정 좌표에 InfoWindow 표시
+ * // 1. 마커에 연결된 InfoWindow (권장)
+ * <NaverMapMarkerOverlay
+ *   identifier="marker1"
+ *   latitude={37.5666102}
+ *   longitude={126.9783881}
+ * />
+ * <NaverMapInfoWindow
+ *   identifier="marker1"
+ *   text="마커 정보"
+ *   isOpen={true}
+ * />
+ *
+ * // 2. 특정 좌표에 InfoWindow 직접 표시
  * <NaverMapInfoWindow
  *   latitude={37.5666102}
  *   longitude={126.9783881}
@@ -90,15 +150,6 @@ export interface NaverMapInfoWindowProps
  *   textSize={14}
  *   textColor="black"
  *   backgroundColor="white"
- * />
- *
- * // 마커에 연결된 InfoWindow
- * <NaverMapInfoWindow
- *   latitude={37.5666102}
- *   longitude={126.9783881}
- *   markerTag="marker1"
- *   align="Top"
- *   text="마커 정보"
  * />
  * ```
  *
@@ -115,7 +166,8 @@ export const NaverMapInfoWindow = ({
   isMinZoomInclusive = true,
   isMaxZoomInclusive = true,
 
-  markerTag,
+  identifier,
+  isOpen = true,
   align = 'Top',
   anchor = { x: 0.5, y: 1 },
   offsetX = 0,
@@ -125,10 +177,20 @@ export const NaverMapInfoWindow = ({
   text,
   textSize = 14,
   textColor = 'black',
+  fontWeight = 'normal',
   backgroundColor = 'white',
+  borderRadius = 5,
+  borderWidth = 1,
+  borderColor = '#ccc',
+  padding = 10,
 
   children,
 }: NaverMapInfoWindowProps) => {
+  const fontWeightValue = (() => {
+    if (fontWeight === 'normal') return 400;
+    if (fontWeight === 'bold') return 700;
+    return parseInt(fontWeight, 10);
+  })();
   return (
     <NativeNaverMapInfoWindow
       coord={{ latitude, longitude }}
@@ -139,7 +201,8 @@ export const NaverMapInfoWindow = ({
       maxZoom={maxZoom}
       isMinZoomInclusive={isMinZoomInclusive}
       isMaxZoomInclusive={isMaxZoomInclusive}
-      markerTag={markerTag}
+      identifier={identifier}
+      isOpen={isOpen}
       align={getAlignIntValue(align)}
       anchor={anchor}
       offsetX={offsetX}
@@ -148,7 +211,12 @@ export const NaverMapInfoWindow = ({
       text={text}
       textSize={textSize}
       textColor={processColor(textColor) as number}
+      fontWeight={fontWeightValue}
       infoWindowBackgroundColor={processColor(backgroundColor) as number}
+      infoWindowBorderRadius={borderRadius}
+      infoWindowBorderWidth={borderWidth}
+      infoWindowBorderColor={processColor(borderColor) as number}
+      infoWindowPadding={padding}
     >
       {children}
     </NativeNaverMapInfoWindow>

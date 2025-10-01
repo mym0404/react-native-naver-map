@@ -163,6 +163,14 @@ class RNCNaverMapInfoWindowManager : RNCNaverMapInfoWindowManagerSpec<RNCNaverMa
     view?.setTextColor(value)
   }
 
+  @ReactProp(name = "fontWeight", defaultInt = 400)
+  override fun setFontWeight(
+    view: RNCNaverMapInfoWindow?,
+    value: Int,
+  ) {
+    view?.setFontWeight(value)
+  }
+
   @ReactProp(name = "infoWindowBackgroundColor")
   override fun setInfoWindowBackgroundColor(
     view: RNCNaverMapInfoWindow?,
@@ -171,13 +179,52 @@ class RNCNaverMapInfoWindowManager : RNCNaverMapInfoWindowManagerSpec<RNCNaverMa
     view?.setInfoWindowBackgroundColor(value)
   }
 
-  @ReactProp(name = "markerTag")
-  override fun setMarkerTag(
+  @ReactProp(name = "infoWindowBorderRadius", defaultFloat = 5f)
+  override fun setInfoWindowBorderRadius(
+    view: RNCNaverMapInfoWindow?,
+    value: Double,
+  ) {
+    view?.setInfoWindowBorderRadius(value.toFloat())
+  }
+
+  @ReactProp(name = "infoWindowBorderWidth", defaultFloat = 1f)
+  override fun setInfoWindowBorderWidth(
+    view: RNCNaverMapInfoWindow?,
+    value: Double,
+  ) {
+    view?.setInfoWindowBorderWidth(value.toFloat())
+  }
+
+  @ReactProp(name = "infoWindowBorderColor")
+  override fun setInfoWindowBorderColor(
+    view: RNCNaverMapInfoWindow?,
+    value: Int,
+  ) {
+    view?.setInfoWindowBorderColor(value)
+  }
+
+  @ReactProp(name = "infoWindowPadding", defaultFloat = 10f)
+  override fun setInfoWindowPadding(
+    view: RNCNaverMapInfoWindow?,
+    value: Double,
+  ) {
+    view?.setInfoWindowPadding(value.toFloat())
+  }
+
+  @ReactProp(name = "identifier")
+  override fun setIdentifier(
     view: RNCNaverMapInfoWindow?,
     value: String?,
   ) {
-    // This will need to be handled by finding the marker by tag
-    // For now, we'll leave it for future implementation
+    view?.setMarkerIdentifier(value)
+  }
+  
+  @ReactProp(name = "isOpen", defaultBoolean = true)
+  override fun setIsOpen(
+    view: RNCNaverMapInfoWindow?,
+    value: Boolean,
+  ) {
+    view?.setIsOpen(value)
   }
 
   companion object {

@@ -6,6 +6,8 @@
 //
 
 #import "RNCNaverMapInfoWindow.h"
+#import "RNCNaverMapViewImpl.h"
+#import "RNCNaverMapMarker.h"
 #import <React/RCTBridge+Private.h>
 
 using namespace facebook::react;
@@ -14,7 +16,12 @@ using namespace facebook::react;
 
 @end
 
-@implementation RNCNaverMapInfoWindow
+@implementation RNCNaverMapInfoWindow {
+  NSString* _markerIdentifier;
+  BOOL _shouldBeOpen;
+  NMFMapView* _currentMapView;
+  NMFInfoWindowDefaultTextSource* _textDataSource;
+}
 
 - (RCTBridge*)bridge {
   return [RCTBridge currentBridge];
@@ -29,6 +36,12 @@ using namespace facebook::react;
 - (instancetype)init {
   if ((self = [super init])) {
     _inner = [NMFInfoWindow new];
+    _shouldBeOpen = YES;  // Default isOpen = true
+    
+    // Create text data source
+    _textDataSource = [NMFInfoWindowDefaultTextSource dataSource];
+    _textDataSource.title = @"";
+    _inner.dataSource = _textDataSource;
   }
 
   return self;
@@ -43,12 +56,55 @@ using namespace facebook::react;
   return self;
 }
 
+- (void)setCurrentMapView:(NMFMapView*)mapView {
+  _currentMapView = mapView;
+  [self updateInfoWindowState];
+}
+
+- (RNCNaverMapViewImpl*)findMapView {
+  UIView* current = self.superview;
+  while (current) {
+    if ([current isKindOfClass:[RNCNaverMapViewImpl class]]) {
+      return (RNCNaverMapViewImpl*)current;
+    }
+    current = current.superview;
+  }
+  return nil;
+}
+
+- (void)updateInfoWindowState {
+  if (!_shouldBeOpen) {
+    [_inner close];
+    return;
+  }
+  
+  if (!_currentMapView) return;
+  
+  // Try to find marker by identifier first
+  if (_markerIdentifier && _markerIdentifier.length > 0) {
+    RNCNaverMapViewImpl* mapViewImpl = [self findMapView];
+    if (mapViewImpl) {
+      RNCNaverMapMarker* markerView = mapViewImpl.markerRegistry[_markerIdentifier];
+      if (markerView) {
+        // Open on marker (marker position is used automatically)
+        [_inner openWithMarker:markerView.inner];
+        return;
+      }
+    }
+  }
+  
+  // Fall back to position
+  _inner.mapView = _currentMapView;
+}
+
 - (void)updateProps:(Props::Shared const&)props oldProps:(Props::Shared const&)oldProps {
   const auto& prev = *std::static_pointer_cast<RNCNaverMapInfoWindowProps const>(_props);
   const auto& next = *std::static_pointer_cast<RNCNaverMapInfoWindowProps const>(props);
 
-  if (!nmap::isCoordEqual(prev.coord, next.coord))
+  if (!nmap::isCoordEqual(prev.coord, next.coord)) {
     _inner.position = nmap::createLatLng(next.coord);
+    [self updateInfoWindowState];
+  }
 
   if (prev.zIndexValue != next.zIndexValue)
     _inner.zIndex = next.zIndexValue;
@@ -75,93 +131,24 @@ using namespace facebook::react;
 
   if (prev.alpha != next.alpha)
     _inner.alpha = next.alpha;
+  
+  // Identifier handling
+  if (prev.identifier != next.identifier) {
+    _markerIdentifier = getNsStr(next.identifier);
+    [self updateInfoWindowState];
+  }
+  
+  // IsOpen handling
+  if (prev.isOpen != next.isOpen) {
+    _shouldBeOpen = next.isOpen;
+    [self updateInfoWindowState];
+  }
 
-  // Text content and styling
+  // Text content - use simple text source for now
   if (prev.text != next.text) {
-    NSString* text = getNsStr(next.text);
-    
-    // Create a simple attributed string with styling
-    NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment = NSTextAlignmentCenter;
-    
-    UIColor* textColor = nmap::intToColor(next.textColor);
-    UIColor* bgColor = nmap::intToColor(next.infoWindowBackgroundColor);
-    CGFloat textSize = next.textSize;
-    
-    NSDictionary* attributes = @{
-      NSFontAttributeName : [UIFont systemFontOfSize:textSize],
-      NSForegroundColorAttributeName : textColor,
-      NSBackgroundColorAttributeName : bgColor,
-      NSParagraphStyleAttributeName : paragraphStyle
-    };
-    
-    NSAttributedString* attributedText = [[NSAttributedString alloc] initWithString:text attributes:attributes];
-    
-    // Create a label to display the text
-    UILabel* label = [[UILabel alloc] init];
-    label.attributedText = attributedText;
-    label.numberOfLines = 0;
-    label.textAlignment = NSTextAlignmentCenter;
-    
-    // Add padding
-    CGSize textSize_size = [attributedText size];
-    CGFloat padding = 10.0;
-    label.frame = CGRectMake(0, 0, textSize_size.width + padding * 2, textSize_size.height + padding * 2);
-    
-    // Set rounded corners and border
-    label.layer.cornerRadius = 5.0;
-    label.layer.masksToBounds = YES;
-    label.layer.borderWidth = 1.0;
-    label.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    
-    // Create a custom view adapter
-    _inner.dataSource = ^UIView* _Nullable(NMFInfoWindow* infoWindow) {
-      return label;
-    };
+    _textDataSource.title = getNsStr(next.text);
   }
 
-  // Update colors and sizes even if text didn't change
-  if (prev.textColor != next.textColor || prev.infoWindowBackgroundColor != next.infoWindowBackgroundColor ||
-      prev.textSize != next.textSize) {
-    // Trigger update by re-setting the text
-    if (next.text.length() > 0) {
-      NSString* text = getNsStr(next.text);
-      
-      NSMutableParagraphStyle* paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-      paragraphStyle.alignment = NSTextAlignmentCenter;
-      
-      UIColor* textColor = nmap::intToColor(next.textColor);
-      UIColor* bgColor = nmap::intToColor(next.infoWindowBackgroundColor);
-      CGFloat textSize = next.textSize;
-      
-      NSDictionary* attributes = @{
-        NSFontAttributeName : [UIFont systemFontOfSize:textSize],
-        NSForegroundColorAttributeName : textColor,
-        NSBackgroundColorAttributeName : bgColor,
-        NSParagraphStyleAttributeName : paragraphStyle
-      };
-      
-      NSAttributedString* attributedText = [[NSAttributedString alloc] initWithString:text attributes:attributes];
-      
-      UILabel* label = [[UILabel alloc] init];
-      label.attributedText = attributedText;
-      label.numberOfLines = 0;
-      label.textAlignment = NSTextAlignmentCenter;
-      
-      CGSize textSize_size = [attributedText size];
-      CGFloat padding = 10.0;
-      label.frame = CGRectMake(0, 0, textSize_size.width + padding * 2, textSize_size.height + padding * 2);
-      
-      label.layer.cornerRadius = 5.0;
-      label.layer.masksToBounds = YES;
-      label.layer.borderWidth = 1.0;
-      label.layer.borderColor = [UIColor lightGrayColor].CGColor;
-      
-      _inner.dataSource = ^UIView* _Nullable(NMFInfoWindow* infoWindow) {
-        return label;
-      };
-    }
-  }
 
   [super updateProps:props oldProps:oldProps];
 }
