@@ -28,6 +28,7 @@
 @property(nonatomic, strong) NMFInfoWindow* inner;
 
 - (void)setCurrentMapView:(NMFMapView*)mapView;
+- (void)setParentMapViewImpl:(RNCNaverMapViewImpl*)mapViewImpl;
 - (void)updateInfoWindowState;
 
 @end

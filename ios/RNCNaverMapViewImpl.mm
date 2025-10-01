@@ -108,6 +108,7 @@
   } else if ([subview isKindOfClass:[RNCNaverMapInfoWindow class]]) {
     auto infoWindowView = static_cast<RNCNaverMapInfoWindow*>(subview);
     [infoWindowView setCurrentMapView:self.mapView];
+    [infoWindowView setParentMapViewImpl:self];
   } else {
     NSArray<id<RCTComponent>>* childSubviews = [subview reactSubviews];
     for (int i = 0; i < childSubviews.count; i++) {

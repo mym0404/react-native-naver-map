@@ -128,6 +128,10 @@ export interface NaverMapInfoWindowProps
  * InfoWindow는 마커의 위 또는 지도의 특정 지점에 부가적인 정보를 나타내기 위한 오버레이입니다.
  * 주로 말풍선 형태로 구성되어 텍스트를 표시하는 용도로 사용합니다.
  *
+ * **플랫폼별 스타일 지원:**
+ * - Android: 모든 스타일 속성 지원 (fontWeight, borderRadius, borderWidth, borderColor, padding)
+ * - iOS: 기본 텍스트만 지원 (NMFInfoWindow API 제한)
+ *
  * @example
  * ```tsx
  * // 1. 마커에 연결된 InfoWindow (권장)
@@ -140,6 +144,10 @@ export interface NaverMapInfoWindowProps
  *   identifier="marker1"
  *   text="마커 정보"
  *   isOpen={true}
+ *   // Android only: 커스텀 스타일
+ *   fontWeight="bold"
+ *   borderRadius={10}
+ *   borderColor="#4263eb"
  * />
  *
  * // 2. 특정 좌표에 InfoWindow 직접 표시
@@ -154,6 +162,7 @@ export interface NaverMapInfoWindowProps
  * ```
  *
  * @see https://navermaps.github.io/android-map-sdk/guide-ko/5-3.html
+ * @see https://navermaps.github.io/ios-map-sdk/guide-ko/5-3.html
  */
 export const NaverMapInfoWindow = ({
   latitude,

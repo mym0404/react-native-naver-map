@@ -90,13 +90,22 @@ import { NaverMapInfoWindow } from '@mj-studio/react-native-naver-map';
   backgroundColor="white"
 />
 
-// 마커에 연결된 InfoWindow (향후 구현)
-<NaverMapInfoWindow
+// 마커에 연결된 InfoWindow
+<NaverMapMarkerOverlay
+  identifier="marker1"
   latitude={37.5666102}
   longitude={126.9783881}
-  markerTag="marker1"
-  align="Top"
+/>
+<NaverMapInfoWindow
+  identifier="marker1"
+  latitude={37.5666102}
+  longitude={126.9783881}
   text="마커 정보"
+  isOpen={true}
+  // Android only: 커스텀 스타일
+  fontWeight="bold"
+  borderRadius={10}
+  borderColor="#4263eb"
 />
 ```
 
@@ -105,13 +114,75 @@ import { NaverMapInfoWindow } from '@mj-studio/react-native-naver-map';
 - [Android InfoWindow 공식 문서](https://navermaps.github.io/android-map-sdk/guide-ko/5-3.html)
 - [iOS NMFInfoWindow API](https://navermaps.github.io/maps.js.ncp/docs/naver.maps.InfoWindow.html)
 
-## 향후 개선 사항
+## 플랫폼별 스타일 지원 현황
 
-1. **마커 연결 기능**: `markerTag`를 통한 마커 찾기 및 연결
-2. **커스텀 뷰 지원**: React 자식 컴포넌트를 InfoWindow 콘텐츠로 사용
-3. **더 많은 스타일 옵션**: 테두리 색상, 화살표 표시 등
-4. **애니메이션**: 열기/닫기 애니메이션
-5. **이벤트 확장**: `onOpen`, `onTap`, `onClose` 이벤트 등
+### Android ✅ (완전 지원)
+- ✅ `text`, `textSize`, `textColor`
+- ✅ `fontWeight` - Bold/Regular/Medium/Semibold (100-900)
+- ✅ `backgroundColor`
+- ✅ `borderRadius` - 둥근 모서리
+- ✅ `borderWidth`, `borderColor` - 테두리
+- ✅ `padding` - 내부 여백
+- ✅ 마커 연결 (`identifier`)
+- ✅ 열림/닫힘 제어 (`isOpen`)
+
+**구현 방식:**
+```kotlin
+// GradientDrawable로 커스텀 스타일 구현
+val drawable = GradientDrawable().apply {
+  setColor(backgroundColor)
+  cornerRadius = borderRadius
+  setStroke(borderWidth.toInt(), borderColor)
+}
+```
+
+### iOS ⚠️ (텍스트만 지원)
+- ✅ `text` - 텍스트 내용
+- ✅ 마커 연결 (`identifier`)
+- ✅ 열림/닫힘 제어 (`isOpen`)
+- ❌ `textSize`, `textColor` - 무시됨
+- ❌ `fontWeight`, `borderRadius`, `borderWidth`, `borderColor`, `padding` - 무시됨
+
+**제한 이유:**
+iOS의 `NMFInfoWindow`는 기본적으로 `NMFInfoWindowDefaultTextSource`를 사용하며, 이는 말풍선 스타일의 텍스트만 표시합니다.
+
+커스텀 스타일을 위해 `NMFOverlayImageDataSource`를 시도했으나:
+- `NMFInfoWindow`가 내부적으로 `toUIImage` 메서드 호출 (존재하지 않음)
+- 일반 오버레이와 달리 InfoWindow는 이미지 기반 커스터마이징 미지원
+- 구현 시도 시 에러 발생 내용:  `-[NMFOverlayImage toUIImage]: unrecognized selector`
+
+### iOS에서 커스텀 스타일이 필요한 경우
+
+**Option 1: Marker의 Custom View 사용**
+```tsx
+<NaverMapMarkerOverlay latitude={37.5} longitude={126.5}>
+  <View style={{ 
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 10,
+    borderWidth: 2,
+    borderColor: '#4263eb'
+  }}>
+    <Text style={{ fontWeight: 'bold' }}>커스텀 정보</Text>
+  </View>
+</NaverMapMarkerOverlay>
+```
+
+**Option 2: 플랫폼별 조건부 렌더링**
+```tsx
+{Platform.OS === 'android' ? (
+  <NaverMapInfoWindow
+    identifier="marker1"
+    text="마커 정보"
+    fontWeight="bold"
+    borderRadius={10}
+  />
+) : (
+  <NaverMapMarkerOverlay identifier="info-marker">
+    <CustomInfoView />
+  </NaverMapMarkerOverlay>
+)}
+```
 
 ## 구현 패턴
 
@@ -134,11 +205,19 @@ import { NaverMapInfoWindow } from '@mj-studio/react-native-naver-map';
 ## 완료 상태
 
 - ✅ TypeScript Spec 및 타입 정의
-- ✅ Android 네이티브 구현
-- ✅ iOS 네이티브 구현
+- ✅ Android 네이티브 구현 (모든 스타일 지원)
+- ✅ iOS 네이티브 구현 (기본 텍스트)
 - ✅ React Component 작성
 - ✅ Package 등록
 - ✅ Export 추가
-- ⏳ 마커 연결 기능 (향후)
-- ⏳ 커스텀 뷰 지원 (향후)
+- ✅ 마커 연결 기능 (`identifier`)
+- ✅ 열림/닫힘 제어 (`isOpen`)
+- ✅ Marker Registry 구현
+- ⚠️ iOS 커스텀 스타일 (API 제한으로 미지원)
+
+## 사용 권장사항
+
+- **간단한 텍스트만 필요**: InfoWindow 사용 (양쪽 플랫폼)
+- **커스텀 스타일 필요 (Android만)**: InfoWindow 사용, iOS는 기본 스타일
+- **커스텀 스타일 필요 (양쪽 플랫폼)**: Marker의 Custom View 사용
 
