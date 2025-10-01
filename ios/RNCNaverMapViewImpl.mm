@@ -113,6 +113,9 @@
       marker.overlayImage = NMF_MARKER_IMAGE_GREEN;
     }
     marker.mapView = self.mapView;
+  } else if ([subview isKindOfClass:[RNCNaverMapInfoWindow class]]) {
+    auto infoWindow = static_cast<RNCNaverMapInfoWindow*>(subview).inner;
+    infoWindow.mapView = self.mapView;
   } else {
     NSArray<id<RCTComponent>>* childSubviews = [subview reactSubviews];
     for (int i = 0; i < childSubviews.count; i++) {
