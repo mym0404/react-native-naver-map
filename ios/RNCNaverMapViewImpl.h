@@ -48,6 +48,9 @@ using namespace facebook::react;
 @property(nonatomic, assign) NSInteger animationDuration;
 @property(nonatomic, assign) NSInteger animationEasing;
 
+// Marker registry for InfoWindow lookup
+@property(nonatomic, strong) NSMutableDictionary<NSString*, RNCNaverMapMarker*>* markerRegistry;
+
 @end
 
 #endif /* ifndef RNCNaverMapViewImpl_h */

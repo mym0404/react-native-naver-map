@@ -24,16 +24,23 @@ interface BaseOverlay {
 interface Props extends BaseOverlay, ViewProps {
   /**
    * InfoWindow 위치 좌표
+   * identifier가 없으면 이 좌표에 직접 표시
+   * identifier가 있으면 대체 위치로 사용
    */
   coord: Readonly<{
     latitude: Double;
     longitude: Double;
   }>;
   /**
-   * InfoWindow가 열릴 마커 ID (선택적)
-   * 지정하면 마커 위에 열림, 없으면 coord 위치에 열림
+   * InfoWindow가 열릴 마커의 identifier
+   * 지정하면 해당 마커 위에 열림
    */
-  markerTag?: string;
+  identifier?: string;
+  /**
+   * InfoWindow를 처음부터 열린 상태로 표시할지 여부
+   * @default true
+   */
+  isOpen?: WithDefault<boolean, true>;
   /**
    * InfoWindow가 마커에 대해 열릴 때의 정렬 방향
    * Top = 0, TopLeft = 1, TopRight = 2, Right = 3,
@@ -76,9 +83,33 @@ interface Props extends BaseOverlay, ViewProps {
    */
   textColor?: Int32;
   /**
+   * 폰트 굵기 (100-900, 400=normal, 700=bold)
+   * @default 400
+   */
+  fontWeight?: WithDefault<Int32, 400>;
+  /**
    * 배경 색상
    */
   infoWindowBackgroundColor?: Int32;
+  /**
+   * 둥근 모서리 반경 (픽셀)
+   * @default 5
+   */
+  infoWindowBorderRadius?: WithDefault<Double, 5>;
+  /**
+   * 테두리 두께 (픽셀)
+   * @default 1
+   */
+  infoWindowBorderWidth?: WithDefault<Double, 1>;
+  /**
+   * 테두리 색상
+   */
+  infoWindowBorderColor?: Int32;
+  /**
+   * 내부 여백 (픽셀)
+   * @default 10
+   */
+  infoWindowPadding?: WithDefault<Double, 10>;
 }
 
 export default codegenNativeComponent<Props>('RNCNaverMapInfoWindow');

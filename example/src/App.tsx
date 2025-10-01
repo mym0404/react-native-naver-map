@@ -348,67 +348,106 @@ export default function App() {
             { latitude: 33.3332807, longitude: 126.838389399 },
           ]}
         />
+        {/* 마커들 with identifier */}
+        <NaverMapMarkerOverlay
+          identifier="jeju-center"
+          latitude={33.5}
+          longitude={126.5}
+          image={{ symbol: 'blue' }}
+          width={40}
+          height={40}
+        />
+        <NaverMapMarkerOverlay
+          identifier="seongsan"
+          latitude={33.4}
+          longitude={126.6}
+          image={{ symbol: 'red' }}
+          width={40}
+          height={40}
+        />
+        <NaverMapMarkerOverlay
+          identifier="tourist-spot"
+          latitude={33.3}
+          longitude={126.4}
+          image={{ symbol: 'yellow' }}
+          width={35}
+          height={35}
+        />
+
         {showInfoWindows && (
           <>
-            {/* InfoWindow 1: 기본 스타일 */}
+            {/* InfoWindow 1: 마커에 연결 - Bold 폰트 */}
             <NaverMapInfoWindow
+              identifier="jeju-center"
               latitude={33.5}
               longitude={126.5}
-              text="제주도 중심부"
-              textSize={16}
+              text="중이염"
+              textSize={10}
               textColor="black"
+              fontWeight="bold"
               backgroundColor="white"
+              borderRadius={1000}
+              // borderWidth={2}
+              // borderColor="#4263eb"
+              padding={20}
               alpha={0.95}
-              anchor={{ x: 0.5, y: 1 }}
-              offsetY={-10}
+              // isOpen={false}
             />
 
-            {/* InfoWindow 2: 큰 텍스트 */}
+            {/* InfoWindow 2: 마커에 연결 - 둥근 스타일 */}
             <NaverMapInfoWindow
+              identifier="seongsan"
               latitude={33.4}
               longitude={126.6}
               text="성산일출봉 방향 ➡️"
               textSize={18}
               textColor="white"
+              fontWeight="700"
               backgroundColor="#ff6b6b"
+              borderRadius={15}
+              padding={15}
               alpha={1}
-              anchor={{ x: 0.5, y: 1 }}
+              isOpen={true}
             />
 
-            {/* InfoWindow 3: 작은 스타일 */}
+            {/* InfoWindow 3: 마커에 연결 - 일반 폰트 */}
             <NaverMapInfoWindow
+              identifier="tourist-spot"
               latitude={33.3}
               longitude={126.4}
               text="📍 관광지"
               textSize={12}
               textColor="#333"
+              fontWeight="500"
               backgroundColor="#ffd93d"
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="#f39c12"
+              padding={8}
               alpha={0.9}
-              anchor={{ x: 0.5, y: 1 }}
-              offsetY={-5}
             />
 
-            {/* InfoWindow 4: 마커 근처 */}
-            <NaverMapInfoWindow
-              latitude={30.0565607356}
-              longitude={123.88599018}
-              text="마커 위치 정보"
-              textSize={14}
-              textColor="white"
-              backgroundColor="#4263eb"
-              alpha={0.95}
-              anchor={{ x: 0.5, y: 1 }}
-            />
-
-            {/* InfoWindow 5: 길게 */}
+            {/* InfoWindow 4: 좌표에 직접 배치 (마커 없음) */}
             <NaverMapInfoWindow
               latitude={33.6}
               longitude={126.7}
-              text="이것은 긴 텍스트 정보입니다 📝"
+              text="독립 InfoWindow 📝"
               textSize={15}
               textColor="#2d3436"
               backgroundColor="#dfe6e9"
               alpha={0.9}
+              anchor={{ x: 0.5, y: 1 }}
+            />
+
+            {/* InfoWindow 5: 닫혀있는 상태 (토글 가능) */}
+            <NaverMapInfoWindow
+              latitude={33.2}
+              longitude={126.3}
+              text="닫힌 InfoWindow"
+              textSize={14}
+              textColor="white"
+              backgroundColor="#6c5ce7"
+              isOpen={false}
             />
           </>
         )}
