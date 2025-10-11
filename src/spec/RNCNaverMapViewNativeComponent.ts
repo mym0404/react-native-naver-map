@@ -216,7 +216,7 @@ interface Props extends ViewProps {
 
 type ComponentType = HostComponent<Props>;
 
-interface NaverMapNativeCommands {
+interface NativeCommands {
   screenToCoordinate: (
     ref: React.ElementRef<ComponentType>,
     x: Double,
@@ -277,15 +277,14 @@ interface NaverMapNativeCommands {
 }
 
 export default codegenNativeComponent<Props>('RNCNaverMapView');
-export const Commands: NaverMapNativeCommands =
-  codegenNativeCommands<NaverMapNativeCommands>({
-    supportedCommands: [
-      'screenToCoordinate',
-      'coordinateToScreen',
-      'animateCameraTo',
-      'animateCameraBy',
-      'cancelAnimation',
-      'animateRegionTo',
-      'setLocationTrackingMode',
-    ],
-  });
+export const Commands: NativeCommands = codegenNativeCommands<NativeCommands>({
+  supportedCommands: [
+    'screenToCoordinate',
+    'coordinateToScreen',
+    'animateCameraTo',
+    'animateCameraBy',
+    'cancelAnimation',
+    'animateRegionTo',
+    'setLocationTrackingMode',
+  ],
+});
