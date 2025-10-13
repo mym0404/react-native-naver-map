@@ -226,38 +226,8 @@ using namespace facebook::react;
         o1.circleOutlineWidth != o2.circleOutlineWidth ||
         o1.circleOutlineColor != o2.circleOutlineColor) {
 
-      NMFLocationOverlay* overlay = self.map.locationOverlay;
-
-      overlay.hidden = !o2.isVisible;
-      if (isValidNumber(o2.position.latitude) && isValidNumber(o2.position.longitude)) {
-        overlay.location = nmap::createLatLng(o2.position);
-      }
-      overlay.heading = o2.bearing;
-
-      // Set main icon image
-      if (!o2.image.symbol.empty() || !o2.image.rnAssetUri.empty() || !o2.image.httpUri.empty() ||
-          !o2.image.assetName.empty()) {
-        overlay.icon = nmap::resolveImage(o2.image);
-      }
-
-      overlay.iconWidth = o2.imageWidth;
-      overlay.iconHeight = o2.imageHeight;
-      overlay.anchor = nmap::createAnchorCGPoint(o2.anchor);
-
-      // Set sub icon image
-      if (!o2.subImage.symbol.empty() || !o2.subImage.rnAssetUri.empty() ||
-          !o2.subImage.httpUri.empty() || !o2.subImage.assetName.empty()) {
-        overlay.subIcon = nmap::resolveImage(o2.subImage);
-      }
-
-      overlay.subIconWidth = o2.subImageWidth;
-      overlay.subIconHeight = o2.subImageHeight;
-      overlay.subAnchor = nmap::createAnchorCGPoint(o2.subAnchor);
-
-      overlay.circleRadius = o2.circleRadius;
-      overlay.circleColor = nmap::intToColor(o2.circleColor);
-      overlay.circleOutlineWidth = o2.circleOutlineWidth;
-      overlay.circleOutlineColor = nmap::intToColor(o2.circleOutlineColor);
+      // Call setLocationOverlay on the implementation with struct directly
+      [_view setLocationOverlay:o2];
     }
   }
 
