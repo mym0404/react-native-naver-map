@@ -419,18 +419,18 @@ export default function App() {
                     longitude: Cameras.Jeju.longitude + 0.02,
                   },
                   bearing: locationOverlayBearing,
-                  image: { symbol: 'black' },
+                  image: require('./logo180.png'),
                   anchor: { x: 0.5, y: 0.5 },
                   subImage: { symbol: 'green' },
                   subImageWidth: 72,
                   subImageHeight: 72,
-                  subAnchor: { x: 0.5, y: 0.5 },
-                  circleRadius: 200,
+                  subAnchor: { x: 1, y: 0.5 },
+                  circleRadius: 100,
                   circleColor: '#4285F433',
-                  circleOutlineWidth: 2,
+                  circleOutlineWidth: 4,
                   circleOutlineColor: '#4285F4AA',
                 }
-              : undefined
+              : { isVisible: false }
           }
           onTapClusterLeaf={({ markerIdentifier }) => {
             console.log('onTapClusterLeaf', markerIdentifier);
