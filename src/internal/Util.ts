@@ -3,7 +3,7 @@ import type { Align } from '../types/Align';
 import type { Camera } from '../types/Camera';
 import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
 import type { CameraChangeReason } from '../types/CameraChangeReason';
-import type { MarkerImageProp } from '../types/MarkerImageProp';
+import type { MapImageProp } from '../types/MapImageProp.ts';
 import { Const } from './util/Const';
 
 export function cameraEasingToNumber(
@@ -81,7 +81,7 @@ export function createCameraInstance({
   };
 }
 
-export const convertJsImagePropToNativeProp = (image: MarkerImageProp) => {
+export const convertJsImagePropToNativeProp = (image: MapImageProp) => {
   if (typeof image === 'number') {
     const rnAssetUri = Image.resolveAssetSource(image)?.uri;
     if (rnAssetUri) {
@@ -91,7 +91,7 @@ export const convertJsImagePropToNativeProp = (image: MarkerImageProp) => {
     }
   }
   const { assetName, httpUri, reuseIdentifier, symbol } = image as Exclude<
-    MarkerImageProp,
+    MapImageProp,
     number
   >;
   if (assetName) {

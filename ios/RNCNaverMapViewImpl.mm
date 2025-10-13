@@ -224,9 +224,61 @@
   if (!o)
     return;
 
+  // Visibility
   o.hidden = ![locationOverlay[@"isVisible"] boolValue];
+
+  // Position
   if (locationOverlay[@"position"]) {
     o.location = nmap::createLatLngFromDictionary(locationOverlay[@"position"]);
+  }
+
+  // Bearing/Heading
+  if (locationOverlay[@"bearing"]) {
+    o.heading = [locationOverlay[@"bearing"] doubleValue];
+  }
+
+  // Main Icon
+  if (locationOverlay[@"image"]) {
+    o.icon = nmap::resolveImageFromDictionary(locationOverlay[@"image"]);
+  }
+  if (locationOverlay[@"imageWidth"]) {
+    o.iconWidth = [locationOverlay[@"imageWidth"] doubleValue];
+  }
+  if (locationOverlay[@"imageHeight"]) {
+    o.iconHeight = [locationOverlay[@"imageHeight"] doubleValue];
+  }
+  if (locationOverlay[@"anchor"]) {
+    NSDictionary* anchor = locationOverlay[@"anchor"];
+    o.anchor = CGPointMake([anchor[@"x"] doubleValue], [anchor[@"y"] doubleValue]);
+  }
+
+  // Sub Icon
+  if (locationOverlay[@"subImage"]) {
+    o.subIcon = nmap::resolveImageFromDictionary(locationOverlay[@"subImage"]);
+  }
+  if (locationOverlay[@"subImageWidth"]) {
+    o.subIconWidth = [locationOverlay[@"subImageWidth"] doubleValue];
+  }
+  if (locationOverlay[@"subImageHeight"]) {
+    o.subIconHeight = [locationOverlay[@"subImageHeight"] doubleValue];
+  }
+  if (locationOverlay[@"subAnchor"]) {
+    NSDictionary* subAnchor = locationOverlay[@"subAnchor"];
+    o.subAnchor = CGPointMake([subAnchor[@"x"] doubleValue], [subAnchor[@"y"] doubleValue]);
+  }
+
+  // Circle
+  if (locationOverlay[@"circleRadius"]) {
+    o.circleRadius = [locationOverlay[@"circleRadius"] doubleValue];
+  }
+  if (locationOverlay[@"circleColor"]) {
+    o.circleColor = nmap::intToColor([locationOverlay[@"circleColor"] intValue]);
+  }
+  if (locationOverlay[@"circleOutlineWidth"]) {
+    o.circleOutlineWidth = [locationOverlay[@"circleOutlineWidth"] doubleValue];
+  }
+  if (locationOverlay[@"circleOutlineColor"]) {
+    o.circleOutlineColor = nmap::intToColor([locationOverlay[@"circleOutlineColor"] intValue]);
   }
 }
 

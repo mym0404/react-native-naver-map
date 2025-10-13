@@ -1,5 +1,5 @@
 import type { Coord } from './Coord';
-import type { MarkerImageProp } from './MarkerImageProp';
+import type { MapImageProp } from './MapImageProp.ts';
 
 /**
  * 클러스터에 포함될 수 있는 마커의 속성입니다.
@@ -11,7 +11,7 @@ export interface ClusterMarkerProp extends Coord {
    */
   identifier: string;
 
-  image?: MarkerImageProp;
+  image?: MapImageProp;
 
   /**
    * 마커의 너비 (픽셀 단위).

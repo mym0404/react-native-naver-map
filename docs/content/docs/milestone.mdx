@@ -14,48 +14,6 @@ import { CheckCircle, Clock, Target, Package, Cloud, Navigation } from 'lucide-r
 
 <Steps>
 <Step>
-### Location Overlay Command Implementation
-
-Implement imperative API control for Location Overlay manipulation.
-
-<Tabs items={['Feature Overview', 'Implementation Details']}>
-<Tab value="Feature Overview">
-Location Overlay is a special overlay that displays the user's current location on the map. Only one exists per map and can be controlled through imperative commands.
-
-```typescript
-// Basic location and visibility control
-naverMapRef.current?.locationOverlay.setVisible(true);
-naverMapRef.current?.locationOverlay.setPosition({
-  latitude: 37.5665,
-  longitude: 126.9780
-});
-naverMapRef.current?.locationOverlay.setBearing(45); // Direction angle
-
-// Icon customization
-naverMapRef.current?.locationOverlay.setIcon({
-  source: require('./user-location.png'),
-  width: 24,
-  height: 24,
-  anchor: { x: 0.5, y: 0.5 }
-});
-
-// Accuracy circle display
-naverMapRef.current?.locationOverlay.setCircleRadius(100);
-naverMapRef.current?.locationOverlay.setCircleColor('#4285F4');
-naverMapRef.current?.locationOverlay.setCircleOutlineWidth(2);
-naverMapRef.current?.locationOverlay.setCircleOutlineColor('#FFFFFF');
-```
-</Tab>
-<Tab value="Implementation Details">
-- Implement iOS/Android native Command interface
-- Define TypeScript types and codegen specifications
-- Integrate with React Native Fabric architecture
-- Create test cases in example app
-</Tab>
-</Tabs>
-</Step>
-
-<Step>
 ### Marker Clustering System Implementation
 
 Build a clustering system for efficient display of large numbers of markers.

@@ -213,42 +213,53 @@ using namespace facebook::react;
   if (isValidNumber(next.initialRegion.latitude))
     _view.initialRegion = nmap::createLatLngBounds(next.initialRegion);
 
-  //  {
-  //    auto o1 = prev.locationOverlay, o2 = next.locationOverlay;
-  //    if ((o1.isVisible != o2.isVisible || o1.position.latitude != o2.position.longitude ||
-  //         o1.bearing != o2.bearing || !nmap::isImageEqual(o1.image, o2.image) ||
-  //         o1.imageWidth != o2.imageWidth || o1.imageHeight != o2.imageHeight ||
-  //         o1.anchor.x != o2.anchor.x || o1.anchor.y != o2.anchor.y ||
-  //         !nmap::isImageEqual(o1.subImage, o2.subImage) || o1.subImageWidth != o2.subImageWidth
-  //         || o1.subImageHeight != o2.subImageHeight || o1.subAnchor.x != o2.subAnchor.x ||
-  //         o1.subAnchor.y != o2.subAnchor.y || o1.circleRadius != o2.circleRadius ||
-  //         o1.circleColor != o2.circleColor || o1.circleOutlineWidth != o2.circleOutlineWidth ||
-  //         o1.circleOutlineColor != o2.circleOutlineColor) &&
-  //        isValidNumber(o2.circleOutlineWidth)) {
-  //
-  //      NMFLocationOverlay* overlay = self.map.locationOverlay;
-  //
-  //      overlay.hidden = !o2.isVisible;
-  //      overlay.location = nmap::createLatLng(o2.position);
-  //      overlay.heading = o2.bearing;
-  //
-  //      overlay.iconWidth = o2.imageWidth;
-  //      overlay.iconHeight = o2.imageHeight;
-  //
-  //      overlay.anchor = nmap::createAnchorCGPoint(o2.anchor);
-  //
-  //      overlay.subIconWidth = o2.subImageWidth;
-  //      overlay.subIconHeight = o2.subImageHeight;
-  //
-  //      overlay.subAnchor = nmap::createAnchorCGPoint(o2.subAnchor);
-  //      overlay.circleRadius = o2.circleRadius;
-  //      overlay.circleColor = nmap::intToColor(o2.circleColor);
-  //      overlay.circleOutlineWidth = o2.circleOutlineWidth;
-  //      overlay.circleOutlineColor = nmap::intToColor(o2.circleOutlineColor);
-  //
-  //      NSLog(@"%d", o2.circleColor);
-  //    }
-  //  }
+  {
+    auto o1 = prev.locationOverlay, o2 = next.locationOverlay;
+    if (o1.isVisible != o2.isVisible || o1.position.latitude != o2.position.latitude ||
+        o1.position.longitude != o2.position.longitude || o1.bearing != o2.bearing ||
+        !nmap::isImageEqual(o1.image, o2.image) || o1.imageWidth != o2.imageWidth ||
+        o1.imageHeight != o2.imageHeight || o1.anchor.x != o2.anchor.x ||
+        o1.anchor.y != o2.anchor.y || !nmap::isImageEqual(o1.subImage, o2.subImage) ||
+        o1.subImageWidth != o2.subImageWidth || o1.subImageHeight != o2.subImageHeight ||
+        o1.subAnchor.x != o2.subAnchor.x || o1.subAnchor.y != o2.subAnchor.y ||
+        o1.circleRadius != o2.circleRadius || o1.circleColor != o2.circleColor ||
+        o1.circleOutlineWidth != o2.circleOutlineWidth ||
+        o1.circleOutlineColor != o2.circleOutlineColor) {
+
+      NMFLocationOverlay* overlay = self.map.locationOverlay;
+
+      overlay.hidden = !o2.isVisible;
+      if (isValidNumber(o2.position.latitude) && isValidNumber(o2.position.longitude)) {
+        overlay.location = nmap::createLatLng(o2.position);
+      }
+      overlay.heading = o2.bearing;
+
+      // Set main icon image
+      if (!o2.image.symbol.empty() || !o2.image.rnAssetUri.empty() || !o2.image.httpUri.empty() ||
+          !o2.image.assetName.empty()) {
+        overlay.icon = nmap::resolveImage(o2.image);
+      }
+
+      overlay.iconWidth = o2.imageWidth;
+      overlay.iconHeight = o2.imageHeight;
+      overlay.anchor = nmap::createAnchorCGPoint(o2.anchor);
+
+      // Set sub icon image
+      if (!o2.subImage.symbol.empty() || !o2.subImage.rnAssetUri.empty() ||
+          !o2.subImage.httpUri.empty() || !o2.subImage.assetName.empty()) {
+        overlay.subIcon = nmap::resolveImage(o2.subImage);
+      }
+
+      overlay.subIconWidth = o2.subImageWidth;
+      overlay.subIconHeight = o2.subImageHeight;
+      overlay.subAnchor = nmap::createAnchorCGPoint(o2.subAnchor);
+
+      overlay.circleRadius = o2.circleRadius;
+      overlay.circleColor = nmap::intToColor(o2.circleColor);
+      overlay.circleOutlineWidth = o2.circleOutlineWidth;
+      overlay.circleOutlineColor = nmap::intToColor(o2.circleOutlineColor);
+    }
+  }
 
   if (prev.clusters.key != next.clusters.key) {
     for (const auto& [prevKey, _] : _clustererRecord) {

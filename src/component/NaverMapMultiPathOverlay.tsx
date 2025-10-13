@@ -5,7 +5,7 @@ import { nAssert } from '../internal/util/Assert';
 import { Const } from '../internal/util/Const';
 import { default as NativeNaverMapMultiPath } from '../spec/RNCNaverMapMultiPathNativeComponent';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
-import type { MarkerImageProp } from '../types/MarkerImageProp';
+import type { MapImageProp } from '../types/MapImageProp.ts';
 import type { MultiPathPart } from '../types/MultiPathPart';
 
 export interface NaverMapMultiPathOverlayProps extends BaseOverlayProps {
@@ -34,7 +34,7 @@ export interface NaverMapMultiPathOverlayProps extends BaseOverlayProps {
    *
    * @default undefined
    */
-  patternImage?: MarkerImageProp;
+  patternImage?: MapImageProp;
   /**
    * patternInterval 속성을 사용하면 패턴 이미지 간 간격을 지정할 수 있습니다. 0일 경우 패턴이 그려지지 않습니다.
    *

@@ -1,0 +1,161 @@
+---
+title: Location Overlay
+description: Display and customize user's current location on the map
+---
+
+The location overlay is a special overlay that represents the user's current location on the map. Unlike other overlays, only one location overlay exists per map and cannot be created directly.
+
+## Default Behavior
+
+When location permissions are properly configured, the location overlay will automatically appear and track the user's current position when you enable location tracking.
+
+The `locationOverlay` prop allows you to customize the appearance and behavior of this built-in location indicator without needing to manually manage location updates.
+
+## Basic Usage
+
+To display a location overlay, use the `locationOverlay` prop of `NaverMapView`:
+
+```tsx
+import { NaverMapView } from '@mj-studio/react-native-naver-map';
+
+function MapWithLocation() {
+  return (
+    <NaverMapView
+      locationOverlay={{
+        isVisible: true,
+        position: {
+          latitude: 37.5665,
+          longitude: 126.9780
+        }
+      }}
+    />
+  );
+}
+```
+
+## Configuration Options
+
+### Position and Orientation
+
+Control the location and direction of the overlay:
+
+```tsx
+<NaverMapView
+  locationOverlay={{
+    isVisible: true,
+    position: {
+      latitude: 37.5665,
+      longitude: 126.9780
+    },
+    bearing: 45 // Rotation angle in degrees
+  }}
+/>
+```
+
+### Custom Icons
+
+Customize the main and sub icons:
+
+```tsx
+<NaverMapView
+  locationOverlay={{
+    isVisible: true,
+    position: { latitude: 37.5665, longitude: 126.9780 },
+    // Main icon
+    image: { assetName: 'location_icon' },
+    imageWidth: 48,
+    imageHeight: 48,
+    anchor: { x: 0.5, y: 0.5 },
+    // Sub icon (displayed behind main icon)
+    subImage: { assetName: 'location_sub_icon' },
+    subImageWidth: 80,
+    subImageHeight: 80,
+    subAnchor: { x: 0.5, y: 0.5 }
+  }}
+/>
+```
+
+### Emphasis Circle
+
+Add a circle around the location to emphasize accuracy:
+
+```tsx
+<NaverMapView
+  locationOverlay={{
+    isVisible: true,
+    position: { latitude: 37.5665, longitude: 126.9780 },
+    // Circle configuration
+    circleRadius: 50, // Radius in pixels
+    circleColor: 'rgba(0, 122, 255, 0.2)',
+    circleOutlineWidth: 2,
+    circleOutlineColor: 'rgba(0, 122, 255, 0.5)'
+  }}
+/>
+```
+
+## Complete Example
+
+Here's a comprehensive example showing all location overlay features:
+
+```tsx
+import React, { useState } from 'react';
+import { View, Switch, Text } from 'react-native';
+import { NaverMapView } from '@mj-studio/react-native-naver-map';
+
+function LocationOverlayExample() {
+  const [showLocation, setShowLocation] = useState(true);
+  const [currentPosition, setCurrentPosition] = useState({
+    latitude: 37.5665,
+    longitude: 126.9780
+  });
+
+  return (
+    <View style={{ flex: 1 }}>
+      <NaverMapView
+        style={{ flex: 1 }}
+        locationOverlay={{
+          isVisible: showLocation,
+          position: currentPosition,
+          bearing: 0,
+          // Main icon
+          image: { symbol: 'blue' },
+          imageWidth: 36,
+          imageHeight: 36,
+          anchor: { x: 0.5, y: 0.5 },
+          // Sub icon
+          subImage: { symbol: 'green' },
+          subImageWidth: 60,
+          subImageHeight: 60,
+          subAnchor: { x: 0.5, y: 0.5 },
+          // Accuracy circle
+          circleRadius: 100,
+          circleColor: '#4285F433',
+          circleOutlineWidth: 2,
+          circleOutlineColor: '#4285F4AA'
+        }}
+      />
+      <View style={{ padding: 16 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text>Show Location</Text>
+          <Switch
+            value={showLocation}
+            onValueChange={setShowLocation}
+          />
+        </View>
+      </View>
+    </View>
+  );
+}
+```
+
+## Notes
+
+- The location overlay is unique per map and cannot be created multiple times
+- To track the user's actual location, you'll need to use location services separately and update the `position` prop
+- Consider using `LocationTrackingMode` for automatic camera following of the user's location
+- The overlay's visibility and properties can be dynamically updated
+
+## Related
+
+- [Location Tracking Mode](/docs/camera-control#location-tracking-mode)
+- [Map Image Props](/docs/components/overlays/common-overlay-usage#image-props)

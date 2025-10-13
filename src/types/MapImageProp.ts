@@ -2,9 +2,9 @@ import type { ImageRequireSource } from 'react-native/Libraries/Image/ImageSourc
 import type { MarkerSymbol } from './MarkerSymbol';
 
 /**
- * 마커의 이미지 Prop 타입입니다.
+ * 네이버맵에서 쓰이는 이미지 Prop 타입입니다.
  */
-export type MarkerImageProp =
+export type MapImageProp =
   | ImageRequireSource
   | {
       symbol?: MarkerSymbol;

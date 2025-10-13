@@ -6,7 +6,7 @@ import { Const } from '../internal/util/Const';
 import { default as NativeNaverMapPath } from '../spec/RNCNaverMapPathNativeComponent';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
 import type { Coord } from '../types/Coord';
-import type { MarkerImageProp } from '../types/MarkerImageProp';
+import type { MapImageProp } from '../types/MapImageProp.ts';
 
 export interface NaverMapPathOverlayProps extends BaseOverlayProps {
   /**
@@ -35,7 +35,7 @@ export interface NaverMapPathOverlayProps extends BaseOverlayProps {
    *
    * @default undefined
    */
-  patternImage?: MarkerImageProp;
+  patternImage?: MapImageProp;
   /**
    * patternInterval 속성을 사용하면 패턴 이미지 간 간격을 지정할 수 있습니다. 0일 경우 패턴이 그려지지 않습니다.
    *
