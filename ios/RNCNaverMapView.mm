@@ -328,6 +328,7 @@ using namespace facebook::react;
                           image:marker.image
                           width:marker.width
                          height:marker.height
+                         caption:marker.caption
                 onTapLeafMarker:onTapLeafMarker];
     markerDict[markerKey] = [NSNull null];
   }
@@ -342,7 +343,7 @@ using namespace facebook::react;
   builder.animate = animate;
 
   RNCNaverMapClusterMarkerUpdater* clusterMarkerUpdater =
-      [[RNCNaverMapClusterMarkerUpdater alloc] initWith:dict.width height:dict.height];
+      [[RNCNaverMapClusterMarkerUpdater alloc] initWith:dict.width height:dict.height image: dict.image];
   RNCNaverMapLeafMarkerUpdater* leafMarkerUpdater =
       [[RNCNaverMapLeafMarkerUpdater alloc] init:&_clusterMarkerImageRequestCancelers];
   builder.clusterMarkerUpdater = clusterMarkerUpdater;

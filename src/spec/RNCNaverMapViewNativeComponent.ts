@@ -26,10 +26,22 @@ type NativeImageProp = Readonly<{
   assetName?: string;
   reuseIdentifier?: string;
 }>;
-
+type NativeCaptionProp = {
+  key: string;
+  text: string;
+  requestedWidth?: Double;
+  align?: Int32;
+  offset?: Double;
+  color?: Int32;
+  haloColor?: Int32;
+  textSize?: Double;
+  minZoom?: Double;
+  maxZoom?: Double;
+};
 type ClusterMarker = Coord & {
   identifier: string;
   image?: NativeImageProp;
+  caption?: NativeCaptionProp;
   width?: Double;
   height?: Double;
 };
@@ -52,6 +64,7 @@ export type NativeClusterProp = {
   width?: Double;
   height?: Double;
   markers: ClusterMarker[];
+  image?: Readonly<NativeImageProp>;
   screenDistance?: Double;
   minZoom?: Double;
   maxZoom?: Double;
