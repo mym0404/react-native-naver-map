@@ -662,9 +662,9 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
         v.getDoubleOrNull("subImageWidth")?.let { o.subIconWidth = it.px }
         v.getDoubleOrNull("subImageHeight")?.let { o.subIconHeight = it.px }
         v.getMap("subAnchor")?.let { o.subAnchor = PointF(it.getDouble("x").toFloat(), it.getDouble("y").toFloat()) }
-        v.getDoubleOrNull("circleRadius")?.let { o.circleRadius = it.px }
+        v.getDoubleOrNull("circleRadius")?.let { o.circleRadius = it.px.toInt() }
         v.getIntOrNull("circleColor")?.let { o.circleColor = it }
-        v.getDoubleOrNull("circleOutlineWidth")?.let { o.circleOutlineWidth = it.px }
+        v.getDoubleOrNull("circleOutlineWidth")?.let { o.circleOutlineWidth = it.px.toInt() }
         v.getIntOrNull("circleOutlineColor")?.let { o.circleOutlineColor = it }
       }
     }
