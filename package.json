@@ -50,7 +50,8 @@
     "turbo:ios": "pnpm turbo ci:ios --single-package --cache-dir=\".turbo/ios\"",
     "ios": "cd example && pnpm ios",
     "android": "cd example && pnpm android",
-    "dev": "cd example && pnpm start"
+    "dev": "cd example && pnpm start",
+    "docs:dev": "cd docs && pnpm dev"
   },
   "keywords": [
     "react-native",

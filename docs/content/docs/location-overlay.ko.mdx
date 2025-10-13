@@ -1,0 +1,160 @@
+---
+title: 위치 오버레이
+description: 사용자의 현재 위치를 지도에 표시하고 커스터마이징
+---
+
+위치 오버레이는 사용자의 현재 위치를 나타내는 특수한 오버레이입니다. 다른 오버레이와 달리 지도당 하나만 존재하며, 직접 생성할 수 없습니다.
+
+## 기본 동작
+
+위치 권한이 적절히 설정되어 있으면, 위치 추적을 활성화할 때 위치 오버레이가 자동으로 나타나 사용자의 현재 위치를 추적합니다.
+
+`locationOverlay` prop을 사용하면 위치 업데이트를 수동으로 관리할 필요 없이 이 기본 제공 위치 표시기의 모양과 동작을 커스터마이징할 수 있습니다.
+
+## 기본 사용법
+
+위치 오버레이를 표시하려면 `NaverMapView`의 `locationOverlay` prop을 사용합니다:
+
+```tsx
+import { NaverMapView } from '@mj-studio/react-native-naver-map';
+
+function MapWithLocation() {
+  return (
+    <NaverMapView
+      locationOverlay={{
+        isVisible: true,
+        position: {
+          latitude: 37.5665,
+          longitude: 126.9780
+        }
+      }}
+    />
+  );
+}
+```
+
+## 설정 옵션
+
+### 위치와 방향
+
+오버레이의 위치와 방향을 제어합니다:
+
+```tsx
+<NaverMapView
+  locationOverlay={{
+    isVisible: true,
+    position: {
+      latitude: 37.5665,
+      longitude: 126.9780
+    },
+    bearing: 45 // 회전 각도 (도 단위)
+  }}
+/>
+```
+
+### 커스텀 아이콘
+
+메인 아이콘과 서브 아이콘을 커스터마이징할 수 있습니다:
+
+```tsx
+<NaverMapView
+  locationOverlay={{
+    isVisible: true,
+    position: { latitude: 37.5665, longitude: 126.9780 },
+    // 메인 아이콘
+    image: { assetName: 'location_icon' },
+    imageWidth: 48,
+    imageHeight: 48,
+    anchor: { x: 0.5, y: 0.5 },
+    // 서브 아이콘 (메인 아이콘 뒤에 표시)
+    subImage: { assetName: 'location_sub_icon' },
+    subImageWidth: 80,
+    subImageHeight: 80,
+    subAnchor: { x: 0.5, y: 0.5 }
+  }}
+/>
+```
+
+### 강조 원
+
+위치의 정확도를 강조하기 위해 원을 추가할 수 있습니다:
+
+```tsx
+<NaverMapView
+  locationOverlay={{
+    isVisible: true,
+    position: { latitude: 37.5665, longitude: 126.9780 },
+    // 원 설정
+    circleRadius: 50, // 반경 (픽셀 단위)
+    circleColor: 'rgba(0, 122, 255, 0.2)',
+    circleOutlineWidth: 2,
+    circleOutlineColor: 'rgba(0, 122, 255, 0.5)'
+  }}
+/>
+```
+
+## 전체 예제
+
+모든 위치 오버레이 기능을 보여주는 종합적인 예제입니다:
+
+```tsx
+import React, { useState } from 'react';
+import { View, Switch, Text } from 'react-native';
+import { NaverMapView } from '@mj-studio/react-native-naver-map';
+
+function LocationOverlayExample() {
+  const [showLocation, setShowLocation] = useState(true);
+  const [currentPosition, setCurrentPosition] = useState({
+    latitude: 37.5665,
+    longitude: 126.9780
+  });
+
+  return (
+    <View style={{ flex: 1 }}>
+      <NaverMapView
+        style={{ flex: 1 }}
+        locationOverlay={{
+          isVisible: showLocation,
+          position: currentPosition,
+          bearing: 0,
+          // 메인 아이콘
+          image: { symbol: 'blue' },
+          imageWidth: 36,
+          imageHeight: 36,
+          anchor: { x: 0.5, y: 0.5 },
+          // 서브 아이콘
+          subImage: { symbol: 'green' },
+          subImageWidth: 60,
+          subImageHeight: 60,
+          subAnchor: { x: 0.5, y: 0.5 },
+          // 정확도 원
+          circleRadius: 100,
+          circleColor: '#4285F433',
+          circleOutlineWidth: 2,
+          circleOutlineColor: '#4285F4AA'
+        }}
+      />
+      <View style={{ padding: 16 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text>위치 표시</Text>
+          <Switch
+            value={showLocation}
+            onValueChange={setShowLocation}
+          />
+        </View>
+      </View>
+    </View>
+  );
+}
+```
+
+## 참고사항
+
+- 위치 오버레이는 지도당 하나만 존재하며 여러 개를 생성할 수 없습니다
+- 사용자 위치의 자동 카메라 추적을 위해 `LocationTrackingMode` 사용을 고려하세요
+- 오버레이의 표시 여부와 속성은 동적으로 업데이트될 수 있습니다
+
+## 관련 문서
+
+- [위치 추적 모드](/docs/camera-control#location-tracking-mode)
+- [맵 이미지 Props](/docs/components/overlays/common-overlay-usage#image-props)

@@ -234,7 +234,7 @@ class RNCNaverMapView(
   fun setLocationOverlaySubImage(image: ReadableMap?) {
     locationOverlaySubImageRenderer.setImage(image) { overlayImage ->
       withMap {
-        it.locationOverlay.icon = overlayImage ?: OverlayImage.fromBitmap(
+        it.locationOverlay.subIcon = overlayImage ?: OverlayImage.fromBitmap(
           Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888),
         )
       }

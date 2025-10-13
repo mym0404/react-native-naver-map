@@ -9,6 +9,7 @@
     "components",
     "---Guides---",
     "marker-clustering",
+    "location-overlay",
     "camera-control",
     "custom-style",
     "optimization",

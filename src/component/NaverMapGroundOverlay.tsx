@@ -3,7 +3,7 @@ import { convertJsImagePropToNativeProp } from '../internal/Util';
 import { Const } from '../internal/util/Const';
 import { default as NativeNaverMapGround } from '../spec/RNCNaverMapGroundNativeComponent';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
-import type { MarkerImageProp } from '../types/MarkerImageProp';
+import type { MapImageProp } from '../types/MapImageProp.ts';
 import type { Region } from '../types/Region';
 
 export interface NaverMapGroundOverlayProps extends BaseOverlayProps {
@@ -12,7 +12,7 @@ export interface NaverMapGroundOverlayProps extends BaseOverlayProps {
    *
    * 이미지는 필수적인 속성으로, 이미지를 지정하지 않은 지상 오버레이는 지도에 추가되지 않습니다.
    */
-  image: MarkerImageProp;
+  image: MapImageProp;
   /**
    * 지상 오버레이의 영역을 지정할 수 있습니다.
    *

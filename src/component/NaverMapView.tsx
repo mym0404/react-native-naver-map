@@ -8,7 +8,13 @@ import React, {
   useMemo,
   useRef,
 } from 'react';
-import { type NativeSyntheticEvent, type ViewProps } from 'react-native';
+import {
+  type ColorValue,
+  type NativeSyntheticEvent,
+  Platform,
+  processColor,
+  type ViewProps,
+} from 'react-native';
 import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import {
   cameraChangeReasonFromNumber,
@@ -22,6 +28,7 @@ import {
   Commands,
   type NativeClusterProp,
   type NativeClustersProp,
+  type NativeLocationOverlayProp,
   default as NativeNaverMapView,
 } from '../spec/RNCNaverMapViewNativeComponent';
 import type { Camera } from '../types/Camera';
@@ -32,6 +39,7 @@ import type { ClusterMarkerProp } from '../types/ClusterMarkerProp';
 import type { Coord } from '../types/Coord';
 import type { LocationTrackingMode } from '../types/LocationTrackingMode';
 import type { LogoAlign } from '../types/LogoAlign';
+import type { MapImageProp } from '../types/MapImageProp';
 import type { MapType } from '../types/MapType';
 import type { Rect } from '../types/Rect';
 import type { Region } from '../types/Region';
@@ -422,23 +430,87 @@ export interface NaverMapViewProps extends ViewProps {
    */
   onCustomStyleLoadFailed?: (params: { message: string }) => void;
 
-  // locationOverlay?: {
-  //   isVisible?: boolean;
-  //   position?: Coord;
-  //   bearing?: Double;
-  //   image?: MarkerImageProp;
-  //   imageWidth?: Double;
-  //   imageHeight?: Double;
-  //   anchor?: Readonly<{ x: Double; y: Double }>;
-  //   subImage?: MarkerImageProp;
-  //   subImageWidth?: Double;
-  //   subImageHeight?: Double;
-  //   subAnchor?: Readonly<{ x: Double; y: Double }>;
-  //   circleRadius?: Double;
-  //   circleColor?: ColorValue;
-  //   circleOutlineWidth?: Double;
-  //   circleOutlineColor?: ColorValue;
-  // };
+  /**
+   * 위치 오버레이 설정입니다.
+   *
+   * 위치 오버레이는 사용자의 현재 위치를 나타내는 특수한 오버레이입니다.
+   * 지도당 하나만 존재하며, 직접 생성할 수 없고 지도에서 제공하는 오버레이를 사용해야 합니다.
+   *
+   * @see {@link MapImageProp}
+   * @group Location
+   */
+  locationOverlay?: {
+    /**
+     * 위치 오버레이의 가시성 여부
+     * @default false
+     */
+    isVisible?: boolean;
+    /**
+     * 위치 오버레이의 좌표
+     */
+    position?: Coord;
+    /**
+     * 위치 오버레이의 방향 (각도)
+     * @default 0
+     */
+    bearing?: Double;
+    /**
+     * 메인 아이콘 이미지
+     */
+    image?: MapImageProp;
+    /**
+     * 메인 아이콘의 너비
+     * @default SIZE_AUTO
+     */
+    imageWidth?: Double;
+    /**
+     * 메인 아이콘의 높이
+     * @default SIZE_AUTO
+     */
+    imageHeight?: Double;
+    /**
+     * 메인 아이콘의 앵커 포인트 (0~1 사이의 값)
+     * @default { x: 0.5, y: 0.5 }
+     */
+    anchor?: Readonly<{ x: Double; y: Double }>;
+    /**
+     * 서브 아이콘 이미지 (메인 아이콘 뒤에 표시)
+     */
+    subImage?: MapImageProp;
+    /**
+     * 서브 아이콘의 너비
+     * @default SIZE_AUTO
+     */
+    subImageWidth?: Double;
+    /**
+     * 서브 아이콘의 높이
+     * @default SIZE_AUTO
+     */
+    subImageHeight?: Double;
+    /**
+     * 서브 아이콘의 앵커 포인트 (0~1 사이의 값)
+     * @default { x: 0.5, y: 0.5 }
+     */
+    subAnchor?: Readonly<{ x: Double; y: Double }>;
+    /**
+     * 강조 원의 반경 (픽셀 단위)
+     * @default 0
+     */
+    circleRadius?: Double;
+    /**
+     * 강조 원의 색상
+     */
+    circleColor?: ColorValue;
+    /**
+     * 강조 원 테두리의 너비
+     * @default 0
+     */
+    circleOutlineWidth?: Double;
+    /**
+     * 강조 원 테두리의 색상
+     */
+    circleOutlineColor?: ColorValue;
+  };
 
   /**
    * 지도 객체가 초기화가 완료된 뒤에 호출됩니다.
@@ -669,7 +741,7 @@ export const NaverMapView = forwardRef(
       locale,
       clusters,
       fpsLimit = 0,
-      // locationOverlay,
+      locationOverlay,
       onTapClusterLeaf,
 
       ...rest
@@ -732,38 +804,38 @@ export const NaverMapView = forwardRef(
       };
     }, [clusters, isLeafTapCallbackExist]);
 
-    // const _locationOverlay: NativeLocationOverlayProp | undefined =
-    //   useMemo(() => {
-    //     if (!locationOverlay)
-    //       return Platform.OS === 'ios'
-    //         ? { circleOutlineWidth: Const.NULL_NUMBER }
-    //         : undefined;
-    //     return {
-    //       isVisible: locationOverlay.isVisible,
-    //       position: locationOverlay.position,
-    //       bearing: locationOverlay.bearing,
-    //       image: locationOverlay.image
-    //         ? convertJsImagePropToNativeProp(locationOverlay.image)
-    //         : undefined,
-    //       imageWidth: locationOverlay.imageWidth,
-    //       imageHeight: locationOverlay.imageHeight,
-    //       anchor: locationOverlay.anchor,
-    //       subImage: locationOverlay.subImage
-    //         ? convertJsImagePropToNativeProp(locationOverlay.subImage)
-    //         : undefined,
-    //       subImageWidth: locationOverlay.subImageWidth,
-    //       subImageHeight: locationOverlay.subImageHeight,
-    //       subAnchor: locationOverlay.subAnchor,
-    //       circleRadius: locationOverlay.circleRadius,
-    //       circleColor: locationOverlay.circleColor
-    //         ? (processColor(locationOverlay.circleColor) as number)
-    //         : undefined,
-    //       circleOutlineWidth: locationOverlay.circleOutlineWidth,
-    //       circleOutlineColor: locationOverlay.circleOutlineColor
-    //         ? (processColor(locationOverlay.circleOutlineColor) as number)
-    //         : undefined,
-    //     } satisfies NativeLocationOverlayProp;
-    //   }, [locationOverlay]);
+    const _locationOverlay: NativeLocationOverlayProp | undefined =
+      useMemo(() => {
+        if (!locationOverlay)
+          return Platform.OS === 'ios'
+            ? { circleOutlineWidth: Const.NULL_NUMBER }
+            : undefined;
+        return {
+          isVisible: locationOverlay.isVisible,
+          position: locationOverlay.position,
+          bearing: locationOverlay.bearing,
+          image: locationOverlay.image
+            ? convertJsImagePropToNativeProp(locationOverlay.image)
+            : undefined,
+          imageWidth: locationOverlay.imageWidth,
+          imageHeight: locationOverlay.imageHeight,
+          anchor: locationOverlay.anchor,
+          subImage: locationOverlay.subImage
+            ? convertJsImagePropToNativeProp(locationOverlay.subImage)
+            : undefined,
+          subImageWidth: locationOverlay.subImageWidth,
+          subImageHeight: locationOverlay.subImageHeight,
+          subAnchor: locationOverlay.subAnchor,
+          circleRadius: locationOverlay.circleRadius,
+          circleColor: locationOverlay.circleColor
+            ? (processColor(locationOverlay.circleColor) as number)
+            : undefined,
+          circleOutlineWidth: locationOverlay.circleOutlineWidth,
+          circleOutlineColor: locationOverlay.circleOutlineColor
+            ? (processColor(locationOverlay.circleOutlineColor) as number)
+            : undefined,
+        } satisfies NativeLocationOverlayProp;
+      }, [locationOverlay]);
 
     const onCameraChanged = useStableCallback(
       ({
@@ -1147,7 +1219,7 @@ export const NaverMapView = forwardRef(
         onCustomStyleLoadFailed={
           onCustomStyleLoadFailedProp ? onCustomStyleLoadFailed : undefined
         }
-        // locationOverlay={_locationOverlay}
+        locationOverlay={_locationOverlay}
         onTapClusterLeaf={
           onTapClusterLeaf
             ? ({ nativeEvent: { markerIdentifier } }) =>

@@ -23,6 +23,10 @@
   // Implementation based on RCTTextField, another component with indirect children
   // https://github.com/facebook/react-native/blob/v0.16.0/Libraries/Text/RCTTextField.m#L20
   NSMutableArray<UIView*>* _reactSubviews;
+
+  // Image cancellers for location overlay
+  RNCNaverMapImageCanceller _mainImageCanceller;
+  RNCNaverMapImageCanceller _subImageCanceller;
 }
 
 - (RCTBridge*)bridge {
@@ -53,8 +57,20 @@
   return self;
 }
 
+- (void)callImageCancllers {
+  if (_mainImageCanceller) {
+    _mainImageCanceller();
+    _mainImageCanceller = nil;
+  }
+  if (_subImageCanceller) {
+    _subImageCanceller();
+    _subImageCanceller = nil;
+  }
+}
+
 - (void)dealloc {
   [_reactSubviews removeAllObjects];
+  [self callImageCancllers];
 }
 
 - (void)prepareForRecycle {
@@ -62,6 +78,7 @@
   _initialRegionSet = NO;
   _initialCameraSet = NO;
   _isFirstCameraAnimationRun = NO;
+  [self callImageCancllers];
 }
 
 #pragma clang diagnostic push
@@ -219,15 +236,68 @@
   // noop
 }
 
-- (void)setLocationOverlay:(NSDictionary*)locationOverlay {
+- (void)setLocationOverlay:(const RNCNaverMapViewLocationOverlayStruct&)locationOverlay {
   auto o = self.mapView.locationOverlay;
   if (!o)
     return;
 
-  o.hidden = ![locationOverlay[@"isVisible"] boolValue];
-  if (locationOverlay[@"position"]) {
-    o.location = nmap::createLatLngFromDictionary(locationOverlay[@"position"]);
+  // Visibility
+  o.hidden = !locationOverlay.isVisible;
+
+  // Position
+  if (isValidNumber(locationOverlay.position.latitude) &&
+      isValidNumber(locationOverlay.position.longitude)) {
+    o.location = nmap::createLatLng(locationOverlay.position);
   }
+
+  // Bearing/Heading
+  o.heading = locationOverlay.bearing;
+
+  // Main Icon - async load like RNCNaverMapGround
+  if (!locationOverlay.image.symbol.empty() || !locationOverlay.image.rnAssetUri.empty() ||
+      !locationOverlay.image.httpUri.empty() || !locationOverlay.image.assetName.empty()) {
+    if (_mainImageCanceller) {
+      _mainImageCanceller();
+      _mainImageCanceller = nil;
+    }
+
+    _mainImageCanceller =
+        nmap::getImage([self bridge], locationOverlay.image, ^(NMFOverlayImage* image) {
+          dispatch_async(dispatch_get_main_queue(), [self, image]() {
+            self.mapView.locationOverlay.icon = image;
+            self->_mainImageCanceller = nil;
+          });
+        });
+  }
+  o.iconWidth = locationOverlay.imageWidth;
+  o.iconHeight = locationOverlay.imageHeight;
+  o.anchor = nmap::createAnchorCGPoint(locationOverlay.anchor);
+
+  // Sub Icon - async load like RNCNaverMapGround
+  if (!locationOverlay.subImage.symbol.empty() || !locationOverlay.subImage.rnAssetUri.empty() ||
+      !locationOverlay.subImage.httpUri.empty() || !locationOverlay.subImage.assetName.empty()) {
+    if (_subImageCanceller) {
+      _subImageCanceller();
+      _subImageCanceller = nil;
+    }
+
+    _subImageCanceller =
+        nmap::getImage([self bridge], locationOverlay.subImage, ^(NMFOverlayImage* image) {
+          dispatch_async(dispatch_get_main_queue(), [self, image]() {
+            self.mapView.locationOverlay.subIcon = image;
+            self->_subImageCanceller = nil;
+          });
+        });
+  }
+  o.subIconWidth = locationOverlay.subImageWidth;
+  o.subIconHeight = locationOverlay.subImageHeight;
+  o.subAnchor = nmap::createAnchorCGPoint(locationOverlay.subAnchor);
+
+  // Circle
+  o.circleRadius = locationOverlay.circleRadius;
+  o.circleColor = nmap::intToColor(locationOverlay.circleColor);
+  o.circleOutlineWidth = locationOverlay.circleOutlineWidth;
+  o.circleOutlineColor = nmap::intToColor(locationOverlay.circleOutlineColor);
 }
 
 // MARK: - EVENT

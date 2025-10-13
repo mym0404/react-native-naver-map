@@ -106,6 +106,8 @@ export default function App() {
   const [indoorLevelPicker, setIndoorLevelPicker] = useState(true);
   const [myLocation, setMyLocation] = useState(true);
   const [customStyle, setCustomStyle] = useState(false);
+  const [showLocationOverlay, setShowLocationOverlay] = useState(false);
+  const [locationOverlayBearing, setLocationOverlayBearing] = useState(0);
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -408,13 +410,28 @@ export default function App() {
           }}
           onTapMap={(args) => console.log(`Map Tapped: ${formatJson(args)}`)}
           clusters={clusters}
-          // locationOverlay={{
-          //   isVisible: true,
-          //   position: Cameras.Jeju,
-          //   circleRadius: 100,
-          //   circleOutlineWidth: 10,
-          //   circleOutlineColor: 'blue',
-          // }}
+          locationOverlay={
+            showLocationOverlay
+              ? {
+                  isVisible: true,
+                  position: {
+                    latitude: Cameras.Jeju.latitude + 0.02,
+                    longitude: Cameras.Jeju.longitude + 0.02,
+                  },
+                  bearing: locationOverlayBearing,
+                  image: require('./logo180.png'),
+                  anchor: { x: 0.5, y: 0.5 },
+                  subImage: { symbol: 'green' },
+                  subImageWidth: 72,
+                  subImageHeight: 72,
+                  subAnchor: { x: 1, y: 0.5 },
+                  circleRadius: 100,
+                  circleColor: '#4285F433',
+                  circleOutlineWidth: 4,
+                  circleOutlineColor: '#4285F4AA',
+                }
+              : { isVisible: false }
+          }
           onTapClusterLeaf={({ markerIdentifier }) => {
             console.log('onTapClusterLeaf', markerIdentifier);
           }}
@@ -604,6 +621,30 @@ export default function App() {
           onChange={setCustomStyle}
           text={'Custom Style'}
         />
+        <Toggle
+          value={showLocationOverlay}
+          onChange={setShowLocationOverlay}
+          text={'Location Overlay'}
+        />
+        {showLocationOverlay && (
+          <>
+            <Btn
+              title={'Rotate +45°'}
+              onPress={() =>
+                setLocationOverlayBearing((prev) => (prev + 45) % 360)
+              }
+            />
+            <Btn
+              title={'Rotate -45°'}
+              onPress={() =>
+                setLocationOverlayBearing((prev) => (prev - 45 + 360) % 360)
+              }
+            />
+            <Text style={{ color: 'white', fontSize: 12 }}>
+              Bearing: {locationOverlayBearing}°
+            </Text>
+          </>
+        )}
       </View>
     </View>
   );

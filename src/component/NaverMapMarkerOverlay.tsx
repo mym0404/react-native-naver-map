@@ -16,7 +16,7 @@ import {
 import type { Align } from '../types/Align';
 import type { BaseOverlayProps } from '../types/BaseOverlayProps';
 import type { Coord } from '../types/Coord';
-import type { MarkerImageProp } from '../types/MarkerImageProp';
+import type { MapImageProp } from '../types/MapImageProp.ts';
 import type { Point } from '../types/Point';
 
 export interface CaptionType {
@@ -296,7 +296,7 @@ export interface NaverMapMarkerOverlayProps
    *
    * @default {symbol: 'green'}
    */
-  image?: MarkerImageProp;
+  image?: MapImageProp;
   /**
    * 마커의 캡션입니다.
    *
