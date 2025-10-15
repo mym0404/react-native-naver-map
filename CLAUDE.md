@@ -19,6 +19,65 @@ This is a React Native library that provides Naver Map components with native im
 - `example/` - Example React Native app for testing
 - `expo-config-plugin/` - Expo configuration plugin
 
+## Essential Development Commands
+
+Key npm scripts for library development workflow.
+
+**Type Checking & Linting:**
+```bash
+pnpm run t              # Run all checks via Lefthook
+pnpm format             # Format code using Lefthook formatters
+```
+
+**Development Server:**
+```bash
+pnpm dev                # Start Metro bundler for example app
+pnpm ios                # Run example app on iOS simulator
+pnpm android            # Run example app on Android emulator
+pnpm studio             # Open Android Studio for example project
+pnpm xcode              # Open Xcode workspace for example project
+```
+
+**Code Generation:**
+```bash
+pnpm codegen            # Generate codegen for both platforms
+pnpm codegen:ios        # Generate iOS codegen only
+pnpm codegen:android    # Generate Android codegen only
+```
+
+**Native Dependencies:**
+```bash
+pnpm pod                # Install iOS dependencies (bundle + pod install)
+pnpm pod:update         # Update iOS dependencies (bundle + pod update)
+```
+
+**Build & Release:**
+```bash
+pnpm build              # Full build: Expo plugin + docs + library
+pnpm prepack            # Runs before npm pack (same as build)
+pnpm build:expo-config-plugin  # Build Expo config plugin only
+pnpm build:docs         # Build documentation site
+pnpm release            # Execute release script
+```
+
+**CI/CD:**
+```bash
+pnpm ci:ios             # Build iOS for CI (optimized xcodebuild)
+pnpm ci:android         # Build Android for CI (gradlew assembleDebug)
+pnpm turbo:ios          # Cached iOS CI build (uses .turbo/ios)
+pnpm turbo:android      # Cached Android CI build (uses .turbo/android)
+```
+
+**Documentation:**
+```bash
+pnpm docs:dev           # Start docs development server
+```
+
+**Rules:**
+- Use `pnpm run t` to run all checks (Lefthook manages checks)
+- Run `pnpm codegen` after modifying spec files
+- Use `pnpm pod` after changing iOS native dependencies
+
 ## Native SDK Dependencies
 - **iOS**: NMapsMap (Naver Maps iOS SDK)
   - [iOS SDK Guide](https://navermaps.github.io/ios-map-sdk/guide-ko/)
@@ -174,79 +233,494 @@ To test the library, you need to configure API keys:
 - Cache helps avoid repeated builds when no source changes occur
 - Useful for CI/CD pipelines and local development optimization
 
-# Self Reference Context Management System (cc-self-refer cli and context storage project sturcture)
+# Coding Patterns and Guidelines
 
-This project uses `cc-self-refer` for intelligent self-reference capabilities.
-Claude Code agents should use these CLI commands to access and manage project context automatically:
+[GUIDE LIST]
 
-## Pattern List Table
+### Fabric Native Component Definition (TypeScript)
 
-[PATTERN LIST]
+Defines React Native Fabric components using `codegenNativeComponent` with type-safe props interface.
 
-| ID | Name | Language | Keywords | Explanation |
-|----|------|----------|----------|-------------|
-| 001 | Fabric Native Component Definition | typescript | fabric, component, props, events, codegen | Defines React Native Fabric component using codegenNativeComponent with TypeScript props interface |
-| 002 | React Native Codegen Commands | typescript | commands, imperative, async, native-methods, codegen | Defines imperative native methods using codegenNativeCommands for async/sync operations |
-| 003 | TurboModule Specification | typescript | turbo-module, native-module, spec, type-safety | Defines TurboModule interface for native module access with type safety |
-| 004 | iOS Fabric Component Implementation | objc | ios-fabric, component, props-handling, view-lifecycle | iOS Fabric component implementation extending RCTViewComponentView with props handling |
-| 005 | iOS Command Handling | objc | ios-commands, imperative, command-dispatch, native-calls | iOS command handling implementation for processing imperative native commands |
-| 006 | iOS Event Emission | objc | ios-events, event-emission, callbacks, native-to-js | iOS event emission using generated event emitter for sending events to JavaScript |
-| 007 | iOS TurboModule Implementation | objc | ios-turbo-module, bridge-compatibility, new-arch, module-implementation | iOS TurboModule implementation with conditional Bridge/TurboModule support |
-| 008 | Android ViewManager with Codegen | kotlin | android-viewmanager, codegen-delegate, props-handling, view-lifecycle | Android ViewManager implementation using codegen delegate pattern |
-| 009 | Android Command Handling | kotlin | android-commands, receiveCommand, imperative, command-dispatch | Android command handling using receiveCommand method with command ID matching |
-| 010 | Android Event Emission | kotlin | android-events, event-emission, RCTEventEmitter, native-to-js | Android event emission using ReactContext and RCTEventEmitter |
-| 011 | Android Package Registration | kotlin | android-package, ReactPackage, module-registration, native-modules | Android ReactPackage registration for native modules and ViewManagers |
-| 012 | JSDoc Documentation | typescript | jsdoc, documentation, api-docs, comments | JSDoc documentation patterns for TypeScript components and methods |
-| 013 | Native Color Parsing and Validation Pattern with TypeScript | typescript | color, processColor, ColorValue, validation, props | TypeScript color prop handling with processColor and native color utilities |
-| 014 | Android Native Utilities | kotlin | android-utils, event-emission, prop-validation, coordinate-conversion | Android native utility functions for event emission, prop validation, and conversions |
-| 015 | iOS Native Utilities | objc | ios-utils, color-conversion, validation, object-creation | iOS native utility functions for color conversion, validation, and object creation |
-| 016 | iOS Overlay Integration Pattern | objc | ios-overlay, integration, mapview-subview, native-overlays | iOS overlay integration pattern for Naver Maps SDK |
-| 018 | Fumadocs Usage | mdx | fumadocs, mdx, documentation, components, ui-patterns | Concise usage patterns for Fumadocs components and features in MDX |
-| 019 | Fumadocs I18n File Structure | markdown | fumadocs-i18n, file-structure, translation, meta-files, localization | File structure pattern for Fumadocs i18n with default and Korean translation files using dot-style naming. |
+**Rules:**
+- Import types from `react-native/Libraries/Types/CodegenTypes`
+- Use codegen types: `Double`, `Int32`, `WithDefault<T, Default>`, `DirectEventHandler<T>`, `Readonly<T>`
+- Extend `ViewProps` interface for component props
+- Redeclare imported types locally due to codegen parser limitations
+- Export component using `codegenNativeComponent<Props>()`
 
-[PATTERN LIST END]
+**Good:**
+```typescript
+import { codegenNativeComponent, type ViewProps } from 'react-native';
+import type {
+  DirectEventHandler,
+  Double,
+  Int32,
+  WithDefault,
+} from 'react-native/Libraries/Types/CodegenTypes';
 
-## Pattern Commands
+interface Props extends ViewProps {
+  coord: Readonly<{
+    latitude: Double;
+    longitude: Double;
+  }>;
+  onTapOverlay?: DirectEventHandler<Readonly<{}>>;
+  width?: Double;
+  height?: Double;
+  alpha?: Double;
+  isHidden?: WithDefault<boolean, false>;
+  tintColor?: Int32;
+}
 
-### Pattern Matching Intelligence
-**CRITICAL**: The CLAUDE.md context includes a [PATTERN LIST] table already with columns: ID, Name, Language, Keywords, Explanation. You should know what I mean.
+export default codegenNativeComponent<Props>('RNCNaverMapMarker');
+```
 
-**When processing ANY user request**, check if the request matches patterns in the [PATTERN LIST] by analyzing:
-- **Name**: Direct pattern name matches
-- **Keywords**: Related terms and concepts
-- **Explanation**: Functional descriptions and use cases
-- **Language**: Technology stack alignment
+**When to apply:**
+- Creating new Fabric native components
+- Defining component prop interfaces for native views
+- Adding event handlers to native components
 
-### Pattern Usage Workflows
+### React Native Codegen Commands (TypeScript)
 
-**Explicit Pattern Requests:**
-- "use pattern" / "apply pattern X" / "use existing patterns"
-- "find pattern for X" / "search patterns"
-- "use pattern #5" / "apply pattern 005"
+Defines imperative native methods using `codegenNativeCommands` for async/sync operations.
 
-**Implicit Pattern Matching:**
-When user requests involve coding tasks that align with existing pattern Names, Keywords, or Explanations:
+**Rules:**
+- Define `NativeCommands` interface with method signatures
+- Use `React.ElementRef<ComponentType>` as first parameter
+- Support both void and Promise return types
+- Export commands with `codegenNativeCommands<NativeCommands>()` and `supportedCommands` array
 
-1. **Identify Match**: Compare user's request against the [PATTERN LIST]
-2. **Retrieve Pattern**: Use `npx cc-self-refer pattern view <id>` for matching patterns
-3. **Apply Pattern**: Implement user's request using the pattern's principles and structure
-4. **Inform User**: Use this format to indicate pattern usage:
-   ```
-   Pattern Refering... ♦️
-   Used Patterns: #002 api-response, #003 error-handling
-   ```
+**Good:**
+```typescript
+interface NativeCommands {
+  screenToCoordinate: (
+    ref: React.ElementRef<ComponentType>,
+    x: Double,
+    y: Double
+  ) => Promise<Readonly<{
+    isValid: boolean;
+    latitude: Double;
+    longitude: Double;
+  }>>;
+  animateCameraTo: (
+    ref: React.ElementRef<ComponentType>,
+    latitude: Double,
+    longitude: Double,
+    duration?: Int32
+  ) => void;
+}
 
-**Example Matching Logic:**
-- "implement todo api" → Extract keywords: "api", "todo" → Match patterns containing these terms
-- "create table component" → Extract keywords: "table", "component" → Match patterns with "table", "markdown", "component"
-- "setup testing" → Extract keywords: "test", "setup" → Match patterns with "test", "example"
-- "build React form" → Extract keywords: "react", "form" → Match patterns with "react", "form", "validation"
-- "add authentication" → Extract keywords: "auth", "authentication" → Match patterns with "auth", "login", "security"
-- "database connection" → Extract keywords: "database", "connection" → Match patterns with "db", "connection", "orm"
-- "error handling" → Extract keywords: "error", "handling" → Match patterns with "error", "exception", "validation"
+export const Commands: NativeCommands = codegenNativeCommands<NativeCommands>({
+  supportedCommands: ['screenToCoordinate', 'animateCameraTo'],
+});
+```
 
-**IMPORTANT Agent Behavior:**
-1. **Scan** [PATTERN LIST] for relevant matches during any coding request
-2. **Retrieve** matching patterns using `npx cc-self-refer pattern view <id>`
-3. **Apply** pattern principles to implement user's actual requirements
+**When to apply:**
+- Adding imperative methods to native components
+- Implementing async operations that return values
+- Creating command interfaces for native modules
+
+### iOS Fabric Component Implementation (Objective-C++)
+
+iOS Fabric component implementation extending `RCTViewComponentView` with props handling.
+
+**Rules:**
+- Extend `RCTViewComponentView` for Fabric components
+- Implement `initWithFrame:` to initialize with default props
+- Implement `updateProps:oldProps:` to handle prop changes
+- Compare old and new props before updating native properties
+- Use `std::static_pointer_cast` to cast props to component-specific type
+- Access event emitter through `_eventEmitter` cast to component emitter type
+
+**Good:**
+```objc
+@implementation RNCNaverMapPath
+
+- (instancetype)initWithFrame:(CGRect)frame {
+  if (self = [super initWithFrame:frame]) {
+    static const auto defaultProps = std::make_shared<const RNCNaverMapPathProps>();
+    _props = defaultProps;
+    _inner = [NMFPath new];
+  }
+  return self;
+}
+
+- (std::shared_ptr<RNCNaverMapPathEventEmitter const>)emitter {
+  if (!_eventEmitter) return nullptr;
+  return std::static_pointer_cast<RNCNaverMapPathEventEmitter const>(_eventEmitter);
+}
+
+- (void)updateProps:(Props::Shared const&)props oldProps:(Props::Shared const&)oldProps {
+  const auto& prev = *std::static_pointer_cast<RNCNaverMapPathProps const>(_props);
+  const auto& next = *std::static_pointer_cast<RNCNaverMapPathProps const>(props);
+
+  if (prev.width != next.width)
+    _inner.width = next.width;
+  if (prev.color != next.color)
+    _inner.color = nmap::intToColor(next.color);
+
+  [super updateProps:props oldProps:oldProps];
+}
+
++ (ComponentDescriptorProvider)componentDescriptorProvider {
+  return concreteComponentDescriptorProvider<RNCNaverMapPathComponentDescriptor>();
+}
+
+@end
+```
+
+**When to apply:**
+- Implementing Fabric native components on iOS
+- Handling prop updates efficiently
+- Setting up native view lifecycle methods
+
+### iOS Command Handling (Objective-C++)
+
+iOS command handling implementation for processing imperative native commands.
+
+**Rules:**
+- Implement command methods as instance methods on component view
+- Use generated command handler in `handleCommand:args:` method
+- Command handler function format: `RCT{ComponentName}HandleCommand`
+- Method parameters match TypeScript command definition
+
+**Good:**
+```objc
+@implementation RNCNaverMapView
+
+- (void)animateCameraTo:(double)latitude
+              longitude:(double)longitude
+               duration:(NSInteger)duration
+                 easing:(NSInteger)easing {
+  NMFCameraUpdate* update =
+      [NMFCameraUpdate cameraUpdateWithScrollTo:NMGLatLngMake(latitude, longitude)];
+  update.animation = getEasingAnimation(easing);
+  update.animationDuration = (NSTimeInterval)((double)duration) / 1000;
+  [self.map moveCamera:update];
+}
+
+- (void)handleCommand:(const NSString*)commandName args:(const NSArray*)args {
+  RCTRNCNaverMapViewHandleCommand(self, commandName, args);
+}
+
+@end
+```
+
+**When to apply:**
+- Implementing imperative command methods on iOS
+- Processing commands triggered from JavaScript
+
+### iOS Event Emission (Objective-C++)
+
+iOS event emission using generated event emitter for sending events to JavaScript.
+
+**Rules:**
+- Access emitter through component's `_eventEmitter` member
+- Cast to component-specific emitter type using `std::static_pointer_cast`
+- Call event methods with struct containing event data
+- Check emitter validity before emitting
+
+**Good:**
+```objc
+- (std::shared_ptr<RNCNaverMapPathEventEmitter const>)emitter {
+  if (!_eventEmitter) return nullptr;
+  return std::static_pointer_cast<RNCNaverMapPathEventEmitter const>(_eventEmitter);
+}
+
+- (instancetype)init {
+  if ((self = [super init])) {
+    _inner = [NMFPath new];
+    _inner.touchHandler = [self](NMFOverlay* overlay) -> BOOL {
+      if (self.emitter) {
+        self.emitter->onTapOverlay({});
+        return YES;
+      }
+      return NO;
+    };
+  }
+  return self;
+}
+```
+
+**When to apply:**
+- Sending events from native iOS code to JavaScript
+- Implementing touch handlers and callbacks
+- Notifying React about native state changes
+
+### Android ViewManager with Codegen (Kotlin)
+
+Android ViewManager implementation using codegen delegate pattern.
+
+**Rules:**
+- Extend generated spec class (e.g., `RNCNaverMapMarkerManagerSpec`)
+- Use `ViewGroupManager` for view groups or `SimpleViewManager` for simple views
+- Implement delegate pattern with generated manager delegate
+- Override `getDelegate()` to return the delegate
+
+**Good:**
+```kotlin
+abstract class RNCNaverMapMarkerManagerSpec<T : ViewGroup> :
+  ViewGroupManager<T>(),
+  RNCNaverMapMarkerManagerInterface<T> {
+
+  private val mDelegate: ViewManagerDelegate<T> =
+      RNCNaverMapMarkerManagerDelegate(this)
+
+  override fun getDelegate(): ViewManagerDelegate<T>? = mDelegate
+}
+```
+
+**When to apply:**
+- Creating ViewManagers for Fabric components on Android
+- Implementing prop handling with codegen delegate
+
+### Android Command Handling (Kotlin)
+
+Android command handling using `receiveCommand` method with command ID matching.
+
+**Rules:**
+- Override `receiveCommand(view, commandId, args)` method
+- Use string command IDs to match commands
+- Extract arguments from `ReadableArray` args parameter
+- Implement command logic on the view instance
+
+**Good:**
+```kotlin
+override fun receiveCommand(
+  view: RNCNaverMapView,
+  commandId: String,
+  args: ReadableArray?
+) {
+  when (commandId) {
+    "animateCameraTo" -> {
+      val latitude = args?.getDouble(0) ?: return
+      val longitude = args?.getDouble(1) ?: return
+      val duration = args?.getInt(2) ?: 300
+      view.animateCameraTo(latitude, longitude, duration)
+    }
+    "cancelAnimation" -> {
+      view.cancelAnimation()
+    }
+  }
+}
+```
+
+**When to apply:**
+- Implementing imperative commands on Android ViewManagers
+- Processing command requests from JavaScript
+
+### Android Event Emission (Kotlin)
+
+Android event emission using ReactContext and RCTEventEmitter.
+
+**Rules:**
+- Get `RCTEventEmitter` from ReactContext
+- Create event data using `Arguments.createMap()`
+- Emit events with view ID and event name
+- Event names match TypeScript `DirectEventHandler` prop names
+
+**Good:**
+```kotlin
+private fun emitTapEvent(view: View) {
+  val reactContext = view.context as ReactContext
+  val event = Arguments.createMap().apply {
+    putDouble("latitude", marker.position.latitude)
+    putDouble("longitude", marker.position.longitude)
+  }
+
+  reactContext
+    .getJSModule(RCTEventEmitter::class.java)
+    .receiveEvent(view.id, "onTapOverlay", event)
+}
+```
+
+**When to apply:**
+- Sending events from Android native code to JavaScript
+- Implementing user interaction callbacks
+- Notifying React about native state changes
+
+### Android Package Registration (Kotlin)
+
+Android ReactPackage registration for native modules and ViewManagers.
+
+**Rules:**
+- Implement `ReactPackage` interface
+- Override `createViewManagers()` to register ViewManagers
+- Override `createNativeModules()` to register native modules
+- Return list of manager instances
+
+**Good:**
+```kotlin
+class RNCNaverMapPackage : ReactPackage {
+  override fun createViewManagers(
+    reactContext: ReactApplicationContext
+  ): List<ViewManager<*, *>> {
+    return listOf(
+      RNCNaverMapViewManager(),
+      RNCNaverMapMarkerManager(),
+      RNCNaverMapCircleManager()
+    )
+  }
+
+  override fun createNativeModules(
+    reactContext: ReactApplicationContext
+  ): List<NativeModule> {
+    return emptyList()
+  }
+}
+```
+
+**When to apply:**
+- Registering native components and modules in Android
+- Setting up ReactPackage for the library
+
+### JSDoc Documentation (TypeScript)
+
+JSDoc documentation patterns for TypeScript components and methods.
+
+**Rules:**
+- Document all public APIs with JSDoc comments
+- Use `@param {Type} name - description` for parameters
+- Use `@returns {Type} description` for return values
+- Use `@example` for code examples
+- Use `@default value` for default values
+- Use `@platform ios|android` for platform-specific APIs
+- Use `@internal` for internal/private APIs
+
+**Good:**
+```typescript
+/**
+ * Animates the camera to a specific coordinate.
+ *
+ * @param latitude - The target latitude
+ * @param longitude - The target longitude
+ * @param duration - Animation duration in milliseconds
+ * @default 300
+ * @example
+ * ```tsx
+ * mapRef.current?.animateCameraTo(37.5665, 126.9780, 500);
+ * ```
+ */
+animateCameraTo: (
+  latitude: number,
+  longitude: number,
+  duration?: number
+) => void;
+```
+
+**When to apply:**
+- Documenting public component APIs
+- Writing method and function documentation
+- Providing usage examples for developers
+
+### Native Color Parsing (TypeScript)
+
+TypeScript color prop handling with `processColor` and native color utilities.
+
+**Rules:**
+- Use `processColor()` from `react-native` to convert color values
+- Accept `ColorValue` type for color props
+- Convert to `Int32` for native consumption
+- Handle null/undefined color values
+
+**Good:**
+```typescript
+import { processColor, type ColorValue } from 'react-native';
+import type { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
+
+interface Props extends ViewProps {
+  tintColor?: Int32;
+  outlineColor?: Int32;
+}
+
+// Usage in component
+const nativeProps = {
+  tintColor: processColor(props.tintColor) as Int32,
+  outlineColor: processColor(props.outlineColor) as Int32,
+};
+```
+
+**When to apply:**
+- Handling color props in native components
+- Converting React Native color values to native integers
+- Passing colors to native implementations
+
+### Marker Image Handling (iOS/Android)
+
+How to load marker images from different sources in native platforms.
+
+**Rules:**
+- iOS: Use `nmap::getImage()` helper with callback pattern
+- Android: Use `getOverlayImage()` with DraweeHolder for Fresco
+- Support 5 types: symbol, rnAssetUri, httpUri, assetName, custom view
+- Use `reuseIdentifier` for caching
+- Cancel pending requests on cleanup
+
+**iOS Usage (Objective-C++):**
+```objc
+// Store canceller
+RNCNaverMapImageCanceller _imageCanceller;
+
+// Load image
+_imageCanceller = nmap::getImage([self bridge], imageStruct, ^(NMFOverlayImage* image) {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    self.inner.iconImage = image;
+    self.inner.alpha = 1;
+  });
+});
+
+// Cancel on cleanup
+if (_imageCanceller) {
+  _imageCanceller();
+  _imageCanceller = nil;
+}
+
+// Custom view to image
+- (UIImage*)captureView:(UIView*)view {
+  UIGraphicsImageRenderer* renderer = [[UIGraphicsImageRenderer alloc] initWithSize:view.bounds.size];
+  return [renderer imageWithActions:^(UIGraphicsImageRendererContext* ctx) {
+    [view.layer renderInContext:ctx.CGContext];
+  }];
+}
+```
+
+**Android Usage (Kotlin):**
+```kotlin
+// Store DraweeHolder
+private val imageHolder = DraweeHolder.create(...)
+
+// Load image
+getOverlayImage(imageHolder, context, imageMap) { overlayImage ->
+  overlay.icon = overlayImage ?: OverlayImage.fromBitmap(createBitmap(1, 1))
+  overlay.alpha = 1f
+}
+
+// Custom view to bitmap
+private fun updateCustomView() {
+  val bitmap = createBitmap(overlay.width, overlay.height, Bitmap.Config.ARGB_4444)
+  bitmap.eraseColor(Color.TRANSPARENT)
+  val canvas = Canvas(bitmap)
+  draw(canvas)
+  overlay.icon = OverlayImage.fromBitmap(bitmap)
+}
+
+// Cleanup
+override fun onDropViewInstance() {
+  imageHolder.onDetach()
+  customViewBitmap?.recycle()
+}
+```
+
+**Image Types:**
+- `symbol`: Built-in markers (green, blue, red, yellow, black, etc.)
+- `rnAssetUri`: React Native require() assets
+- `httpUri`: Network images (HTTP/HTTPS)
+- `assetName`: Native bundle/drawable resources
+- Custom view: React component rendered to image
+
+**When to apply:**
+- Implementing overlay components with image support
+- Loading marker icons from different sources
+- Converting custom React views to native images
+
+[GUIDE LIST END]
 

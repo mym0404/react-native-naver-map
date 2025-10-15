@@ -106,6 +106,31 @@ Use kotlin standard formatting.
 
 Use `.clang-format` of project root.
 
+### Documentation
+
+Documentation files are located in `docs/content/docs/` and use MDX format following [Fumadocs conventions](https://fumadocs.dev).
+
+**File Structure:**
+- Write MDX files in `docs/content/docs/`
+- For translations, use `.ko.mdx` suffix (e.g., `index.mdx`, `index.ko.mdx`)
+- Use `meta.json` to control folder structure and page ordering
+
+**Writing Guidelines:**
+- Include frontmatter: `title`, `description`, `icon`
+- Start content with h2 (`##`) headings, not h1 (`#`)
+- Build with `pnpm run build:docs`
+
+**meta.json:**
+
+`meta.json` controls the sidebar structure and page ordering in each folder. [Learn more](https://fumadocs.dev/docs/ui/page-conventions#metajson)
+
+```json
+{
+  "title": "Folder Name",
+  "pages": ["index", "setup", "---", "advanced"]
+}
+```
+
 ### Commit message convention
 
 We follow the [conventional commits specification](https://www.conventionalcommits.org/en) for our commit messages:
