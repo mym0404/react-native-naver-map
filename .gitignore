@@ -87,3 +87,7 @@ example/.watchman-*
 
 
 
+
+# Git worktrees (Crystal)
+/worktrees/
+/worktree-*/
