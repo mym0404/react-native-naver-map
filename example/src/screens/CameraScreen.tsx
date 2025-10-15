@@ -33,8 +33,8 @@ export const CameraScreen = ({ onBack }: { onBack: () => void }) => {
     <>
       <Header title={'Camera Controls'} onBack={onBack} />
       <ScreenLayout
+        mapRef={ref}
         mapProps={{
-          ref,
           camera,
         }}
         controls={
