@@ -657,6 +657,8 @@ export interface NaverMapViewRef {
     screenX: number;
     screenY: number;
   }>;
+
+  showInfoWindow: (infoWindowId: string, position: Coord) => void;
 }
 
 function clamp(v: number, min: number, max: number): number {

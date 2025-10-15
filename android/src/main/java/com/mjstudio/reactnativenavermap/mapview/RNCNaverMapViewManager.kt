@@ -841,6 +841,35 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
       }
   }
 
+  override fun showInfoWindow(
+    view: RNCNaverMapViewWrapper?,
+    infoWindowId: String?,
+    latitude: Double,
+    longitude: Double,
+  ) = view.withMap { map ->
+    if (infoWindowId == null) return@withMap
+
+    val module = reactAppContext.getNativeModule(com.mjstudio.reactnativenavermap.module.RNCNaverMapUtilModule::class.java)
+    val infoWindow = module?.getInfoWindow(infoWindowId) ?: return@withMap
+
+    infoWindow.position = LatLng(latitude, longitude)
+    infoWindow.open(map)
+    module.markAsOpen(infoWindowId)
+  }
+
+  override fun hideInfoWindow(
+    view: RNCNaverMapViewWrapper?,
+    infoWindowId: String?,
+  ) = view.withMap { map ->
+    if (infoWindowId == null) return@withMap
+
+    val module = reactAppContext.getNativeModule(com.mjstudio.reactnativenavermap.module.RNCNaverMapUtilModule::class.java)
+    val infoWindow = module?.getInfoWindow(infoWindowId) ?: return@withMap
+
+    infoWindow.close()
+    module.markAsClosed(infoWindowId)
+  }
+
   companion object {
     const val NAME = "RNCNaverMapView"
   }

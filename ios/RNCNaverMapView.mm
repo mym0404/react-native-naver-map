@@ -1,4 +1,5 @@
 #import "RNCNaverMapView.h"
+#import "Module/RNCNaverMapUtil.h"
 
 using namespace facebook::react;
 
@@ -416,6 +417,29 @@ using namespace facebook::react;
     self.map.positionMode = NMFMyPositionCompass;
   } else {
     self.map.positionMode = NMFMyPositionDisabled;
+  }
+}
+
+- (void)showInfoWindow:(NSString*)infoWindowId
+              latitude:(double)latitude
+             longitude:(double)longitude {
+  RNCNaverMapUtil* module = [[self bridge] moduleForClass:[RNCNaverMapUtil class]];
+  NMFInfoWindow* infoWindow = [module getInfoWindow:infoWindowId];
+
+  if (infoWindow) {
+    infoWindow.position = NMGLatLngMake(latitude, longitude);
+    [infoWindow openWithMapView:self.map];
+    [module markAsOpen:infoWindowId];
+  }
+}
+
+- (void)hideInfoWindow:(NSString*)infoWindowId {
+  RNCNaverMapUtil* module = [[self bridge] moduleForClass:[RNCNaverMapUtil class]];
+  NMFInfoWindow* infoWindow = [module getInfoWindow:infoWindowId];
+
+  if (infoWindow) {
+    [infoWindow close];
+    [module markAsClosed:infoWindowId];
   }
 }
 

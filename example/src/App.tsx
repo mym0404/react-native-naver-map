@@ -20,6 +20,7 @@ import { CitiesScreen } from './screens/CitiesScreen';
 import { ClusteringScreen } from './screens/ClusteringScreen';
 import { CommonScreen } from './screens/CommonScreen';
 import { GroundScreen } from './screens/GroundScreen';
+import { InfoWindowScreen } from './screens/InfoWindowScreen';
 import { LocationOverlayScreen } from './screens/LocationOverlayScreen';
 import { MarkerScreen } from './screens/MarkerScreen';
 import { MultiPathScreen } from './screens/MultiPathScreen';
@@ -31,6 +32,7 @@ const SCREENS = [
   { id: 'common', title: 'Common Settings' },
   { id: 'camera', title: 'Camera Controls' },
   { id: 'marker', title: 'Marker Overlay' },
+  { id: 'infowindow', title: 'InfoWindow Example' },
   { id: 'circle', title: 'Circle Overlay' },
   { id: 'ground', title: 'Ground Overlay' },
   { id: 'path', title: 'Path Overlay' },
@@ -131,6 +133,10 @@ export default function App() {
 
   if (currentScreen === 'marker') {
     return <MarkerScreen onBack={handleBack} />;
+  }
+
+  if (currentScreen === 'infowindow') {
+    return <InfoWindowScreen onBack={handleBack} />;
   }
 
   if (currentScreen === 'circle') {

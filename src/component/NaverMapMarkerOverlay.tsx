@@ -1,5 +1,12 @@
 import hash from 'object-hash';
-import React, { Children, type PropsWithChildren } from 'react';
+import React, {
+  Children,
+  type ForwardedRef,
+  forwardRef,
+  type PropsWithChildren,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import { type ColorValue, processColor } from 'react-native';
 import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 import {
@@ -9,6 +16,7 @@ import {
 import { nAssert } from '../internal/util/Assert';
 import { Const } from '../internal/util/Const';
 import {
+  Commands,
   type NativeCaptionProp,
   default as NativeNaverMapMarker,
   type NativeSubCaptionProp,
@@ -311,99 +319,126 @@ export interface NaverMapMarkerOverlayProps
   subCaption?: SubCaptionType;
 }
 
-export const NaverMapMarkerOverlay = ({
-  latitude,
-  longitude,
-  zIndex = 0,
-  globalZIndex = Const.NULL_NUMBER,
-  isHidden,
-  minZoom = Const.MIN_ZOOM,
-  maxZoom = Const.MAX_ZOOM,
-  isMinZoomInclusive,
-  isMaxZoomInclusive,
+export interface NaverMapMarkerOverlayRef {
+  showInfoWindow: (infoWindowId: string) => void;
+}
 
-  width = Const.NULL_NUMBER,
-  height = Const.NULL_NUMBER,
+export const NaverMapMarkerOverlay = forwardRef<
+  NaverMapMarkerOverlayRef,
+  NaverMapMarkerOverlayProps
+>(
+  (
+    {
+      latitude,
+      longitude,
+      zIndex = 0,
+      globalZIndex = Const.NULL_NUMBER,
+      isHidden,
+      minZoom = Const.MIN_ZOOM,
+      maxZoom = Const.MAX_ZOOM,
+      isMinZoomInclusive,
+      isMaxZoomInclusive,
 
-  alpha = 1,
-  anchor = { x: 0.5, y: 1 },
-  angle = 0,
-  isFlatEnabled,
-  isForceShowIcon,
-  isHideCollidedCaptions,
-  isHideCollidedMarkers,
-  isHideCollidedSymbols,
-  isIconPerspectiveEnabled,
+      width = Const.NULL_NUMBER,
+      height = Const.NULL_NUMBER,
 
-  tintColor,
-  image = { symbol: 'green' },
-  onTap,
-  caption,
-  subCaption,
-  children,
-}: NaverMapMarkerOverlayProps) => {
-  nAssert(
-    Children.count(children) <= 1,
-    `[NaverMapMarkerOverlay] children count should be equal or less than 1, is ${Children.count(children)}`
-  );
+      alpha = 1,
+      anchor = { x: 0.5, y: 1 },
+      angle = 0,
+      isFlatEnabled,
+      isForceShowIcon,
+      isHideCollidedCaptions,
+      isHideCollidedMarkers,
+      isHideCollidedSymbols,
+      isIconPerspectiveEnabled,
 
-  const _caption: NativeCaptionProp = (() => {
-    const inner = {
-      ...defaultCaptionProps,
-      ...caption,
-      align: getAlignIntValue(caption?.align),
-      color: processColor(
-        caption?.color ?? defaultCaptionProps.color
-      ) as number,
-      haloColor: processColor(
-        caption?.haloColor ?? defaultCaptionProps.haloColor
-      ) as number,
-    } satisfies Omit<NativeCaptionProp, 'key'>;
-    return { ...inner, key: hash(inner) };
-  })();
+      tintColor,
+      image = { symbol: 'green' },
+      onTap,
+      caption,
+      subCaption,
+      children,
+    }: NaverMapMarkerOverlayProps,
+    ref: ForwardedRef<NaverMapMarkerOverlayRef>
+  ) => {
+    const innerRef = useRef<any>(null);
 
-  const _subCaption: NativeSubCaptionProp = (() => {
-    const inner = {
-      ...defaultSubCaptionProps,
-      ...subCaption,
-      color: processColor(
-        subCaption?.color ?? defaultSubCaptionProps.color
-      ) as number,
-      haloColor: processColor(
-        subCaption?.haloColor ?? defaultSubCaptionProps.haloColor
-      ) as number,
-    };
+    useImperativeHandle(
+      ref,
+      () => ({
+        showInfoWindow: (infoWindowId: string) => {
+          if (innerRef.current) {
+            Commands.showInfoWindow(innerRef.current, infoWindowId);
+          }
+        },
+      }),
+      []
+    );
 
-    return { ...inner, key: hash(inner) };
-  })();
+    nAssert(
+      Children.count(children) <= 1,
+      `[NaverMapMarkerOverlay] children count should be equal or less than 1, is ${Children.count(children)}`
+    );
 
-  return (
-    <NativeNaverMapMarker
-      coord={{ latitude, longitude }}
-      zIndexValue={zIndex}
-      globalZIndexValue={globalZIndex}
-      isHidden={isHidden}
-      minZoom={minZoom}
-      maxZoom={maxZoom}
-      isMinZoomInclusive={isMinZoomInclusive}
-      isMaxZoomInclusive={isMaxZoomInclusive}
-      width={width}
-      height={height}
-      alpha={alpha}
-      anchor={anchor}
-      angle={angle}
-      isFlatEnabled={isFlatEnabled}
-      isForceShowIcon={isForceShowIcon}
-      isHideCollidedCaptions={isHideCollidedCaptions}
-      isHideCollidedMarkers={isHideCollidedMarkers}
-      isHideCollidedSymbols={isHideCollidedSymbols}
-      isIconPerspectiveEnabled={isIconPerspectiveEnabled}
-      tintColor={processColor(tintColor) as number}
-      image={convertJsImagePropToNativeProp(image)}
-      onTapOverlay={onTap}
-      caption={_caption}
-      subCaption={_subCaption}
-      children={children}
-    />
-  );
-};
+    const _caption: NativeCaptionProp = (() => {
+      const inner = {
+        ...defaultCaptionProps,
+        ...caption,
+        align: getAlignIntValue(caption?.align),
+        color: processColor(
+          caption?.color ?? defaultCaptionProps.color
+        ) as number,
+        haloColor: processColor(
+          caption?.haloColor ?? defaultCaptionProps.haloColor
+        ) as number,
+      } satisfies Omit<NativeCaptionProp, 'key'>;
+      return { ...inner, key: hash(inner) };
+    })();
+
+    const _subCaption: NativeSubCaptionProp = (() => {
+      const inner = {
+        ...defaultSubCaptionProps,
+        ...subCaption,
+        color: processColor(
+          subCaption?.color ?? defaultSubCaptionProps.color
+        ) as number,
+        haloColor: processColor(
+          subCaption?.haloColor ?? defaultSubCaptionProps.haloColor
+        ) as number,
+      };
+
+      return { ...inner, key: hash(inner) };
+    })();
+
+    return (
+      <NativeNaverMapMarker
+        ref={innerRef}
+        coord={{ latitude, longitude }}
+        zIndexValue={zIndex}
+        globalZIndexValue={globalZIndex}
+        isHidden={isHidden}
+        minZoom={minZoom}
+        maxZoom={maxZoom}
+        isMinZoomInclusive={isMinZoomInclusive}
+        isMaxZoomInclusive={isMaxZoomInclusive}
+        width={width}
+        height={height}
+        alpha={alpha}
+        anchor={anchor}
+        angle={angle}
+        isFlatEnabled={isFlatEnabled}
+        isForceShowIcon={isForceShowIcon}
+        isHideCollidedCaptions={isHideCollidedCaptions}
+        isHideCollidedMarkers={isHideCollidedMarkers}
+        isHideCollidedSymbols={isHideCollidedSymbols}
+        isIconPerspectiveEnabled={isIconPerspectiveEnabled}
+        tintColor={processColor(tintColor) as number}
+        image={convertJsImagePropToNativeProp(image)}
+        onTapOverlay={onTap}
+        caption={_caption}
+        subCaption={_subCaption}
+        children={children}
+      />
+    );
+  }
+);
