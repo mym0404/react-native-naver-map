@@ -8,10 +8,15 @@ import android.view.View
 import androidx.core.graphics.createBitmap
 import androidx.core.view.children
 import androidx.core.view.isEmpty
+import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
 import com.mjstudio.reactnativenavermap.util.emitEvent
+import com.mjstudio.reactnativenavermap.util.getAlign
+import com.mjstudio.reactnativenavermap.util.getDoubleOrNull
+import com.mjstudio.reactnativenavermap.util.getIntOrNull
 import com.mjstudio.reactnativenavermap.util.image.RNCNaverMapImageRenderableOverlay
+import com.mjstudio.reactnativenavermap.util.px
 import com.mjstudio.reactnativenavermap.util.view.TrackableView
 import com.mjstudio.reactnativenavermap.util.view.ViewChangesTracker
 import com.naver.maps.map.NaverMap
@@ -28,6 +33,9 @@ class RNCNaverMapMarker(
   private var customViewBitmap: Bitmap? = null
 
   private var isImageSetFromSubview = false
+
+  private var lastCaptionKey = DEFAULT_CAPTION_KEY
+  private var lastSubCaptionKey = DEFAULT_CAPTION_KEY
 
   override val overlay: Marker by lazy {
     Marker().apply {
@@ -128,5 +136,43 @@ class RNCNaverMapMarker(
   override fun setOverlayImage(image: OverlayImage?) {
     overlay.icon =
       image ?: OverlayImage.fromBitmap(createBitmap(1, 1))
+  }
+
+  fun updateCaption(value: ReadableMap?) {
+    value?.also { map ->
+      val key = map.getString("key") ?: DEFAULT_CAPTION_KEY
+      if (key == lastCaptionKey) return
+      lastCaptionKey = key
+
+      overlay.captionText = map.getString("text") ?: ""
+      overlay.captionRequestedWidth = (map.getDoubleOrNull("requestedWidth") ?: 0.0).px
+      overlay.setCaptionAligns(map.getAlign("align"))
+      overlay.captionOffset = (map.getDoubleOrNull("offset") ?: 0.0).px
+      overlay.captionColor = map.getIntOrNull("color") ?: Color.BLACK
+      overlay.captionHaloColor = map.getIntOrNull("haloColor") ?: Color.TRANSPARENT
+      overlay.captionTextSize = map.getDouble("textSize").toFloat()
+      overlay.captionMinZoom = map.getDouble("minZoom")
+      overlay.captionMaxZoom = map.getDouble("maxZoom")
+    }
+  }
+
+  fun updateSubCaption(value: ReadableMap?) {
+    value?.also { map ->
+      val key = map.getString("key") ?: DEFAULT_CAPTION_KEY
+      if (key == lastSubCaptionKey) return
+      lastSubCaptionKey = key
+
+      overlay.subCaptionText = map.getString("text") ?: ""
+      overlay.subCaptionColor = map.getIntOrNull("color") ?: Color.BLACK
+      overlay.subCaptionHaloColor = map.getIntOrNull("haloColor") ?: Color.TRANSPARENT
+      overlay.subCaptionTextSize = map.getDouble("textSize").toFloat()
+      overlay.subCaptionRequestedWidth = map.getDouble("requestedWidth").px
+      overlay.subCaptionMinZoom = map.getDouble("minZoom")
+      overlay.subCaptionMaxZoom = map.getDouble("maxZoom")
+    }
+  }
+
+  companion object {
+    const val DEFAULT_CAPTION_KEY = "DEFAULT"
   }
 }

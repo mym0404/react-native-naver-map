@@ -1,15 +1,11 @@
 package com.mjstudio.reactnativenavermap.overlay.marker
 
-import android.graphics.Color
 import android.view.View
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapMarkerManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
-import com.mjstudio.reactnativenavermap.util.getAlign
-import com.mjstudio.reactnativenavermap.util.getDoubleOrNull
-import com.mjstudio.reactnativenavermap.util.getIntOrNull
 import com.mjstudio.reactnativenavermap.util.getLatLng
 import com.mjstudio.reactnativenavermap.util.getPoint
 import com.mjstudio.reactnativenavermap.util.isValidNumber
@@ -19,17 +15,12 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Marker.SIZE_AUTO
 
 class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>() {
-  private var captionKey = DEFAULT_CAPTION_KEY
-  private var subCaptionKey = DEFAULT_CAPTION_KEY
-
   override fun getName(): String = NAME
 
   override fun createViewInstance(context: ThemedReactContext): RNCNaverMapMarker = RNCNaverMapMarker(context)
 
   override fun onDropViewInstance(view: RNCNaverMapMarker) {
     view.onDropViewInstance()
-    captionKey = DEFAULT_CAPTION_KEY
-    subCaptionKey = DEFAULT_CAPTION_KEY
     super.onDropViewInstance(view)
   }
 
@@ -235,48 +226,19 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
   override fun setCaption(
     view: RNCNaverMapMarker?,
     value: ReadableMap?,
-  ) = view.withOverlay {
-    value?.also { map ->
-      val key = map.getString("key") ?: DEFAULT_CAPTION_KEY
-      if (key == captionKey) return@also
-      captionKey = key
-
-      it.captionText = map.getString("text") ?: ""
-      it.captionRequestedWidth = (map.getDoubleOrNull("requestedWidth") ?: .0).px
-      it.setCaptionAligns(map.getAlign("align"))
-      it.captionOffset = (map.getDoubleOrNull("offset") ?: .0).px
-      it.captionColor = map.getIntOrNull("color") ?: Color.BLACK
-      it.captionHaloColor = map.getIntOrNull("haloColor") ?: Color.TRANSPARENT
-      it.captionTextSize = map.getDouble("textSize").toFloat()
-      it.captionMinZoom = map.getDouble("minZoom")
-      it.captionMaxZoom = map.getDouble("maxZoom")
-    }
+  ) {
+    view?.updateCaption(value)
   }
 
   @ReactProp(name = "subCaption")
   override fun setSubCaption(
     view: RNCNaverMapMarker?,
     value: ReadableMap?,
-  ) = view.withOverlay {
-    value?.also { map ->
-      val key = map.getString("key") ?: DEFAULT_CAPTION_KEY
-      if (key == subCaptionKey) return@also
-      subCaptionKey = key
-
-      it.subCaptionText = map.getString("text") ?: ""
-      it.subCaptionColor = map.getIntOrNull("color") ?: Color.BLACK
-      it.subCaptionHaloColor = map.getIntOrNull("haloColor") ?: Color.TRANSPARENT
-      it.subCaptionTextSize = map.getDouble("textSize").toFloat()
-      it.subCaptionRequestedWidth = map.getDouble("requestedWidth").px
-      it.subCaptionMinZoom = map.getDouble("minZoom")
-      it.subCaptionMaxZoom = map.getDouble("maxZoom")
-    }
+  ) {
+    view?.updateSubCaption(value)
   }
-
-  // region PROPS
 
   companion object {
     const val NAME = "RNCNaverMapMarker"
-    const val DEFAULT_CAPTION_KEY = "DEFAULT"
   }
 }
