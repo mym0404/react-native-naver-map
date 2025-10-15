@@ -6,8 +6,8 @@
   <p align="center">
   <a href="https://www.npmjs.com/package/@mj-studio/react-native-naver-map"><img src="https://img.shields.io/npm/dm/@mj-studio/react-native-naver-map.svg?style=flat-square" alt="NPM downloads"></a>
   <a href="https://www.npmjs.com/package/@mj-studio/react-native-naver-map"><img src="https://img.shields.io/npm/v/@mj-studio/react-native-naver-map.svg?style=flat-square" alt="NPM version"></a>
-  <img src="https://img.shields.io/badge/Android_SDK-3.22.1-2ea44f?style=flat-square" alt="Android SDK version">
-  <img src="https://img.shields.io/badge/iOS_SDK-3.22.1-3522ff?style=flat-square" alt="iOS SDK version">
+  <img src="https://img.shields.io/badge/Android_SDK-3.23.0-2ea44f?style=flat-square" alt="Android SDK version">
+  <img src="https://img.shields.io/badge/iOS_SDK-3.23.0-3522ff?style=flat-square" alt="iOS SDK version">
   <a href="/LICENSE"><img src="https://img.shields.io/npm/l/@mj-studio/react-native-naver-map.svg?style=flat-square" alt="License"></a>
   <h3 align="center">Bring Naver Map to Your React Fingertips</h3>
   </p>
