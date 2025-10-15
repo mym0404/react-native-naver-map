@@ -40,5 +40,5 @@ Pod::Spec.new do |s|
    end
   end
 
-  s.dependency "NMapsMap", "3.22.1"
+  s.dependency "NMapsMap", "3.23.0"
 end
