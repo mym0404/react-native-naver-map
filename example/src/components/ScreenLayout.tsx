@@ -14,7 +14,7 @@ export const ScreenLayout = ({
   showMap = true,
 }: {
   mapProps: Omit<NaverMapViewProps, 'ref'>;
-  mapRef?: RefObject<NaverMapViewRef>;
+  mapRef?: RefObject<NaverMapViewRef | null>;
   controls?: ReactNode;
   children?: ReactNode;
   showMap?: boolean;
