@@ -4,6 +4,7 @@
   "pages": [
     "common-overlay-usage",
     "naver-map-marker-overlay",
+    "naver-map-info-window",
     "naver-map-circle-overlay",
     "naver-map-polygon-overlay",
     "naver-map-polyline-overlay",
