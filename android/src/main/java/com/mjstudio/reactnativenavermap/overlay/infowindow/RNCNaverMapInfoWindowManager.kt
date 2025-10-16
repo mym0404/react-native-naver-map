@@ -1,11 +1,9 @@
 package com.mjstudio.reactnativenavermap.overlay.infowindow
 
-import android.graphics.PointF
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapInfoWindowManagerSpec
-import com.mjstudio.reactnativenavermap.util.getAlign
 import com.mjstudio.reactnativenavermap.util.getLatLng
 import com.mjstudio.reactnativenavermap.util.getPoint
 import com.mjstudio.reactnativenavermap.util.isValidNumber
@@ -22,7 +20,6 @@ class RNCNaverMapInfoWindowManager : RNCNaverMapInfoWindowManagerSpec<RNCNaverMa
     super.onDropViewInstance(view)
     view.onDropViewInstance()
   }
-
 
   private fun RNCNaverMapInfoWindow?.withOverlay(fn: (InfoWindow) -> Unit) {
     this?.overlay?.run(fn)
@@ -218,7 +215,7 @@ class RNCNaverMapInfoWindowManager : RNCNaverMapInfoWindowManagerSpec<RNCNaverMa
   ) {
     view?.setMarkerIdentifier(value)
   }
-  
+
   @ReactProp(name = "isOpen", defaultBoolean = true)
   override fun setIsOpen(
     view: RNCNaverMapInfoWindow?,
@@ -231,4 +228,3 @@ class RNCNaverMapInfoWindowManager : RNCNaverMapInfoWindowManagerSpec<RNCNaverMa
     const val NAME = "RNCNaverMapInfoWindow"
   }
 }
-

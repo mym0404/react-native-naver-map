@@ -6,7 +6,8 @@ import com.facebook.react.uimanager.ViewManagerDelegate
 import com.facebook.react.viewmanagers.RNCNaverMapInfoWindowManagerDelegate
 import com.facebook.react.viewmanagers.RNCNaverMapInfoWindowManagerInterface
 
-abstract class RNCNaverMapInfoWindowManagerSpec<T : View> : SimpleViewManager<T>(),
+abstract class RNCNaverMapInfoWindowManagerSpec<T : View> :
+  SimpleViewManager<T>(),
   RNCNaverMapInfoWindowManagerInterface<T> {
   private val mDelegate: ViewManagerDelegate<T>
 
@@ -16,4 +17,3 @@ abstract class RNCNaverMapInfoWindowManagerSpec<T : View> : SimpleViewManager<T>
 
   override fun getDelegate(): ViewManagerDelegate<T> = mDelegate
 }
-
