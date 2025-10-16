@@ -20,6 +20,7 @@ import { CitiesScreen } from './screens/CitiesScreen';
 import { ClusteringScreen } from './screens/ClusteringScreen';
 import { CommonScreen } from './screens/CommonScreen';
 import { GroundScreen } from './screens/GroundScreen';
+import { InfoWindowScreen } from './screens/InfoWindowScreen';
 import { LocationOverlayScreen } from './screens/LocationOverlayScreen';
 import { MarkerScreen } from './screens/MarkerScreen';
 import { MultiPathScreen } from './screens/MultiPathScreen';
@@ -41,6 +42,7 @@ const SCREENS = [
   { id: 'clustering', title: 'Clustering' },
   { id: 'locationOverlay', title: 'Location Overlay' },
   { id: 'cities', title: 'Cities (Performance Test)' },
+  { id: 'infowindow', title: 'InfoWindow' },
 ];
 
 export default function App() {
