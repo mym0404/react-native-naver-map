@@ -6,8 +6,8 @@
 //
 
 #import "RNCNaverMapInfoWindow.h"
-#import "RNCNaverMapViewImpl.h"
 #import "RNCNaverMapMarker.h"
+#import "RNCNaverMapViewImpl.h"
 #import <React/RCTBridge+Private.h>
 
 using namespace facebook::react;
@@ -37,8 +37,8 @@ using namespace facebook::react;
 - (instancetype)init {
   if ((self = [super init])) {
     _inner = [NMFInfoWindow new];
-    _shouldBeOpen = YES;  // Default isOpen = true
-    
+    _shouldBeOpen = YES; // Default isOpen = true
+
     // Create text data source (iOS only supports text for now)
     _textDataSource = [NMFInfoWindowDefaultTextSource dataSource];
     _textDataSource.title = @"";
@@ -72,9 +72,10 @@ using namespace facebook::react;
     [_inner close];
     return;
   }
-  
-  if (!_currentMapView) return;
-  
+
+  if (!_currentMapView)
+    return;
+
   // Try to find marker by identifier first
   if (_markerIdentifier && _markerIdentifier.length > 0 && _parentMapViewImpl) {
     RNCNaverMapMarker* markerView = _parentMapViewImpl.markerRegistry[_markerIdentifier];
@@ -84,7 +85,7 @@ using namespace facebook::react;
       return;
     }
   }
-  
+
   // Fall back to position
   _inner.mapView = _currentMapView;
 }
@@ -123,13 +124,13 @@ using namespace facebook::react;
 
   if (prev.alpha != next.alpha)
     _inner.alpha = next.alpha;
-  
+
   // Identifier handling
   if (prev.identifier != next.identifier) {
     _markerIdentifier = getNsStr(next.identifier);
     [self updateInfoWindowState];
   }
-  
+
   // IsOpen handling
   if (prev.isOpen != next.isOpen) {
     _shouldBeOpen = next.isOpen;
@@ -141,7 +142,7 @@ using namespace facebook::react;
   if (prev.text != next.text) {
     _textDataSource.title = getNsStr(next.text);
   }
-  
+
   // Note: fontWeight, borderRadius, borderWidth, borderColor, padding
   // are ignored on iOS due to NMFInfoWindow limitations
   // These props work on Android only
@@ -158,4 +159,3 @@ Class<RCTComponentViewProtocol> RNCNaverMapInfoWindowCls(void) {
 }
 
 @end
-

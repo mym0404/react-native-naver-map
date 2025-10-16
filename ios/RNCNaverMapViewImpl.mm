@@ -92,7 +92,7 @@
     auto markerView = static_cast<RNCNaverMapMarker*>(subview);
     auto marker = markerView.inner;
     marker.mapView = self.mapView;
-    
+
     // Register marker by identifier
     NSString* identifier = marker.userInfo[@"identifier"];
     if (identifier && identifier.length > 0) {
@@ -141,13 +141,13 @@
   if ([subview isKindOfClass:[RNCNaverMapMarker class]]) {
     auto markerView = static_cast<RNCNaverMapMarker*>(subview);
     auto marker = markerView.inner;
-    
+
     // Unregister marker
     NSString* identifier = marker.userInfo[@"identifier"];
     if (identifier && identifier.length > 0) {
       [_markerRegistry removeObjectForKey:identifier];
     }
-    
+
     marker.mapView = nil;
     marker.touchHandler = nil;
   } else if ([subview isKindOfClass:[RNCNaverMapCircle class]]) {

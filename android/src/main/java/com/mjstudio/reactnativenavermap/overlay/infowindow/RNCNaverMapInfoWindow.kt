@@ -1,7 +1,6 @@
 package com.mjstudio.reactnativenavermap.overlay.infowindow
 
 import android.annotation.SuppressLint
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import com.facebook.react.uimanager.ThemedReactContext
@@ -39,19 +38,19 @@ class RNCNaverMapInfoWindow(
     overlay.close()
     currentMap = null
   }
-  
+
   fun setParentMapView(mapView: com.mjstudio.reactnativenavermap.mapview.RNCNaverMapView) {
     parentMapView = mapView
   }
-  
+
   private fun updateInfoWindowState() {
     if (!shouldBeOpen) {
       overlay.close()
       return
     }
-    
+
     val map = currentMap ?: return
-    
+
     // Try to find marker by identifier first
     val identifier = markerIdentifier
     if (identifier != null) {
@@ -62,7 +61,7 @@ class RNCNaverMapInfoWindow(
         return
       }
     }
-    
+
     // Fall back to position
     val pos = position
     if (pos != null) {
@@ -85,7 +84,7 @@ class RNCNaverMapInfoWindow(
     markerIdentifier = identifier
     updateInfoWindowState()
   }
-  
+
   fun setIsOpen(isOpen: Boolean) {
     shouldBeOpen = isOpen
     updateInfoWindowState()
@@ -151,48 +150,50 @@ class RNCNaverMapInfoWindow(
 
     override fun getView(infoWindow: InfoWindow): View {
       val paddingPx = this@RNCNaverMapInfoWindowAdapter.padding.toInt()
-      
+
       val textView = TextView(context).apply {
         this.text = this@RNCNaverMapInfoWindowAdapter.text ?: ""
         this.textSize = this@RNCNaverMapInfoWindowAdapter.textSize
         this.setTextColor(this@RNCNaverMapInfoWindowAdapter.textColor)
-        
+
         // Font weight
         val typeface = when {
           this@RNCNaverMapInfoWindowAdapter.fontWeight >= 700 -> android.graphics.Typeface.BOLD
           else -> android.graphics.Typeface.NORMAL
         }
         this.setTypeface(null, typeface)
-        
+
         // Gravity
         this.gravity = android.view.Gravity.CENTER
       }
-      
+
       // Container with border, background and padding
       val container = android.widget.FrameLayout(context).apply {
         // Add padding to container
         this.setPadding(paddingPx, paddingPx, paddingPx, paddingPx)
-        
+
         // Add text view with wrap content
-        addView(textView, android.widget.FrameLayout.LayoutParams(
-          android.widget.FrameLayout.LayoutParams.WRAP_CONTENT,
-          android.widget.FrameLayout.LayoutParams.WRAP_CONTENT
-        ))
-        
+        addView(
+          textView,
+          android.widget.FrameLayout.LayoutParams(
+            android.widget.FrameLayout.LayoutParams.WRAP_CONTENT,
+            android.widget.FrameLayout.LayoutParams.WRAP_CONTENT,
+          ),
+        )
+
         // Background and border using GradientDrawable
         val drawable = android.graphics.drawable.GradientDrawable().apply {
           setColor(this@RNCNaverMapInfoWindowAdapter.backgroundColor)
           cornerRadius = this@RNCNaverMapInfoWindowAdapter.borderRadius
           setStroke(
             this@RNCNaverMapInfoWindowAdapter.borderWidth.toInt(),
-            this@RNCNaverMapInfoWindowAdapter.borderColor
+            this@RNCNaverMapInfoWindowAdapter.borderColor,
           )
         }
         background = drawable
       }
-      
+
       return container
     }
   }
 }
-
