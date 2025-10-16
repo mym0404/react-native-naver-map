@@ -18,116 +18,116 @@ class RNCNaverMapViewWrapper(
   private val mapOptions: NaverMapOptions,
 ) : FrameLayout(reactContext),
   LifecycleEventListener {
-  var mapView: RNCNaverMapView? = null
-    private set
-  private var savedState: Bundle? = Bundle()
+    var mapView: RNCNaverMapView? = null
+      private set
+    private var savedState: Bundle? = Bundle()
 
-  init {
-    mapView = RNCNaverMapView(reactContext, mapOptions)
-    addView(mapView)
-  }
-
-  override fun onAttachedToWindow() {
-    super.onAttachedToWindow()
-    mapView?.run {
-      onCreate(savedState)
-      onStart()
+    init {
+      mapView = RNCNaverMapView(reactContext, mapOptions)
+      addView(mapView)
     }
-    setupLayoutHack()
-  }
 
-  override fun onDetachedFromWindow() {
-    mapView?.run {
-      onSaveInstanceState(
-        savedState ?: run {
-          Bundle().also { this@RNCNaverMapViewWrapper.savedState = it }
+    override fun onAttachedToWindow() {
+      super.onAttachedToWindow()
+      mapView?.run {
+        onCreate(savedState)
+        onStart()
+      }
+      setupLayoutHack()
+    }
+
+    override fun onDetachedFromWindow() {
+      mapView?.run {
+        onSaveInstanceState(
+          savedState ?: run {
+            Bundle().also { this@RNCNaverMapViewWrapper.savedState = it }
+          },
+        )
+      }
+      super.onDetachedFromWindow()
+    }
+
+    fun onDropViewInstance() {
+      mapView?.run {
+        onStop()
+        onDestroy()
+      }
+      removeAllViews()
+      savedState?.clear()
+      savedState = null
+      mapView = null
+    }
+
+    // https://github.com/facebook/react-native/issues/17968#issuecomment-457236577
+    private fun setupLayoutHack() {
+      Choreographer.getInstance().postFrameCallback(
+        object : FrameCallback {
+          override fun doFrame(frameTimeNanos: Long) {
+            manuallyLayoutChildren()
+            getViewTreeObserver().dispatchOnGlobalLayout()
+            if (isAttachedToWindow) {
+              Choreographer
+                .getInstance()
+                .postFrameCallbackDelayed(this, 500)
+            }
+          }
         },
       )
     }
-    super.onDetachedFromWindow()
-  }
 
-  fun onDropViewInstance() {
-    mapView?.run {
-      onStop()
-      onDestroy()
+    private fun manuallyLayoutChildren() {
+      for (i in 0 until childCount) {
+        val child = getChildAt(i)
+        child.measure(
+          MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY),
+          MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY),
+        )
+        child.layout(0, 0, child.measuredWidth, child.measuredHeight)
+      }
     }
-    removeAllViews()
-    savedState?.clear()
-    savedState = null
-    mapView = null
-  }
 
-  // https://github.com/facebook/react-native/issues/17968#issuecomment-457236577
-  private fun setupLayoutHack() {
-    Choreographer.getInstance().postFrameCallback(
-      object : FrameCallback {
-        override fun doFrame(frameTimeNanos: Long) {
-          manuallyLayoutChildren()
-          getViewTreeObserver().dispatchOnGlobalLayout()
-          if (isAttachedToWindow) {
-            Choreographer
-              .getInstance()
-              .postFrameCallbackDelayed(this, 500)
-          }
-        }
-      },
-    )
-  }
-
-  private fun manuallyLayoutChildren() {
-    for (i in 0 until childCount) {
-      val child = getChildAt(i)
-      child.measure(
-        MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY),
-        MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY),
-      )
-      child.layout(0, 0, child.measuredWidth, child.measuredHeight)
+    override fun onHostResume() {
+      mapView?.onResume()
     }
-  }
 
-  override fun onHostResume() {
-    mapView?.onResume()
-  }
+    override fun onHostPause() {
+      mapView?.onPause()
+    }
 
-  override fun onHostPause() {
-    mapView?.onPause()
-  }
+    override fun onHostDestroy() {}
 
-  override fun onHostDestroy() {}
-
-  override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-    mapView?.withMap { map ->
-      if (map.uiSettings.isScrollGesturesEnabled) {
-        when (ev?.action) {
-          MotionEvent.ACTION_DOWN,
-          MotionEvent.ACTION_MOVE,
-          -> {
-            parent?.requestDisallowInterceptTouchEvent(true)
-          }
-          MotionEvent.ACTION_UP,
-          MotionEvent.ACTION_CANCEL,
-          -> {
-            parent?.requestDisallowInterceptTouchEvent(false)
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+      mapView?.withMap { map ->
+        if (map.uiSettings.isScrollGesturesEnabled) {
+          when (ev?.action) {
+            MotionEvent.ACTION_DOWN,
+            MotionEvent.ACTION_MOVE,
+            -> {
+              parent?.requestDisallowInterceptTouchEvent(true)
+            }
+            MotionEvent.ACTION_UP,
+            MotionEvent.ACTION_CANCEL,
+            -> {
+              parent?.requestDisallowInterceptTouchEvent(false)
+            }
           }
         }
       }
+      return super.dispatchTouchEvent(ev)
     }
-    return super.dispatchTouchEvent(ev)
-  }
 
-  companion object {
-    /**
-     * A helper to get react tag id by given MapView
-     */
-    @JvmStatic
-    fun getReactTagFromMapView(mapView: MapView): Int {
-      // It is expected that the mapView is enclosed by [RNCNaverMapViewWrapper] as the first child.
-      // Therefore, it must have a parent, and the parent ID is the reactTag.
-      // In exceptional cases, such as receiving MapView messaging after the view has been unmounted,
-      // the WebView will not have a parent.
-      // In this case, we simply return -1 to indicate that it was not found.
-      return (mapView.parent as? View)?.id ?: -1
+    companion object {
+      /**
+       * A helper to get react tag id by given MapView
+       */
+      @JvmStatic
+      fun getReactTagFromMapView(mapView: MapView): Int {
+        // It is expected that the mapView is enclosed by [RNCNaverMapViewWrapper] as the first child.
+        // Therefore, it must have a parent, and the parent ID is the reactTag.
+        // In exceptional cases, such as receiving MapView messaging after the view has been unmounted,
+        // the WebView will not have a parent.
+        // In this case, we simply return -1 to indicate that it was not found.
+        return (mapView.parent as? View)?.id ?: -1
+      }
     }
   }
-}

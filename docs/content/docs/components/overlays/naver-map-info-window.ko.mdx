@@ -1,0 +1,61 @@
+---
+title: "NaverMapInfoWindow"
+description: "마커 또는 좌표 위에 말풍선(정보창)을 표시하는 컴포넌트"
+---
+
+## Overview
+
+NaverMapInfoWindow는 지도 위에 정보 말풍선을 표시합니다.
+`identifier`로 마커에 연결할 수 있고, `latitude`/`longitude`로 임의의 좌표에 직접 표시할 수도 있습니다.
+
+플랫폼 참고:
+- Android: 폰트, 배경/테두리/패딩 등 전체 스타일 지원
+- iOS: 텍스트만 지원(네이티브 API 제약)
+
+## Basic Usage
+
+```tsx
+import { NaverMapView, NaverMapMarkerOverlay, NaverMapInfoWindow } from '@mj-studio/react-native-naver-map';
+
+function MapWithInfoWindow() {
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      {/* 1) identifier로 마커에 연결 */}
+      <NaverMapMarkerOverlay identifier="marker1" latitude={37.5666102} longitude={126.9783881} />
+      <NaverMapInfoWindow 
+        identifier="marker1"
+        text="서울시청"
+        isOpen
+        align="Top"
+        // Android 전용 스타일 예시
+        fontWeight="bold"
+        backgroundColor="white"
+        borderRadius={8}
+        borderColor="#4263eb"
+      />
+
+      {/* 2) 좌표에 직접 표시 */}
+      <NaverMapInfoWindow
+        latitude={37.5666102}
+        longitude={126.9783881}
+        text="좌표 정보창"
+      />
+    </NaverMapView>
+  );
+}
+```
+
+## Props
+
+`NaverMapInfoWindowProps`
+
+<AutoTypeTable path="../src/component/NaverMapInfoWindow.tsx" name="NaverMapInfoWindowProps" />
+
+## 비고
+
+- `identifier`가 설정되면 동일한 `identifier`를 가진 마커 위에 정보창이 열립니다.
+- `identifier`가 없으면 `latitude`와 `longitude` 좌표에 표시됩니다.
+- `align`, `anchor`, `offsetX/offsetY`로 마커 주변 위치를 세밀하게 조정할 수 있습니다.
+- Android에서는 모양 스타일을 커스터마이즈할 수 있으며, iOS는 텍스트만 지원합니다.
+
+
