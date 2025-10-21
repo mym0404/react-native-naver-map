@@ -10,7 +10,7 @@ It can be attached to a marker via `identifier` or rendered at an arbitrary coor
 
 Platform notes:
 - Android: supports full styling
-- iOS: text-only (limited by native API)
+- iOS: supports full styling (using NMFOverlayImageDataSource protocol)
 
 ## Basic Usage
 
@@ -27,7 +27,7 @@ function MapWithInfoWindow() {
         text="Seoul City Hall"
         isOpen
         align="Top"
-        // Android-only styling examples
+        // Custom styling (supported on both Android & iOS)
         fontWeight="bold"
         backgroundColor="white"
         borderRadius={8}
@@ -56,6 +56,6 @@ function MapWithInfoWindow() {
 - When `identifier` is provided, the info window opens above the marker that has the same `identifier`.
 - If `identifier` is omitted, `latitude` and `longitude` must be provided and the window is shown at the coordinate.
 - `align`, `anchor`, and `offsetX/offsetY` help fine-tune placement around the marker.
-- On Android, you can customize appearance (font, radius, border, background, padding). On iOS, the native API is limited to text.
+- Both Android and iOS support full styling customization (font, radius, border, background, padding).
 
 

@@ -29,10 +29,15 @@ InfoWindow는 마커나 특정 좌표에 부가 정보를 표시하는 말풍선
 #### RNCNaverMapInfoWindow.kt
 **위치**: `android/src/main/java/com/mjstudio/reactnativenavermap/overlay/infowindow/`
 
-- `NMFInfoWindow` 래핑
-- 커스텀 어댑터 패턴 구현 (`RNCNaverMapInfoWindowAdapter`)
+- `InfoWindow` 래핑
+- **커스텀 어댑터 패턴 구현** (`RNCNaverMapInfoWindowAdapter`)
+  - `InfoWindow.ViewAdapter()` 상속
+  - `getView()` 메서드에서 커스텀 View 생성
+  - TextView + FrameLayout으로 구성
+  - GradientDrawable로 배경, 테두리, 라운드 코너 구현
 - 텍스트 및 스타일 동적 업데이트
-- 마커 연결 지원 (예정)
+- 마커 연결 지원 (`identifier`를 통한 Marker Registry 조회)
+- 열림/닫힘 상태 제어
 
 #### RNCNaverMapInfoWindowManager.kt
 **위치**: `android/src/main/java/com/mjstudio/reactnativenavermap/overlay/infowindow/`
@@ -54,9 +59,15 @@ InfoWindow는 마커나 특정 좌표에 부가 정보를 표시하는 말풍선
 - `NMFInfoWindow` 래핑
 - Fabric Component View 구현
 - Props 업데이트 처리
-- `dataSource` 블록을 통한 커스텀 뷰 생성
-- UILabel 기반 텍스트 렌더링
-- 스타일링 (테두리, 라운드 코너, 패딩)
+- **커스텀 데이터 소스 구현** (`RNCNaverMapInfoWindowDataSource`)
+  - `NMFOverlayImageDataSource` 프로토콜 채택
+  - `viewWithOverlay:` 메서드로 UIView 직접 반환
+  - UILabel 기반 텍스트 렌더링
+  - CALayer를 통한 스타일링 (테두리, 라운드 코너, 배경색)
+  - 패딩 및 폰트 굵기 지원
+- 속성 변경 시 `invalidate()` 호출하여 자동 재렌더링
+- Retina 디스플레이 대응
+- `nmap::intToColor()` 함수로 색상 변환
 
 ### 4. React Component
 
@@ -102,7 +113,7 @@ import { NaverMapInfoWindow } from '@mj-studio/react-native-naver-map';
   longitude={126.9783881}
   text="마커 정보"
   isOpen={true}
-  // Android only: 커스텀 스타일
+  // 커스텀 스타일 (Android & iOS 모두 지원)
   fontWeight="bold"
   borderRadius={10}
   borderColor="#4263eb"
@@ -112,7 +123,8 @@ import { NaverMapInfoWindow } from '@mj-studio/react-native-naver-map';
 ## 참고 자료
 
 - [Android InfoWindow 공식 문서](https://navermaps.github.io/android-map-sdk/guide-ko/5-3.html)
-- [iOS NMFInfoWindow API](https://navermaps.github.io/maps.js.ncp/docs/naver.maps.InfoWindow.html)
+- [iOS NMFInfoWindow API](https://navermaps.github.io/ios-map-sdk/reference/Classes/NMFInfoWindow.html)
+- [iOS NMFOverlayImageDataSource 프로토콜](https://navermaps.github.io/ios-map-sdk/reference/Protocols/NMFOverlayImageDataSource.html)
 
 ## 플랫폼별 스타일 지원 현황
 
@@ -136,53 +148,36 @@ val drawable = GradientDrawable().apply {
 }
 ```
 
-### iOS ⚠️ (텍스트만 지원)
-- ✅ `text` - 텍스트 내용
+### iOS ✅ (완전 지원)
+- ✅ `text`, `textSize`, `textColor`
+- ✅ `fontWeight` - Regular/Medium/Semibold/Bold (100-900)
+- ✅ `backgroundColor`
+- ✅ `borderRadius` - 둥근 모서리
+- ✅ `borderWidth`, `borderColor` - 테두리
+- ✅ `padding` - 내부 여백
 - ✅ 마커 연결 (`identifier`)
 - ✅ 열림/닫힘 제어 (`isOpen`)
-- ❌ `textSize`, `textColor` - 무시됨
-- ❌ `fontWeight`, `borderRadius`, `borderWidth`, `borderColor`, `padding` - 무시됨
 
-**제한 이유:**
-iOS의 `NMFInfoWindow`는 기본적으로 `NMFInfoWindowDefaultTextSource`를 사용하며, 이는 말풍선 스타일의 텍스트만 표시합니다.
-
-커스텀 스타일을 위해 `NMFOverlayImageDataSource`를 시도했으나:
-- `NMFInfoWindow`가 내부적으로 `toUIImage` 메서드 호출 (존재하지 않음)
-- 일반 오버레이와 달리 InfoWindow는 이미지 기반 커스터마이징 미지원
-- 구현 시도 시 에러 발생 내용:  `-[NMFOverlayImage toUIImage]: unrecognized selector`
-
-### iOS에서 커스텀 스타일이 필요한 경우
-
-**Option 1: Marker의 Custom View 사용**
-```tsx
-<NaverMapMarkerOverlay latitude={37.5} longitude={126.5}>
-  <View style={{ 
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 10,
-    borderWidth: 2,
-    borderColor: '#4263eb'
-  }}>
-    <Text style={{ fontWeight: 'bold' }}>커스텀 정보</Text>
-  </View>
-</NaverMapMarkerOverlay>
+**구현 방식:**
+```objective-c
+// NMFOverlayImageDataSource 프로토콜의 viewWithOverlay: 메서드 구현
+- (UIView*)viewWithOverlay:(NMFOverlay*)overlay {
+  // UILabel과 UIView를 사용하여 커스텀 스타일 구현
+  UIView* containerView = [[UIView alloc] init];
+  containerView.backgroundColor = backgroundColor;
+  containerView.layer.cornerRadius = borderRadius;
+  containerView.layer.borderWidth = borderWidth;
+  containerView.layer.borderColor = borderColor.CGColor;
+  // ... 텍스트와 패딩 설정
+  return containerView;
+}
 ```
 
-**Option 2: 플랫폼별 조건부 렌더링**
-```tsx
-{Platform.OS === 'android' ? (
-  <NaverMapInfoWindow
-    identifier="marker1"
-    text="마커 정보"
-    fontWeight="bold"
-    borderRadius={10}
-  />
-) : (
-  <NaverMapMarkerOverlay identifier="info-marker">
-    <CustomInfoView />
-  </NaverMapMarkerOverlay>
-)}
-```
+**주요 특징:**
+- Retina 디스플레이 지원
+- 동적 스타일 업데이트 (`invalidate()` 호출)
+- 빈 텍스트 처리 및 최소 크기 보장
+- Android와 동일한 모든 스타일 속성 지원
 
 ## 구현 패턴
 
@@ -206,18 +201,18 @@ iOS의 `NMFInfoWindow`는 기본적으로 `NMFInfoWindowDefaultTextSource`를 �
 
 - ✅ TypeScript Spec 및 타입 정의
 - ✅ Android 네이티브 구현 (모든 스타일 지원)
-- ✅ iOS 네이티브 구현 (기본 텍스트)
+- ✅ iOS 네이티브 구현 (모든 스타일 지원)
 - ✅ React Component 작성
 - ✅ Package 등록
 - ✅ Export 추가
 - ✅ 마커 연결 기능 (`identifier`)
 - ✅ 열림/닫힘 제어 (`isOpen`)
 - ✅ Marker Registry 구현
-- ⚠️ iOS 커스텀 스타일 (API 제한으로 미지원)
+- ✅ iOS 커스텀 스타일 (NMFOverlayImageDataSource 프로토콜 활용)
 
 ## 사용 권장사항
 
-- **간단한 텍스트만 필요**: InfoWindow 사용 (양쪽 플랫폼)
-- **커스텀 스타일 필요 (Android만)**: InfoWindow 사용, iOS는 기본 스타일
-- **커스텀 스타일 필요 (양쪽 플랫폼)**: Marker의 Custom View 사용
+- **텍스트 정보 표시**: InfoWindow 사용 (양쪽 플랫폼 모두 완전 지원)
+- **커스텀 스타일**: InfoWindow 사용 (Android & iOS 모두 모든 스타일 속성 지원)
+- **복잡한 인터랙션**: 필요한 경우 Marker의 Custom View 사용 고려
 

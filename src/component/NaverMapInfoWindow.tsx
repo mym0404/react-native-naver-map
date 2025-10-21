@@ -129,8 +129,8 @@ export interface NaverMapInfoWindowProps
  * 주로 말풍선 형태로 구성되어 텍스트를 표시하는 용도로 사용합니다.
  *
  * **플랫폼별 스타일 지원:**
- * - Android: 모든 스타일 속성 지원 (fontWeight, borderRadius, borderWidth, borderColor, padding)
- * - iOS: 기본 텍스트만 지원 (NMFInfoWindow API 제한)
+ * - Android: 모든 스타일 속성 지원 (ViewAdapter를 통한 커스텀 뷰 렌더링)
+ * - iOS: 모든 스타일 속성 지원 (NMFOverlayImageDataSource를 통한 커스텀 이미지 렌더링)
  *
  * @example
  * ```tsx
@@ -144,10 +144,11 @@ export interface NaverMapInfoWindowProps
  *   identifier="marker1"
  *   text="마커 정보"
  *   isOpen={true}
- *   // Android only: 커스텀 스타일
+ *   // 커스텀 스타일 (Android & iOS 모두 지원)
  *   fontWeight="bold"
  *   borderRadius={10}
  *   borderColor="#4263eb"
+ *   padding={12}
  * />
  *
  * // 2. 특정 좌표에 InfoWindow 직접 표시
@@ -155,9 +156,10 @@ export interface NaverMapInfoWindowProps
  *   latitude={37.5666102}
  *   longitude={126.9783881}
  *   text="서울시청"
- *   textSize={14}
- *   textColor="black"
- *   backgroundColor="white"
+ *   textSize={16}
+ *   textColor="white"
+ *   backgroundColor="#4263eb"
+ *   borderRadius={8}
  * />
  * ```
  *
