@@ -200,12 +200,20 @@ class RNCNaverMapInfoWindowManager : RNCNaverMapInfoWindowManagerSpec<RNCNaverMa
     view?.setInfoWindowBorderColor(value)
   }
 
-  @ReactProp(name = "infoWindowPadding", defaultFloat = 10f)
-  override fun setInfoWindowPadding(
+  @ReactProp(name = "infoWindowPaddingHorizontal", defaultFloat = 10f)
+  override fun setInfoWindowPaddingHorizontal(
     view: RNCNaverMapInfoWindow?,
     value: Double,
   ) {
-    view?.setInfoWindowPadding(value.toFloat())
+    view?.setInfoWindowPaddingHorizontal(value.toFloat())
+  }
+
+  @ReactProp(name = "infoWindowPaddingVertical", defaultFloat = 10f)
+  override fun setInfoWindowPaddingVertical(
+    view: RNCNaverMapInfoWindow?,
+    value: Double,
+  ) {
+    view?.setInfoWindowPaddingVertical(value.toFloat())
   }
 
   @ReactProp(name = "identifier")

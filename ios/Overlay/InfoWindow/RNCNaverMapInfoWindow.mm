@@ -22,7 +22,8 @@ using namespace facebook::react;
 @property(nonatomic, assign) CGFloat borderRadius;
 @property(nonatomic, assign) CGFloat borderWidth;
 @property(nonatomic, strong) UIColor* borderColor;
-@property(nonatomic, assign) CGFloat padding;
+@property(nonatomic, assign) CGFloat paddingHorizontal;
+@property(nonatomic, assign) CGFloat paddingVertical;
 @end
 
 @implementation RNCNaverMapInfoWindowDataSource
@@ -37,7 +38,8 @@ using namespace facebook::react;
     _borderRadius = 5.0;
     _borderWidth = 1.0;
     _borderColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
-    _padding = 10.0;
+    _paddingHorizontal = 10.0;
+    _paddingVertical = 10.0;
   }
   return self;
 }
@@ -71,10 +73,11 @@ using namespace facebook::react;
   labelSize.width = MAX(ceil(labelSize.width), minWidth);
   labelSize.height = MAX(ceil(labelSize.height), minHeight);
 
-  // Add padding
-  CGFloat totalPadding = _padding * 2;
+  // Add padding (horizontal and vertical separately)
+  CGFloat totalPaddingHorizontal = _paddingHorizontal * 2;
+  CGFloat totalPaddingVertical = _paddingVertical * 2;
   CGSize containerSize =
-      CGSizeMake(labelSize.width + totalPadding, labelSize.height + totalPadding);
+      CGSizeMake(labelSize.width + totalPaddingHorizontal, labelSize.height + totalPaddingVertical);
 
   // Create container view
   UIView* containerView =
@@ -86,7 +89,7 @@ using namespace facebook::react;
   containerView.clipsToBounds = YES;
 
   // Add label to container with padding
-  label.frame = CGRectMake(_padding, _padding, labelSize.width, labelSize.height);
+  label.frame = CGRectMake(_paddingHorizontal, _paddingVertical, labelSize.width, labelSize.height);
   [containerView addSubview:label];
 
   return containerView;
@@ -275,8 +278,13 @@ using namespace facebook::react;
     needsRedraw = YES;
   }
 
-  if (prev.infoWindowPadding != next.infoWindowPadding) {
-    _customDataSource.padding = next.infoWindowPadding;
+  if (prev.infoWindowPaddingHorizontal != next.infoWindowPaddingHorizontal) {
+    _customDataSource.paddingHorizontal = next.infoWindowPaddingHorizontal;
+    needsRedraw = YES;
+  }
+
+  if (prev.infoWindowPaddingVertical != next.infoWindowPaddingVertical) {
+    _customDataSource.paddingVertical = next.infoWindowPaddingVertical;
     needsRedraw = YES;
   }
 

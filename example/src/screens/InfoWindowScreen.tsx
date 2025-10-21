@@ -61,7 +61,8 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
           fontWeight="bold"
           backgroundColor="white"
           borderRadius={Platform.OS === 'ios' ? 16 : 99}
-          padding={10}
+          paddingHorizontal={10}
+          paddingVertical={8}
           alpha={0.95}
         />
 
@@ -76,7 +77,8 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
           fontWeight="700"
           backgroundColor="#ff6b6b"
           borderRadius={14}
-          padding={10}
+          paddingHorizontal={12}
+          paddingVertical={10}
           alpha={1}
           isOpen={true}
         />
@@ -94,7 +96,8 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
           borderRadius={8}
           borderWidth={1}
           borderColor="#f39c12"
-          padding={6}
+          paddingHorizontal={8}
+          paddingVertical={6}
           alpha={0.9}
         />
 

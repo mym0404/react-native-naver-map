@@ -106,10 +106,15 @@ interface Props extends BaseOverlay, ViewProps {
    */
   infoWindowBorderColor?: Int32;
   /**
-   * 내부 여백 (픽셀)
+   * 수평 내부 여백 (픽셀)
    * @default 10
    */
-  infoWindowPadding?: WithDefault<Double, 10>;
+  infoWindowPaddingHorizontal?: WithDefault<Double, 10>;
+  /**
+   * 수직 내부 여백 (픽셀)
+   * @default 10
+   */
+  infoWindowPaddingVertical?: WithDefault<Double, 10>;
 }
 
 export default codegenNativeComponent<Props>('RNCNaverMapInfoWindow');
