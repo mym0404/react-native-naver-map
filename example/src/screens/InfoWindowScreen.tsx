@@ -3,6 +3,7 @@ import {
   NaverMapMarkerOverlay,
 } from '@mj-studio/react-native-naver-map';
 import React from 'react';
+import { Platform } from 'react-native';
 import { Header } from '../components/Header';
 import { ScreenLayout } from '../components/ScreenLayout';
 
@@ -49,7 +50,7 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
           image={{ symbol: 'yellow' }}
         />
 
-        {/* infoWindow 1: 마커와 연결된 infoWindow (Android에선 font bold 사용) */}
+        {/* infoWindow 1: 마커와 연결된 infoWindow (font bold 사용) */}
         <NaverMapInfoWindow
           identifier="jeju-center"
           latitude={33.5}
@@ -59,12 +60,12 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
           textColor="black"
           fontWeight="bold"
           backgroundColor="white"
-          borderRadius={12}
-          padding={8}
+          borderRadius={Platform.OS === 'ios' ? 16 : 99}
+          padding={10}
           alpha={0.95}
         />
 
-        {/* infoWindow 2: 마커와 연결된 infoWindow (Android에선 borderRadius, backgroundColor 사용) */}
+        {/* infoWindow 2: 마커와 연결된 infoWindow (borderRadius, backgroundColor 사용) */}
         <NaverMapInfoWindow
           identifier="seongsan"
           latitude={33.4}
@@ -80,7 +81,7 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
           isOpen={true}
         />
 
-        {/* infoWindow 3: 마커와 연결된 infoWindow (Android 에선 all custom styles) */}
+        {/* infoWindow 3: 마커와 연결된 infoWindow (all custom styles) */}
         <NaverMapInfoWindow
           identifier="tourist-spot"
           latitude={33.3}
