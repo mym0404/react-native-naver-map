@@ -116,10 +116,16 @@ export interface NaverMapInfoWindowProps
   borderColor?: ColorValue;
 
   /**
-   * 내부 여백 (픽셀)
+   * 수평 내부 여백 (픽셀, 좌우)
    * @default 10
    */
-  padding?: number;
+  paddingHorizontal?: number;
+
+  /**
+   * 수직 내부 여백 (픽셀, 상하)
+   * @default 10
+   */
+  paddingVertical?: number;
 }
 
 /**
@@ -148,7 +154,8 @@ export interface NaverMapInfoWindowProps
  *   fontWeight="bold"
  *   borderRadius={10}
  *   borderColor="#4263eb"
- *   padding={12}
+ *   paddingHorizontal={12}
+ *   paddingVertical={8}
  * />
  *
  * // 2. 특정 좌표에 InfoWindow 직접 표시
@@ -193,7 +200,8 @@ export const NaverMapInfoWindow = ({
   borderRadius = 5,
   borderWidth = 1,
   borderColor = '#ccc',
-  padding = 10,
+  paddingHorizontal = 10,
+  paddingVertical = 10,
 
   children,
 }: NaverMapInfoWindowProps) => {
@@ -227,7 +235,8 @@ export const NaverMapInfoWindow = ({
       infoWindowBorderRadius={borderRadius}
       infoWindowBorderWidth={borderWidth}
       infoWindowBorderColor={processColor(borderColor) as number}
-      infoWindowPadding={padding}
+      infoWindowPaddingHorizontal={paddingHorizontal}
+      infoWindowPaddingVertical={paddingVertical}
     >
       {children}
     </NativeNaverMapInfoWindow>

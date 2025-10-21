@@ -130,8 +130,13 @@ class RNCNaverMapInfoWindow(
     customAdapter?.let { overlay.adapter = it as InfoWindow.Adapter }
   }
 
-  fun setInfoWindowPadding(padding: Float) {
-    customAdapter?.padding = padding
+  fun setInfoWindowPaddingHorizontal(padding: Float) {
+    customAdapter?.paddingHorizontal = padding
+    customAdapter?.let { overlay.adapter = it as InfoWindow.Adapter }
+  }
+
+  fun setInfoWindowPaddingVertical(padding: Float) {
+    customAdapter?.paddingVertical = padding
     customAdapter?.let { overlay.adapter = it as InfoWindow.Adapter }
   }
 
@@ -146,10 +151,12 @@ class RNCNaverMapInfoWindow(
     var borderRadius: Float = 5f
     var borderWidth: Float = 1f
     var borderColor: Int = android.graphics.Color.parseColor("#cccccc")
-    var padding: Float = 10f
+    var paddingHorizontal: Float = 10f
+    var paddingVertical: Float = 10f
 
     override fun getView(infoWindow: InfoWindow): View {
-      val paddingPx = this@RNCNaverMapInfoWindowAdapter.padding.toInt()
+      val paddingHorizontalPx = this@RNCNaverMapInfoWindowAdapter.paddingHorizontal.toInt()
+      val paddingVerticalPx = this@RNCNaverMapInfoWindowAdapter.paddingVertical.toInt()
 
       val textView = TextView(context).apply {
         this.text = this@RNCNaverMapInfoWindowAdapter.text ?: ""
@@ -169,8 +176,8 @@ class RNCNaverMapInfoWindow(
 
       // Container with border, background and padding
       val container = android.widget.FrameLayout(context).apply {
-        // Add padding to container
-        this.setPadding(paddingPx, paddingPx, paddingPx, paddingPx)
+        // Add padding to container (horizontal and vertical separately)
+        this.setPadding(paddingHorizontalPx, paddingVerticalPx, paddingHorizontalPx, paddingVerticalPx)
 
         // Add text view with wrap content
         addView(
