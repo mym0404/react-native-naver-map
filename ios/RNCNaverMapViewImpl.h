@@ -15,6 +15,7 @@
 #import "RNCNaverMapClusterKey.h"
 #import "RNCNaverMapClusterMarkerUpdater.h"
 #import "RNCNaverMapGround.h"
+#import "RNCNaverMapInfoWindow.h"
 #import "RNCNaverMapLeafMarkerUpdater.h"
 #import "RNCNaverMapMarker.h"
 #import "RNCNaverMapMultiPath.h"
@@ -46,6 +47,9 @@ using namespace facebook::react;
 @property(nonatomic, copy) NMGLatLngBounds* initialRegion;
 @property(nonatomic, assign) NSInteger animationDuration;
 @property(nonatomic, assign) NSInteger animationEasing;
+
+// Marker registry for InfoWindow lookup
+@property(nonatomic, strong) NSMutableDictionary<NSString*, RNCNaverMapMarker*>* markerRegistry;
 
 - (void)setLocationOverlay:(const RNCNaverMapViewLocationOverlayStruct&)locationOverlay;
 
