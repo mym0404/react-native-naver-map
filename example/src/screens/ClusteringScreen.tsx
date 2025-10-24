@@ -1,6 +1,7 @@
 import { generateArray } from '@mj-studio/js-util';
 import { type ClusterMarkerProp } from '@mj-studio/react-native-naver-map';
 import React, { useMemo, useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Btn } from '../component/components';
 import { Header } from '../components/Header';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -49,7 +50,7 @@ export const ClusteringScreen = ({ onBack }: { onBack: () => void }) => {
   }, [hash]);
 
   return (
-    <>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       <Header title={'Clustering'} onBack={onBack} />
       <ScreenLayout
         mapProps={{
@@ -68,6 +69,6 @@ export const ClusteringScreen = ({ onBack }: { onBack: () => void }) => {
           </>
         }
       />
-    </>
+    </SafeAreaView>
   );
 };

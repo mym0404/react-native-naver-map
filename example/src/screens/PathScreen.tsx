@@ -1,5 +1,6 @@
 import { NaverMapPathOverlay } from '@mj-studio/react-native-naver-map';
 import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Header } from '../components/Header';
 import { ScreenLayout } from '../components/ScreenLayout';
 
@@ -13,7 +14,7 @@ const Cameras = {
 
 export const PathScreen = ({ onBack }: { onBack: () => void }) => {
   return (
-    <>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       <Header title={'Path Overlay'} onBack={onBack} />
       <ScreenLayout
         mapProps={{
@@ -35,6 +36,6 @@ export const PathScreen = ({ onBack }: { onBack: () => void }) => {
           outlineWidth={1}
         />
       </ScreenLayout>
-    </>
+    </SafeAreaView>
   );
 };

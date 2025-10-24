@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Btn, Toggle } from '../component/components';
 import { Header } from '../components/Header';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -17,7 +18,7 @@ export const LocationOverlayScreen = ({ onBack }: { onBack: () => void }) => {
   const [locationOverlayBearing, setLocationOverlayBearing] = useState(0);
 
   return (
-    <>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       <Header title={'Location Overlay'} onBack={onBack} />
       <ScreenLayout
         mapProps={{
@@ -72,6 +73,6 @@ export const LocationOverlayScreen = ({ onBack }: { onBack: () => void }) => {
           </>
         }
       />
-    </>
+    </SafeAreaView>
   );
 };
