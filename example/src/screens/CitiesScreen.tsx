@@ -1,6 +1,7 @@
 import { formatJson } from '@mj-studio/js-util';
 import { NaverMapMarkerOverlay } from '@mj-studio/react-native-naver-map';
 import React, { useState, useTransition } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Header } from '../components/Header';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { type City, getCitiesByRegion } from '../db/CityDatabase';
@@ -18,7 +19,7 @@ export const CitiesScreen = ({ onBack }: { onBack: () => void }) => {
   const [, startTransition] = useTransition();
 
   return (
-    <>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       <Header title={'Cities (Performance Test)'} onBack={onBack} />
       <ScreenLayout
         mapProps={{
@@ -50,6 +51,6 @@ export const CitiesScreen = ({ onBack }: { onBack: () => void }) => {
           />
         ))}
       </ScreenLayout>
-    </>
+    </SafeAreaView>
   );
 };

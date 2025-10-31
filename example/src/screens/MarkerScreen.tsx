@@ -1,6 +1,7 @@
 import { NaverMapMarkerOverlay } from '@mj-studio/react-native-naver-map';
 import React from 'react';
 import { Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Header } from '../components/Header';
 import { ScreenLayout } from '../components/ScreenLayout';
 
@@ -14,7 +15,7 @@ const Cameras = {
 
 export const MarkerScreen = ({ onBack }: { onBack: () => void }) => {
   return (
-    <>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       <Header title={'Marker Overlay'} onBack={onBack} />
       <ScreenLayout
         mapProps={{
@@ -80,6 +81,6 @@ export const MarkerScreen = ({ onBack }: { onBack: () => void }) => {
           image={{ httpUri: 'https://picsum.photos/1000/1201' }}
         />
       </ScreenLayout>
-    </>
+    </SafeAreaView>
   );
 };
