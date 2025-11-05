@@ -1136,6 +1136,9 @@ export const NaverMapView = forwardRef(
             );
           }
         },
+        showInfoWindow: (infoWindowId: string, position: Coord) => {
+          console.log(infoWindowId, position);
+        },
       }),
       []
     );

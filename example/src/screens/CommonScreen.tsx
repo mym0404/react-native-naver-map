@@ -1,5 +1,6 @@
 import { type MapType } from '@mj-studio/react-native-naver-map';
 import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Btn, Range, Toggle } from '../component/components';
 import { Header } from '../components/Header';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -36,7 +37,7 @@ export const CommonScreen = ({ onBack }: { onBack: () => void }) => {
   const [rerenderKey, setRerenderKey] = useState(0);
 
   return (
-    <>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       <Header title={'Common Settings'} onBack={onBack} />
       <ScreenLayout
         showMap={rerenderKey % 2 === 0}
@@ -129,6 +130,6 @@ export const CommonScreen = ({ onBack }: { onBack: () => void }) => {
           </>
         }
       />
-    </>
+    </SafeAreaView>
   );
 };

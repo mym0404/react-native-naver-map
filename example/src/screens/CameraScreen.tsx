@@ -3,6 +3,7 @@ import {
   type NaverMapViewRef,
 } from '@mj-studio/react-native-naver-map';
 import React, { useRef, useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Btn } from '../component/components';
 import { Header } from '../components/Header';
 import { ScreenLayout } from '../components/ScreenLayout';
@@ -30,7 +31,7 @@ export const CameraScreen = ({ onBack }: { onBack: () => void }) => {
   const [camera, setCamera] = useState(Cameras.Jeju);
 
   return (
-    <>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       <Header title={'Camera Controls'} onBack={onBack} />
       <ScreenLayout
         mapRef={ref}
@@ -135,6 +136,6 @@ export const CameraScreen = ({ onBack }: { onBack: () => void }) => {
           </>
         }
       />
-    </>
+    </SafeAreaView>
   );
 };

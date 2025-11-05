@@ -214,6 +214,9 @@ importers:
       react-native-permissions:
         specifier: ^5.4.1
         version: 5.4.2(react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.9.2))(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)
+      react-native-safe-area-context:
+        specifier: ^5.6.1
+        version: 5.6.1(react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.9.2))(@types/react@19.1.0)(react@19.1.0))(react@19.1.0)
     devDependencies:
       '@babel/core':
         specifier: 'catalog:'
@@ -5158,6 +5161,12 @@ packages:
     peerDependenciesMeta:
       react-native-windows:
         optional: true
+
+  react-native-safe-area-context@5.6.1:
+    resolution: {integrity: sha512-/wJE58HLEAkATzhhX1xSr+fostLsK8Q97EfpfMDKo8jlOc1QKESSX/FQrhk7HhQH/2uSaox4Y86sNaI02kteiA==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
 
   react-native@0.80.0:
     resolution: {integrity: sha512-b9K1ygb2MWCBtKAodKmE3UsbUuC29Pt4CrJMR0ocTA8k+8HJQTPleBPDNKL4/p0P01QO9aL/gZUddoxHempLow==}
@@ -11821,6 +11830,11 @@ snapshots:
       fast-glob: 3.3.3
 
   react-native-permissions@5.4.2(react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.9.2))(@types/react@19.1.0)(react@19.1.0))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-native: 0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.9.2))(@types/react@19.1.0)(react@19.1.0)
+
+  react-native-safe-area-context@5.6.1(react-native@0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.9.2))(@types/react@19.1.0)(react@19.1.0))(react@19.1.0):
     dependencies:
       react: 19.1.0
       react-native: 0.80.0(@babel/core@7.28.4)(@react-native-community/cli@19.0.0(typescript@5.9.2))(@types/react@19.1.0)(react@19.1.0)
