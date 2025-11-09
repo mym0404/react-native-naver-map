@@ -7,7 +7,8 @@ import android.view.Choreographer.FrameCallback
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
-import com.facebook.react.bridge.LifecycleEventListener
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import com.facebook.react.uimanager.ThemedReactContext
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMapOptions
@@ -17,45 +18,128 @@ class RNCNaverMapViewWrapper(
   val reactContext: ThemedReactContext,
   private val mapOptions: NaverMapOptions,
 ) : FrameLayout(reactContext),
-  LifecycleEventListener {
+  DefaultLifecycleObserver {
   var mapView: RNCNaverMapView? = null
     private set
   private var savedState: Bundle? = Bundle()
+
+  private var paused = false
+  private var destroyed = false
+  private var lifecycleObserverAttached = false
+  private var currentLifecycleOwner: LifecycleOwner? = null
 
   init {
     mapView = RNCNaverMapView(reactContext, mapOptions)
     addView(mapView)
   }
 
+  override fun onCreate(owner: LifecycleOwner) {
+    mapView?.onCreate(null)
+  }
+
+  override fun onStart(owner: LifecycleOwner) {
+    mapView?.onStart()
+  }
+
+  override fun onResume(owner: LifecycleOwner) {
+    synchronized(this@RNCNaverMapViewWrapper) {
+      if (!destroyed) {
+        mapView?.onResume()
+      }
+      paused = false
+    }
+  }
+
+  override fun onPause(owner: LifecycleOwner) {
+    synchronized(this@RNCNaverMapViewWrapper) {
+      if (!paused) {
+        mapView?.onPause()
+        paused = true
+      }
+    }
+  }
+
+  override fun onStop(owner: LifecycleOwner) {
+    mapView?.onStop()
+  }
+
+  override fun onDestroy(owner: LifecycleOwner) {
+    doDestroy()
+  }
+
   override fun onAttachedToWindow() {
     super.onAttachedToWindow()
-    mapView?.run {
-      onCreate(savedState)
-      onStart()
+
+    synchronized(this) {
+      paused = false
+    }
+
+    attachLifecycleObserver()
+    if (savedState != null) {
+      mapView?.run {
+        onCreate(savedState)
+        onStart()
+        onResume()
+      }
     }
     setupLayoutHack()
   }
 
   override fun onDetachedFromWindow() {
-    mapView?.run {
-      onSaveInstanceState(
-        savedState ?: run {
-          Bundle().also { this@RNCNaverMapViewWrapper.savedState = it }
-        },
-      )
+    synchronized(this) {
+      mapView?.run {
+        onSaveInstanceState(
+          savedState ?: run {
+            Bundle().also { this@RNCNaverMapViewWrapper.savedState = it }
+          },
+        )
+      }
+
+      if (!paused) {
+        mapView?.onPause()
+        paused = true
+      }
     }
+
+    mapView?.onStop()
     super.onDetachedFromWindow()
+    detachLifecycleObserver()
   }
 
-  fun onDropViewInstance() {
+  private fun attachLifecycleObserver() {
+    val activity = reactContext.currentActivity
+    if (activity is LifecycleOwner && !lifecycleObserverAttached) {
+      currentLifecycleOwner = activity
+      currentLifecycleOwner?.lifecycle?.addObserver(this)
+      lifecycleObserverAttached = true
+    }
+  }
+
+  private fun detachLifecycleObserver() {
+    currentLifecycleOwner?.lifecycle?.removeObserver(this)
+    lifecycleObserverAttached = false
+    currentLifecycleOwner = null
+  }
+
+  @Synchronized
+  fun doDestroy() {
+    if (destroyed) {
+      return
+    }
+    destroyed = true
+    savedState = null
+
+    if (!paused) {
+      mapView?.onPause()
+      paused = true
+    }
     mapView?.run {
       onStop()
       onDestroy()
     }
     removeAllViews()
-    savedState?.clear()
-    savedState = null
     mapView = null
+    detachLifecycleObserver()
   }
 
   // https://github.com/facebook/react-native/issues/17968#issuecomment-457236577
@@ -85,16 +169,6 @@ class RNCNaverMapViewWrapper(
       child.layout(0, 0, child.measuredWidth, child.measuredHeight)
     }
   }
-
-  override fun onHostResume() {
-    mapView?.onResume()
-  }
-
-  override fun onHostPause() {
-    mapView?.onPause()
-  }
-
-  override fun onHostDestroy() {}
 
   override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
     mapView?.withMap { map ->
