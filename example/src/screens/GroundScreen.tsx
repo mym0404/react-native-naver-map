@@ -31,10 +31,11 @@ export const GroundScreen = ({ onBack }: { onBack: () => void }) => {
       <ScreenLayout
         mapProps={{
           camera: Cameras.Jeju,
+          isShowLocationButton: true,
         }}
       >
         <NaverMapGroundOverlay
-          image={{ assetName: 'thumbnail' }}
+          image={require('../logo180.png')}
           region={Regions.Jeju}
           onTap={() => console.log('Ground overlay tapped')}
         />

@@ -44,10 +44,7 @@ export const CitiesScreen = ({ onBack }: { onBack: () => void }) => {
             key={`${city.region}-${city.lat}-${i}`}
             latitude={city.lat}
             longitude={city.lng}
-            alpha={0.2}
             image={require('../logo180.png')}
-            width={1}
-            height={1}
           />
         ))}
       </ScreenLayout>

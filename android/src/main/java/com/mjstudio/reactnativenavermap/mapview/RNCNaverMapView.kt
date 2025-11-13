@@ -202,12 +202,8 @@ class RNCNaverMapView(
           attacherGroup?.removeView(child)
         }
 
-        is RNCNaverMapOverlay<*> -> {
-          child.removeFromMap(map)
-        }
-
         else -> {
-          removeView(child)
+          child.removeFromMap(map)
         }
       }
     }
