@@ -1,7 +1,6 @@
 package com.mjstudio.reactnativenavermap.mapview
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.view.Choreographer
 import android.view.Choreographer.FrameCallback
 import android.view.MotionEvent
@@ -21,9 +20,8 @@ class RNCNaverMapViewWrapper(
   DefaultLifecycleObserver {
   var mapView: RNCNaverMapView? = null
     private set
-  private var savedState: Bundle? = Bundle()
 
-  private var paused = false
+  private var isResumed = false
   private var destroyed = false
   private var lifecycleObserverAttached = false
   private var currentLifecycleOwner: LifecycleOwner? = null
@@ -33,75 +31,50 @@ class RNCNaverMapViewWrapper(
     addView(mapView)
   }
 
-  override fun onCreate(owner: LifecycleOwner) {
-    mapView?.onCreate(null)
-  }
-
-  override fun onStart(owner: LifecycleOwner) {
-    mapView?.onStart()
-  }
-
   override fun onResume(owner: LifecycleOwner) {
     synchronized(this@RNCNaverMapViewWrapper) {
-      if (!destroyed) {
+      if (isAttachedToWindow && !isResumed && !destroyed) {
         mapView?.onResume()
+        isResumed = true
       }
-      paused = false
     }
   }
 
   override fun onPause(owner: LifecycleOwner) {
     synchronized(this@RNCNaverMapViewWrapper) {
-      if (!paused) {
+      if (isResumed && !destroyed) {
         mapView?.onPause()
-        paused = true
+        isResumed = false
       }
     }
-  }
-
-  override fun onStop(owner: LifecycleOwner) {
-    mapView?.onStop()
-  }
-
-  override fun onDestroy(owner: LifecycleOwner) {
-    doDestroy()
   }
 
   override fun onAttachedToWindow() {
     super.onAttachedToWindow()
 
     synchronized(this) {
-      paused = false
+      if (!destroyed) {
+        mapView?.run {
+          onCreate(null)
+          onStart()
+
+          if (!isResumed) {
+            onResume()
+            isResumed = true
+          }
+        }
+      }
     }
 
     attachLifecycleObserver()
-    if (savedState != null) {
-      mapView?.run {
-        onCreate(savedState)
-        onStart()
-        onResume()
-      }
-    }
     setupLayoutHack()
   }
 
   override fun onDetachedFromWindow() {
-    synchronized(this) {
-      mapView?.run {
-        onSaveInstanceState(
-          savedState ?: run {
-            Bundle().also { this@RNCNaverMapViewWrapper.savedState = it }
-          },
-        )
-      }
-
-      if (!paused) {
-        mapView?.onPause()
-        paused = true
-      }
+    if (!destroyed) {
+      doDestroy()
     }
 
-    mapView?.onStop()
     super.onDetachedFromWindow()
     detachLifecycleObserver()
   }
@@ -127,16 +100,17 @@ class RNCNaverMapViewWrapper(
       return
     }
     destroyed = true
-    savedState = null
 
-    if (!paused) {
-      mapView?.onPause()
-      paused = true
-    }
     mapView?.run {
+      if (isResumed) {
+        onPause()
+        isResumed = false
+      }
+
       onStop()
       onDestroy()
     }
+
     removeAllViews()
     mapView = null
     detachLifecycleObserver()
@@ -148,7 +122,7 @@ class RNCNaverMapViewWrapper(
       object : FrameCallback {
         override fun doFrame(frameTimeNanos: Long) {
           manuallyLayoutChildren()
-          getViewTreeObserver().dispatchOnGlobalLayout()
+          viewTreeObserver.dispatchOnGlobalLayout()
           if (isAttachedToWindow) {
             Choreographer
               .getInstance()
