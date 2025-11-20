@@ -18,9 +18,9 @@ catalog:
   '@types/react': ^19
   '@types/react-dom': ^19
   '@types/react-test-renderer': ^19
-  next: 15.5.2
-  react: ^19
-  react-dom: ^19
+  next: ^16.0.3
+  react: ^19.2.0
+  react-dom: ^19.2.0
   react-native: 0.80.0
   react-test-renderer: ^19
   tailwindcss: ^4.1.13
