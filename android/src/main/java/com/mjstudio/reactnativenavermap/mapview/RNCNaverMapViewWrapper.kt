@@ -1,6 +1,7 @@
 package com.mjstudio.reactnativenavermap.mapview
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.view.Choreographer
 import android.view.Choreographer.FrameCallback
 import android.view.MotionEvent
@@ -20,6 +21,7 @@ class RNCNaverMapViewWrapper(
   DefaultLifecycleObserver {
   var mapView: RNCNaverMapView? = null
     private set
+  private var savedState: Bundle? = Bundle()
 
   private var isResumed = false
   private var destroyed = false
@@ -55,7 +57,7 @@ class RNCNaverMapViewWrapper(
     synchronized(this) {
       if (!destroyed) {
         mapView?.run {
-          onCreate(null)
+          onCreate(savedState)
           onStart()
 
           if (!isResumed) {
@@ -71,6 +73,14 @@ class RNCNaverMapViewWrapper(
   }
 
   override fun onDetachedFromWindow() {
+    mapView?.run {
+      onSaveInstanceState(
+        savedState ?: run {
+          Bundle().also { this@RNCNaverMapViewWrapper.savedState = it }
+        },
+      )
+    }
+
     if (!destroyed) {
       doDestroy()
     }
@@ -112,6 +122,8 @@ class RNCNaverMapViewWrapper(
     }
 
     removeAllViews()
+    savedState?.clear()
+    savedState = null
     mapView = null
     detachLifecycleObserver()
   }
