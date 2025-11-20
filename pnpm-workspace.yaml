@@ -1,7 +1,6 @@
 packages:
   - example
   - docs
-  - docs2
 
 catalog:
   '@babel/core': ^7.28.4
@@ -34,4 +33,4 @@ onlyBuiltDependencies:
   - sharp
   - unrs-resolver
 
-shamefullyHoist: true
+nodeLinker: isolated
