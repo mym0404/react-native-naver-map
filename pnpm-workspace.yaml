@@ -15,14 +15,14 @@ catalog:
   '@react-native/typescript-config': 0.80.0
   '@tailwindcss/postcss': ^4.1.13
   '@types/node': ^20.19.13
-  '@types/react': 19.1.0
-  '@types/react-dom': ^19.1.9
-  '@types/react-test-renderer': ^19.1.0
+  '@types/react': ^19
+  '@types/react-dom': ^19
+  '@types/react-test-renderer': ^19
   next: 15.5.2
-  react: 19.1.0
-  react-dom: 19.1.0
+  react: ^19
+  react-dom: ^19
   react-native: 0.80.0
-  react-test-renderer: 19.1.0
+  react-test-renderer: ^19
   tailwindcss: ^4.1.13
   typescript: ^5.9.2
 
