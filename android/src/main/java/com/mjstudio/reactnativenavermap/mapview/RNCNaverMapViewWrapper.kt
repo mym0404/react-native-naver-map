@@ -10,6 +10,7 @@ import android.widget.FrameLayout
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.facebook.react.uimanager.ThemedReactContext
+import com.mjstudio.reactnativenavermap.util.debugE
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMapOptions
 
@@ -54,6 +55,7 @@ class RNCNaverMapViewWrapper(
 
   override fun onAttachedToWindow() {
     super.onAttachedToWindow()
+    debugE("attachedToWindow start isCreated=$isCreated destroyed=$destroyed hasState=${savedState != null}")
 
     synchronized(this) {
       if (!destroyed) {
@@ -61,12 +63,15 @@ class RNCNaverMapViewWrapper(
           if (!isCreated) {
             onCreate(savedState)
             isCreated = true
+            debugE("mapView onCreate")
           }
           onStart()
+          debugE("mapView onStart")
 
           if (!isResumed) {
             onResume()
             isResumed = true
+            debugE("mapView onResume")
           }
         }
       }
@@ -77,12 +82,13 @@ class RNCNaverMapViewWrapper(
   }
 
   override fun onDetachedFromWindow() {
+    debugE("onDetachedFromWindow start isResumed=$isResumed destroyed=$destroyed hasState=${savedState != null}")
     mapView?.run {
       if (isResumed) {
         onPause()
         isResumed = false
+        debugE("mapView onPause @detach")
       }
-      onStop()
       onSaveInstanceState(
         savedState ?: run {
           Bundle().also { this@RNCNaverMapViewWrapper.savedState = it }
@@ -111,6 +117,7 @@ class RNCNaverMapViewWrapper(
 
   @Synchronized
   fun doDestroy() {
+    debugE("doDestroy called destroyed=$destroyed")
     if (destroyed) {
       return
     }
@@ -120,10 +127,13 @@ class RNCNaverMapViewWrapper(
       if (isResumed) {
         onPause()
         isResumed = false
+        debugE("mapView onPause @destroy")
       }
 
       onStop()
+      debugE("mapView onStop @destroy")
       onDestroy()
+      debugE("mapView onDestroy @destroy")
     }
 
     removeAllViews()
