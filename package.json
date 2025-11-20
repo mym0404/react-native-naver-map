@@ -1,6 +1,6 @@
 {
   "name": "@mj-studio/react-native-naver-map",
-  "version": "2.6.7",
+  "version": "2.6.6",
   "description": "Naver Map Component for React Native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -40,7 +40,7 @@
     "xcode": "open $(pwd)/example/ios/example.xcworkspace",
     "pod": "cd example/ios && bundle && bundle exec pod install --repo-update",
     "pod:update": "cd example/ios && bundle && bundle exec pod update",
-    "build": "pnpm build:expo-config-plugin && bob build",
+    "build": "pnpm build:expo-config-plugin && pnpm build:docs && bob build",
     "prepack": "pnpm build",
     "build:expo-config-plugin": "tsc --project ./expo-config-plugin",
     "build:docs": "cd docs && pnpm build",
