@@ -21,7 +21,8 @@ class RNCNaverMapViewWrapper(
   DefaultLifecycleObserver {
   var mapView: RNCNaverMapView? = null
     private set
-  private var savedState: Bundle? = Bundle()
+  private var savedState: Bundle? = null
+  private var isCreated = false
 
   private var isResumed = false
   private var destroyed = false
@@ -57,7 +58,10 @@ class RNCNaverMapViewWrapper(
     synchronized(this) {
       if (!destroyed) {
         mapView?.run {
-          onCreate(savedState)
+          if (!isCreated) {
+            onCreate(savedState)
+            isCreated = true
+          }
           onStart()
 
           if (!isResumed) {
@@ -74,15 +78,16 @@ class RNCNaverMapViewWrapper(
 
   override fun onDetachedFromWindow() {
     mapView?.run {
+      if (isResumed) {
+        onPause()
+        isResumed = false
+      }
+      onStop()
       onSaveInstanceState(
         savedState ?: run {
           Bundle().also { this@RNCNaverMapViewWrapper.savedState = it }
         },
       )
-    }
-
-    if (!destroyed) {
-      doDestroy()
     }
 
     super.onDetachedFromWindow()
@@ -124,6 +129,7 @@ class RNCNaverMapViewWrapper(
     removeAllViews()
     savedState?.clear()
     savedState = null
+    isCreated = false
     mapView = null
     detachLifecycleObserver()
   }
