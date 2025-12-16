@@ -7,8 +7,10 @@ import android.view.Choreographer.FrameCallback
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
-import com.facebook.react.bridge.LifecycleEventListener
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import com.facebook.react.uimanager.ThemedReactContext
+import com.mjstudio.reactnativenavermap.util.debugE
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMapOptions
 
@@ -17,45 +19,129 @@ class RNCNaverMapViewWrapper(
   val reactContext: ThemedReactContext,
   private val mapOptions: NaverMapOptions,
 ) : FrameLayout(reactContext),
-  LifecycleEventListener {
+  DefaultLifecycleObserver {
   var mapView: RNCNaverMapView? = null
     private set
-  private var savedState: Bundle? = Bundle()
+  private var savedState: Bundle? = null
+  private var isCreated = false
+
+  private var isResumed = false
+  private var destroyed = false
+  private var lifecycleObserverAttached = false
+  private var currentLifecycleOwner: LifecycleOwner? = null
 
   init {
     mapView = RNCNaverMapView(reactContext, mapOptions)
     addView(mapView)
   }
 
+  override fun onResume(owner: LifecycleOwner) {
+    synchronized(this@RNCNaverMapViewWrapper) {
+      if (isAttachedToWindow && !isResumed && !destroyed) {
+        mapView?.onResume()
+        isResumed = true
+      }
+    }
+  }
+
+  override fun onPause(owner: LifecycleOwner) {
+    synchronized(this@RNCNaverMapViewWrapper) {
+      if (isResumed && !destroyed) {
+        mapView?.onPause()
+        isResumed = false
+      }
+    }
+  }
+
   override fun onAttachedToWindow() {
     super.onAttachedToWindow()
-    mapView?.run {
-      onCreate(savedState)
-      onStart()
+    debugE("attachedToWindow start isCreated=$isCreated destroyed=$destroyed hasState=${savedState != null}")
+
+    synchronized(this) {
+      if (!destroyed) {
+        mapView?.run {
+          if (!isCreated) {
+            onCreate(savedState)
+            isCreated = true
+            debugE("mapView onCreate")
+          }
+          onStart()
+          debugE("mapView onStart")
+
+          if (!isResumed) {
+            onResume()
+            isResumed = true
+            debugE("mapView onResume")
+          }
+        }
+      }
     }
+
+    attachLifecycleObserver()
     setupLayoutHack()
   }
 
   override fun onDetachedFromWindow() {
+    debugE("onDetachedFromWindow start isResumed=$isResumed destroyed=$destroyed hasState=${savedState != null}")
     mapView?.run {
+      if (isResumed) {
+        onPause()
+        isResumed = false
+        debugE("mapView onPause @detach")
+      }
       onSaveInstanceState(
         savedState ?: run {
           Bundle().also { this@RNCNaverMapViewWrapper.savedState = it }
         },
       )
     }
+
     super.onDetachedFromWindow()
+    detachLifecycleObserver()
   }
 
-  fun onDropViewInstance() {
-    mapView?.run {
-      onStop()
-      onDestroy()
+  private fun attachLifecycleObserver() {
+    val activity = reactContext.currentActivity
+    if (activity is LifecycleOwner && !lifecycleObserverAttached) {
+      currentLifecycleOwner = activity
+      currentLifecycleOwner?.lifecycle?.addObserver(this)
+      lifecycleObserverAttached = true
     }
+  }
+
+  private fun detachLifecycleObserver() {
+    currentLifecycleOwner?.lifecycle?.removeObserver(this)
+    lifecycleObserverAttached = false
+    currentLifecycleOwner = null
+  }
+
+  @Synchronized
+  fun doDestroy() {
+    debugE("doDestroy called destroyed=$destroyed")
+    if (destroyed) {
+      return
+    }
+    destroyed = true
+
+    mapView?.run {
+      if (isResumed) {
+        onPause()
+        isResumed = false
+        debugE("mapView onPause @destroy")
+      }
+
+      onStop()
+      debugE("mapView onStop @destroy")
+      onDestroy()
+      debugE("mapView onDestroy @destroy")
+    }
+
     removeAllViews()
     savedState?.clear()
     savedState = null
+    isCreated = false
     mapView = null
+    detachLifecycleObserver()
   }
 
   // https://github.com/facebook/react-native/issues/17968#issuecomment-457236577
@@ -64,7 +150,7 @@ class RNCNaverMapViewWrapper(
       object : FrameCallback {
         override fun doFrame(frameTimeNanos: Long) {
           manuallyLayoutChildren()
-          getViewTreeObserver().dispatchOnGlobalLayout()
+          viewTreeObserver.dispatchOnGlobalLayout()
           if (isAttachedToWindow) {
             Choreographer
               .getInstance()
@@ -85,16 +171,6 @@ class RNCNaverMapViewWrapper(
       child.layout(0, 0, child.measuredWidth, child.measuredHeight)
     }
   }
-
-  override fun onHostResume() {
-    mapView?.onResume()
-  }
-
-  override fun onHostPause() {
-    mapView?.onPause()
-  }
-
-  override fun onHostDestroy() {}
 
   override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
     mapView?.withMap { map ->

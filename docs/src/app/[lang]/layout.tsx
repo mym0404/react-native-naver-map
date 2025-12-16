@@ -93,7 +93,7 @@ export default async function Layout({
     <html lang={lang} suppressHydrationWarning>
       <Script
         defer
-        src="https://umami.mjstudio.net/script.js"
+        src={'https://umami.mjstudio.net/script.js'}
         data-website-id="20802a8b-5591-4919-a8af-d20317718fd0"
       />
       <body className="flex flex-col min-h-screen">

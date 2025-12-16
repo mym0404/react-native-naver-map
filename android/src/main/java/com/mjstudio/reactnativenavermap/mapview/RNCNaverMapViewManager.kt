@@ -102,13 +102,10 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
   }
 
   override fun createViewInstance(reactContext: ThemedReactContext): RNCNaverMapViewWrapper =
-    RNCNaverMapViewWrapper(reactContext, initialMapOptions ?: NaverMapOptions()).also {
-      reactContext.addLifecycleEventListener(it)
-    }
+    RNCNaverMapViewWrapper(reactContext, initialMapOptions ?: NaverMapOptions())
 
   override fun onDropViewInstance(view: RNCNaverMapViewWrapper) {
-    view.onDropViewInstance()
-    view.reactContext.removeLifecycleEventListener(view)
+    view.doDestroy()
     clustererHolders.forEach { (_, u) -> u.onDetach() }
     clustererHolders.clear()
     lastClustersPropKey = "NOT_SET"
