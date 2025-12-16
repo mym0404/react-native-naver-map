@@ -33,4 +33,9 @@ onlyBuiltDependencies:
   - sharp
   - unrs-resolver
 
-nodeLinker: isolated
+nodeLinker: hoisted
+
+publicHoistPattern:
+- "react-native"
+- "@react-native/codegen"
+- "@react-native/gradle-plugin"
