@@ -50,6 +50,9 @@ check:
       run: pnpm bob build
 #    build-docs:
 #      run: pnpm build:docs
+#    typecheck:docs:
+#      root: docs
+#      run: pnpm tsc --noEmit
 
 commit-msg:
   commands:

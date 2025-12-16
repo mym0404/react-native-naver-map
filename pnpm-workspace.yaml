@@ -36,5 +36,6 @@ onlyBuiltDependencies:
 nodeLinker: hoisted
 
 publicHoistPattern:
+- "react-native"
 - "@react-native/codegen"
 - "@react-native/gradle-plugin"
