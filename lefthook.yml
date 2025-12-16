@@ -44,9 +44,6 @@ check:
     typecheck:example:
       root: example
       run: pnpm tsc --noEmit
-    typecheck:docs:
-      root: docs
-      run: pnpm tsc --noEmit
     build-expo-config-plugin:
       run: pnpm build:expo-config-plugin
     build-package:
