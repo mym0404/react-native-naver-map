@@ -228,6 +228,11 @@ using namespace facebook::react;
     _inner.subCaptionMaxZoom = caption.maxZoom;
   }
 
+  // Set identifier as tag for InfoWindow lookup
+  if (prev.identifier != next.identifier) {
+    _inner.userInfo = @{@"identifier" : getNsStr(next.identifier)};
+  }
+
   [super updateProps:props oldProps:oldProps];
 
   // Ensure touch handler is properly set after marker properties are updated

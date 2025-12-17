@@ -6,6 +6,7 @@ import android.view.Choreographer
 import android.view.Choreographer.FrameCallback
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.MeasureSpec
 import android.widget.FrameLayout
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -178,14 +179,10 @@ class RNCNaverMapViewWrapper(
         when (ev?.action) {
           MotionEvent.ACTION_DOWN,
           MotionEvent.ACTION_MOVE,
-          -> {
-            parent?.requestDisallowInterceptTouchEvent(true)
-          }
+          -> parent?.requestDisallowInterceptTouchEvent(true)
           MotionEvent.ACTION_UP,
           MotionEvent.ACTION_CANCEL,
-          -> {
-            parent?.requestDisallowInterceptTouchEvent(false)
-          }
+          -> parent?.requestDisallowInterceptTouchEvent(false)
         }
       }
     }

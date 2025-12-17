@@ -1,0 +1,34 @@
+//
+//  RNCNaverMapInfoWindow.h
+//  mj-studio-react-native-naver-map
+//
+//  Created by AI Assistant
+//
+
+#import "ColorUtil.h"
+#import "FnUtil.h"
+#import "MacroUtil.h"
+#import <Foundation/Foundation.h>
+#import <NMapsMap/NMapsMap.h>
+#import <React/RCTUtils.h>
+#import <React/RCTView.h>
+#import <UIKit/UIKit.h>
+
+#import "RCTFabricComponentsPlugins.h"
+#import <React/RCTViewComponentView.h>
+#import <react/renderer/components/RNCNaverMapSpec/ComponentDescriptors.h>
+#import <react/renderer/components/RNCNaverMapSpec/EventEmitters.h>
+#import <react/renderer/components/RNCNaverMapSpec/Props.h>
+#import <react/renderer/components/RNCNaverMapSpec/RCTComponentViewHelpers.h>
+
+@class RNCNaverMapViewImpl;
+@class RNCNaverMapMarker;
+
+@interface RNCNaverMapInfoWindow : RCTViewComponentView
+@property(nonatomic, strong) NMFInfoWindow* inner;
+
+- (void)setCurrentMapView:(NMFMapView*)mapView;
+- (void)setParentMapViewImpl:(RNCNaverMapViewImpl*)mapViewImpl;
+- (void)updateInfoWindowState;
+
+@end
