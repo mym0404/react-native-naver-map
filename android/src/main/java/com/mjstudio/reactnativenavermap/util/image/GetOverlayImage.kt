@@ -56,18 +56,18 @@ internal fun getOverlayImage(
   val isUriFormat = rnAssetUri.startsWith("http") || 
                      rnAssetUri.startsWith("file://") || 
                      rnAssetUri.startsWith("content://")
-  val httpUri = map["httpUri"]?.toString() ?: if (isUriFormat) rnAssetUri else ""
+  val assetUri = map["httpUri"]?.toString() ?: if (isUriFormat) rnAssetUri else ""
   val assetName = map["assetName"]?.toString() ?: ""
   val reuseIdentifier = map["reuseIdentifier"]?.toString() ?: ""
 
   /**
    * http, https, asset, file all works
    */
-  if (httpUri.isNotEmpty()) {
-    val key = reuseIdentifier.ifEmpty { httpUri }
+  if (assetUri.isNotEmpty()) {
+    val key = reuseIdentifier.ifEmpty { assetUri }
     val imageRequest =
       ImageRequestBuilder
-        .newBuilderWithSource(Uri.parse(httpUri))
+        .newBuilderWithSource(Uri.parse(assetUri))
         .build()
     val dataSource =
       Fresco
