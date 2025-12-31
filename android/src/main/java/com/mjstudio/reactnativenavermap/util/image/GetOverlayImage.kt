@@ -52,18 +52,22 @@ internal fun getOverlayImage(
 
   val rnAssetUri = map["rnAssetUri"]?.toString() ?: ""
   // rnAssetUri starts with http if dev environment(metro server)
-  val httpUri = map["httpUri"]?.toString() ?: if (rnAssetUri.startsWith("http")) rnAssetUri else ""
+  // Also handle file:// and content:// URIs (e.g., from CodePush bundles)
+  val isUriFormat = rnAssetUri.startsWith("http") || 
+                     rnAssetUri.startsWith("file://") || 
+                     rnAssetUri.startsWith("content://")
+  val assetUri = map["httpUri"]?.toString() ?: if (isUriFormat) rnAssetUri else ""
   val assetName = map["assetName"]?.toString() ?: ""
   val reuseIdentifier = map["reuseIdentifier"]?.toString() ?: ""
 
   /**
    * http, https, asset, file all works
    */
-  if (httpUri.isNotEmpty()) {
-    val key = reuseIdentifier.ifEmpty { httpUri }
+  if (assetUri.isNotEmpty()) {
+    val key = reuseIdentifier.ifEmpty { assetUri }
     val imageRequest =
       ImageRequestBuilder
-        .newBuilderWithSource(Uri.parse(httpUri))
+        .newBuilderWithSource(Uri.parse(assetUri))
         .build()
     val dataSource =
       Fresco
@@ -110,8 +114,10 @@ internal fun getOverlayImage(
     return
   }
 
-  if (rnAssetUri.isNotEmpty() || assetName.isNotEmpty()) {
-    val name = rnAssetUri.ifEmpty { assetName }
+  // Only use drawable resource if rnAssetUri is not a URI format (file://, content://, http://, https://)
+  // and assetName is provided, or if rnAssetUri is empty and assetName is provided
+  if (assetName.isNotEmpty() || (rnAssetUri.isNotEmpty() && !isUriFormat)) {
+    val name = if (assetName.isNotEmpty()) assetName else rnAssetUri
     val key = reuseIdentifier.ifEmpty { name }
     callback(
       OverlayImage.fromResource(getDrawableWithName(context, name)).also {
