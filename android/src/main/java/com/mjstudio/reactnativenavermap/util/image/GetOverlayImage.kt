@@ -53,16 +53,15 @@ internal fun getOverlayImage(
   val rnAssetUri = map["rnAssetUri"]?.toString() ?: ""
   // rnAssetUri starts with http if dev environment(metro server)
   // Also handle file:// and content:// URIs (e.g., from CodePush bundles)
-  val isUriFormat = rnAssetUri.startsWith("http") || 
-                     rnAssetUri.startsWith("file://") || 
-                     rnAssetUri.startsWith("content://")
+  val isUriFormat =
+    rnAssetUri.startsWith("http") ||
+      rnAssetUri.startsWith("file://") ||
+      rnAssetUri.startsWith("content://")
   val assetUri = map["httpUri"]?.toString() ?: if (isUriFormat) rnAssetUri else ""
   val assetName = map["assetName"]?.toString() ?: ""
   val reuseIdentifier = map["reuseIdentifier"]?.toString() ?: ""
 
-  /**
-   * http, https, asset, file all works
-   */
+  // http, https, asset, file all works
   if (assetUri.isNotEmpty()) {
     val key = reuseIdentifier.ifEmpty { assetUri }
     val imageRequest =
