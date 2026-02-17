@@ -60,26 +60,64 @@ LSP symbol indexing was unavailable during generation. Use directory AGENTS file
 
 ## COMMANDS
 ```bash
+# checks and formatting
 pnpm run t
 pnpm typecheck
 pnpm format
 
+# codegen
 pnpm codegen
 pnpm codegen:ios
 pnpm codegen:android
 
+# build and release
 pnpm build
 pnpm build:docs
 pnpm build:expo-config-plugin
 pnpm prepack
+pnpm release
 
+# CI and turbo
 pnpm ci:ios
 pnpm ci:android
 pnpm turbo:ios
 pnpm turbo:android
+
+# example app and docs
+pnpm dev
+pnpm ios
+pnpm android
+pnpm docs:dev
+
+# native dependencies
+pnpm pod
+pnpm pod:update
+
+# IDE helpers
+pnpm studio
+pnpm xcode
 ```
+
+## DEVELOPMENT WORKFLOW
+1. Change TS source under `src/`.
+2. If `src/spec/*` changed, run `pnpm codegen`.
+3. Apply matching iOS and Android native updates.
+4. Validate behavior in `example/` (`pnpm dev` + `pnpm ios`/`pnpm android`).
+5. Run `pnpm run t` before opening/updating PR.
+
+## NATIVE SDK DEPENDENCIES
+- iOS: `NMapsMap` (`ios-map-sdk`) - https://navermaps.github.io/ios-map-sdk/guide-ko/
+- Android: `com.naver.maps:map-sdk` (`android-map-sdk`) - https://navermaps.github.io/android-map-sdk/guide-ko/
+
+## EXAMPLE KEY SETUP
+- Android key file: `example/android/app/src/main/res/values/secret.xml`
+- iOS key file: `example/ios/Secret.xcconfig`
+- Do not commit real keys.
 
 ## NOTES
 - Example app requires Naver key setup before realistic runtime checks.
 - CI injects dummy secret files for build jobs; local workflows should not rely on those.
-- When unsure, read `CLAUDE.md` first, then nearest subdirectory `AGENTS.md`.
+- Use Conventional Commits for commit messages.
+- Read nearest subdirectory `AGENTS.md` before editing local modules.
+- For implementation examples and code shapes, reference `.skills/dev-patterns.md`.
+- Use `CLAUDE.md` as deep pattern reference when AGENTS coverage is insufficient.
