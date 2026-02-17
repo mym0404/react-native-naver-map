@@ -6,7 +6,7 @@
 //
 
 #import "RNCNaverMapMarker.h"
-#import "Module/RNCNaverMapUtil.h"
+#import "RNCNaverMapUtil.h"
 #import <React/RCTBridge+Private.h>
 #ifdef RCT_NEW_ARCH_ENABLED
 using namespace facebook::react;

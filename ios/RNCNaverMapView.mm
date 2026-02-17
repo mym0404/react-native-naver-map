@@ -1,5 +1,5 @@
 #import "RNCNaverMapView.h"
-#import "Module/RNCNaverMapUtil.h"
+#import "RNCNaverMapUtil.h"
 
 using namespace facebook::react;
 
