@@ -1,6 +1,5 @@
 package com.mjstudio.reactnativenavermap
 
-import com.facebook.fbreact.specs.NativeRNCNaverMapUtilSpec
 import com.facebook.react.bridge.ReactApplicationContext
 
 abstract class RNCNaverMapUtilSpec(
