@@ -19,6 +19,10 @@
 
 RCT_EXPORT_MODULE()
 
+- (BOOL)isInfoWindowActuallyOpen:(NMFInfoWindow*)infoWindow {
+  return infoWindow.marker != nil || infoWindow.mapView != nil;
+}
+
 - (instancetype)init {
   if (self = [super init]) {
     _infoWindows = [NSMutableDictionary new];
@@ -80,14 +84,15 @@ RCT_EXPORT_METHOD(setInfoWindowContent : (NSString*)infoWindowId title : (NSStri
     }
 
     // Update if already open
-    if ([_openInfoWindows containsObject:infoWindowId]) {
+    if ([self isInfoWindowActuallyOpen:infoWindow]) {
       [infoWindow invalidate];
     }
   }
 }
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(isInfoWindowOpen : (NSString*)infoWindowId) {
-  return @([_openInfoWindows containsObject:infoWindowId]);
+  NMFInfoWindow* infoWindow = _infoWindows[infoWindowId];
+  return @([self isInfoWindowActuallyOpen:infoWindow]);
 }
 
 // Helper methods for ViewManagers

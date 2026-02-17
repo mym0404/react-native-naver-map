@@ -73,15 +73,16 @@ class RNCNaverMapUtilModule(
     subtitle: String?,
   ) {
     infoWindowContents[id] = InfoWindowContent(title, subtitle)
+    val infoWindow = infoWindows[id] ?: return
 
     // 이미 열려있다면 업데이트
-    if (openInfoWindows.contains(id)) {
-      infoWindows[id]?.invalidate()
+    if (isInfoWindowActuallyOpen(infoWindow)) {
+      infoWindow.invalidate()
     }
   }
 
   @ReactMethod(isBlockingSynchronousMethod = true)
-  override fun isInfoWindowOpen(id: String): Boolean = openInfoWindows.contains(id)
+  override fun isInfoWindowOpen(id: String): Boolean = infoWindows[id]?.let(::isInfoWindowActuallyOpen) ?: false
 
   // ViewManager에서 접근할 내부 메서드들
   fun getInfoWindow(id: String): InfoWindow? = infoWindows[id]
@@ -93,6 +94,8 @@ class RNCNaverMapUtilModule(
   fun markAsClosed(id: String) {
     openInfoWindows.remove(id)
   }
+
+  private fun isInfoWindowActuallyOpen(infoWindow: InfoWindow): Boolean = infoWindow.map != null || infoWindow.marker != null
 
   private data class InfoWindowContent(
     val title: String,
