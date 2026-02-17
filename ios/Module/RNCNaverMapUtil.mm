@@ -69,7 +69,7 @@ RCT_EXPORT_METHOD(closeInfoWindow : (NSString*)infoWindowId) {
 }
 
 RCT_EXPORT_METHOD(setInfoWindowContent : (NSString*)infoWindowId title : (NSString*)
-                      title subtitle : (NSString* _Nullable)subtitle) {
+                      title subtitle : (NSString*)subtitle) {
   _infoWindowContents[infoWindowId] = @{@"title" : title ?: @"", @"subtitle" : subtitle ?: @""};
 
   NMFInfoWindow* infoWindow = _infoWindows[infoWindowId];
