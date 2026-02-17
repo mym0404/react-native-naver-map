@@ -9,11 +9,11 @@ module.exports = {
     '@react-native-community/slider': {
       root: path.resolve(
         __dirname,
-        '../node_modules/@react-native-community/slider'
+        './node_modules/@react-native-community/slider'
       ),
     },
     'react-native-permissions': {
-      root: path.resolve(__dirname, '../node_modules/react-native-permissions'),
+      root: path.resolve(__dirname, './node_modules/react-native-permissions'),
     },
   },
 };
