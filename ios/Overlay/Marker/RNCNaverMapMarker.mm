@@ -99,8 +99,8 @@ using namespace facebook::react;
 
   _imageCanceller = nmap::getImage([self bridge], image, ^(NMFOverlayImage* _Nullable image) {
     dispatch_async(dispatch_get_main_queue(), [self, image]() {
+      self.inner.alpha = 1;
       if (image) {
-        self.inner.alpha = 1;
         self.inner.iconImage = image;
       }
       self->_imageCanceller = nil;
