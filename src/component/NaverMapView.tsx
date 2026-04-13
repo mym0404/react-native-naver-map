@@ -657,6 +657,9 @@ export interface NaverMapViewRef {
     screenX: number;
     screenY: number;
   }>;
+
+  showInfoWindow: (infoWindowId: string, position: Coord) => void;
+  hideInfoWindow: (infoWindowId: string) => void;
 }
 
 function clamp(v: number, min: number, max: number): number {
@@ -1132,6 +1135,21 @@ export const NaverMapView = forwardRef(
             return new Promise((_, reject) =>
               reject(new Error('ref not set yet'))
             );
+          }
+        },
+        showInfoWindow: (infoWindowId: string, position: Coord) => {
+          if (innerRef.current) {
+            Commands.showInfoWindow(
+              innerRef.current,
+              infoWindowId,
+              position.latitude,
+              position.longitude
+            );
+          }
+        },
+        hideInfoWindow: (infoWindowId: string) => {
+          if (innerRef.current) {
+            Commands.hideInfoWindow(innerRef.current, infoWindowId);
           }
         },
       }),

@@ -1,8 +1,11 @@
 import { type TurboModule, TurboModuleRegistry } from 'react-native';
-import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 
 export interface Spec extends TurboModule {
-  setGlobalZIndex(type: string, zIndex: Double): void;
+  createInfoWindow(id: string): void;
+  destroyInfoWindow(id: string): void;
+  closeInfoWindow(id: string): void;
+  setInfoWindowContent(id: string, title: string, subtitle?: string): void;
+  isInfoWindowOpen(id: string): boolean;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('RNCNaverMapUtil');

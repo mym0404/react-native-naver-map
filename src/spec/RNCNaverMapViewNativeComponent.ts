@@ -274,6 +274,16 @@ interface NativeCommands {
     ref: React.ElementRef<ComponentType>,
     mode: string
   ) => void;
+  showInfoWindow: (
+    ref: React.ElementRef<ComponentType>,
+    infoWindowId: string,
+    latitude: Double,
+    longitude: Double
+  ) => void;
+  hideInfoWindow: (
+    ref: React.ElementRef<ComponentType>,
+    infoWindowId: string
+  ) => void;
 }
 
 export default codegenNativeComponent<Props>('RNCNaverMapView');
@@ -286,5 +296,7 @@ export const Commands: NativeCommands = codegenNativeCommands<NativeCommands>({
     'cancelAnimation',
     'animateRegionTo',
     'setLocationTrackingMode',
+    'showInfoWindow',
+    'hideInfoWindow',
   ],
 });

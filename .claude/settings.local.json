@@ -16,7 +16,8 @@
       "Bash(grep:*)",
       "Bash(pnpm format:*)",
       "Bash(pnpm turbo:android:*)",
-      "Bash(git init:*)"
+      "Bash(git init:*)",
+      "Bash(pnpm run:*)"
     ],
     "deny": [],
     "ask": []

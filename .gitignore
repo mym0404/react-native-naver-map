@@ -84,10 +84,3 @@ example/ios/Secret.xcconfig
 
 example/.watchman-*
 *.bak
-
-
-
-
-# Git worktrees (Crystal)
-/worktrees/
-/worktree-*/

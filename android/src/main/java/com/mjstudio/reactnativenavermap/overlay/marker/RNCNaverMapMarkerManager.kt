@@ -238,6 +238,20 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
     view?.updateSubCaption(value)
   }
 
+  override fun showInfoWindow(
+    view: RNCNaverMapMarker?,
+    infoWindowId: String?,
+  ) = view.withOverlay { marker ->
+    if (infoWindowId == null) return@withOverlay
+
+    val reactContext = view?.reactContext ?: return@withOverlay
+    val module = reactContext.getNativeModule(com.mjstudio.reactnativenavermap.module.RNCNaverMapUtilModule::class.java)
+    val infoWindow = module?.getInfoWindow(infoWindowId) ?: return@withOverlay
+
+    infoWindow.open(marker)
+    module.markAsOpen(infoWindowId)
+  }
+
   companion object {
     const val NAME = "RNCNaverMapMarker"
   }

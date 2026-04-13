@@ -6,6 +6,7 @@
 //
 
 #import "RNCNaverMapMarker.h"
+#import "RNCNaverMapUtil.h"
 #import <React/RCTBridge+Private.h>
 #ifdef RCT_NEW_ARCH_ENABLED
 using namespace facebook::react;
@@ -242,6 +243,20 @@ Class<RCTComponentViewProtocol> RNCNaverMapMarkerCls(void) {
 
 + (ComponentDescriptorProvider)componentDescriptorProvider {
   return concreteComponentDescriptorProvider<RNCNaverMapMarkerComponentDescriptor>();
+}
+
+- (void)handleCommand:(const NSString*)commandName args:(const NSArray*)args {
+  RCTRNCNaverMapMarkerHandleCommand(self, commandName, args);
+}
+
+- (void)showInfoWindow:(NSString*)infoWindowId {
+  RNCNaverMapUtil* module = [[self bridge] moduleForClass:[RNCNaverMapUtil class]];
+  NMFInfoWindow* infoWindow = [module getInfoWindow:infoWindowId];
+
+  if (infoWindow) {
+    [infoWindow openWithMarker:_inner];
+    [module markAsOpen:infoWindowId];
+  }
 }
 
 @end

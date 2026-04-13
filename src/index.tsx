@@ -62,3 +62,10 @@ export * from './types/Rect';
 export * from './types/Region';
 
 export { NaverMapUtil };
+
+export type {
+  InfoWindowContent,
+  UseInfoWindowReturn,
+} from './hooks/useInfoWindow';
+// Hooks
+export { useInfoWindow } from './hooks/useInfoWindow';
