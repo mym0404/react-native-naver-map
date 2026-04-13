@@ -6,8 +6,6 @@
 //
 
 #import "RNCNaverMapLeafMarkerUpdater.h"
-#import <React/RCTBridge+Private.h>
-#import <React/RCTBridge.h>
 
 @implementation RNCNaverMapLeafMarkerUpdater {
   std::unordered_map<std::string, RNCNaverMapImageCanceller>* _imgRequests;
@@ -45,24 +43,20 @@
 
   std::string idStr = [identifier UTF8String];
 
-  RCTBridge* bridge = [RCTBridge currentBridge];
-  if (bridge) {
-    marker.alpha = 0;
-    if (_imgRequests->find(idStr) != _imgRequests->end()) {
-      (*_imgRequests)[idStr]();
-      _imgRequests->erase(idStr);
-    }
-    (*_imgRequests)[idStr] =
-        nmap::getImage(bridge, image, ^(NMFOverlayImage* _Nullable overlayImage) {
-          dispatch_async(dispatch_get_main_queue(), ^{
-            if (weakMarker) {
-              weakMarker.alpha = 1;
-              weakMarker.iconImage = !overlayImage ? NMF_MARKER_IMAGE_GREEN : overlayImage;
-            }
-            self->_imgRequests->erase(idStr);
-          });
-        });
+  marker.alpha = 0;
+  if (_imgRequests->find(idStr) != _imgRequests->end()) {
+    (*_imgRequests)[idStr]();
+    _imgRequests->erase(idStr);
   }
+  (*_imgRequests)[idStr] = nmap::getImage(image, ^(NMFOverlayImage* _Nullable overlayImage) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if (weakMarker) {
+        weakMarker.alpha = 1;
+        weakMarker.iconImage = !overlayImage ? NMF_MARKER_IMAGE_GREEN : overlayImage;
+      }
+      self->_imgRequests->erase(idStr);
+    });
+  });
 
   [marker setTouchHandler:^BOOL(NMFOverlay* __weak overlay) {
     if (key.onTapLeafMarker) {
