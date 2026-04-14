@@ -6,52 +6,40 @@
 //
 
 #import "FnUtil.h"
+#import "RNCNaverMapOverlayImageLoader.h"
 #import <Foundation/Foundation.h>
 #import <NMapsMap/NMapsMap.h>
-#import <React/RCTBridge.h>
-#import <React/RCTConvert.h>
-#import <React/RCTImageLoader.h>
 #import <string>
 #import <unordered_map>
 
-typedef void (^RNCNaverMapImageCanceller)();
 typedef void (^RNCNaverMapOverlayImageHandler)(NMFOverlayImage* _Nullable);
 
 static std::unordered_map<std::string, NMFOverlayImage*> imageCache;
 
 static RNCNaverMapImageCanceller _Nullable loadImageWith(
-    RCTBridge* _Nonnull bridge, std::string uri, std::string cacheKey,
-    RNCNaverMapOverlayImageHandler _Nonnull callback) {
-  RCTImageLoader* _Nonnull imageLoader = [bridge moduleForClass:[RCTImageLoader class]];
+    std::string uri, std::string cacheKey, RNCNaverMapOverlayImageHandler _Nonnull callback) {
+  return RNCNaverMapLoadUIImageWithUri(
+      getNsStr(uri), ^(UIImage* _Nullable image, NSError* _Nullable error) {
+        if (error || !image) {
+          if (error) {
+            NSLog(@"ERROR: %@", error);
+          }
+          callback(NMF_MARKER_IMAGE_GREEN);
+          return;
+        }
 
-  return
-      [imageLoader loadImageWithURLRequest:[RCTConvert NSURLRequest:getNsStr(uri)]
-                                      size:CGSizeZero
-                                     scale:RCTScreenScale()
-                                   clipped:YES
-                                resizeMode:RCTResizeModeCenter
-                             progressBlock:nil
-                          partialLoadBlock:nil
-                           completionBlock:^(NSError* _Nullable error, UIImage* _Nullable image) {
-                             if (error) {
-                               NSLog(@"ERROR: %@", error);
-                               // on error, set default
-                               callback(NMF_MARKER_IMAGE_GREEN);
-                             } else {
-                               NMFOverlayImage* overlayImage =
-                                   [NMFOverlayImage overlayImageWithImage:image
-                                                          reuseIdentifier:getNsStr(cacheKey)];
-                               callback(overlayImage);
-                               imageCache[cacheKey] = overlayImage;
-                             }
-                           }];
+        NMFOverlayImage* overlayImage = [NMFOverlayImage overlayImageWithImage:image
+                                                               reuseIdentifier:getNsStr(cacheKey)];
+        callback(overlayImage);
+        imageCache[cacheKey] = overlayImage;
+      });
 }
 
 namespace nmap {
 
 template <IsImageProp T>
 static RNCNaverMapImageCanceller _Nullable getImage(
-    RCTBridge* _Nonnull bridge, const T& image, RNCNaverMapOverlayImageHandler _Nonnull callback) {
+    const T& image, RNCNaverMapOverlayImageHandler _Nonnull callback) {
 
   if (image.symbol.size()) {
     if (image.symbol == "blue") {
@@ -96,7 +84,7 @@ static RNCNaverMapImageCanceller _Nullable getImage(
       return ^{
       };
     } else {
-      return loadImageWith(bridge, uri, key, callback);
+      return loadImageWith(uri, key, callback);
     }
   }
 

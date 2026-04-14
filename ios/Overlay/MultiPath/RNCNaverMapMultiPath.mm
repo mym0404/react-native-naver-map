@@ -16,10 +16,6 @@ using namespace facebook::react;
   RNCNaverMapImageCanceller _imageCanceller;
 }
 
-- (RCTBridge*)bridge {
-  return [RCTBridge currentBridge];
-}
-
 - (std::shared_ptr<RNCNaverMapMultiPathEventEmitter const>)emitter {
   if (!_eventEmitter)
     return nullptr;
@@ -91,11 +87,10 @@ using namespace facebook::react;
       _imageCanceller = nil;
     }
 
-    _imageCanceller =
-        nmap::getImage([self bridge], next.patternImage, ^(NMFOverlayImage* _Nullable image) {
-          dispatch_async(dispatch_get_main_queue(),
-                         [self, image]() { self.inner.patternIcon = image; });
-        });
+    _imageCanceller = nmap::getImage(next.patternImage, ^(NMFOverlayImage* _Nullable image) {
+      dispatch_async(dispatch_get_main_queue(),
+                     [self, image]() { self.inner.patternIcon = image; });
+    });
   }
   if (prev.patternInterval != next.patternInterval)
     _inner.patternInterval = next.patternInterval;

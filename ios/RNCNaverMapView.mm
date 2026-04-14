@@ -22,10 +22,6 @@ using namespace facebook::react;
   return _view.mapView;
 }
 
-- (RCTBridge*)bridge {
-  return [RCTBridge currentBridge];
-}
-
 - (std::shared_ptr<facebook::react::RNCNaverMapViewEventEmitter const>)emitter {
   if (!_eventEmitter) {
     return nullptr;
