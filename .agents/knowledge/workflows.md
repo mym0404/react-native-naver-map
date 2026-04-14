@@ -15,6 +15,7 @@
 - Open Android Studio for the example project: `pnpm studio`
 - Open the iOS workspace: `pnpm xcode`
 - CocoaPods install/update: `pnpm pod`, `pnpm pod:update`
+- If a React Native native package changes in the workspace or example app, run `pnpm install` and then `pnpm pod` so the hoisted dependency state and `example/ios/Podfile.lock` stay aligned.
 - Docs dev server: `pnpm docs:dev`
 
 ## Codegen And Contract Changes
