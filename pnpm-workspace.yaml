@@ -6,25 +6,25 @@ catalog:
   '@babel/core': ^7.28.4
   '@babel/runtime': ^7.28.4
   '@biomejs/biome': ^2.2.3
-  '@react-native-community/cli': 19.0.0
-  '@react-native-community/cli-platform-android': 19.0.0
-  '@react-native-community/cli-platform-ios': 19.0.0
-  '@react-native/babel-preset': 0.80.0
-  '@react-native/metro-config': 0.80.0
-  '@react-native/new-app-screen': 0.80.0
-  '@react-native/typescript-config': 0.80.0
+  '@react-native-community/cli': 20.1.0
+  '@react-native-community/cli-platform-android': 20.1.0
+  '@react-native-community/cli-platform-ios': 20.1.0
+  '@react-native/babel-preset': 0.85.1
+  '@react-native/metro-config': 0.85.1
+  '@react-native/new-app-screen': 0.85.1
+  '@react-native/typescript-config': 0.85.1
   '@tailwindcss/postcss': ^4.1.13
   '@types/node': ^20.19.13
-  '@types/react': ^19
+  '@types/react': ^19.2.0
   '@types/react-dom': ^19
   '@types/react-test-renderer': ^19
   next: ^16.0.3
-  react: ^19.2.0
+  react: 19.2.3
   react-dom: ^19.2.0
-  react-native: 0.80.0
-  react-test-renderer: ^19
+  react-native: 0.85.1
+  react-test-renderer: 19.2.3
   tailwindcss: ^4.1.13
-  typescript: ^5.9.2
+  typescript: ^5.8.3
 
 onlyBuiltDependencies:
   - '@tailwindcss/oxide'

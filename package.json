@@ -38,7 +38,7 @@
     "codegen": "zx ./script/codegen.mjs",
     "studio": "studio $(pwd)/example/android",
     "xcode": "open $(pwd)/example/ios/example.xcworkspace",
-    "pod": "cd example/ios && bundle && bundle exec pod install --repo-update",
+    "pod": "cd example/ios && npx -y pod-install",
     "pod:update": "cd example/ios && bundle && bundle exec pod update",
     "build": "pnpm build:expo-config-plugin && pnpm build:docs && bob build",
     "prepack": "pnpm build",
