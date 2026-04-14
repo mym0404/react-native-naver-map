@@ -24,7 +24,7 @@ This repository publishes `@mj-studio/react-native-naver-map`, a Fabric-only Rea
 ## SDK And Tooling Baseline
 
 - The workspace uses `pnpm` workspaces with a shared catalog in `pnpm-workspace.yaml`.
-- The workspace catalog currently pins React Native `0.80.0` and React `^19.2.0`.
+- The workspace catalog currently pins React Native `0.85.1` and React `19.2.3`.
 - The root publishable package consumes those catalog versions through `devDependencies` for local build, typecheck, codegen, and example-linked development.
 - The `example/` app also consumes those same catalog versions as its app runtime and dev toolchain, so root and example stay aligned on the same React Native baseline.
 - iOS uses the Naver Maps iOS SDK via `NMapsMap`; the example app lockfile currently resolves `3.23.0`.
@@ -56,6 +56,9 @@ Treat generated or build output as disposable artifacts. Edit source, then rebui
 - The workspace packages are `example/` and `docs/`.
 - The repository root still acts as the main library package even though only `example/` and `docs/` are listed as workspace packages.
 - `pnpm-workspace.yaml` uses `nodeLinker: hoisted` with public hoists for `react-native`, `@react-native/codegen`, and `@react-native/gradle-plugin`, so native example tooling resolves React Native from the hoisted root `node_modules`.
+- The `example/` app imports `@mj-studio/react-native-naver-map` directly in source, but does not declare it in `example/package.json`.
+- That local library wiring is deliberate: Metro resolves the package from the repository root through `example/metro.config.js`, and native autolinking resolves it through `example/react-native.config.js`.
+- Third-party React Native packages used by `example/` should be discovered from the hoisted root install through normal autolinking. Do not pin them to `example/node_modules` in `example/react-native.config.js`.
 - `app.plugin.js` loads the compiled Expo plugin from `expo-config-plugin/build`.
 - Example secrets stay local and should not be committed.
 - CI may create dummy secret files for build jobs. Local workflows should not rely on that behavior.
