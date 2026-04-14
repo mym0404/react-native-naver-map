@@ -5,6 +5,11 @@
 `example/` is the manual runtime verification app for library behavior.
 
 - App entry: `example/index.js`, `example/src/App.tsx`
+- The example app is a React Native CLI app, not an Expo app.
+- `example/package.json` declares `react` and `react-native` through `catalog:`.
+- The root library package also declares `react` and `react-native` through `catalog:` in `devDependencies`, so the library repo and the example app share one workspace-managed React Native baseline.
+- The shared catalog currently pins React Native `0.80.0` and React `^19.2.0`.
+- Native example tooling resolves React Native through the hoisted workspace installation and the React Native Gradle/CocoaPods integration, not through a separate example-local copy.
 - Feature checks: `example/src/screens/`
 - Demo-only UI: `example/src/components/`
 - Android example config lives under `example/android/`
@@ -39,6 +44,8 @@
 ## Expo Config Plugin
 
 `expo-config-plugin/` manages Expo install-time integration for Naver Map keys and permissions.
+
+- Expo support in this repo is provided through the config plugin and docs, not through the `example/` app.
 
 - Edit plugin behavior in `expo-config-plugin/src/index.ts`.
 - `expo-config-plugin/tsconfig.json` compiles `src/` into `build/`.
