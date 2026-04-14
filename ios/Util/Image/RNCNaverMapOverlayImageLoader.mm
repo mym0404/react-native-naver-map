@@ -53,6 +53,10 @@ RNCNaverMapImageCanceller RNCNaverMapLoadUIImageWithUri(NSString* uriString,
         error = RNCNaverMapOverlayImageLoaderError(@"Failed to decode image");
       }
 
+      if (isCancelled) {
+        return;
+      }
+
       RNCNaverMapCompleteOnMain(completion, image, error);
     });
 
