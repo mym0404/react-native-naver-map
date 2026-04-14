@@ -10,7 +10,6 @@
 #import "MacroUtil.h"
 #import <Foundation/Foundation.h>
 #import <NMapsMap/NMapsMap.h>
-#import <React/RCTImageLoader.h>
 #import <React/RCTUtils.h>
 #import <React/RCTView.h>
 #import <UIKit/UIKit.h>

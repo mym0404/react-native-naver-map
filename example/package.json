@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@mj-studio/js-util": "^1.1.20",
-    "@react-native-community/slider": "^4.5.7",
+    "@react-native-community/slider": "5.0.1",
     "@react-native/new-app-screen": "catalog:",
     "react": "catalog:",
     "react-native": "catalog:",
@@ -33,6 +33,6 @@
     "typescript": "catalog:"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22.11.0"
   }
 }

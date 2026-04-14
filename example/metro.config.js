@@ -1,11 +1,9 @@
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 const path = require('path');
-const escape = require('escape-string-regexp');
-const exclusionList = require('metro-config/src/defaults/exclusionList');
-const pak = require('../package.json');
+const rootPackageJson = require('../package.json');
 
 const root = path.resolve(__dirname, '..');
-const modules = Object.keys({ ...pak.peerDependencies });
+const modules = Object.keys(rootPackageJson.peerDependencies ?? {});
 
 const defaultConfig = getDefaultConfig(__dirname);
 
@@ -21,16 +19,9 @@ const rootNodeModules = path.resolve(root, 'node_modules');
 const config = {
   watchFolders: [root, projectNodeModules, rootNodeModules],
 
-  // We need to make sure that only one version is loaded for peerDependencies
-  // So we block them at the root, and alias them to the versions in example's node_modules
+  // Keep peer dependencies resolved from the hoisted workspace root.
   resolver: {
-    sourceExts: [...defaultConfig.resolver?.sourceExts, 'json'],
-    // blacklistRE: exclusionList(
-    //   modules.map(
-    //     (m) =>
-    //       new RegExp(`^${escape(path.join(root, 'node_modules', m))}\\/.*$`)
-    //   )
-    // ),
+    sourceExts: [...new Set([...defaultConfig.resolver?.sourceExts, 'json'])],
     nodeModulesPaths: [
       ...defaultConfig.resolver?.nodeModulesPaths,
       projectNodeModules,
@@ -39,8 +30,7 @@ const config = {
 
     extraNodeModules: modules.reduce(
       (acc, name) => {
-        acc[name] = path.join(__dirname, '../', 'node_modules', name);
-        console.log(JSON.stringify(acc, null, 2));
+        acc[name] = path.join(rootNodeModules, name);
         return acc;
       },
       {
