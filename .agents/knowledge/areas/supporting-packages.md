@@ -10,6 +10,7 @@
 - The root library package also declares `react` and `react-native` through `catalog:` in `devDependencies`, so the library repo and the example app share one workspace-managed React Native baseline.
 - The shared catalog currently pins React Native `0.85.1` and React `19.2.3`.
 - Native example tooling resolves React Native through the hoisted workspace installation and the React Native Gradle/CocoaPods integration, not through a separate example-local copy.
+- When a React Native native package changes in the workspace or example app, update the hoisted install with `pnpm install` and then run `pnpm pod` to refresh iOS pod resolution and `example/ios/Podfile.lock`.
 - `example/` source imports `@mj-studio/react-native-naver-map` directly, but the app does not list that package in `example/package.json`.
 - This is intentional in the current repo shape: `example/metro.config.js` maps the JS package name to the repository root, and `example/react-native.config.js` maps the native package root for autolinking.
 - Keep `example/react-native.config.js` focused on the local library package. Third-party app dependencies such as `react-native-permissions` and `@react-native-community/slider` should resolve from the hoisted root install through normal React Native discovery, not hardcoded `example/node_modules` paths.

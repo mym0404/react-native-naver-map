@@ -80,7 +80,8 @@
 
 - Spec change: `pnpm codegen`
 - Baseline repo check: `pnpm run t`
-- Pod state change: `pnpm pod` or `pnpm pod:update`
+- Native package change: `pnpm install`, then `pnpm pod`
+- Pod state update only: `pnpm pod` or `pnpm pod:update`
 
 ## Anti-Patterns
 

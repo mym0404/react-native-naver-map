@@ -206,8 +206,8 @@ importers:
         specifier: ^1.1.20
         version: 1.1.22
       '@react-native-community/slider':
-        specifier: ^4.5.7
-        version: 4.5.7
+        specifier: 5.0.1
+        version: 5.0.1
       '@react-native/new-app-screen':
         specifier: 'catalog:'
         version: 0.85.1(@types/react@19.2.6)(react-native@0.85.1(@babel/core@7.28.4)(@react-native-community/cli@20.1.0(typescript@5.9.2))(@react-native/metro-config@0.85.1(@babel/core@7.28.4))(@types/react@19.2.6)(react@19.2.3))(react@19.2.3)
@@ -2122,8 +2122,8 @@ packages:
     engines: {node: '>=20.19.4'}
     hasBin: true
 
-  '@react-native-community/slider@4.5.7':
-    resolution: {integrity: sha512-WMDDZjNF2Bd8M8TrSqKf5xhM9ikdfCHtSPur64Ow3bB/OVrKufUQZ59NmYdNZNeGPvcHHTsafuYTY8zfZfbchQ==}
+  '@react-native-community/slider@5.0.1':
+    resolution: {integrity: sha512-K3JRWkIW4wQ79YJ6+BPZzp1SamoikxfPRw7Yw4B4PElEQmqZFrmH9M5LxvIo460/3QSrZF/wCgi3qizJt7g/iw==}
 
   '@react-native/assets-registry@0.85.1':
     resolution: {integrity: sha512-QODQ15teXThKaKdb7lnx4RifNUGnsGZ/NMKtkNBE89nJuK93+mPsb1ozp5xkGyLw7ZNVYO4Nkqsp4MsBOuAX8g==}
@@ -8003,7 +8003,7 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@react-native-community/slider@4.5.7': {}
+  '@react-native-community/slider@5.0.1': {}
 
   '@react-native/assets-registry@0.85.1': {}
 
