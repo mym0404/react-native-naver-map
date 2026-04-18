@@ -1,99 +1,59 @@
 # Native Platforms
 
-## Scope
+## Shared Expectations
 
 `ios/` and `android/` implement the Fabric-native behavior described by `src/spec/`.
 
-## Shared Expectations
-
-- Keep native command names aligned with the TypeScript spec.
+- Keep command names aligned with the TypeScript spec and `supportedCommands`.
 - Review cross-platform parity before treating behavior as platform-specific.
-- Prefer existing event and manager patterns over one-off command or emission paths.
 - Edit source implementations, not generated interfaces or build output.
-- Existing module or image-loading bridge interop should stay tightly scoped to its current native responsibilities. Do not treat that as permission to reintroduce Bridge-era UI fallback behavior.
+- Existing bridge interop for modules or image loading is narrowly scoped. Do not use it to reintroduce Bridge-era UI fallback behavior.
 
 ## Android
 
-### Structure
+### Area Map
 
-- `android/src/main/java/com/mjstudio/reactnativenavermap/`: runtime managers, wrappers, overlays, events, utilities
-- `android/src/newarch/`: generated manager specs and interfaces
-- `android/build.gradle`: Android library build config
-- `android/gradle/`: Gradle wrapper and config
+- [android/src/main/java/com/mjstudio/reactnativenavermap/](../../../android/src/main/java/com/mjstudio/reactnativenavermap/): runtime managers, views, overlays, events, utilities
+- [android/src/newarch/](../../../android/src/newarch/): generated manager specs and interfaces
+- [android/build.gradle](../../../android/build.gradle): Android library build configuration
 
-### Where To Look
+### Working Rules
 
-- `android/src/main/java/com/mjstudio/reactnativenavermap/RNCNaverMapPackage.kt`: package registration
-- `android/src/main/java/com/mjstudio/reactnativenavermap/mapview/*`: map view behavior and lifecycle
-- `android/src/main/java/com/mjstudio/reactnativenavermap/overlay/*`: overlay-specific managers and views
-- `android/src/main/java/com/mjstudio/reactnativenavermap/util/ViewEventEmitter.kt`, `util/DirectEventUtils.kt`: event helper path
-- `android/src/main/java/com/mjstudio/reactnativenavermap/util/image/*`: native image handling
-- `android/src/main/java/com/mjstudio/reactnativenavermap/`: runtime managers, wrappers, and utilities
-- `android/src/newarch/`: generated spec interfaces
-- `android/build.gradle`: Android library build config
-
-### Conventions
-
-- Keep manager implementations aligned with generated spec interfaces.
-- Use shared event utilities for event dispatch.
-- Register direct events through the shared helper path instead of open-coding event maps.
-- Preserve lifecycle handling patterns in wrappers and attached views.
-- Maintain naming parity with TypeScript spec command and event definitions.
-- Keep overlay managers consistent with the existing manager and delegate style.
-- Use `receiveCommand(view, commandId, args)` for imperative commands and keep string IDs aligned with `supportedCommands`.
-- `RNCNaverMapPackage.kt` is the current registration point for view managers. `createNativeModules()` currently returns `emptyList()`.
-
-### Validation
-
-- Spec change: `pnpm codegen`
-- Baseline repo check: `pnpm run t`
-- Android-focused build: `pnpm ci:android` or `pnpm turbo:android`
+- Keep manager implementations aligned with the generated spec classes in `android/src/newarch/`.
+- Register direct events through shared helpers such as `registerDirectEvent(...)` instead of open-coding event maps.
+- Route imperative commands through `receiveCommand(view, commandId, args)` and keep string IDs aligned with the TypeScript spec.
+- Preserve the existing manager and delegate style for overlays and map views.
+- `RNCNaverMapPackage.kt` is the package registration point and currently returns `emptyList()` from `createNativeModules()`.
+- Use [android/src/main/java/com/mjstudio/reactnativenavermap/util/image/GetOverlayImage.kt](../../../android/src/main/java/com/mjstudio/reactnativenavermap/util/image/GetOverlayImage.kt) for native overlay image loading and keep cleanup symmetric with the current bitmap lifecycle.
 
 ## iOS
 
-### Structure
+### Area Map
 
-- `ios/RNCNaverMapView*.{h,mm}`: main map Fabric view and command surface
-- `ios/Overlay/*`: overlay implementations
-- `ios/Module/`: native module utilities
-- `ios/Util/`: shared helpers for color, image, easing, and supporting utilities
+- [ios/RNCNaverMapView.mm](../../../ios/RNCNaverMapView.mm) and [ios/RNCNaverMapViewImpl.mm](../../../ios/RNCNaverMapViewImpl.mm): map commands, camera behavior, view implementation
+- [ios/Overlay/](../../../ios/Overlay/): overlay implementations
+- [ios/Module/](../../../ios/Module/): native module utilities
+- [ios/Util/](../../../ios/Util/): shared helpers for color, image, easing, and utility code
 
-### Where To Look
+### Working Rules
 
-- `ios/RNCNaverMapView.mm`, `ios/RNCNaverMapViewImpl.mm`: map commands, camera behavior, and view implementation
-- `ios/Overlay/*`: overlay implementations
-- `ios/Module/RNCNaverMapUtil.mm`: native utility module
-- `ios/Util/Image/ImageUtil.h`, `ios/Util/FnUtil.h`, `ios/Util/EasingAnimationUtil.h`: shared helpers
-
-### Conventions
-
-- Follow Fabric component lifecycle methods such as `initWithFrame` and `updateProps`.
+- Follow Fabric lifecycle methods such as `initWithFrame:` and `updateProps:oldProps:`.
 - Compare previous and next props before mutating native state in `updateProps`.
-- Cast and null-check event emitters before emission.
 - Route imperative commands through `handleCommand:args:` and the generated command handler.
-- Clean up async image loaders and cancelers on teardown.
-- Keep overlay implementation patterns consistent across overlay folders.
-- `RNCNaverMapUtil.mm` still exposes `RCT_EXPORT_MODULE()` and `getTurboModule` under `RCT_NEW_ARCH_ENABLED`; keep that scoped to module interop rather than UI fallback behavior.
-- Marker and pattern image loading flows through `nmap::getImage(...)`, which uses `reuseIdentifier`-backed cache keys where available.
+- Cast and null-check event emitters before emission.
+- Keep async image loaders cancellable and clean them up on teardown.
+- `ios/Module/RNCNaverMapUtil.mm` still exposes TurboModule interop under `RCT_NEW_ARCH_ENABLED`; keep that scoped to module responsibilities rather than UI fallback paths.
+- Use [ios/Util/Image/ImageUtil.h](../../../ios/Util/Image/ImageUtil.h) as the shared image-loading entrypoint.
 
-### Validation
+## Verification
 
-- Spec change: `pnpm codegen`
-- Baseline repo check: `pnpm run t`
-- Native package change: `pnpm install`, then `pnpm pod`
-- Pod state update only: `pnpm pod` or `pnpm pod:update`
-
-## Anti-Patterns
-
-- Bridge-era fallback logic in v2.x code paths
-- Manual command routing that drifts from codegen specs
-- Native-only behavior changes without TypeScript-spec review
-- Event emission outside established helper paths
-- Event emission on iOS without emitter validity checks
-- Editing generated interfaces or build output as source
+- `pnpm codegen && pnpm run t`: after spec or native contract changes
+- `pnpm ci:android` or `pnpm turbo:android`: after Android-native edits that need a build-path check
+- `pnpm ci:ios` or `pnpm turbo:ios`: after iOS-native edits that need a build-path check
+- `pnpm install && pnpm pod`: after React Native native dependency changes that affect CocoaPods state
 
 ## Related Documents
 
-- Repo-wide architecture constraints: `../architecture.md`
-- JS/spec contract guidance: `source-surface.md`
-- Implementation patterns and examples: `../patterns.md`
+- Repo shape and invariants: [../architecture.md](../architecture.md)
+- TypeScript surface guidance: [source-surface.md](source-surface.md)
+- Repo-specific implementation idioms: [../patterns.md](../patterns.md)
