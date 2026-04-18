@@ -1,71 +1,50 @@
 # Architecture
 
-## Overview
-
-This repository publishes `@mj-studio/react-native-naver-map`, a Fabric-only React Native Naver Map library. One repo owns the public TypeScript surface, native iOS and Android layers, the example app used for runtime checks, the docs site, and the Expo config plugin.
-
 ## Repository Shape
 
-- repository root: publishable `@mj-studio/react-native-naver-map` package plus workspace-wide tooling and version coordination
-- `src/`: public TypeScript API, wrapper components, codegen specs, shared types, utilities
-- `ios/`: Objective-C++ Fabric implementation, overlays, native module utilities
-- `android/`: Kotlin managers and views plus generated New Architecture interfaces
-- `example/`: manual runtime verification app
-- `docs/`: Next.js + Fumadocs site
-- `expo-config-plugin/`: Expo config plugin source compiled into `build/`
-- `script/`: codegen, formatting, lint, and release helpers
+This repository publishes `@mj-studio/react-native-naver-map` as a Fabric-only React Native library.
 
-## Component Model
+- Repository root: publishable package, shared tooling, release entrypoints
+- [src/](../../src/): public TypeScript API, wrappers, codegen specs, shared types and utilities
+- [ios/](../../ios/): Objective-C++ Fabric implementation, overlays, native module utilities
+- [android/](../../android/): Kotlin managers, views, events, image helpers, generated New Architecture interfaces
+- [example/](../../example/): manual runtime verification app
+- [docs/](../../docs/): Next.js + Fumadocs site
+- [expo-config-plugin/](../../expo-config-plugin/): Expo config plugin source compiled into `build/`
+- [script/](../../script/): codegen, lint/format, and release helpers
 
-- `NaverMapView` is the main map component.
-- Overlay components cover marker, circle, polygon, polyline, path, multi-path, arrowhead path, and ground overlays.
-- Components render through Fabric-native views rather than a Bridge-era wrapper layer.
+## Contracts That Drive Changes
 
-## SDK And Tooling Baseline
+- `src/spec/` is the canonical JS/native contract for props, events, commands, and the utility TurboModule.
+- `src/index.tsx` is the public export boundary. Public API changes should stay explicit there.
+- `src/component/` wrappers should stay thin. Prop normalization belongs there; platform behavior belongs in the spec or native layers when possible.
+- Cross-platform feature changes should stay aligned across TypeScript, iOS, and Android unless the scope is explicitly platform-specific.
+- `app.plugin.js` loads the compiled Expo plugin from `expo-config-plugin/build`, not from plugin source directly.
 
-- The workspace uses `pnpm` workspaces with a shared catalog in `pnpm-workspace.yaml`.
-- The workspace catalog currently pins React Native `0.85.1` and React `19.2.3`.
-- The root publishable package consumes those catalog versions through `devDependencies` for local build, typecheck, codegen, and example-linked development.
-- The `example/` app also consumes those same catalog versions as its app runtime and dev toolchain, so root and example stay aligned on the same React Native baseline.
-- iOS uses the Naver Maps iOS SDK via `NMapsMap`; the example app lockfile currently resolves `3.23.0`.
-- Android uses `com.naver.maps:map-sdk` through the Gradle `sdkVersion` extension; the public README currently advertises `3.23.0`.
-- Core tooling is TypeScript, React Native Builder Bob, Biome, Lefthook, Clang lint/format scripts, Ktlint scripts, Turbo, and Fumadocs.
-- The root TypeScript config is strict and uses path mappings; docs also carries its own strict TypeScript config.
+## Repository-Specific Seams
 
-## Core Invariants
+- The repository uses a shared `pnpm` catalog in [pnpm-workspace.yaml](../../pnpm-workspace.yaml). Root and example app React Native baselines are intentionally kept in sync there.
+- The root package is the main library package even though workspace packages are only `example/` and `docs/`.
+- `pnpm-workspace.yaml` uses `nodeLinker: hoisted` with public hoists for React Native tooling, so native example tooling resolves React Native from the hoisted root install.
+- `example/` imports `@mj-studio/react-native-naver-map` directly in source, but does not declare the package in [example/package.json](../../example/package.json). That wiring is intentional through [example/metro.config.js](../../example/metro.config.js) and [example/react-native.config.js](../../example/react-native.config.js).
+- Third-party React Native packages used by `example/` should resolve through the hoisted install. Do not hardcode them to `example/node_modules`.
+- Native SDK version bumps should keep platform config and public docs aligned. Check [android/build.gradle](../../android/build.gradle), [example/ios/Podfile.lock](../../example/ios/Podfile.lock), and [README.md](../../README.md) together when changing SDK versions.
+- Example secrets stay local. Local workflows should not depend on CI-created dummy secret files.
 
-- New Architecture is mandatory in v2.x. Do not introduce Bridge-era fallback paths.
-- `src/spec/` is the source of truth for native props, events, commands, and module contracts.
-- Native-facing feature changes should stay in sync across TypeScript, iOS, and Android unless the scope is explicitly platform-specific.
-- `src/component/` should stay thin. Normalize props there, but keep platform behavior in the spec and native layers when possible.
-- Public API edits should stay intentional and visible from `src/index.tsx`.
+## Generated Output
 
-## Generated Output Boundaries
+Treat generated or build output as disposable artifacts.
 
-Treat generated or build output as disposable artifacts. Edit source, then rebuild.
-
-- `lib/**`: builder-bob output
-- `expo-config-plugin/build/**`: compiled Expo plugin output
-- `docs/.next/**`: Next.js build output when present
-- `docs/.source/**`: generated docs source artifacts when present
-- Native codegen output produced by `pnpm codegen`
-
-## Repo-Specific Constraints
-
-- Root Biome checks exclude `docs/**`; the docs site uses its own package and config.
-- The workspace packages are `example/` and `docs/`.
-- The repository root still acts as the main library package even though only `example/` and `docs/` are listed as workspace packages.
-- `pnpm-workspace.yaml` uses `nodeLinker: hoisted` with public hoists for `react-native`, `@react-native/codegen`, and `@react-native/gradle-plugin`, so native example tooling resolves React Native from the hoisted root `node_modules`.
-- The `example/` app imports `@mj-studio/react-native-naver-map` directly in source, but does not declare it in `example/package.json`.
-- That local library wiring is deliberate: Metro resolves the package from the repository root through `example/metro.config.js`, and native autolinking resolves it through `example/react-native.config.js`.
-- Third-party React Native packages used by `example/` should be discovered from the hoisted root install through normal autolinking. Do not pin them to `example/node_modules` in `example/react-native.config.js`.
-- `app.plugin.js` loads the compiled Expo plugin from `expo-config-plugin/build`.
-- Example secrets stay local and should not be committed.
-- CI may create dummy secret files for build jobs. Local workflows should not rely on that behavior.
+- `lib/**`
+- `expo-config-plugin/build/**`
+- `docs/.next/**`
+- `docs/.source/**`
+- native codegen output refreshed by `pnpm codegen`
 
 ## Related Documents
 
-- Validation, build, and release flow: `workflows.md`
-- Source surface guidance: `areas/source-surface.md`
-- Native implementation guidance: `areas/native-platforms.md`
-- Supporting packages and docs site details: `areas/supporting-packages.md`
+- Validation and release flow: [workflows.md](workflows.md)
+- TypeScript surface guidance: [areas/source-surface.md](areas/source-surface.md)
+- Native implementation guidance: [areas/native-platforms.md](areas/native-platforms.md)
+- Example app, docs, and plugin details: [areas/supporting-packages.md](areas/supporting-packages.md)
+- Repo-specific implementation idioms: [patterns.md](patterns.md)

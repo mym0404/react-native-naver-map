@@ -1,47 +1,29 @@
 # Repository Knowledge
 
-This folder is the canonical home for evergreen agent knowledge in this repository. The root `AGENTS.md` stays short and routes into these documents.
+This directory is the repo-local knowledge home. The root [AGENTS.md](../../AGENTS.md) stays short and routes here.
 
-## Knowledge Home
+## Start Here
 
-- Selected knowledge home: `.agents/knowledge/`
-- Reason: the user explicitly asked to consolidate subdirectory agent knowledge into this repo-local path.
-- The root router is `AGENTS.md`, and deeper knowledge lives here.
-
-## Read By Task
-
-| Task | Read |
+| Need | Read |
 | --- | --- |
-| Need the repo map or high-level constraints | `architecture.md` |
-| Need commands, validation, codegen, build, or release flow | `workflows.md` |
-| Changing public TS API, wrappers, or codegen specs | `areas/source-surface.md` |
-| Changing iOS or Android native behavior | `areas/native-platforms.md` |
-| Changing example app, docs site, Expo plugin, or repo scripts | `areas/supporting-packages.md` |
-| Need concrete implementation patterns migrated from the retired monolithic guidance file | `patterns.md` |
+| Repository shape, invariants, generated-output boundaries | [architecture.md](architecture.md) |
+| Validation, codegen, build, release, runtime verification | [workflows.md](workflows.md) |
+| Public TypeScript API, wrappers, Fabric spec surface | [areas/source-surface.md](areas/source-surface.md) |
+| iOS and Android implementation details | [areas/native-platforms.md](areas/native-platforms.md) |
+| Example app, docs site, Expo plugin, repo scripts | [areas/supporting-packages.md](areas/supporting-packages.md) |
+| Repo-specific implementation idioms | [patterns.md](patterns.md) |
 
-## Notes
+## Working Rules
 
-- Former subdirectory `AGENTS.md` files and the retired monolithic guidance file were absorbed into this knowledge base.
-- Prefer reading the smallest relevant document instead of loading everything.
-- When code and docs disagree, follow the verified code and update this knowledge base.
-- There is no separate directory-level knowledge router anymore. Use this index plus the topical documents below it.
+- Read the smallest relevant document instead of loading the whole tree.
+- When docs and code disagree, trust the verified code or config first and then update this knowledge home.
+- Keep evergreen repository facts here. Task notes, migration scratch, and temporary plans do not belong here.
 
-## Stable References
+## Verified Sources
 
-- Package overview and public entrypoint context: `README.md`
-- Contributor workflow and docs-writing conventions: `CONTRIBUTING.md`
-- User-facing library documentation: `docs/content/docs/`
-- Root package scripts and validation truth: `package.json`, `lefthook.yml`, `turbo.json`
-
-## Migrated Sources
-
-| Previous Source | Current Destination |
-| --- | --- |
-| root `AGENTS.md` overview, always-on rules, command reminders | `AGENTS.md`, `architecture.md`, `workflows.md` |
-| `src/AGENTS.md`, `src/component/AGENTS.md`, `src/spec/AGENTS.md` | `areas/source-surface.md`, `patterns.md` |
-| `android/AGENTS.md`, `ios/AGENTS.md` | `areas/native-platforms.md`, `patterns.md` |
-| `script/AGENTS.md` | `areas/supporting-packages.md`, `workflows.md` |
-| `expo-config-plugin/AGENTS.md` | `areas/supporting-packages.md` |
-| `example/AGENTS.md` | `areas/supporting-packages.md`, `workflows.md` |
-| `docs/AGENTS.md` | `areas/supporting-packages.md` |
-| retired monolithic engineering guidance file | `architecture.md`, `workflows.md`, `patterns.md` |
+- Library package scripts and publish surface: [package.json](../../package.json)
+- Workspace layout and shared catalog: [pnpm-workspace.yaml](../../pnpm-workspace.yaml)
+- Default validation contract: [lefthook.yml](../../lefthook.yml)
+- Native CI task inputs: [turbo.json](../../turbo.json)
+- Public package overview: [README.md](../../README.md)
+- Contributor-facing setup notes: [CONTRIBUTING.md](../../CONTRIBUTING.md)
