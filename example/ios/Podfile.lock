@@ -3,7 +3,7 @@ PODS:
   - hermes-engine (250829098.0.10):
     - hermes-engine/Pre-built (= 250829098.0.10)
   - hermes-engine/Pre-built (250829098.0.10)
-  - mj-studio-react-native-naver-map (2.7.1):
+  - mj-studio-react-native-naver-map (2.8.0):
     - hermes-engine
     - NMapsMap (= 3.23.0)
     - RCTRequired
@@ -2156,7 +2156,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FBLazyVector: ed7eadee1965b0b918ca9d0f2c2328f7eb3fd095
   hermes-engine: 7429ddd878dc363833ba2319cf22cc635e090ace
-  mj-studio-react-native-naver-map: 9b2411378a2923a7370d010edc6e66544fa8490c
+  mj-studio-react-native-naver-map: c497200cf338e4fd3c36062485adc5d79afb8579
   NMapsGeometry: 4e02554fa9880ef02ed96b075dc84355d6352479
   NMapsMap: 1964e6f9073301ad3cbe3a12235ba36f6f6cd905
   RCTDeprecation: d69f6f20a20f669a0aa3115ab1109f28e98ae03e
