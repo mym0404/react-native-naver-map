@@ -4,8 +4,9 @@
 
 - Run `pnpm run t` for the default repo-wide check path.
 - `pnpm run t` runs Biome, native lint scripts, TypeScript checks for the package and example app, builds the Expo plugin, and runs `bob build`.
+- In `lefthook.yml`, the Biome check receives `{staged_files}` for JS/TS globs, while native lint receives `{all_files}`.
 - `pnpm lint` is an alias for `pnpm run t`.
-- Root checks intentionally skip `docs/**`. Docs validation is opt-in and package-local.
+- Root checks intentionally skip docs build and docs typecheck because those Lefthook commands are currently commented out. Docs validation is opt-in and package-local.
 
 ## Development Commands
 
