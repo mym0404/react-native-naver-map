@@ -86,7 +86,7 @@
 
 ## Related Documents
 
-- UI conventions for docs and example surfaces: `../design.md`
-- Validation and release flow: `../workflows.md`
-- Repo invariants: `../architecture.md`
-- Detailed implementation patterns: `../patterns.md`
+- UI conventions for docs and example surfaces: `design.md`
+- Validation and release flow: `workflows.md`
+- Repo invariants: `architecture.md`
+- Detailed implementation patterns: `patterns.md`

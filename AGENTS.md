@@ -61,18 +61,17 @@ Generated outputs are build artifacts, not source: `lib/**`, `docs/.next/**`, `d
 
 ## Knowledge Router
 
-- `.agents/knowledge/README.md`: knowledge index and task routing.
 - `.agents/knowledge/architecture.md`: repository shape, invariants, SDK/tooling baseline, generated-output boundaries.
 - `.agents/knowledge/workflows.md`: validation, codegen, build, runtime checks, release flow.
 - `.agents/knowledge/design.md`: docs and example UI conventions.
-- `.agents/knowledge/areas/source-surface.md`: `src/`, wrapper, public API, and spec guidance.
-- `.agents/knowledge/areas/native-platforms.md`: iOS and Android implementation patterns.
-- `.agents/knowledge/areas/supporting-packages.md`: `example/`, `docs/`, `expo-config-plugin/`, and `script/`.
+- `.agents/knowledge/source-surface.md`: `src/`, wrapper, public API, and spec guidance.
+- `.agents/knowledge/native-platforms.md`: iOS and Android implementation patterns.
+- `.agents/knowledge/supporting-packages.md`: `example/`, `docs/`, `expo-config-plugin/`, and `script/`.
 - `.agents/knowledge/patterns.md`: reusable implementation patterns for specs, commands, JSDoc, colors, native lifecycle, events, and image loading.
 
 ## Knowledge System
 
-- Root `AGENTS.md` is the entry router; `.agents/knowledge/*` stores evergreen repository knowledge.
+- Root `AGENTS.md` is the only entry router; `.agents/knowledge/*` stores evergreen repository knowledge.
 - Update `AGENTS.md` and the relevant `.agents/knowledge/*` documents in the same change whenever project structure, runtime entrypoints, verification commands, ownership boundaries, or documented behavior changes.
 - Task-local scope, success criteria, verification criteria, temporary constraints, preferences, and examples are not durable repository knowledge unless the user explicitly makes them general or the repository changes make them current truth.
 - Repository knowledge describes the current state. It must not be used by itself to reject or discourage intentional functional or structural changes.

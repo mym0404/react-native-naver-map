@@ -70,5 +70,5 @@ Use this flow when `src/spec/` changes or when a JS/native contract changes:
 ## Related Documents
 
 - Repo shape and invariants: `architecture.md`
-- Source and native implementation patterns: `areas/source-surface.md`, `areas/native-platforms.md`, `patterns.md`
-- Supporting package details: `areas/supporting-packages.md`
+- Source and native implementation patterns: `source-surface.md`, `native-platforms.md`, `patterns.md`
+- Supporting package details: `supporting-packages.md`

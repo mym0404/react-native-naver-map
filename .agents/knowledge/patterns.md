@@ -360,6 +360,6 @@ getOverlayImage(imageHolder, context, imageMap) { overlayImage ->
 
 ## Related Documents
 
-- JS/spec guidance: `areas/source-surface.md`
-- Native platform guidance: `areas/native-platforms.md`
-- Package and docs-site guidance: `areas/supporting-packages.md`
+- JS/spec guidance: `source-surface.md`
+- Native platform guidance: `native-platforms.md`
+- Package and docs-site guidance: `supporting-packages.md`
