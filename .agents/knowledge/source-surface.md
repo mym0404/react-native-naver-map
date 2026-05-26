@@ -71,6 +71,6 @@
 
 ## Related Documents
 
-- Repository invariants: `../architecture.md`
+- Repository invariants: `architecture.md`
 - Native implementation details: `native-platforms.md`
-- Implementation patterns and examples: `../patterns.md`
+- Implementation patterns and examples: `patterns.md`

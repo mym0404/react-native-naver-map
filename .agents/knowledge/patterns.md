@@ -1,6 +1,6 @@
 # Patterns
 
-This document absorbs the implementation-oriented knowledge that previously lived in the retired monolithic guidance file. It keeps the reusable patterns, but normalizes them to the current repository state.
+This document stores reusable implementation patterns for the current repository. Keep narrow behavior details in code, tests, and docs content unless they define a cross-cutting implementation contract.
 
 ## TypeScript Native Contract Patterns
 
@@ -90,7 +90,7 @@ export const Commands: NativeCommands = codegenNativeCommands<NativeCommands>({
 - The most useful tags in this repo are `@param`, `@returns`, `@example`, `@default`, `@internal`, and `@platform`.
 - Existing component files already use `@default` heavily. Preserve that style when you add or change public options.
 - JSDoc is for API clarity. The user-facing docs site still lives in hand-authored MDX under `docs/content/docs/`.
-- Older guidance mentioned auto-generated docs from JSDoc, but the current repo clearly contains hand-authored MDX docs as the main docs-site content. Keep JSDoc strong for API clarity, but do not assume the docs site is fully generated from it.
+- The docs site content is hand-authored MDX under `docs/content/docs/`. Keep JSDoc strong for API clarity, but do not assume the docs site is fully generated from it.
 
 Example skeleton:
 
@@ -358,14 +358,8 @@ getOverlayImage(imageHolder, context, imageMap) { overlayImage ->
 }
 ```
 
-## Corrected Legacy Notes
-
-- Older guidance about docs should now be read together with the actual docs site structure under `docs/content/docs/` and `docs/src/`.
-- Older references to reusable `/pattern-use ...` names are now represented directly in this knowledge base instead of living behind a separate shortcut layer.
-- The current source of truth for commands and build scripts is the repo itself. When an older note conflicts with `package.json`, `lefthook.yml`, or the native source, prefer the current code and keep this document updated.
-
 ## Related Documents
 
-- JS/spec guidance: `areas/source-surface.md`
-- Native platform guidance: `areas/native-platforms.md`
-- Package and docs-site guidance: `areas/supporting-packages.md`
+- JS/spec guidance: `source-surface.md`
+- Native platform guidance: `native-platforms.md`
+- Package and docs-site guidance: `supporting-packages.md`

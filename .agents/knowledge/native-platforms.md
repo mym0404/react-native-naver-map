@@ -94,6 +94,6 @@
 
 ## Related Documents
 
-- Repo-wide architecture constraints: `../architecture.md`
+- Repo-wide architecture constraints: `architecture.md`
 - JS/spec contract guidance: `source-surface.md`
-- Implementation patterns and examples: `../patterns.md`
+- Implementation patterns and examples: `patterns.md`
