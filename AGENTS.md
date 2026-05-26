@@ -39,6 +39,38 @@ Generated outputs are build artifacts, not source: `lib/**`, `docs/.next/**`, `d
 - Public API changes should stay visible from `src/index.tsx`.
 - Example secrets stay local and must not be committed.
 
+## Working Guidelines
+
+Agents should work in this repository by making assumptions visible, choosing the simplest correct implementation, keeping edits narrow, and validating the result with observable checks.
+
+### Before Editing
+
+- State assumptions before implementation when they affect scope, behavior, risk, or data handling.
+- If a request has multiple meaningful interpretations, ask a narrow question instead of choosing silently.
+- If a simpler approach satisfies the request, prefer it and explain the tradeoff when needed.
+- Stop and ask when a missing decision can change the final result or create irreversible work.
+
+### Implementation Scope
+
+- Write the minimum code needed for the requested behavior.
+- Do not add features, abstractions, configurability, fallback paths, or impossible-case error handling that was not requested.
+- Touch only files and lines required for the task.
+- Match the local style and ownership boundaries of the touched source area.
+- Do not refactor unrelated code, reformat adjacent sections, or delete unrelated dead code.
+
+### Change Hygiene
+
+- Remove only imports, variables, functions, or temporary artifacts made unused by the current change.
+- If an attempted change is wrong or unnecessary, remove its artifacts before taking another approach.
+- Every changed line should trace directly to the user's request or the verification required for that request.
+
+### Verification
+
+- Define observable success criteria before multi-step work.
+- For multi-step tasks, use a short plan that includes the verification check for each meaningful step.
+- Prefer repo-native validation commands and checks that cover the changed surface.
+- Continue until the criteria are met, validation cannot reasonably continue, or a blocker requires the user's decision.
+
 ## Runtime And Architecture
 
 - Start runtime tracing at `src/index.tsx`, then follow wrapper components in `src/component/`, spec contracts in `src/spec/`, and matching native managers or views under `ios/` and `android/`.
