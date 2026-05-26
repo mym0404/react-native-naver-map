@@ -5,8 +5,9 @@ import {
   useInfoWindow,
 } from '@mj-studio/react-native-naver-map';
 import React, { useRef, useState } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Btn } from '../component/components';
 import { Header } from '../components/Header';
 import { ScreenLayout } from '../components/ScreenLayout';
 
@@ -80,6 +81,46 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
         mapProps={{
           camera,
         }}
+        controls={
+          <>
+            <Btn title="마커 열기" onPress={showMarkerInfoWindow} />
+            <Btn title="지도 열기" onPress={showMapInfoWindow} />
+            <Btn title="내용 갱신" onPress={updateOpenInfoWindow} />
+            <Btn title="모두 닫기" onPress={closeAllInfoWindows} />
+            <Text
+              style={styles.statusText}
+              testID="info-window-selected-status"
+              accessibilityLabel={`info-window-selected-status-${activeTarget}`}
+            >
+              선택: {activeTarget}
+            </Text>
+            <Text
+              style={styles.statusText}
+              testID="info-window-marker-status"
+              accessibilityLabel={`info-window-marker-status-${
+                activeTarget === 'marker' ? 'open' : 'closed'
+              }`}
+            >
+              마커: {activeTarget === 'marker' ? '열림' : '닫힘'}
+            </Text>
+            <Text
+              style={styles.statusText}
+              testID="info-window-map-status"
+              accessibilityLabel={`info-window-map-status-${
+                activeTarget === 'map' ? 'open' : 'closed'
+              }`}
+            >
+              지도: {activeTarget === 'map' ? '열림' : '닫힘'}
+            </Text>
+            <Text
+              style={styles.statusText}
+              testID="info-window-revision-status"
+              accessibilityLabel={`info-window-revision-status-${revision}`}
+            >
+              내용 버전: {revision}
+            </Text>
+          </>
+        }
       >
         <NaverMapMarkerOverlay
           ref={markerRef}
@@ -95,72 +136,6 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
           image={{ symbol: activeTarget === 'marker' ? 'blue' : 'green' }}
         />
       </ScreenLayout>
-
-      <View style={styles.controlPanel}>
-        <Text style={styles.title}>InfoWindow controls</Text>
-        <View style={styles.buttonRow}>
-          <Button
-            title="마커 열기"
-            onPress={showMarkerInfoWindow}
-            testID="info-window-marker-button"
-            accessibilityLabel="info-window-marker-button"
-          />
-          <Button
-            title="지도 열기"
-            onPress={showMapInfoWindow}
-            testID="info-window-map-button"
-            accessibilityLabel="info-window-map-button"
-          />
-        </View>
-        <View style={styles.buttonRow}>
-          <Button
-            title="내용 갱신"
-            onPress={updateOpenInfoWindow}
-            testID="info-window-update-button"
-            accessibilityLabel="info-window-update-button"
-          />
-          <Button
-            title="모두 닫기"
-            onPress={closeAllInfoWindows}
-            testID="info-window-close-button"
-            accessibilityLabel="info-window-close-button"
-          />
-        </View>
-        <View style={styles.statusContainer}>
-          <Text
-            style={styles.statusText}
-            testID="info-window-selected-status"
-            accessibilityLabel={`info-window-selected-status-${activeTarget}`}
-          >
-            선택: {activeTarget}
-          </Text>
-          <Text
-            style={styles.statusText}
-            testID="info-window-marker-status"
-            accessibilityLabel={`info-window-marker-status-${
-              activeTarget === 'marker' ? 'open' : 'closed'
-            }`}
-          >
-            마커: {activeTarget === 'marker' ? '열림' : '닫힘'}
-          </Text>
-          <Text
-            style={styles.statusText}
-            testID="info-window-map-status"
-            accessibilityLabel={`info-window-map-status-${
-              activeTarget === 'map' ? 'open' : 'closed'
-            }`}
-          >
-            지도: {activeTarget === 'map' ? '열림' : '닫힘'}
-          </Text>
-          <Text
-            style={styles.statusText}
-            testID="info-window-revision-status"
-            accessibilityLabel={`info-window-revision-status-${revision}`}
-          >
-            내용 버전: {revision}
-          </Text>
-        </View>
-      </View>
     </SafeAreaView>
   );
 };
@@ -170,36 +145,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
   },
-  controlPanel: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'white',
-    padding: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#e0e0e0',
-  },
-  title: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#111',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 10,
-  },
-  statusContainer: {
-    backgroundColor: '#f5f5f5',
-    padding: 10,
-    borderRadius: 8,
-  },
   statusText: {
-    fontSize: 12,
-    color: '#333',
-    marginBottom: 3,
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: '#bbb',
+    paddingVertical: 4,
+    paddingHorizontal: 6,
   },
 });
