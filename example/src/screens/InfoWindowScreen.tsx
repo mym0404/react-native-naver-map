@@ -75,7 +75,7 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
       testID="info-window-screen"
       accessibilityLabel="info-window-screen"
     >
-      <Header title={'InfoWindow Example'} onBack={onBack} />
+      <Header title={'Info Window'} onBack={onBack} />
       <ScreenLayout
         mapRef={mapRef}
         mapProps={{

@@ -32,7 +32,7 @@ const SCREENS = [
   { id: 'common', title: 'Common Settings' },
   { id: 'camera', title: 'Camera Controls' },
   { id: 'marker', title: 'Marker Overlay' },
-  { id: 'infowindow', title: 'InfoWindow Example' },
+  { id: 'infowindow', title: 'Info Window' },
   { id: 'circle', title: 'Circle Overlay' },
   { id: 'ground', title: 'Ground Overlay' },
   { id: 'path', title: 'Path Overlay' },
