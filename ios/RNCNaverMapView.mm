@@ -23,10 +23,6 @@ using namespace facebook::react;
   return _view.mapView;
 }
 
-- (RCTBridge*)bridge {
-  return [RCTBridge currentBridge];
-}
-
 - (std::shared_ptr<facebook::react::RNCNaverMapViewEventEmitter const>)emitter {
   if (!_eventEmitter) {
     return nullptr;
@@ -423,23 +419,21 @@ using namespace facebook::react;
 - (void)showInfoWindow:(NSString*)infoWindowId
               latitude:(double)latitude
              longitude:(double)longitude {
-  RNCNaverMapUtil* module = [[self bridge] moduleForClass:[RNCNaverMapUtil class]];
-  NMFInfoWindow* infoWindow = [module getInfoWindow:infoWindowId];
+  NMFInfoWindow* infoWindow = [RNCNaverMapUtil getInfoWindow:infoWindowId];
 
   if (infoWindow) {
     infoWindow.position = NMGLatLngMake(latitude, longitude);
     [infoWindow openWithMapView:self.map];
-    [module markAsOpen:infoWindowId];
+    [RNCNaverMapUtil markAsOpen:infoWindowId];
   }
 }
 
 - (void)hideInfoWindow:(NSString*)infoWindowId {
-  RNCNaverMapUtil* module = [[self bridge] moduleForClass:[RNCNaverMapUtil class]];
-  NMFInfoWindow* infoWindow = [module getInfoWindow:infoWindowId];
+  NMFInfoWindow* infoWindow = [RNCNaverMapUtil getInfoWindow:infoWindowId];
 
   if (infoWindow) {
     [infoWindow close];
-    [module markAsClosed:infoWindowId];
+    [RNCNaverMapUtil markAsClosed:infoWindowId];
   }
 }
 

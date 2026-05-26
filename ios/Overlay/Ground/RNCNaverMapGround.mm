@@ -6,7 +6,6 @@
 //
 
 #import "RNCNaverMapGround.h"
-#import <React/RCTBridge+Private.h>
 using namespace facebook::react;
 @interface RNCNaverMapGround () <RCTRNCNaverMapGroundViewProtocol>
 
@@ -16,10 +15,6 @@ using namespace facebook::react;
   RNCNaverMapImageCanceller _imageCanceller;
 }
 static NSMutableDictionary* _overlayImageHolder;
-
-- (RCTBridge*)bridge {
-  return [RCTBridge currentBridge];
-}
 
 - (std::shared_ptr<RNCNaverMapGroundEventEmitter const>)emitter {
   if (!_eventEmitter)
@@ -88,7 +83,7 @@ static NSMutableDictionary* _overlayImageHolder;
       _imageCanceller = nil;
     }
 
-    _imageCanceller = nmap::getImage([self bridge], next.image, ^(NMFOverlayImage* image) {
+    _imageCanceller = nmap::getImage(next.image, ^(NMFOverlayImage* image) {
       dispatch_async(dispatch_get_main_queue(), [self, image]() {
         self.inner.alpha = 1;
         self.inner.overlayImage = image;

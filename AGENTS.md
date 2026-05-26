@@ -1,85 +1,77 @@
-# PROJECT KNOWLEDGE BASE
+# AGENTS.md
 
-**Generated:** 2026-02-17 17:22 KST
-**Commit:** 99f3c53
-**Branch:** main
+## Project Overview
 
-## OVERVIEW
-React Native Naver Map library with Fabric-only architecture. Single repo owns TypeScript API, iOS/Android native layers, example app, docs site, and Expo config plugin.
+React Native Naver Map monorepo for `@mj-studio/react-native-naver-map`, a Fabric-only React Native library. The repository owns the public TypeScript API, iOS and Android native implementations, the manual example app, the Fumadocs documentation site, and the Expo config plugin.
 
-## STRUCTURE
+## Tech Stack
+
+- React Native `0.85.1` and React `19.2.3` through the `pnpm` workspace catalog.
+- TypeScript, React Native Builder Bob, React Native codegen, Biome, Lefthook, Turbo, Kotlin, Objective-C++, CocoaPods, Gradle, Next.js, Fumadocs, and Tailwind CSS.
+- `pnpm` uses hoisted `node_modules` with public hoists for React Native native tooling.
+
+## Project Structure
+
 ```text
 .
-├── src/                 # Public TS API, Fabric specs, shared types
-├── ios/                 # Objective-C++ Fabric implementation
-├── android/             # Kotlin implementation + codegen interfaces
-├── example/             # RN example app for runtime verification
-├── docs/                # Next.js + Fumadocs documentation site
-├── expo-config-plugin/  # Expo plugin source built to ./build
-├── script/              # Repo automation (codegen, lint, release)
-└── CLAUDE.md            # Project-wide detailed engineering rules
+# publishable root package and workspace-wide scripts
+├── src/                         # public TS API, wrappers, specs, types, utilities
+├── ios/                         # Fabric iOS implementation and native utilities
+├── android/                     # Fabric Android managers, views, overlays, utilities
+├── example/                     # React Native CLI app for manual runtime checks
+├── docs/                        # Next.js + Fumadocs documentation site
+├── expo-config-plugin/          # Expo config plugin source; build output is generated
+├── script/                      # codegen, native lint/format, release helpers
+├── .agents/knowledge/           # evergreen repo-local agent knowledge
+├── package.json                 # root scripts, package exports, Bob and codegen config
+├── pnpm-workspace.yaml          # workspace packages, catalog versions, hoisting rules
+├── lefthook.yml                 # default validation and formatting command wiring
+└── turbo.json                   # cached native CI task inputs
 ```
 
-## WHERE TO LOOK
-| Task | Location | Notes |
-|------|----------|-------|
-| Public API export surface | `src/index.tsx` | First file to update for new public symbols |
-| Add native prop/command | `src/spec/` | Spec change requires `pnpm codegen` |
-| JS component behavior | `src/component/` | Wrapper logic and prop shaping |
-| iOS implementation | `ios/` | `RNCNaverMapView*.mm`, `Overlay/*` |
-| Android implementation | `android/src/main/java/...` | ViewManager, wrapper, overlay managers |
-| Example runtime validation | `example/src/` | Validate map behavior after changes |
-| Docs content and app | `docs/content/`, `docs/src/` | Do not edit generated docs outputs |
-| Expo plugin behavior | `expo-config-plugin/src/index.ts` | Build output consumed via `app.plugin.js` |
-| Release and automation | `script/` | codegen, native lint/format, release flow |
+Generated outputs are build artifacts, not source: `lib/**`, `docs/.next/**`, `docs/.source/**`, `expo-config-plugin/build/**`, and native codegen output.
 
-## CODE MAP
-LSP symbol indexing was unavailable during generation. Use directory AGENTS files for local maps.
+## Always-On
 
-## CONVENTIONS
-- New Architecture only: Fabric is mandatory in v2.x; no Bridge fallback.
-- `src/spec` is the source of truth for native interfaces; keep TS/iOS/Android in sync.
-- Any native feature change must be implemented on both iOS and Android unless explicitly platform-scoped.
-- Run `pnpm codegen` after spec changes.
-- Run `pnpm run t` as the default pre-PR validation command.
-- Root Biome config intentionally excludes `docs/**`; docs has its own config.
-- Workspace packages are `example` and `docs`; Expo plugin is built from root script.
+- v2.x is New Architecture only. Do not add Bridge-era UI fallbacks.
+- `src/spec/` is the canonical JS/native contract. Spec changes require matching iOS and Android updates plus `pnpm codegen`.
+- Keep cross-platform behavior aligned unless a change is explicitly platform-scoped.
+- Public API changes should stay visible from `src/index.tsx`.
+- Example secrets stay local and must not be committed.
 
-## ANTI-PATTERNS (THIS PROJECT)
-- Adding or modifying Bridge-era patterns.
-- Editing generated artifacts as source (`lib/**`, `docs/.next/**`, `docs/.source/**`, `expo-config-plugin/build/**`).
-- Spec changes without regenerated codegen outputs and native parity updates.
-- Native-only behavior changes without matching JS/spec contract updates.
-- Committing API keys or secrets from example app configuration files.
+## Runtime And Architecture
 
-## UNIQUE STYLES
-- Color props flow through React Native color processing and native `Int32` props.
-- iOS Fabric views use emitter casting + null guard before event emission.
-- Android managers follow codegen delegate patterns and centralized event utility helpers.
-- Public docs and examples are bilingual-oriented; metadata files often have `meta` and `meta.ko` pairs.
+- Start runtime tracing at `src/index.tsx`, then follow wrapper components in `src/component/`, spec contracts in `src/spec/`, and matching native managers or views under `ios/` and `android/`.
+- Read `.agents/knowledge/architecture.md` for repository shape, invariants, SDK/tooling baseline, generated-output boundaries, and local wiring constraints.
 
-## COMMANDS
-```bash
-pnpm run t
-pnpm typecheck
-pnpm format
+## Verification Commands
 
-pnpm codegen
-pnpm codegen:ios
-pnpm codegen:android
+- Default validation: `pnpm run t`.
+- `pnpm run t` runs Lefthook `check`: Biome for staged JS/TS files, Objective-C lint, Kotlin lint, package typecheck, example typecheck, Expo plugin build, and Bob package build.
+- Docs checks are opt-in because `lefthook.yml` currently comments out docs build and docs typecheck. Use `pnpm build:docs` for docs changes.
+- Contract changes: run `pnpm codegen`, then `pnpm run t`.
+- Native runtime confidence comes from `example/` plus `pnpm ci:ios`, `pnpm ci:android`, `pnpm turbo:ios`, or `pnpm turbo:android` when the changed surface needs it.
+- Read `.agents/knowledge/workflows.md` for command coverage, release flow, secret requirements, and validation blind spots.
 
-pnpm build
-pnpm build:docs
-pnpm build:expo-config-plugin
-pnpm prepack
+## Design System
 
-pnpm ci:ios
-pnpm ci:android
-pnpm turbo:ios
-pnpm turbo:android
-```
+- The docs site uses Fumadocs UI, Tailwind CSS, and Lucide icons.
+- The example app uses React Native screens as manual map behavior checks, not as a polished design-system surface.
+- Read `.agents/knowledge/design.md` before changing docs UI, example UI, or user-visible documentation components.
 
-## NOTES
-- Example app requires Naver key setup before realistic runtime checks.
-- CI injects dummy secret files for build jobs; local workflows should not rely on those.
-- When unsure, read `CLAUDE.md` first, then nearest subdirectory `AGENTS.md`.
+## Knowledge Router
+
+- `.agents/knowledge/architecture.md`: repository shape, invariants, SDK/tooling baseline, generated-output boundaries.
+- `.agents/knowledge/workflows.md`: validation, codegen, build, runtime checks, release flow.
+- `.agents/knowledge/design.md`: docs and example UI conventions.
+- `.agents/knowledge/source-surface.md`: `src/`, wrapper, public API, and spec guidance.
+- `.agents/knowledge/native-platforms.md`: iOS and Android implementation patterns.
+- `.agents/knowledge/supporting-packages.md`: `example/`, `docs/`, `expo-config-plugin/`, and `script/`.
+- `.agents/knowledge/patterns.md`: reusable implementation patterns for specs, commands, JSDoc, colors, native lifecycle, events, and image loading.
+
+## Knowledge System
+
+- Root `AGENTS.md` is the only entry router; `.agents/knowledge/*` stores evergreen repository knowledge.
+- Update `AGENTS.md` and the relevant `.agents/knowledge/*` documents in the same change whenever project structure, runtime entrypoints, verification commands, ownership boundaries, or documented behavior changes.
+- Task-local scope, success criteria, verification criteria, temporary constraints, preferences, and examples are not durable repository knowledge unless the user explicitly makes them general or the repository changes make them current truth.
+- Repository knowledge describes the current state. It must not be used by itself to reject or discourage intentional functional or structural changes.

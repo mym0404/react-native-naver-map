@@ -29,10 +29,6 @@
   RNCNaverMapImageCanceller _subImageCanceller;
 }
 
-- (RCTBridge*)bridge {
-  return [RCTBridge currentBridge];
-}
-
 // MARK: - INIT & SETUP
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -261,13 +257,12 @@
       _mainImageCanceller = nil;
     }
 
-    _mainImageCanceller =
-        nmap::getImage([self bridge], locationOverlay.image, ^(NMFOverlayImage* image) {
-          dispatch_async(dispatch_get_main_queue(), [self, image]() {
-            self.mapView.locationOverlay.icon = image;
-            self->_mainImageCanceller = nil;
-          });
-        });
+    _mainImageCanceller = nmap::getImage(locationOverlay.image, ^(NMFOverlayImage* image) {
+      dispatch_async(dispatch_get_main_queue(), [self, image]() {
+        self.mapView.locationOverlay.icon = image;
+        self->_mainImageCanceller = nil;
+      });
+    });
   }
   o.iconWidth = locationOverlay.imageWidth;
   o.iconHeight = locationOverlay.imageHeight;
@@ -281,13 +276,12 @@
       _subImageCanceller = nil;
     }
 
-    _subImageCanceller =
-        nmap::getImage([self bridge], locationOverlay.subImage, ^(NMFOverlayImage* image) {
-          dispatch_async(dispatch_get_main_queue(), [self, image]() {
-            self.mapView.locationOverlay.subIcon = image;
-            self->_subImageCanceller = nil;
-          });
-        });
+    _subImageCanceller = nmap::getImage(locationOverlay.subImage, ^(NMFOverlayImage* image) {
+      dispatch_async(dispatch_get_main_queue(), [self, image]() {
+        self.mapView.locationOverlay.subIcon = image;
+        self->_subImageCanceller = nil;
+      });
+    });
   }
   o.subIconWidth = locationOverlay.subImageWidth;
   o.subIconHeight = locationOverlay.subImageHeight;

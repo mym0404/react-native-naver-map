@@ -7,7 +7,6 @@
 
 #import "RNCNaverMapMarker.h"
 #import "RNCNaverMapUtil.h"
-#import <React/RCTBridge+Private.h>
 #ifdef RCT_NEW_ARCH_ENABLED
 using namespace facebook::react;
 @interface RNCNaverMapMarker () <RCTRNCNaverMapMarkerViewProtocol>
@@ -22,10 +21,6 @@ using namespace facebook::react;
 
 + (bool)shouldBeRecycled {
   return NO;
-}
-
-- (RCTBridge*)bridge {
-  return [RCTBridge currentBridge];
 }
 
 - (std::shared_ptr<RNCNaverMapMarkerEventEmitter const>)emitter {
@@ -98,7 +93,7 @@ using namespace facebook::react;
     _imageCanceller = nil;
   }
 
-  _imageCanceller = nmap::getImage([self bridge], image, ^(NMFOverlayImage* _Nullable image) {
+  _imageCanceller = nmap::getImage(image, ^(NMFOverlayImage* _Nullable image) {
     dispatch_async(dispatch_get_main_queue(), [self, image]() {
       self.inner.alpha = 1;
       if (image) {
@@ -250,12 +245,11 @@ Class<RCTComponentViewProtocol> RNCNaverMapMarkerCls(void) {
 }
 
 - (void)showInfoWindow:(NSString*)infoWindowId {
-  RNCNaverMapUtil* module = [[self bridge] moduleForClass:[RNCNaverMapUtil class]];
-  NMFInfoWindow* infoWindow = [module getInfoWindow:infoWindowId];
+  NMFInfoWindow* infoWindow = [RNCNaverMapUtil getInfoWindow:infoWindowId];
 
   if (infoWindow) {
     [infoWindow openWithMarker:_inner];
-    [module markAsOpen:infoWindowId];
+    [RNCNaverMapUtil markAsOpen:infoWindowId];
   }
 }
 

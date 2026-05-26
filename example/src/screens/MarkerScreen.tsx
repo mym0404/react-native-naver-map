@@ -29,6 +29,9 @@ export const MarkerScreen = ({ onBack }: { onBack: () => void }) => {
           anchor={{ x: 0.5, y: 1 }}
           width={100}
           height={100}
+          caption={{
+            text: 'Custom View',
+          }}
         >
           <View
             style={{
@@ -62,13 +65,11 @@ export const MarkerScreen = ({ onBack }: { onBack: () => void }) => {
           onTap={() => console.log('Asset marker tapped')}
           anchor={{ x: 0.5, y: 1 }}
           caption={{
-            text: 'Asset Name',
+            text: 'Native asset',
           }}
           subCaption={{
             text: 'thumbnail',
           }}
-          width={100}
-          height={50}
           image={{ assetName: 'thumbnail' }}
         />
         <NaverMapMarkerOverlay
@@ -79,6 +80,9 @@ export const MarkerScreen = ({ onBack }: { onBack: () => void }) => {
           width={100}
           height={100}
           image={{ httpUri: 'https://picsum.photos/1000/1201' }}
+          caption={{
+            text: 'Web Image',
+          }}
         />
       </ScreenLayout>
     </SafeAreaView>

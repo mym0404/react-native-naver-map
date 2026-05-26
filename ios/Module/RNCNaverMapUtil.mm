@@ -7,37 +7,48 @@
 
 #import "RNCNaverMapUtil.h"
 #import <Foundation/Foundation.h>
-#import <React/RCTBridge+Private.h>
 
-@interface RNCNaverMapUtil ()
-@property(nonatomic, strong) NSMutableDictionary<NSString*, NMFInfoWindow*>* infoWindows;
-@property(nonatomic, strong) NSMutableDictionary<NSString*, NSDictionary*>* infoWindowContents;
-@property(nonatomic, strong) NSMutableSet<NSString*>* openInfoWindows;
-@end
+static NSMutableDictionary<NSString*, NMFInfoWindow*>* RNCNaverMapInfoWindows(void) {
+  static NSMutableDictionary<NSString*, NMFInfoWindow*>* infoWindows;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    infoWindows = [NSMutableDictionary new];
+  });
+  return infoWindows;
+}
+
+static NSMutableDictionary<NSString*, NSDictionary*>* RNCNaverMapInfoWindowContents(void) {
+  static NSMutableDictionary<NSString*, NSDictionary*>* infoWindowContents;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    infoWindowContents = [NSMutableDictionary new];
+  });
+  return infoWindowContents;
+}
+
+static NSMutableSet<NSString*>* RNCNaverMapOpenInfoWindows(void) {
+  static NSMutableSet<NSString*>* openInfoWindows;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    openInfoWindows = [NSMutableSet new];
+  });
+  return openInfoWindows;
+}
+
+static BOOL RNCNaverMapInfoWindowIsOpen(NMFInfoWindow* infoWindow) {
+  return infoWindow.marker != nil || infoWindow.mapView != nil;
+}
 
 @implementation RNCNaverMapUtil
 
 RCT_EXPORT_MODULE()
-
-- (BOOL)isInfoWindowActuallyOpen:(NMFInfoWindow*)infoWindow {
-  return infoWindow.marker != nil || infoWindow.mapView != nil;
-}
-
-- (instancetype)init {
-  if (self = [super init]) {
-    _infoWindows = [NSMutableDictionary new];
-    _infoWindowContents = [NSMutableDictionary new];
-    _openInfoWindows = [NSMutableSet new];
-  }
-  return self;
-}
 
 RCT_EXPORT_METHOD(setGlobalZIndex : (NSString*)type zIndex : (double)zIndex) {
   // TODO: Implement global z-index setting
 }
 
 RCT_EXPORT_METHOD(createInfoWindow : (NSString*)infoWindowId) {
-  if (_infoWindows[infoWindowId])
+  if (RNCNaverMapInfoWindows()[infoWindowId])
     return;
 
   NMFInfoWindow* infoWindow = [NMFInfoWindow new];
@@ -47,32 +58,33 @@ RCT_EXPORT_METHOD(createInfoWindow : (NSString*)infoWindowId) {
   dataSource.title = @"";
   infoWindow.dataSource = dataSource;
 
-  _infoWindows[infoWindowId] = infoWindow;
+  RNCNaverMapInfoWindows()[infoWindowId] = infoWindow;
 }
 
 RCT_EXPORT_METHOD(destroyInfoWindow : (NSString*)infoWindowId) {
-  NMFInfoWindow* infoWindow = _infoWindows[infoWindowId];
+  NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
   if (infoWindow) {
     [infoWindow close];
-    [_infoWindows removeObjectForKey:infoWindowId];
-    [_infoWindowContents removeObjectForKey:infoWindowId];
-    [_openInfoWindows removeObject:infoWindowId];
+    [RNCNaverMapInfoWindows() removeObjectForKey:infoWindowId];
+    [RNCNaverMapInfoWindowContents() removeObjectForKey:infoWindowId];
+    [RNCNaverMapOpenInfoWindows() removeObject:infoWindowId];
   }
 }
 
 RCT_EXPORT_METHOD(closeInfoWindow : (NSString*)infoWindowId) {
-  NMFInfoWindow* infoWindow = _infoWindows[infoWindowId];
+  NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
   if (infoWindow) {
     [infoWindow close];
-    [_openInfoWindows removeObject:infoWindowId];
+    [RNCNaverMapOpenInfoWindows() removeObject:infoWindowId];
   }
 }
 
 RCT_EXPORT_METHOD(setInfoWindowContent : (NSString*)infoWindowId title : (NSString*)
                       title subtitle : (NSString*)subtitle) {
-  _infoWindowContents[infoWindowId] = @{@"title" : title ?: @"", @"subtitle" : subtitle ?: @""};
+  RNCNaverMapInfoWindowContents()[infoWindowId] =
+      @{@"title" : title ?: @"", @"subtitle" : subtitle ?: @""};
 
-  NMFInfoWindow* infoWindow = _infoWindows[infoWindowId];
+  NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
   if (infoWindow && infoWindow.dataSource) {
     NMFInfoWindowDefaultTextSource* dataSource =
         (NMFInfoWindowDefaultTextSource*)infoWindow.dataSource;
@@ -84,28 +96,28 @@ RCT_EXPORT_METHOD(setInfoWindowContent : (NSString*)infoWindowId title : (NSStri
     }
 
     // Update if already open
-    if ([self isInfoWindowActuallyOpen:infoWindow]) {
+    if (RNCNaverMapInfoWindowIsOpen(infoWindow)) {
       [infoWindow invalidate];
     }
   }
 }
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(isInfoWindowOpen : (NSString*)infoWindowId) {
-  NMFInfoWindow* infoWindow = _infoWindows[infoWindowId];
-  return @([self isInfoWindowActuallyOpen:infoWindow]);
+  NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
+  return @(RNCNaverMapInfoWindowIsOpen(infoWindow));
 }
 
 // Helper methods for ViewManagers
-- (NMFInfoWindow*)getInfoWindow:(NSString*)infoWindowId {
-  return _infoWindows[infoWindowId];
++ (NMFInfoWindow*)getInfoWindow:(NSString*)infoWindowId {
+  return RNCNaverMapInfoWindows()[infoWindowId];
 }
 
-- (void)markAsOpen:(NSString*)infoWindowId {
-  [_openInfoWindows addObject:infoWindowId];
++ (void)markAsOpen:(NSString*)infoWindowId {
+  [RNCNaverMapOpenInfoWindows() addObject:infoWindowId];
 }
 
-- (void)markAsClosed:(NSString*)infoWindowId {
-  [_openInfoWindows removeObject:infoWindowId];
++ (void)markAsClosed:(NSString*)infoWindowId {
+  [RNCNaverMapOpenInfoWindows() removeObject:infoWindowId];
 }
 
 #ifdef RCT_NEW_ARCH_ENABLED

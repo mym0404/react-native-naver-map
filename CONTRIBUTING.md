@@ -59,14 +59,6 @@ cd example && pnpm run start
 
 To run the example app on Android:
 
-Set your Naver SDK Key at `example/nadroid/app/src/main/res/values/secret.xml`
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="naver_client_id">{{your_key}</string>
-</resources>
-```
-
 ```sh
 cd example && pnpm run android
 ```
@@ -74,12 +66,6 @@ cd example && pnpm run android
 ### iOS
 
 To run the example app on iOS:
-
-Set your Naver SDK key at `example/ios/Secret.xcconfig`
-
-```
-NAVER_CLIENT_ID = {{your_key}}
-```
 
 ```sh
 pnpm run pod
