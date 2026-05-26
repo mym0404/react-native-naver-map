@@ -32,7 +32,6 @@ export const LocationOverlayScreen = ({ onBack }: { onBack: () => void }) => {
                 },
                 bearing: locationOverlayBearing,
                 image: require('../logo180.png'),
-                anchor: { x: 0.5, y: 0.5 },
                 subImage: { symbol: 'green' },
                 subImageWidth: 72,
                 subImageHeight: 72,
