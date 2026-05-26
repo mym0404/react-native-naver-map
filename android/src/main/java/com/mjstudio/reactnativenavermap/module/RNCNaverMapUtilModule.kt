@@ -22,6 +22,15 @@ class RNCNaverMapUtilModule(
 
   override fun getName(): String = NAME
 
+  override fun invalidate() {
+    runOnUiThreadSync {
+      infoWindows.values.forEach { it.close() }
+      infoWindows.clear()
+      infoWindowContents.clear()
+    }
+    super.invalidate()
+  }
+
   @ReactMethod
   override fun createInfoWindow(id: String) {
     runOnUiThreadSync {

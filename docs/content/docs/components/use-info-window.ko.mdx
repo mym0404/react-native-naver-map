@@ -1,0 +1,96 @@
+---
+title: "useInfoWindow"
+description: "네이버 지도 텍스트 정보 창을 여는 훅"
+---
+
+## 개요
+
+`useInfoWindow`는 텍스트 InfoWindow 인스턴스를 만들고 제어합니다. 같은 InfoWindow를 `NaverMapMarkerOverlay` 위에 열거나 지도 좌표에 열 수 있고, hook에 전달한 내용이 바뀌면 표시 텍스트도 갱신할 수 있습니다.
+
+관리할 InfoWindow마다 hook 인스턴스를 하나씩 사용하세요. hook은 mount 시점에 native InfoWindow를 만들고 unmount 시점에 제거합니다.
+
+## 마커 위에 열기
+
+```tsx
+import { useRef } from 'react';
+import {
+  NaverMapMarkerOverlay,
+  NaverMapView,
+  type NaverMapMarkerOverlayRef,
+  useInfoWindow,
+} from '@mj-studio/react-native-naver-map';
+
+function MarkerInfoWindowMap() {
+  const markerRef = useRef<NaverMapMarkerOverlayRef>(null);
+  const infoWindow = useInfoWindow({
+    title: '서울역',
+    subtitle: '마커 위에 열린 정보 창',
+  });
+
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      <NaverMapMarkerOverlay
+        ref={markerRef}
+        latitude={37.5547}
+        longitude={126.9707}
+        onTap={() => {
+          infoWindow.showOnMarker({ markerRef });
+        }}
+      />
+    </NaverMapView>
+  );
+}
+```
+
+## 지도 좌표에 열기
+
+```tsx
+import { useRef } from 'react';
+import {
+  NaverMapView,
+  type NaverMapViewRef,
+  useInfoWindow,
+} from '@mj-studio/react-native-naver-map';
+
+function MapInfoWindow() {
+  const mapRef = useRef<NaverMapViewRef>(null);
+  const infoWindow = useInfoWindow({
+    title: '한강대교',
+    subtitle: '지도 좌표에 열린 정보 창',
+  });
+
+  return (
+    <NaverMapView
+      ref={mapRef}
+      style={{ flex: 1 }}
+      onTapMap={() => {
+        infoWindow.showOnMap({
+          mapRef,
+          position: { latitude: 37.5219, longitude: 126.9918 },
+        });
+      }}
+    />
+  );
+}
+```
+
+## 닫기와 준비 상태
+
+`showOnMarker`와 `showOnMap`은 대상 ref가 아직 준비되지 않았을 때 `false`를 반환합니다. native command가 실제로 전달된 뒤에만 UI 상태를 바꿔야 한다면 반환값을 확인하세요.
+
+```tsx
+const didShow = infoWindow.showOnMarker({ markerRef });
+if (!didShow) return;
+
+infoWindow.close();
+```
+
+## API
+
+`InfoWindowContent`
+
+<AutoTypeTable path="../src/hooks/useInfoWindow.ts" name="InfoWindowContent" />
+
+`UseInfoWindowReturn`
+
+<AutoTypeTable path="../src/hooks/useInfoWindow.ts" name="UseInfoWindowReturn" />

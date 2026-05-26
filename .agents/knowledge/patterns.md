@@ -285,14 +285,15 @@ private fun emitTapEvent(view: View) {
 ### Package Registration
 
 - `android/src/main/java/com/mjstudio/reactnativenavermap/RNCNaverMapPackage.kt` is the package registration point.
-- The package implements `ReactPackage`.
+- The package extends `BaseReactPackage`.
 - `createViewManagers()` currently registers the map view plus all overlay managers.
-- `createNativeModules()` currently returns `emptyList()`.
+- `getModule()` registers TurboModules such as `RNCNaverMapUtilModule`.
+- `getReactModuleInfoProvider()` must expose matching module metadata.
 
 Example skeleton:
 
 ```kotlin
-class RNCNaverMapPackage : ReactPackage {
+class RNCNaverMapPackage : BaseReactPackage() {
   override fun createViewManagers(
     reactContext: ReactApplicationContext
   ): List<ViewManager<*, *>> = listOf(
@@ -300,9 +301,14 @@ class RNCNaverMapPackage : ReactPackage {
     RNCNaverMapMarkerManager()
   )
 
-  override fun createNativeModules(
+  override fun getModule(
+    name: String,
     reactContext: ReactApplicationContext
-  ): List<NativeModule> = emptyList()
+  ): NativeModule? =
+    when (name) {
+      RNCNaverMapUtilModule.NAME -> RNCNaverMapUtilModule(reactContext)
+      else -> null
+    }
 }
 ```
 

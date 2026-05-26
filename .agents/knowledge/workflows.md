@@ -50,6 +50,10 @@ Use this flow when `src/spec/` changes or when a JS/native contract changes:
 
 - Use `example/` for manual behavior checks after API, wrapper, or native changes.
 - If wrapper behavior changes, update docs and example screens in the same change when needed.
+- Android debug runtime checks should load JavaScript from Metro, not from an ad hoc bundled asset in `example/android/app/src/main/assets`.
+- Before launching the Android example outside `pnpm android`, confirm Metro with `curl http://localhost:8081/status`, then run `adb -s <device> reverse tcp:8081 tcp:8081`.
+- If Android still shows `Unable to load script` or falls back to `loadJSBundleFromAssets`, check `adb -s <device> reverse --list` and clear emulator HTTP proxy settings that redirect Metro status checks away from `localhost:8081`.
+- This follows the React Native Android device workflow documented at `https://reactnative.dev/docs/running-on-device`.
 - Realistic example verification needs local Naver credentials:
   - Android: `example/android/app/src/main/res/values/secret.xml`
   - iOS: `example/ios/Secret.xcconfig`

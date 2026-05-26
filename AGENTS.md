@@ -49,8 +49,9 @@ Generated outputs are build artifacts, not source: `lib/**`, `docs/.next/**`, `d
 - Default validation: `pnpm run t`.
 - `pnpm run t` runs Lefthook `check`: Biome for staged JS/TS files, Objective-C lint, Kotlin lint, package typecheck, example typecheck, Expo plugin build, and Bob package build.
 - Docs checks are opt-in because `lefthook.yml` currently comments out docs build and docs typecheck. Use `pnpm build:docs` for docs changes.
-- Contract changes: run `pnpm codegen`, then `pnpm run t`.
-- Native runtime confidence comes from `example/` plus `pnpm ci:ios`, `pnpm ci:android`, `pnpm turbo:ios`, or `pnpm turbo:android` when the changed surface needs it.
+- Contract changes: run `pnpm codegen`, inspect generated native selectors or abstract methods, then run `pnpm run t`.
+- Native module, Fabric command, or native runtime changes need platform builds for the touched surfaces; use `pnpm ci:ios`/`pnpm ci:android` or the matching Turbo commands.
+- Runtime confidence comes from `example/` smoke checks when wrapper behavior or screen-visible behavior changes.
 - Read `.agents/knowledge/workflows.md` for command coverage, release flow, secret requirements, and validation blind spots.
 
 ## Design System

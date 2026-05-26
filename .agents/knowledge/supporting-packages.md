@@ -19,6 +19,8 @@
 - Android example config lives under `example/android/`
 - iOS example config lives under `example/ios/`
 - Prefer root wrapper commands such as `pnpm dev`, `pnpm ios`, and `pnpm android`.
+- For Android manual checks that install or open an existing debug APK, keep Metro running through `pnpm dev`, map the device port with `adb -s <device> reverse tcp:8081 tcp:8081`, and verify the APK does not depend on a manually generated `index.android.bundle`.
+- If the emulator has a global HTTP proxy, React Native's Metro status request can be routed to that proxy and incorrectly fall back to asset loading; clear the proxy before treating `Unable to load script` as a bundling problem.
 - Keep example-specific behavior inside `example/`; do not turn demo code into public library API.
 - Treat map API keys and secret config files as local-only values.
 - Example behavior is a verification aid, not a compatibility guarantee by itself.

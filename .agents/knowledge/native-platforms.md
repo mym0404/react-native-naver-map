@@ -43,7 +43,7 @@
 - Maintain naming parity with TypeScript spec command and event definitions.
 - Keep overlay managers consistent with the existing manager and delegate style.
 - Use `receiveCommand(view, commandId, args)` for imperative commands and keep string IDs aligned with `supportedCommands`.
-- `RNCNaverMapPackage.kt` is the current registration point for view managers. `createNativeModules()` currently returns `emptyList()`.
+- `RNCNaverMapPackage.kt` is the current registration point for view managers and TurboModules. Native modules should be registered through `BaseReactPackage.getModule()` and `getReactModuleInfoProvider()`.
 
 ### Validation
 
