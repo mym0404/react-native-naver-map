@@ -84,6 +84,17 @@ export const Commands: NativeCommands = codegenNativeCommands<NativeCommands>({
 - On iOS, `ios/Module/RNCNaverMapUtil.mm` provides `RCT_EXPORT_MODULE()` and `getTurboModule` under `RCT_NEW_ARCH_ENABLED`.
 - Raw TurboModule specs are internal native contracts; expose behavior through supported public wrappers such as hooks or component refs.
 
+### Public API Encapsulation
+
+- `src/index.tsx` is the public export boundary. Add exports there only for supported caller-facing APIs.
+- Export component props, component refs, event payloads, reusable input/content data, and shared domain types when users need to annotate values outside the immediate call site.
+- Avoid exported one-off parameter aliases when the shape is only used by one method and can stay inline without hurting readability.
+- Avoid exported return/controller aliases for hooks and factory-like helpers by default. Let TypeScript infer the return shape from the implementation.
+- If external code needs a named return shape, prefer `ReturnType<typeof api>` before adding a public `ApiReturn` type.
+- Public wrappers should expose behavior, not plumbing. Do not expose native ids, generated command objects, TurboModule instances, raw spec modules, or native component refs except through established component ref APIs.
+- Keep object parameters for calls with multiple values, repeated primitive types, or likely future reader ambiguity. Prefer positional parameters only for single, self-explanatory values.
+- Docs may describe returned controls in prose or tables without forcing a named exported return type into the API surface.
+
 ## JSDoc Patterns
 
 - Keep JSDoc on public APIs, especially components, props, and imperative methods.

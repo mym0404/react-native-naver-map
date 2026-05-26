@@ -38,13 +38,9 @@ export {
   type NaverMapViewProps,
   type NaverMapViewRef,
 } from './component/NaverMapView';
-export type {
-  InfoWindowContent,
-  UseInfoWindowReturn,
-} from './hooks/useInfoWindow';
+export type { InfoWindowContent } from './hooks/useInfoWindow';
 // Hooks
 export { useInfoWindow } from './hooks/useInfoWindow';
-export * from './spec/RNCNaverMapViewNativeComponent';
 export * from './types/Align';
 export * from './types/BaseOverlayProps';
 export * from './types/Camera';

@@ -91,6 +91,10 @@ infoWindow.close();
 
 <AutoTypeTable path="../src/hooks/useInfoWindow.ts" name="InfoWindowContent" />
 
-`UseInfoWindowReturn`
+반환 객체:
 
-<AutoTypeTable path="../src/hooks/useInfoWindow.ts" name="UseInfoWindowReturn" />
+| 메서드 | 설명 |
+| --- | --- |
+| `showOnMap({ mapRef, position })` | 지도 좌표에 InfoWindow를 엽니다. `mapRef.current`가 아직 준비되지 않았으면 `false`를 반환합니다. |
+| `showOnMarker({ markerRef })` | 마커 위에 InfoWindow를 엽니다. `markerRef.current`가 아직 준비되지 않았으면 `false`를 반환합니다. |
+| `close()` | InfoWindow를 닫습니다. |

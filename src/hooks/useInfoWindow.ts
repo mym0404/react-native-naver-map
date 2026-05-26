@@ -10,21 +10,6 @@ export interface InfoWindowContent {
   subtitle?: string;
 }
 
-export interface ShowOnMapParams {
-  mapRef: RefObject<NaverMapViewRef | null>;
-  position: Coord;
-}
-
-export interface ShowOnMarkerParams {
-  markerRef: RefObject<NaverMapMarkerOverlayRef | null>;
-}
-
-export interface UseInfoWindowReturn {
-  showOnMap: (params: ShowOnMapParams) => boolean;
-  showOnMarker: (params: ShowOnMarkerParams) => boolean;
-  close: () => void;
-}
-
 /**
  * Hook for managing InfoWindow instances on Naver Map.
  * Provides methods to show InfoWindow on map or marker.
@@ -49,9 +34,7 @@ export interface UseInfoWindowReturn {
  * infoWindow.showOnMarker({ markerRef });
  * ```
  */
-export const useInfoWindow = (
-  content: InfoWindowContent
-): UseInfoWindowReturn => {
+export const useInfoWindow = (content: InfoWindowContent) => {
   const id = useRef(`info_window_${Date.now()}_${Math.random()}`).current;
 
   useEffect(() => {
@@ -71,7 +54,13 @@ export const useInfoWindow = (
   }, [content.title, content.subtitle, id]);
 
   return {
-    showOnMap: ({ mapRef, position }) => {
+    showOnMap: ({
+      mapRef,
+      position,
+    }: {
+      mapRef: RefObject<NaverMapViewRef | null>;
+      position: Coord;
+    }) => {
       if (!mapRef.current) {
         console.warn('useInfoWindow: mapRef.current is null');
         return false;
@@ -81,7 +70,11 @@ export const useInfoWindow = (
       return true;
     },
 
-    showOnMarker: ({ markerRef }) => {
+    showOnMarker: ({
+      markerRef,
+    }: {
+      markerRef: RefObject<NaverMapMarkerOverlayRef | null>;
+    }) => {
       if (!markerRef.current) {
         console.warn('useInfoWindow: markerRef.current is null');
         return false;

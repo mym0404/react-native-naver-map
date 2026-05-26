@@ -91,6 +91,10 @@ infoWindow.close();
 
 <AutoTypeTable path="../src/hooks/useInfoWindow.ts" name="InfoWindowContent" />
 
-`UseInfoWindowReturn`
+Returned controls:
 
-<AutoTypeTable path="../src/hooks/useInfoWindow.ts" name="UseInfoWindowReturn" />
+| Method | Description |
+| --- | --- |
+| `showOnMap({ mapRef, position })` | Opens the InfoWindow at a map coordinate. Returns `false` when `mapRef.current` is not ready. |
+| `showOnMarker({ markerRef })` | Opens the InfoWindow on a marker. Returns `false` when `markerRef.current` is not ready. |
+| `close()` | Closes the InfoWindow. |
