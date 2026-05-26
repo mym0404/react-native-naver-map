@@ -49,7 +49,7 @@ RCT_EXPORT_MODULE()
       return;
 
     NMFInfoWindow* infoWindow = [NMFInfoWindow new];
-    NMFInfoWindowDefaultTextSource* dataSource = [NMFInfoWindowDefaultTextSource new];
+    NMFInfoWindowDefaultTextSource* dataSource = [NMFInfoWindowDefaultTextSource dataSource];
 
     dataSource.title = @"";
     infoWindow.dataSource = dataSource;
