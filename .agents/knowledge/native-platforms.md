@@ -44,6 +44,7 @@
 - Keep overlay managers consistent with the existing manager and delegate style.
 - Use `receiveCommand(view, commandId, args)` for imperative commands and keep string IDs aligned with `supportedCommands`.
 - `RNCNaverMapPackage.kt` is the current registration point for view managers and TurboModules. Native modules should be registered through `BaseReactPackage.getModule()` and `getReactModuleInfoProvider()`.
+- When a Fabric manager and a TurboModule need the same native object, share it through a package-owned registry or service injected into both surfaces. Do not make a native view or manager discover the module with `getNativeModule()` just to access module-owned state.
 
 ### Validation
 

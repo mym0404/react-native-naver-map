@@ -46,6 +46,7 @@ Do not implement a JS-facing API first in native and then force TypeScript to ma
 - Register modules through `BaseReactPackage.getModule`, using the generated `Native*Spec.NAME` where available.
 - `ReactModuleInfo` must mark New Architecture modules with `isTurboModule = true`.
 - Keep manager-only helper methods separate from generated spec methods.
+- If Android Fabric managers and TurboModules need shared state, keep that state in a package-owned registry/service and inject the same instance into both. Avoid native view or manager code depending on `ReactContext.getNativeModule()` to reach module-owned objects.
 - If an Android SDK or UI object requires the main/UI thread, dispatch with the established Android UI-thread mechanism before touching it.
 - Avoid blocking synchronous methods on long UI-thread work. If the value cannot be returned immediately and safely, redesign the API as async.
 

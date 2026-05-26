@@ -6,7 +6,7 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapMarkerManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
-import com.mjstudio.reactnativenavermap.module.RNCNaverMapUtilModule
+import com.mjstudio.reactnativenavermap.module.RNCNaverMapInfoWindowRegistry
 import com.mjstudio.reactnativenavermap.util.getLatLng
 import com.mjstudio.reactnativenavermap.util.getPoint
 import com.mjstudio.reactnativenavermap.util.isValidNumber
@@ -15,7 +15,9 @@ import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Marker.SIZE_AUTO
 
-class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>() {
+class RNCNaverMapMarkerManager(
+  private val infoWindowRegistry: RNCNaverMapInfoWindowRegistry,
+) : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>() {
   override fun getName(): String = NAME
 
   override fun createViewInstance(context: ThemedReactContext): RNCNaverMapMarker = RNCNaverMapMarker(context)
@@ -245,9 +247,7 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
   ) = view.withOverlay { marker ->
     if (infoWindowId == null) return@withOverlay
 
-    val reactContext = view?.reactContext ?: return@withOverlay
-    val module = reactContext.getNativeModule(RNCNaverMapUtilModule::class.java)
-    val infoWindow = module?.getInfoWindow(infoWindowId) ?: return@withOverlay
+    val infoWindow = infoWindowRegistry.get(infoWindowId) ?: return@withOverlay
 
     infoWindow.open(marker)
   }

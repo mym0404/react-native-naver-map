@@ -7,6 +7,7 @@ import com.facebook.react.module.model.ReactModuleInfo
 import com.facebook.react.module.model.ReactModuleInfoProvider
 import com.facebook.react.uimanager.ViewManager
 import com.mjstudio.reactnativenavermap.mapview.RNCNaverMapViewManager
+import com.mjstudio.reactnativenavermap.module.RNCNaverMapInfoWindowRegistry
 import com.mjstudio.reactnativenavermap.module.RNCNaverMapUtilModule
 import com.mjstudio.reactnativenavermap.overlay.arrowheadpath.RNCNaverMapArrowheadPathManager
 import com.mjstudio.reactnativenavermap.overlay.circle.RNCNaverMapCircleManager
@@ -18,10 +19,12 @@ import com.mjstudio.reactnativenavermap.overlay.polygon.RNCNaverMapPolygonManage
 import com.mjstudio.reactnativenavermap.overlay.polyline.RNCNaverMapPolylineManager
 
 class RNCNaverMapPackage : BaseReactPackage() {
+  private val infoWindowRegistry = RNCNaverMapInfoWindowRegistry()
+
   override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> =
     mutableListOf<ViewManager<*, *>>().apply {
-      add(RNCNaverMapViewManager())
-      add(RNCNaverMapMarkerManager())
+      add(RNCNaverMapViewManager(infoWindowRegistry))
+      add(RNCNaverMapMarkerManager(infoWindowRegistry))
       add(RNCNaverMapCircleManager())
       add(RNCNaverMapPolygonManager())
       add(RNCNaverMapPolylineManager())
@@ -36,7 +39,7 @@ class RNCNaverMapPackage : BaseReactPackage() {
     reactContext: ReactApplicationContext,
   ): NativeModule? =
     when (name) {
-      NativeRNCNaverMapUtilSpec.NAME -> RNCNaverMapUtilModule(reactContext)
+      NativeRNCNaverMapUtilSpec.NAME -> RNCNaverMapUtilModule(reactContext, infoWindowRegistry)
       else -> null
     }
 
