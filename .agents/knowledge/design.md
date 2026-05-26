@@ -22,7 +22,9 @@ This repository has two user-visible UI surfaces: the `docs/` site and the `exam
 - The main app shell starts at `example/src/App.tsx`.
 - Runtime screens live in `example/src/screens/`.
 - Demo-only shared UI lives in `example/src/components/`.
-- Many behavior screens use a black full-screen map container through `SafeAreaView` and inline React Native styles.
+- Behavior screens should wrap the whole screen in `SafeAreaView` from `react-native-safe-area-context` with `flex: 1` and a black background before rendering `Header`.
+- Keep `Header` as the first child inside the screen-level safe area wrapper so the title and back control are not hidden by the status bar, notch, or Dynamic Island.
+- Put `ScreenLayout` below `Header`; map overlays and controls should be children or absolute siblings inside the same screen-level wrapper.
 - Keep example UI changes focused on making map behavior clear and testable.
 - Do not promote demo-only UI state or controls into the public library API.
 
