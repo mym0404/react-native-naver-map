@@ -5,7 +5,7 @@ import com.naver.maps.map.overlay.InfoWindow
 
 class RNCNaverMapInfoWindowRegistry {
   private val infoWindows = mutableMapOf<String, InfoWindow>()
-  private val infoWindowContents = mutableMapOf<String, InfoWindowContent>()
+  private val infoWindowContents = mutableMapOf<String, String>()
 
   fun create(
     id: String,
@@ -17,16 +17,7 @@ class RNCNaverMapInfoWindowRegistry {
       InfoWindow().apply {
         adapter =
           object : InfoWindow.DefaultTextAdapter(reactContext) {
-            override fun getText(infoWindow: InfoWindow): CharSequence {
-              val content = infoWindowContents[id]
-              return content?.let {
-                if (it.subtitle.isNullOrEmpty()) {
-                  it.title
-                } else {
-                  "${it.title}\n${it.subtitle}"
-                }
-              } ?: ""
-            }
+            override fun getText(infoWindow: InfoWindow): CharSequence = infoWindowContents[id] ?: ""
           }
       }
 
@@ -47,10 +38,9 @@ class RNCNaverMapInfoWindowRegistry {
 
   fun setContent(
     id: String,
-    title: String,
-    subtitle: String?,
+    text: String,
   ) {
-    infoWindowContents[id] = InfoWindowContent(title, subtitle)
+    infoWindowContents[id] = text
     val infoWindow = infoWindows[id] ?: return
 
     if (isOpen(infoWindow)) {
@@ -69,9 +59,4 @@ class RNCNaverMapInfoWindowRegistry {
   }
 
   private fun isOpen(infoWindow: InfoWindow): Boolean = infoWindow.map != null || infoWindow.marker != null
-
-  private data class InfoWindowContent(
-    val title: String,
-    val subtitle: String?,
-  )
 }

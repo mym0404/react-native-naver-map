@@ -50,11 +50,10 @@ class RNCNaverMapUtilModule(
   @ReactMethod
   override fun setInfoWindowContent(
     id: String,
-    title: String,
-    subtitle: String?,
+    text: String,
   ) {
     runOnUiThreadSync {
-      infoWindowRegistry.setContent(id, title, subtitle)
+      infoWindowRegistry.setContent(id, text)
     }
   }
 

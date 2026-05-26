@@ -17,8 +17,8 @@ static NSMutableDictionary<NSString*, NMFInfoWindow*>* RNCNaverMapInfoWindows(vo
   return infoWindows;
 }
 
-static NSMutableDictionary<NSString*, NSDictionary*>* RNCNaverMapInfoWindowContents(void) {
-  static NSMutableDictionary<NSString*, NSDictionary*>* infoWindowContents;
+static NSMutableDictionary<NSString*, NSString*>* RNCNaverMapInfoWindowContents(void) {
+  static NSMutableDictionary<NSString*, NSString*>* infoWindowContents;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     infoWindowContents = [NSMutableDictionary new];
@@ -78,23 +78,16 @@ RCT_EXPORT_MODULE()
   });
 }
 
-- (void)setInfoWindowContent:(NSString*)infoWindowId
-                       title:(NSString*)title
-                    subtitle:(NSString*)subtitle {
+- (void)setInfoWindowContent:(NSString*)infoWindowId text:(NSString*)text {
   RNCNaverMapRunOnMainSync(^{
-    RNCNaverMapInfoWindowContents()[infoWindowId] =
-        @{@"title" : title ?: @"", @"subtitle" : subtitle ?: @""};
+    RNCNaverMapInfoWindowContents()[infoWindowId] = text ?: @"";
 
     NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
     if (infoWindow && infoWindow.dataSource) {
       NMFInfoWindowDefaultTextSource* dataSource =
           (NMFInfoWindowDefaultTextSource*)infoWindow.dataSource;
 
-      if (subtitle && subtitle.length > 0) {
-        dataSource.title = [NSString stringWithFormat:@"%@\n%@", title, subtitle];
-      } else {
-        dataSource.title = title;
-      }
+      dataSource.title = text ?: @"";
 
       if (RNCNaverMapInfoWindowIsOpen(infoWindow)) {
         [infoWindow invalidate];

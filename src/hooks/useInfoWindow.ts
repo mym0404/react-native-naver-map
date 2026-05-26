@@ -5,11 +5,6 @@ import type { NaverMapViewRef } from '../component/NaverMapView';
 import NaverMapUtil from '../spec/NativeRNCNaverMapUtil';
 import type { Coord } from '../types/Coord';
 
-export interface InfoWindowContent {
-  title: string;
-  subtitle?: string;
-}
-
 /**
  * Hook for managing InfoWindow instances on Naver Map.
  * Provides methods to show InfoWindow on map or marker.
@@ -20,8 +15,7 @@ export interface InfoWindowContent {
  * @example
  * ```tsx
  * const infoWindow = useInfoWindow({
- *   title: "Location Name",
- *   subtitle: "Location details"
+ *   text: "Location Name"
  * });
  *
  * // Show on map at specific position
@@ -34,13 +28,13 @@ export interface InfoWindowContent {
  * infoWindow.showOnMarker({ markerRef });
  * ```
  */
-export const useInfoWindow = (content: InfoWindowContent) => {
+export const useInfoWindow = (content: { text: string }) => {
   const id = useRef(`info_window_${Date.now()}_${Math.random()}`).current;
 
   useEffect(() => {
     // Create InfoWindow instance on mount
     NaverMapUtil.createInfoWindow(id);
-    NaverMapUtil.setInfoWindowContent(id, content.title, content.subtitle);
+    NaverMapUtil.setInfoWindowContent(id, content.text);
 
     // Cleanup on unmount
     return () => {
@@ -50,8 +44,8 @@ export const useInfoWindow = (content: InfoWindowContent) => {
 
   useEffect(() => {
     // Update content when it changes
-    NaverMapUtil.setInfoWindowContent(id, content.title, content.subtitle);
-  }, [content.title, content.subtitle, id]);
+    NaverMapUtil.setInfoWindowContent(id, content.text);
+  }, [content.text, id]);
 
   return {
     showOnMap: ({

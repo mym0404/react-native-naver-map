@@ -31,13 +31,11 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
   const [activeTarget, setActiveTarget] = useState<InfoWindowTarget>('none');
 
   const markerInfoWindow = useInfoWindow({
-    title: `서울역 ${revision}`,
-    subtitle: '마커 위에 열린 기본 텍스트 정보 창',
+    text: `서울역 ${revision}`,
   });
 
   const mapInfoWindow = useInfoWindow({
-    title: `한강대교 ${revision}`,
-    subtitle: '지도 좌표에 열린 기본 텍스트 정보 창',
+    text: `한강대교 ${revision}`,
   });
 
   const showMarkerInfoWindow = () => {
