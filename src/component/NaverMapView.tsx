@@ -685,6 +685,8 @@ const nullCamera: Camera = {
   bearing: Const.NULL_NUMBER,
 };
 
+const defaultLocationOverlayAnchor = { x: 0.5, y: 0.5 };
+
 export const NaverMapView = forwardRef(
   (
     {
@@ -819,13 +821,13 @@ export const NaverMapView = forwardRef(
             : undefined,
           imageWidth: locationOverlay.imageWidth,
           imageHeight: locationOverlay.imageHeight,
-          anchor: locationOverlay.anchor,
+          anchor: locationOverlay.anchor ?? defaultLocationOverlayAnchor,
           subImage: locationOverlay.subImage
             ? convertJsImagePropToNativeProp(locationOverlay.subImage)
             : undefined,
           subImageWidth: locationOverlay.subImageWidth,
           subImageHeight: locationOverlay.subImageHeight,
-          subAnchor: locationOverlay.subAnchor,
+          subAnchor: locationOverlay.subAnchor ?? defaultLocationOverlayAnchor,
           circleRadius: locationOverlay.circleRadius,
           circleColor: locationOverlay.circleColor
             ? (processColor(locationOverlay.circleColor) as number)
