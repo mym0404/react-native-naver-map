@@ -21,6 +21,7 @@ import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapScreenToCoordinateEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
+import com.mjstudio.reactnativenavermap.module.RNCNaverMapUtilModule
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterDataHolder
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterKey
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterMarkerUpdater
@@ -854,7 +855,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
   ) = view.withMap { map ->
     if (infoWindowId == null) return@withMap
 
-    val module = reactAppContext.getNativeModule(com.mjstudio.reactnativenavermap.module.RNCNaverMapUtilModule::class.java)
+    val module = reactAppContext.getNativeModule(RNCNaverMapUtilModule::class.java)
     val infoWindow = module?.getInfoWindow(infoWindowId) ?: return@withMap
 
     infoWindow.position = LatLng(latitude, longitude)
@@ -867,7 +868,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
   ) = view.withMap { map ->
     if (infoWindowId == null) return@withMap
 
-    val module = reactAppContext.getNativeModule(com.mjstudio.reactnativenavermap.module.RNCNaverMapUtilModule::class.java)
+    val module = reactAppContext.getNativeModule(RNCNaverMapUtilModule::class.java)
     val infoWindow = module?.getInfoWindow(infoWindowId) ?: return@withMap
 
     infoWindow.close()

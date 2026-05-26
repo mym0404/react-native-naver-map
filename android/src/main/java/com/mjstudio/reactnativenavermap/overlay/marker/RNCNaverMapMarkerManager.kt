@@ -6,6 +6,7 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapMarkerManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
+import com.mjstudio.reactnativenavermap.module.RNCNaverMapUtilModule
 import com.mjstudio.reactnativenavermap.util.getLatLng
 import com.mjstudio.reactnativenavermap.util.getPoint
 import com.mjstudio.reactnativenavermap.util.isValidNumber
@@ -245,7 +246,7 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
     if (infoWindowId == null) return@withOverlay
 
     val reactContext = view?.reactContext ?: return@withOverlay
-    val module = reactContext.getNativeModule(com.mjstudio.reactnativenavermap.module.RNCNaverMapUtilModule::class.java)
+    val module = reactContext.getNativeModule(RNCNaverMapUtilModule::class.java)
     val infoWindow = module?.getInfoWindow(infoWindowId) ?: return@withOverlay
 
     infoWindow.open(marker)
