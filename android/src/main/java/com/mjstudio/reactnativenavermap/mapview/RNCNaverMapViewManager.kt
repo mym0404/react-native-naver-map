@@ -859,7 +859,6 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
 
     infoWindow.position = LatLng(latitude, longitude)
     infoWindow.open(map)
-    module.markAsOpen(infoWindowId)
   }
 
   override fun hideInfoWindow(
@@ -872,7 +871,6 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     val infoWindow = module?.getInfoWindow(infoWindowId) ?: return@withMap
 
     infoWindow.close()
-    module.markAsClosed(infoWindowId)
   }
 
   companion object {

@@ -27,6 +27,8 @@ import type { Coord } from '../types/Coord';
 import type { MapImageProp } from '../types/MapImageProp.ts';
 import type { Point } from '../types/Point';
 
+type NativeMarkerComponentRef = React.ElementRef<typeof NativeNaverMapMarker>;
+
 export interface CaptionType {
   /** 캡션으로 표시할 텍스트를 지정할 수 있습니다.
    * 빈 문자열이나 null을 지정하면 캡션이 나타나지 않습니다. */
@@ -361,7 +363,7 @@ export const NaverMapMarkerOverlay = forwardRef<
     }: NaverMapMarkerOverlayProps,
     ref: ForwardedRef<NaverMapMarkerOverlayRef>
   ) => {
-    const innerRef = useRef<any>(null);
+    const innerRef = useRef<NativeMarkerComponentRef | null>(null);
 
     useImperativeHandle(
       ref,

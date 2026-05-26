@@ -66,6 +66,7 @@ Generated outputs are build artifacts, not source: `lib/**`, `docs/.next/**`, `d
 - `.agents/knowledge/design.md`: docs and example UI conventions.
 - `.agents/knowledge/source-surface.md`: `src/`, wrapper, public API, and spec guidance.
 - `.agents/knowledge/native-platforms.md`: iOS and Android implementation patterns.
+- `.agents/knowledge/rn-native-module.md`: React Native TurboModule, Fabric, codegen, thread, and native SDK object guidance.
 - `.agents/knowledge/supporting-packages.md`: `example/`, `docs/`, `expo-config-plugin/`, and `script/`.
 - `.agents/knowledge/patterns.md`: reusable implementation patterns for specs, commands, JSDoc, colors, native lifecycle, events, and image loading.
 

@@ -84,3 +84,4 @@ example/ios/Secret.xcconfig
 
 example/.watchman-*
 *.bak
+.worktrees/

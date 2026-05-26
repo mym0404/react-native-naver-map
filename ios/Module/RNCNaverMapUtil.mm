@@ -26,98 +26,104 @@ static NSMutableDictionary<NSString*, NSDictionary*>* RNCNaverMapInfoWindowConte
   return infoWindowContents;
 }
 
-static NSMutableSet<NSString*>* RNCNaverMapOpenInfoWindows(void) {
-  static NSMutableSet<NSString*>* openInfoWindows;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    openInfoWindows = [NSMutableSet new];
-  });
-  return openInfoWindows;
-}
-
 static BOOL RNCNaverMapInfoWindowIsOpen(NMFInfoWindow* infoWindow) {
   return infoWindow.marker != nil || infoWindow.mapView != nil;
+}
+
+static void RNCNaverMapRunOnMainSync(dispatch_block_t block) {
+  if (NSThread.isMainThread) {
+    block();
+    return;
+  }
+
+  dispatch_sync(dispatch_get_main_queue(), block);
 }
 
 @implementation RNCNaverMapUtil
 
 RCT_EXPORT_MODULE()
 
-RCT_EXPORT_METHOD(setGlobalZIndex : (NSString*)type zIndex : (double)zIndex) {
-  // TODO: Implement global z-index setting
+- (void)createInfoWindow:(NSString*)infoWindowId {
+  RNCNaverMapRunOnMainSync(^{
+    if (RNCNaverMapInfoWindows()[infoWindowId])
+      return;
+
+    NMFInfoWindow* infoWindow = [NMFInfoWindow new];
+    NMFInfoWindowDefaultTextSource* dataSource = [NMFInfoWindowDefaultTextSource new];
+
+    dataSource.title = @"";
+    infoWindow.dataSource = dataSource;
+
+    RNCNaverMapInfoWindows()[infoWindowId] = infoWindow;
+  });
 }
 
-RCT_EXPORT_METHOD(createInfoWindow : (NSString*)infoWindowId) {
-  if (RNCNaverMapInfoWindows()[infoWindowId])
-    return;
-
-  NMFInfoWindow* infoWindow = [NMFInfoWindow new];
-  NMFInfoWindowDefaultTextSource* dataSource = [NMFInfoWindowDefaultTextSource new];
-
-  // Initialize with empty content
-  dataSource.title = @"";
-  infoWindow.dataSource = dataSource;
-
-  RNCNaverMapInfoWindows()[infoWindowId] = infoWindow;
-}
-
-RCT_EXPORT_METHOD(destroyInfoWindow : (NSString*)infoWindowId) {
-  NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
-  if (infoWindow) {
-    [infoWindow close];
-    [RNCNaverMapInfoWindows() removeObjectForKey:infoWindowId];
-    [RNCNaverMapInfoWindowContents() removeObjectForKey:infoWindowId];
-    [RNCNaverMapOpenInfoWindows() removeObject:infoWindowId];
-  }
-}
-
-RCT_EXPORT_METHOD(closeInfoWindow : (NSString*)infoWindowId) {
-  NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
-  if (infoWindow) {
-    [infoWindow close];
-    [RNCNaverMapOpenInfoWindows() removeObject:infoWindowId];
-  }
-}
-
-RCT_EXPORT_METHOD(setInfoWindowContent : (NSString*)infoWindowId title : (NSString*)
-                      title subtitle : (NSString*)subtitle) {
-  RNCNaverMapInfoWindowContents()[infoWindowId] =
-      @{@"title" : title ?: @"", @"subtitle" : subtitle ?: @""};
-
-  NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
-  if (infoWindow && infoWindow.dataSource) {
-    NMFInfoWindowDefaultTextSource* dataSource =
-        (NMFInfoWindowDefaultTextSource*)infoWindow.dataSource;
-
-    if (subtitle && subtitle.length > 0) {
-      dataSource.title = [NSString stringWithFormat:@"%@\n%@", title, subtitle];
-    } else {
-      dataSource.title = title;
+- (void)destroyInfoWindow:(NSString*)infoWindowId {
+  RNCNaverMapRunOnMainSync(^{
+    NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
+    if (infoWindow) {
+      [infoWindow close];
+      [RNCNaverMapInfoWindows() removeObjectForKey:infoWindowId];
+      [RNCNaverMapInfoWindowContents() removeObjectForKey:infoWindowId];
     }
+  });
+}
 
-    // Update if already open
-    if (RNCNaverMapInfoWindowIsOpen(infoWindow)) {
-      [infoWindow invalidate];
+- (void)closeInfoWindow:(NSString*)infoWindowId {
+  RNCNaverMapRunOnMainSync(^{
+    NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
+    if (infoWindow) {
+      [infoWindow close];
     }
-  }
+  });
 }
 
-RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(isInfoWindowOpen : (NSString*)infoWindowId) {
-  NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
-  return @(RNCNaverMapInfoWindowIsOpen(infoWindow));
+- (void)setInfoWindowContent:(NSString*)infoWindowId
+                       title:(NSString*)title
+                    subtitle:(NSString*)subtitle {
+  RNCNaverMapRunOnMainSync(^{
+    RNCNaverMapInfoWindowContents()[infoWindowId] =
+        @{@"title" : title ?: @"", @"subtitle" : subtitle ?: @""};
+
+    NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
+    if (infoWindow && infoWindow.dataSource) {
+      NMFInfoWindowDefaultTextSource* dataSource =
+          (NMFInfoWindowDefaultTextSource*)infoWindow.dataSource;
+
+      if (subtitle && subtitle.length > 0) {
+        dataSource.title = [NSString stringWithFormat:@"%@\n%@", title, subtitle];
+      } else {
+        dataSource.title = title;
+      }
+
+      if (RNCNaverMapInfoWindowIsOpen(infoWindow)) {
+        [infoWindow invalidate];
+      }
+    }
+  });
 }
 
-// Helper methods for ViewManagers
+- (NSNumber*)isInfoWindowOpen:(NSString*)infoWindowId {
+  __block BOOL isOpen = NO;
+  RNCNaverMapRunOnMainSync(^{
+    NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
+    isOpen = RNCNaverMapInfoWindowIsOpen(infoWindow);
+  });
+  return @(isOpen);
+}
+
+- (void)invalidate {
+  RNCNaverMapRunOnMainSync(^{
+    for (NMFInfoWindow* infoWindow in RNCNaverMapInfoWindows().allValues) {
+      [infoWindow close];
+    }
+    [RNCNaverMapInfoWindows() removeAllObjects];
+    [RNCNaverMapInfoWindowContents() removeAllObjects];
+  });
+}
+
 + (NMFInfoWindow*)getInfoWindow:(NSString*)infoWindowId {
   return RNCNaverMapInfoWindows()[infoWindowId];
-}
-
-+ (void)markAsOpen:(NSString*)infoWindowId {
-  [RNCNaverMapOpenInfoWindows() addObject:infoWindowId];
-}
-
-+ (void)markAsClosed:(NSString*)infoWindowId {
-  [RNCNaverMapOpenInfoWindows() removeObject:infoWindowId];
 }
 
 #ifdef RCT_NEW_ARCH_ENABLED

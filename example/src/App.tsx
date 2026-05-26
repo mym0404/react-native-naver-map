@@ -134,6 +134,8 @@ export default function App() {
                 <TouchableOpacity
                   key={screen.id}
                   onPress={() => setCurrentScreen(screen.id)}
+                  testID={`example-menu-${screen.id}`}
+                  accessibilityLabel={`example-menu-${screen.id}`}
                   style={{
                     backgroundColor: '#1a1a1a',
                     paddingVertical: 16,

@@ -424,7 +424,6 @@ using namespace facebook::react;
   if (infoWindow) {
     infoWindow.position = NMGLatLngMake(latitude, longitude);
     [infoWindow openWithMapView:self.map];
-    [RNCNaverMapUtil markAsOpen:infoWindowId];
   }
 }
 
@@ -433,7 +432,6 @@ using namespace facebook::react;
 
   if (infoWindow) {
     [infoWindow close];
-    [RNCNaverMapUtil markAsClosed:infoWindowId];
   }
 }
 

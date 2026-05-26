@@ -11,7 +11,6 @@
 - `src/spec/`: React Native codegen specs
 - `src/types/`: public domain types
 - `src/internal/`: internal helpers, constants, assertions
-- `src/util/`: shared utilities
 
 ## Where To Look
 
@@ -19,7 +18,7 @@
 - `src/component/`: React wrapper components
 - `src/spec/`: React Native codegen specs
 - `src/types/`: public domain types
-- `src/internal/`, `src/util/`: shared helpers and utilities
+- `src/internal/`: shared helpers and utilities
 - `src/spec/NativeRNCNaverMapUtil.ts`: TurboModule spec surface
 
 ## Working Rules
@@ -46,7 +45,7 @@
 - Maintain naming parity with native classes and managers.
 - Keep `codegenNativeCommands()` signatures aligned with the wrapper methods and native command handlers.
 - `NativeRNCNaverMapUtil.ts` uses `TurboModuleRegistry.getEnforcing()` for the native utility contract.
-- `src/util/NaverMapUtil.ts` is currently a placeholder surface; if utility APIs become active again, keep the util wrapper, spec, and native implementation synchronized.
+- Raw TurboModule specs stay internal unless a public wrapper explicitly exposes a supported API.
 - Public APIs should keep JSDoc metadata useful, especially `@param`, `@returns`, `@example`, `@default`, `@internal`, and `@platform` when relevant.
 
 ## Anti-Patterns
@@ -73,4 +72,5 @@
 
 - Repository invariants: `architecture.md`
 - Native implementation details: `native-platforms.md`
+- React Native New Architecture module and Fabric guidance: `rn-native-module.md`
 - Implementation patterns and examples: `patterns.md`

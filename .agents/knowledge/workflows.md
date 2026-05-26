@@ -25,8 +25,9 @@ Use this flow when `src/spec/` changes or when a JS/native contract changes:
 
 1. Update the relevant spec file in `src/spec/`.
 2. Run `pnpm codegen`.
-3. Apply matching iOS and Android changes.
-4. Run `pnpm run t`.
+3. Check `rn-native-module.md` for TurboModule and Fabric implementation rules.
+4. Apply matching iOS and Android changes.
+5. Run `pnpm run t`.
 
 ## Build And Release
 
@@ -70,5 +71,5 @@ Use this flow when `src/spec/` changes or when a JS/native contract changes:
 ## Related Documents
 
 - Repo shape and invariants: `architecture.md`
-- Source and native implementation patterns: `source-surface.md`, `native-platforms.md`, `patterns.md`
+- Source and native implementation patterns: `source-surface.md`, `native-platforms.md`, `rn-native-module.md`, `patterns.md`
 - Supporting package details: `supporting-packages.md`

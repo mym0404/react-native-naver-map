@@ -82,7 +82,7 @@ export const Commands: NativeCommands = codegenNativeCommands<NativeCommands>({
 
 - The native utility contract is defined in `src/spec/NativeRNCNaverMapUtil.ts` with `TurboModuleRegistry.getEnforcing()`.
 - On iOS, `ios/Module/RNCNaverMapUtil.mm` provides `RCT_EXPORT_MODULE()` and `getTurboModule` under `RCT_NEW_ARCH_ENABLED`.
-- The public utility wrapper in `src/util/NaverMapUtil.ts` is currently a placeholder. If utility APIs become active again, keep the wrapper, the spec, and the native module implementation in sync.
+- Raw TurboModule specs are internal native contracts; expose behavior through supported public wrappers such as hooks or component refs.
 
 ## JSDoc Patterns
 

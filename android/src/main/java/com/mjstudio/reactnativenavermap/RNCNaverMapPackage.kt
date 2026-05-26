@@ -46,7 +46,7 @@ class RNCNaverMapPackage : BaseReactPackage() {
         NativeRNCNaverMapUtilSpec.NAME to
           ReactModuleInfo(
             name = NativeRNCNaverMapUtilSpec.NAME,
-            className = NativeRNCNaverMapUtilSpec.NAME,
+            className = RNCNaverMapUtilModule::class.java.name,
             canOverrideExistingModule = false,
             needsEagerInit = false,
             isCxxModule = false,

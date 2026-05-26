@@ -11,19 +11,18 @@ export interface InfoWindowContent {
 }
 
 export interface ShowOnMapParams {
-  mapRef: RefObject<NaverMapViewRef>;
+  mapRef: RefObject<NaverMapViewRef | null>;
   position: Coord;
 }
 
 export interface ShowOnMarkerParams {
-  markerRef: RefObject<NaverMapMarkerOverlayRef>;
+  markerRef: RefObject<NaverMapMarkerOverlayRef | null>;
 }
 
 export interface UseInfoWindowReturn {
-  showOnMap: (params: ShowOnMapParams) => void;
-  showOnMarker: (params: ShowOnMarkerParams) => void;
+  showOnMap: (params: ShowOnMapParams) => boolean;
+  showOnMarker: (params: ShowOnMarkerParams) => boolean;
   close: () => void;
-  isOpen: () => boolean;
 }
 
 /**
@@ -75,27 +74,25 @@ export const useInfoWindow = (
     showOnMap: ({ mapRef, position }) => {
       if (!mapRef.current) {
         console.warn('useInfoWindow: mapRef.current is null');
-        return;
+        return false;
       }
 
       mapRef.current.showInfoWindow(id, position);
+      return true;
     },
 
     showOnMarker: ({ markerRef }) => {
       if (!markerRef.current) {
         console.warn('useInfoWindow: markerRef.current is null');
-        return;
+        return false;
       }
 
       markerRef.current.showInfoWindow(id);
+      return true;
     },
 
     close: () => {
       NaverMapUtil.closeInfoWindow(id);
-    },
-
-    isOpen: () => {
-      return NaverMapUtil.isInfoWindowOpen(id);
     },
   };
 };

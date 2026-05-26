@@ -249,7 +249,6 @@ Class<RCTComponentViewProtocol> RNCNaverMapMarkerCls(void) {
 
   if (infoWindow) {
     [infoWindow openWithMarker:_inner];
-    [RNCNaverMapUtil markAsOpen:infoWindowId];
   }
 }
 

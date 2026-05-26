@@ -1,199 +1,175 @@
 import {
   NaverMapMarkerOverlay,
+  type NaverMapMarkerOverlayRef,
+  type NaverMapViewRef,
   useInfoWindow,
 } from '@mj-studio/react-native-naver-map';
 import React, { useRef, useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Header } from '../components/Header';
 import { ScreenLayout } from '../components/ScreenLayout';
 
-const Cameras = {
-  Seoul: {
-    latitude: 37.5665,
-    longitude: 126.978,
-    zoom: 12,
-  },
+const camera = {
+  latitude: 37.559,
+  longitude: 126.982,
+  zoom: 12,
 };
 
+const mapInfoWindowPosition = {
+  latitude: 37.5219,
+  longitude: 126.9918,
+};
+
+type InfoWindowTarget = 'none' | 'marker' | 'map';
+
 export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
-  const mapRef = useRef<any>(null);
-  const marker1Ref = useRef<any>(null);
-  const marker2Ref = useRef<any>(null);
-  const marker3Ref = useRef<any>(null);
+  const mapRef = useRef<NaverMapViewRef>(null);
+  const markerRef = useRef<NaverMapMarkerOverlayRef>(null);
+  const [revision, setRevision] = useState(1);
+  const [activeTarget, setActiveTarget] = useState<InfoWindowTarget>('none');
 
-  const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(null);
-
-  // 여러 InfoWindow 인스턴스 생성
-  const infoWindow1 = useInfoWindow({
-    title: '서울역',
-    subtitle: '서울특별시 중구 한강대로 405',
+  const markerInfoWindow = useInfoWindow({
+    title: `서울역 ${revision}`,
+    subtitle: '마커 위에 열린 기본 텍스트 정보 창',
   });
 
-  const infoWindow2 = useInfoWindow({
-    title: '남산타워',
-    subtitle: '서울특별시 용산구 남산공원길 105',
+  const mapInfoWindow = useInfoWindow({
+    title: `한강대교 ${revision}`,
+    subtitle: '지도 좌표에 열린 기본 텍스트 정보 창',
   });
 
-  const infoWindow3 = useInfoWindow({
-    title: '경복궁',
-    subtitle: '서울특별시 종로구 사직로 161',
-  });
+  const showMarkerInfoWindow = () => {
+    const didShow = markerInfoWindow.showOnMarker({ markerRef });
+    if (!didShow) return;
 
-  // 맵에 직접 표시할 InfoWindow
-  const infoWindowOnMap = useInfoWindow({
-    title: '한강대교',
-    subtitle: '서울의 중심을 가로지르는 다리',
-  });
-
-  const handleMarker1Tap = () => {
-    setSelectedMarkerId('marker1');
-    infoWindow1.showOnMarker({ markerRef: marker1Ref });
-    // 다른 InfoWindow들 닫기
-    infoWindow2.close();
-    infoWindow3.close();
-    infoWindowOnMap.close();
+    mapInfoWindow.close();
+    setActiveTarget('marker');
   };
 
-  const handleMarker2Tap = () => {
-    setSelectedMarkerId('marker2');
-    infoWindow2.showOnMarker({ markerRef: marker2Ref });
-    // 다른 InfoWindow들 닫기
-    infoWindow1.close();
-    infoWindow3.close();
-    infoWindowOnMap.close();
-  };
-
-  const handleMarker3Tap = () => {
-    setSelectedMarkerId('marker3');
-    infoWindow3.showOnMarker({ markerRef: marker3Ref });
-    // 다른 InfoWindow들 닫기
-    infoWindow1.close();
-    infoWindow2.close();
-    infoWindowOnMap.close();
-  };
-
-  const handleShowOnMap = () => {
-    if (!mapRef.current) {
-      console.warn('Map ref not ready');
-      return;
-    }
-
-    // 한강대교 위치에 InfoWindow 표시
-    infoWindowOnMap.showOnMap({
-      mapRef: mapRef,
-      position: { latitude: 37.5219, longitude: 126.9918 },
+  const showMapInfoWindow = () => {
+    const didShow = mapInfoWindow.showOnMap({
+      mapRef,
+      position: mapInfoWindowPosition,
     });
+    if (!didShow) return;
 
-    // 다른 InfoWindow들 닫기
-    infoWindow1.close();
-    infoWindow2.close();
-    infoWindow3.close();
-    setSelectedMarkerId(null);
+    markerInfoWindow.close();
+    setActiveTarget('map');
   };
 
-  const handleCloseAll = () => {
-    infoWindow1.close();
-    infoWindow2.close();
-    infoWindow3.close();
-    infoWindowOnMap.close();
-    setSelectedMarkerId(null);
+  const updateOpenInfoWindow = () => {
+    setRevision((value) => value + 1);
+  };
+
+  const closeAllInfoWindows = () => {
+    markerInfoWindow.close();
+    mapInfoWindow.close();
+    setActiveTarget('none');
   };
 
   return (
-    <>
+    <SafeAreaView
+      style={styles.container}
+      testID="info-window-screen"
+      accessibilityLabel="info-window-screen"
+    >
       <Header title={'InfoWindow Example'} onBack={onBack} />
       <ScreenLayout
         mapRef={mapRef}
         mapProps={{
-          camera: Cameras.Seoul,
+          camera,
         }}
       >
-        {/* 서울역 마커 */}
         <NaverMapMarkerOverlay
-          ref={marker1Ref}
+          ref={markerRef}
           latitude={37.5547}
           longitude={126.9707}
-          onTap={handleMarker1Tap}
+          onTap={showMarkerInfoWindow}
           anchor={{ x: 0.5, y: 1 }}
           caption={{
             text: '서울역',
             textSize: 14,
-            color: selectedMarkerId === 'marker1' ? '#0000FF' : '#000000',
+            color: activeTarget === 'marker' ? '#1A5CFF' : '#111111',
           }}
-          image={{ symbol: 'blue' }}
-        />
-
-        {/* 남산타워 마커 */}
-        <NaverMapMarkerOverlay
-          ref={marker2Ref}
-          latitude={37.5512}
-          longitude={126.9882}
-          onTap={handleMarker2Tap}
-          anchor={{ x: 0.5, y: 1 }}
-          caption={{
-            text: '남산타워',
-            textSize: 14,
-            color: selectedMarkerId === 'marker2' ? '#0000FF' : '#000000',
-          }}
-          image={{ symbol: 'green' }}
-        />
-
-        {/* 경복궁 마커 */}
-        <NaverMapMarkerOverlay
-          ref={marker3Ref}
-          latitude={37.5797}
-          longitude={126.977}
-          onTap={handleMarker3Tap}
-          anchor={{ x: 0.5, y: 1 }}
-          caption={{
-            text: '경복궁',
-            textSize: 14,
-            color: selectedMarkerId === 'marker3' ? '#0000FF' : '#000000',
-          }}
-          image={{ symbol: 'red' }}
+          image={{ symbol: activeTarget === 'marker' ? 'blue' : 'green' }}
         />
       </ScreenLayout>
 
-      {/* 컨트롤 버튼들 */}
       <View style={styles.controlPanel}>
-        <Text style={styles.infoText}>
-          마커를 탭하여 InfoWindow를 표시합니다
-        </Text>
-
-        <View style={styles.buttonContainer}>
+        <Text style={styles.title}>InfoWindow controls</Text>
+        <View style={styles.buttonRow}>
           <Button
-            title="Map에 InfoWindow 표시"
-            onPress={handleShowOnMap}
-            color="#4CAF50"
+            title="마커 열기"
+            onPress={showMarkerInfoWindow}
+            testID="info-window-marker-button"
+            accessibilityLabel="info-window-marker-button"
           />
           <Button
-            title="모든 InfoWindow 닫기"
-            onPress={handleCloseAll}
-            color="#FF5722"
+            title="지도 열기"
+            onPress={showMapInfoWindow}
+            testID="info-window-map-button"
+            accessibilityLabel="info-window-map-button"
           />
         </View>
-
+        <View style={styles.buttonRow}>
+          <Button
+            title="내용 갱신"
+            onPress={updateOpenInfoWindow}
+            testID="info-window-update-button"
+            accessibilityLabel="info-window-update-button"
+          />
+          <Button
+            title="모두 닫기"
+            onPress={closeAllInfoWindows}
+            testID="info-window-close-button"
+            accessibilityLabel="info-window-close-button"
+          />
+        </View>
         <View style={styles.statusContainer}>
-          <Text style={styles.statusText}>InfoWindow 상태:</Text>
-          <Text style={styles.statusText}>
-            서울역: {infoWindow1.isOpen() ? '열림' : '닫힘'}
+          <Text
+            style={styles.statusText}
+            testID="info-window-selected-status"
+            accessibilityLabel={`info-window-selected-status-${activeTarget}`}
+          >
+            선택: {activeTarget}
           </Text>
-          <Text style={styles.statusText}>
-            남산타워: {infoWindow2.isOpen() ? '열림' : '닫힘'}
+          <Text
+            style={styles.statusText}
+            testID="info-window-marker-status"
+            accessibilityLabel={`info-window-marker-status-${
+              activeTarget === 'marker' ? 'open' : 'closed'
+            }`}
+          >
+            마커: {activeTarget === 'marker' ? '열림' : '닫힘'}
           </Text>
-          <Text style={styles.statusText}>
-            경복궁: {infoWindow3.isOpen() ? '열림' : '닫힘'}
+          <Text
+            style={styles.statusText}
+            testID="info-window-map-status"
+            accessibilityLabel={`info-window-map-status-${
+              activeTarget === 'map' ? 'open' : 'closed'
+            }`}
+          >
+            지도: {activeTarget === 'map' ? '열림' : '닫힘'}
           </Text>
-          <Text style={styles.statusText}>
-            한강대교 (Map): {infoWindowOnMap.isOpen() ? '열림' : '닫힘'}
+          <Text
+            style={styles.statusText}
+            testID="info-window-revision-status"
+            accessibilityLabel={`info-window-revision-status-${revision}`}
+          >
+            내용 버전: {revision}
           </Text>
         </View>
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+  },
   controlPanel: {
     position: 'absolute',
     bottom: 0,
@@ -204,25 +180,26 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#e0e0e0',
   },
-  infoText: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 12,
+  title: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#111',
+    marginBottom: 10,
     textAlign: 'center',
   },
-  buttonContainer: {
+  buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 12,
+    marginBottom: 10,
   },
   statusContainer: {
     backgroundColor: '#f5f5f5',
-    padding: 12,
+    padding: 10,
     borderRadius: 8,
   },
   statusText: {
     fontSize: 12,
     color: '#333',
-    marginBottom: 4,
+    marginBottom: 3,
   },
 });

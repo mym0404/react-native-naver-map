@@ -7,6 +7,7 @@
 ## Shared Expectations
 
 - Keep native command names aligned with the TypeScript spec.
+- Read `rn-native-module.md` before changing TurboModule, Fabric component, command, or event contracts.
 - Review cross-platform parity before treating behavior as platform-specific.
 - Prefer existing event and manager patterns over one-off command or emission paths.
 - Edit source implementations, not generated interfaces or build output.
@@ -35,6 +36,7 @@
 ### Conventions
 
 - Keep manager implementations aligned with generated spec interfaces.
+- Native modules must inherit the generated codegen spec class and implement module APIs with `override`; helper methods used by managers should stay separate from the JS-facing spec surface.
 - Use shared event utilities for event dispatch.
 - Register direct events through the shared helper path instead of open-coding event maps.
 - Preserve lifecycle handling patterns in wrappers and attached views.
@@ -71,6 +73,9 @@
 - Compare previous and next props before mutating native state in `updateProps`.
 - Cast and null-check event emitters before emission.
 - Route imperative commands through `handleCommand:args:` and the generated command handler.
+- Native module APIs must be implemented as instance methods matching the generated `Native*Spec` protocol selectors from `pnpm codegen`; do not add JS-facing module methods only through `RCT_EXPORT_METHOD`.
+- Class methods in native modules are only for internal Objective-C++ sharing, such as view managers retrieving module-owned objects. They are not part of the JS/TurboModule contract.
+- Naver Maps iOS SDK overlay objects must be created, mutated, queried, and closed on the main thread, including calls reached from TurboModule methods.
 - Clean up async image loaders and cancelers on teardown.
 - Keep overlay implementation patterns consistent across overlay folders.
 - `RNCNaverMapUtil.mm` still exposes `RCT_EXPORT_MODULE()` and `getTurboModule` under `RCT_NEW_ARCH_ENABLED`; keep that scoped to module interop rather than UI fallback behavior.
@@ -79,6 +84,7 @@
 ### Validation
 
 - Spec change: `pnpm codegen`
+- Native module contract change: run `pnpm codegen`, inspect the generated `Native*Spec` selectors or abstract methods, then implement the exact matching iOS instance methods and Android overrides.
 - Baseline repo check: `pnpm run t`
 - Native package change: `pnpm install`, then `pnpm pod`
 - Pod state update only: `pnpm pod` or `pnpm pod:update`
@@ -95,5 +101,6 @@
 ## Related Documents
 
 - Repo-wide architecture constraints: `architecture.md`
+- React Native New Architecture guidance: `rn-native-module.md`
 - JS/spec contract guidance: `source-surface.md`
 - Implementation patterns and examples: `patterns.md`

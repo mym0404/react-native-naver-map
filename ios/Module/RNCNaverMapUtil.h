@@ -18,7 +18,5 @@
 #endif
 
 + (NMFInfoWindow*)getInfoWindow:(NSString*)infoWindowId;
-+ (void)markAsOpen:(NSString*)infoWindowId;
-+ (void)markAsClosed:(NSString*)infoWindowId;
 
 @end

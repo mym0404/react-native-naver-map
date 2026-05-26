@@ -249,7 +249,6 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
     val infoWindow = module?.getInfoWindow(infoWindowId) ?: return@withOverlay
 
     infoWindow.open(marker)
-    module.markAsOpen(infoWindowId)
   }
 
   companion object {
