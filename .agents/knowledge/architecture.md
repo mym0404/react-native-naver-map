@@ -27,8 +27,8 @@ This repository publishes `@mj-studio/react-native-naver-map`, a Fabric-only Rea
 - The workspace catalog currently pins React Native `0.85.1` and React `19.2.3`.
 - The root publishable package consumes those catalog versions through `devDependencies` for local build, typecheck, codegen, and example-linked development.
 - The `example/` app also consumes those same catalog versions as its app runtime and dev toolchain, so root and example stay aligned on the same React Native baseline.
-- iOS uses the Naver Maps iOS SDK via `NMapsMap`; the example app lockfile currently resolves `3.23.0`.
-- Android uses `com.naver.maps:map-sdk` through the Gradle `sdkVersion` extension; the public README currently advertises `3.23.0`.
+- iOS uses the Naver Maps iOS SDK via `NMapsMap`; the exact version is declared in the podspec and resolved in the example app lockfile.
+- Android uses `com.naver.maps:map-sdk` through the Gradle `sdkVersion` extension; the exact version is declared in `android/gradle.properties`.
 - Core tooling is TypeScript, React Native Builder Bob, Biome, Lefthook, Clang lint/format scripts, Ktlint scripts, Turbo, and Fumadocs.
 - The root TypeScript config is strict and uses path mappings; docs also carries its own strict TypeScript config.
 
