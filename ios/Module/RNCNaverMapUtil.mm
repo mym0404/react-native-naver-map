@@ -136,6 +136,34 @@ RCT_EXPORT_MODULE()
   return RNCNaverMapInfoWindows()[infoWindowId];
 }
 
++ (void)closeInfoWindowsForMapView:(NMFMapView*)mapView {
+  if (!mapView) {
+    return;
+  }
+
+  RNCNaverMapRunOnMainSync(^{
+    for (NMFInfoWindow* infoWindow in RNCNaverMapInfoWindows().allValues) {
+      if (infoWindow.mapView == mapView || infoWindow.marker.mapView == mapView) {
+        [infoWindow close];
+      }
+    }
+  });
+}
+
++ (void)closeInfoWindowsForMarker:(NMFMarker*)marker {
+  if (!marker) {
+    return;
+  }
+
+  RNCNaverMapRunOnMainSync(^{
+    for (NMFInfoWindow* infoWindow in RNCNaverMapInfoWindows().allValues) {
+      if (infoWindow.marker == marker) {
+        [infoWindow close];
+      }
+    }
+  });
+}
+
 #ifdef RCT_NEW_ARCH_ENABLED
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
     (const facebook::react::ObjCTurboModule::InitParams&)params {

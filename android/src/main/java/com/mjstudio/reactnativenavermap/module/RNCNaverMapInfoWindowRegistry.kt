@@ -3,7 +3,9 @@ package com.mjstudio.reactnativenavermap.module
 import android.graphics.PointF
 import com.facebook.react.bridge.ReactApplicationContext
 import com.mjstudio.reactnativenavermap.util.px
+import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.InfoWindow
+import com.naver.maps.map.overlay.Marker
 
 class RNCNaverMapInfoWindowRegistry {
   private val infoWindows = mutableMapOf<String, InfoWindow>()
@@ -36,6 +38,18 @@ class RNCNaverMapInfoWindowRegistry {
 
   fun close(id: String) {
     infoWindows[id]?.close()
+  }
+
+  fun closeForMap(map: NaverMap) {
+    infoWindows.values
+      .filter { it.map === map || it.marker?.map === map }
+      .forEach { it.close() }
+  }
+
+  fun closeForMarker(marker: Marker) {
+    infoWindows.values
+      .filter { it.marker === marker }
+      .forEach { it.close() }
   }
 
   fun setContent(

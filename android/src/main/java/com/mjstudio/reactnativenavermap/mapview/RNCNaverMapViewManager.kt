@@ -108,6 +108,7 @@ class RNCNaverMapViewManager(
     RNCNaverMapViewWrapper(reactContext, initialMapOptions ?: NaverMapOptions())
 
   override fun onDropViewInstance(view: RNCNaverMapViewWrapper) {
+    view.mapView?.withExistingMap { infoWindowRegistry.closeForMap(it) }
     view.doDestroy()
     clustererHolders.forEach { (_, u) -> u.onDetach() }
     clustererHolders.clear()

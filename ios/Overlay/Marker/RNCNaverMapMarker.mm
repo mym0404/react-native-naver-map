@@ -56,6 +56,8 @@ using namespace facebook::react;
 }
 
 - (void)dealloc {
+  [RNCNaverMapUtil closeInfoWindowsForMarker:_inner];
+
   if (_imageCanceller) {
     _imageCanceller();
     _imageCanceller = nil;

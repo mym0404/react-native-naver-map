@@ -18,5 +18,7 @@
 #endif
 
 + (NMFInfoWindow*)getInfoWindow:(NSString*)infoWindowId;
++ (void)closeInfoWindowsForMapView:(NMFMapView*)mapView;
++ (void)closeInfoWindowsForMarker:(NMFMarker*)marker;
 
 @end

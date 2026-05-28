@@ -24,6 +24,7 @@ class RNCNaverMapMarkerManager(
   override fun createViewInstance(context: ThemedReactContext): RNCNaverMapMarker = RNCNaverMapMarker(context)
 
   override fun onDropViewInstance(view: RNCNaverMapMarker) {
+    infoWindowRegistry.closeForMarker(view.overlay)
     view.onDropViewInstance()
     super.onDropViewInstance(view)
   }

@@ -45,6 +45,8 @@ using namespace facebook::react;
 }
 
 - (void)dealloc {
+  [RNCNaverMapUtil closeInfoWindowsForMapView:self.map];
+
   for (const auto& [key, clusterer] : _clustererRecord) {
     clusterer.mapView = nil;
 
@@ -74,6 +76,7 @@ using namespace facebook::react;
 #pragma clang diagnostic pop
 
 - (void)prepareForRecycle {
+  [RNCNaverMapUtil closeInfoWindowsForMapView:self.map];
   [_view prepareForRecycle];
   [super prepareForRecycle];
 }
