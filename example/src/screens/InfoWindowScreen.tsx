@@ -24,6 +24,7 @@ const mapInfoWindowPosition = {
 };
 
 const alignTypes = [
+  undefined,
   'Center',
   'Left',
   'Right',
@@ -33,7 +34,7 @@ const alignTypes = [
   'TopRight',
   'BottomRight',
   'BottomLeft',
-] satisfies Align[];
+] satisfies (Align | undefined)[];
 
 type InfoWindowTarget = 'none' | 'marker' | 'map';
 
@@ -42,14 +43,14 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
   const markerRef = useRef<NaverMapMarkerOverlayRef>(null);
   const [revision, setRevision] = useState(1);
   const [activeTarget, setActiveTarget] = useState<InfoWindowTarget>('none');
-  const [alignTypeIndex, setAlignTypeIndex] = useState(2);
+  const [alignTypeIndex, setAlignTypeIndex] = useState(0);
   const [anchorX, setAnchorX] = useState(0.5);
   const [anchorY, setAnchorY] = useState(1);
   const [offsetX, setOffsetX] = useState(0);
   const [offsetY, setOffsetY] = useState(0);
   const [alpha, setAlpha] = useState(1);
 
-  const alignType = alignTypes[alignTypeIndex]!;
+  const alignType = alignTypes[alignTypeIndex];
 
   const markerInfoWindow = useInfoWindow({
     text: `서울역 ${revision}`,
@@ -100,7 +101,7 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
   const changeAlignType = () => {
     setAlignTypeIndex((value) => {
       const nextIndex = (value + 1) % alignTypes.length;
-      const nextAlignType = alignTypes[nextIndex]!;
+      const nextAlignType = alignTypes[nextIndex];
 
       if (activeTarget === 'marker') {
         markerInfoWindow.showOnMarker({
@@ -131,7 +132,10 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
             <Btn title="지도 열기" onPress={showMapInfoWindow} />
             <Btn title="내용 갱신" onPress={updateOpenInfoWindow} />
             <Btn title="모두 닫기" onPress={closeAllInfoWindows} />
-            <Btn title={`정렬: ${alignType}`} onPress={changeAlignType} />
+            <Btn
+              title={`정렬: ${alignType ?? '기본값'}`}
+              onPress={changeAlignType}
+            />
             <Range
               min={0}
               max={1}
