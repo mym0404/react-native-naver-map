@@ -1,4 +1,5 @@
 #import "RNCNaverMapOverlayImageLoader.h"
+#import "FnUtil.h"
 
 static NSString* const RNCNaverMapOverlayImageLoaderErrorDomain =
     @"RNCNaverMapOverlayImageLoaderErrorDomain";
@@ -18,25 +19,20 @@ static NSError* RNCNaverMapOverlayImageLoaderError(NSString* description) {
                          userInfo:@{NSLocalizedDescriptionKey : description}];
 }
 
-static void RNCNaverMapCompleteOnMain(RNCNaverMapUIImageHandler completion,
-                                      UIImage* _Nullable image, NSError* _Nullable error) {
-  dispatch_async(dispatch_get_main_queue(), ^{
-    completion(image, error);
-  });
-}
-
 RNCNaverMapImageCanceller RNCNaverMapLoadUIImageWithUri(NSString* uriString,
                                                         RNCNaverMapUIImageHandler completion) {
   NSURL* url = [NSURL URLWithString:uriString];
   if (!url || url.scheme.length == 0) {
     UIImage* image = [UIImage imageNamed:uriString];
-    RNCNaverMapCompleteOnMain(completion, image, nil);
+    runOnMain(^{
+      completion(image, nil);
+    });
     return RNCNaverMapNoopCanceller();
   }
 
   if (url.fileURL) {
     __block BOOL isCancelled = NO;
-    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+    runOnBackground(^{
       if (isCancelled) {
         return;
       }
@@ -57,7 +53,9 @@ RNCNaverMapImageCanceller RNCNaverMapLoadUIImageWithUri(NSString* uriString,
         return;
       }
 
-      RNCNaverMapCompleteOnMain(completion, image, error);
+      runOnMain(^{
+        completion(image, error);
+      });
     });
 
     return ^{
@@ -76,7 +74,9 @@ RNCNaverMapImageCanceller RNCNaverMapLoadUIImageWithUri(NSString* uriString,
             if (error.code == NSURLErrorCancelled) {
               return;
             }
-            RNCNaverMapCompleteOnMain(completion, nil, error);
+            runOnMain(^{
+              completion(nil, error);
+            });
             return;
           }
 
@@ -87,7 +87,9 @@ RNCNaverMapImageCanceller RNCNaverMapLoadUIImageWithUri(NSString* uriString,
             imageError = RNCNaverMapOverlayImageLoaderError(@"Failed to decode image");
           }
 
-          RNCNaverMapCompleteOnMain(completion, image, imageError);
+          runOnMain(^{
+            completion(image, imageError);
+          });
         }];
   [task resume];
 

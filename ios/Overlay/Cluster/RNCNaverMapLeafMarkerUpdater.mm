@@ -49,7 +49,7 @@
     _imgRequests->erase(idStr);
   }
   (*_imgRequests)[idStr] = nmap::getImage(image, ^(NMFOverlayImage* _Nullable overlayImage) {
-    dispatch_async(dispatch_get_main_queue(), ^{
+    runOnMain(^{
       if (weakMarker) {
         weakMarker.alpha = 1;
         weakMarker.iconImage = !overlayImage ? NMF_MARKER_IMAGE_GREEN : overlayImage;

@@ -84,7 +84,7 @@ static NSMutableDictionary* _overlayImageHolder;
     }
 
     _imageCanceller = nmap::getImage(next.image, ^(NMFOverlayImage* image) {
-      dispatch_async(dispatch_get_main_queue(), [self, image]() {
+      runOnMain([self, image]() {
         self.inner.alpha = 1;
         self.inner.overlayImage = image;
         self->_imageCanceller = nil;

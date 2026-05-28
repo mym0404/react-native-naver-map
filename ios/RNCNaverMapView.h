@@ -13,7 +13,6 @@
 #import "FnUtil.h"
 #import "RCTFabricComponentsPlugins.h"
 #import "RNCNaverMapViewImpl.h"
-#import "Utils.h"
 
 @interface RNCNaverMapView : RCTViewComponentView
 

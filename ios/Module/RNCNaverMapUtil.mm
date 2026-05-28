@@ -6,6 +6,7 @@
 //
 
 #import "RNCNaverMapUtil.h"
+#import "FnUtil.h"
 #import <Foundation/Foundation.h>
 
 static NSMutableDictionary<NSString*, NMFInfoWindow*>* RNCNaverMapInfoWindows(void) {
@@ -30,21 +31,12 @@ static BOOL RNCNaverMapInfoWindowIsOpen(NMFInfoWindow* infoWindow) {
   return infoWindow.marker != nil || infoWindow.mapView != nil;
 }
 
-static void RNCNaverMapRunOnMainSync(dispatch_block_t block) {
-  if (NSThread.isMainThread) {
-    block();
-    return;
-  }
-
-  dispatch_sync(dispatch_get_main_queue(), block);
-}
-
 @implementation RNCNaverMapUtil
 
 RCT_EXPORT_MODULE()
 
 - (void)createInfoWindow:(NSString*)infoWindowId {
-  RNCNaverMapRunOnMainSync(^{
+  runOnMainSync(^{
     if (RNCNaverMapInfoWindows()[infoWindowId])
       return;
 
@@ -59,7 +51,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)destroyInfoWindow:(NSString*)infoWindowId {
-  RNCNaverMapRunOnMainSync(^{
+  runOnMainSync(^{
     NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
     if (infoWindow) {
       [infoWindow close];
@@ -70,7 +62,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)closeInfoWindow:(NSString*)infoWindowId {
-  RNCNaverMapRunOnMainSync(^{
+  runOnMainSync(^{
     NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
     if (infoWindow) {
       [infoWindow close];
@@ -79,7 +71,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)setInfoWindowContent:(NSString*)infoWindowId text:(NSString*)text {
-  RNCNaverMapRunOnMainSync(^{
+  runOnMainSync(^{
     RNCNaverMapInfoWindowContents()[infoWindowId] = text ?: @"";
 
     NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
@@ -102,7 +94,7 @@ RCT_EXPORT_MODULE()
                      offsetX:(double)offsetX
                      offsetY:(double)offsetY
                        alpha:(double)alpha {
-  RNCNaverMapRunOnMainSync(^{
+  runOnMainSync(^{
     NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
     if (infoWindow) {
       infoWindow.anchor = CGPointMake(anchorX, anchorY);
@@ -115,7 +107,7 @@ RCT_EXPORT_MODULE()
 
 - (NSNumber*)isInfoWindowOpen:(NSString*)infoWindowId {
   __block BOOL isOpen = NO;
-  RNCNaverMapRunOnMainSync(^{
+  runOnMainSync(^{
     NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
     isOpen = RNCNaverMapInfoWindowIsOpen(infoWindow);
   });
@@ -123,7 +115,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)invalidate {
-  RNCNaverMapRunOnMainSync(^{
+  runOnMainSync(^{
     for (NMFInfoWindow* infoWindow in RNCNaverMapInfoWindows().allValues) {
       [infoWindow close];
     }
@@ -141,7 +133,7 @@ RCT_EXPORT_MODULE()
     return;
   }
 
-  RNCNaverMapRunOnMainSync(^{
+  runOnMainSync(^{
     for (NMFInfoWindow* infoWindow in RNCNaverMapInfoWindows().allValues) {
       if (infoWindow.mapView == mapView || infoWindow.marker.mapView == mapView) {
         [infoWindow close];
@@ -155,7 +147,7 @@ RCT_EXPORT_MODULE()
     return;
   }
 
-  RNCNaverMapRunOnMainSync(^{
+  runOnMainSync(^{
     for (NMFInfoWindow* infoWindow in RNCNaverMapInfoWindows().allValues) {
       if (infoWindow.marker == marker) {
         [infoWindow close];
