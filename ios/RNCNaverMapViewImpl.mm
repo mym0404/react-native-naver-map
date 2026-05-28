@@ -41,9 +41,7 @@
     [self.mapView addOptionDelegate:self];
 
     // run after _eventEmitter available(new arch), direct event block set(old arch)
-    double delayInSeconds = 0.1;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+    runOnMainAfter(0.1, ^{
       if (!self.rncParent.emitter)
         return;
 
@@ -260,7 +258,7 @@
     }
 
     _mainImageCanceller = nmap::getImage(locationOverlay.image, ^(NMFOverlayImage* image) {
-      dispatch_async(dispatch_get_main_queue(), [self, image]() {
+      runOnMain([self, image]() {
         self.mapView.locationOverlay.icon = image;
         self->_mainImageCanceller = nil;
       });
@@ -279,7 +277,7 @@
     }
 
     _subImageCanceller = nmap::getImage(locationOverlay.subImage, ^(NMFOverlayImage* image) {
-      dispatch_async(dispatch_get_main_queue(), [self, image]() {
+      runOnMain([self, image]() {
         self.mapView.locationOverlay.subIcon = image;
         self->_subImageCanceller = nil;
       });

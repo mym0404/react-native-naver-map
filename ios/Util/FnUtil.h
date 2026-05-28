@@ -4,9 +4,32 @@
 //
 //  Created by mj on 4/3/24.
 //
+#import <Foundation/Foundation.h>
 #import <NMapsMap/NMapsMap.h>
 #import <string>
 #import <utility>
+
+static inline void runOnMain(dispatch_block_t block) {
+  dispatch_async(dispatch_get_main_queue(), block);
+}
+
+static inline void runOnMainSync(dispatch_block_t block) {
+  if (NSThread.isMainThread) {
+    block();
+    return;
+  }
+
+  dispatch_sync(dispatch_get_main_queue(), block);
+}
+
+static inline void runOnMainAfter(double delayInSeconds, dispatch_block_t block) {
+  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+  dispatch_after(popTime, dispatch_get_main_queue(), block);
+}
+
+static inline void runOnBackground(dispatch_block_t block) {
+  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), block);
+}
 
 static inline BOOL isValidNumber(NSNumber* value) {
   if (!value || [value isKindOfClass:[NSNull class]]) {

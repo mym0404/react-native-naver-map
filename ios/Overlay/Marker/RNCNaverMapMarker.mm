@@ -96,7 +96,7 @@ using namespace facebook::react;
   }
 
   _imageCanceller = nmap::getImage(image, ^(NMFOverlayImage* _Nullable image) {
-    dispatch_async(dispatch_get_main_queue(), [self, image]() {
+    runOnMain([self, image]() {
       self.inner.alpha = 1;
       if (image) {
         self.inner.iconImage = image;
@@ -126,7 +126,7 @@ using namespace facebook::react;
   _isImageSetFromSubview = YES;
   _inner.alpha = 0;
   // prevent default image is set after this logic in old arch
-  dispatch_async(dispatch_get_main_queue(), [self, subview]() {
+  runOnMain([self, subview]() {
     self.inner.alpha = 1;
     self.inner.iconImage = [NMFOverlayImage overlayImageWithImage:[self captureView:subview]];
     [self ensureTouchHandler]; // Re-ensure touch handler after custom marker image is set

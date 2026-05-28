@@ -88,8 +88,7 @@ using namespace facebook::react;
     }
 
     _imageCanceller = nmap::getImage(next.patternImage, ^(NMFOverlayImage* _Nullable image) {
-      dispatch_async(dispatch_get_main_queue(),
-                     [self, image]() { self.inner.patternIcon = image; });
+      runOnMain([self, image]() { self.inner.patternIcon = image; });
     });
   }
   if (prev.patternInterval != next.patternInterval)
