@@ -1,4 +1,5 @@
 import {
+  type Align,
   NaverMapMarkerOverlay,
   type NaverMapMarkerOverlayRef,
   type NaverMapViewRef,
@@ -7,7 +8,7 @@ import {
 import React, { useRef, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Btn } from '../component/components';
+import { Btn, Range } from '../component/components';
 import { Header } from '../components/Header';
 import { ScreenLayout } from '../components/ScreenLayout';
 
@@ -22,6 +23,18 @@ const mapInfoWindowPosition = {
   longitude: 126.9918,
 };
 
+const alignTypes = [
+  'Center',
+  'Left',
+  'Right',
+  'Top',
+  'Bottom',
+  'TopLeft',
+  'TopRight',
+  'BottomRight',
+  'BottomLeft',
+] satisfies Align[];
+
 type InfoWindowTarget = 'none' | 'marker' | 'map';
 
 export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
@@ -29,22 +42,33 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
   const markerRef = useRef<NaverMapMarkerOverlayRef>(null);
   const [revision, setRevision] = useState(1);
   const [activeTarget, setActiveTarget] = useState<InfoWindowTarget>('none');
+  const [alignTypeIndex, setAlignTypeIndex] = useState(2);
+  const [anchorX, setAnchorX] = useState(0.5);
+  const [anchorY, setAnchorY] = useState(1);
+  const [offsetX, setOffsetX] = useState(0);
+  const [offsetY, setOffsetY] = useState(-8);
+  const [alpha, setAlpha] = useState(0.9);
+
+  const alignType = alignTypes[alignTypeIndex]!;
 
   const markerInfoWindow = useInfoWindow({
     text: `서울역 ${revision}`,
-    anchor: { x: 0.5, y: 1 },
-    offset: { x: 0, y: -8 },
-    alpha: 0.9,
+    anchor: { x: anchorX, y: anchorY },
+    offset: { x: offsetX, y: offsetY },
+    alpha,
   });
 
   const mapInfoWindow = useInfoWindow({
     text: `한강대교 ${revision}`,
+    anchor: { x: anchorX, y: anchorY },
+    offset: { x: offsetX, y: offsetY },
+    alpha,
   });
 
   const showMarkerInfoWindow = () => {
     const didShow = markerInfoWindow.showOnMarker({
       markerRef,
-      alignType: 'Right',
+      alignType,
     });
     if (!didShow) return;
 
@@ -73,6 +97,22 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
     setActiveTarget('none');
   };
 
+  const changeAlignType = () => {
+    setAlignTypeIndex((value) => {
+      const nextIndex = (value + 1) % alignTypes.length;
+      const nextAlignType = alignTypes[nextIndex]!;
+
+      if (activeTarget === 'marker') {
+        markerInfoWindow.showOnMarker({
+          markerRef,
+          alignType: nextAlignType,
+        });
+      }
+
+      return nextIndex;
+    });
+  };
+
   return (
     <SafeAreaView
       style={styles.container}
@@ -91,6 +131,42 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
             <Btn title="지도 열기" onPress={showMapInfoWindow} />
             <Btn title="내용 갱신" onPress={updateOpenInfoWindow} />
             <Btn title="모두 닫기" onPress={closeAllInfoWindows} />
+            <Btn title={`정렬: ${alignType}`} onPress={changeAlignType} />
+            <Range
+              min={0}
+              max={1}
+              value={anchorX}
+              onChange={setAnchorX}
+              text={`Anchor X ${anchorX.toFixed(2)}`}
+            />
+            <Range
+              min={0}
+              max={1}
+              value={anchorY}
+              onChange={setAnchorY}
+              text={`Anchor Y ${anchorY.toFixed(2)}`}
+            />
+            <Range
+              min={-40}
+              max={40}
+              value={offsetX}
+              onChange={setOffsetX}
+              text={`Offset X ${Math.round(offsetX)}`}
+            />
+            <Range
+              min={-40}
+              max={40}
+              value={offsetY}
+              onChange={setOffsetY}
+              text={`Offset Y ${Math.round(offsetY)}`}
+            />
+            <Range
+              min={0}
+              max={1}
+              value={alpha}
+              onChange={setAlpha}
+              text={`Alpha ${alpha.toFixed(2)}`}
+            />
             <Text
               style={styles.statusText}
               testID="info-window-selected-status"
