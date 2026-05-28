@@ -17,5 +17,5 @@ Pod::Spec.new do |s|
 
   install_modules_dependencies(s)
 
-  s.dependency "NMapsMap", "3.23.0"
+  s.dependency "NMapsMap", "3.23.2"
 end
