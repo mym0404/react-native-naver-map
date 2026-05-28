@@ -1,0 +1,101 @@
+---
+title: "Info Window"
+description: "Guide for opening Naver Map text info windows"
+---
+
+## Overview
+
+`useInfoWindow` creates and controls a text InfoWindow instance. It can open the same InfoWindow on a `NaverMapMarkerOverlay` or at a map coordinate, update the text and placement options when the hook content changes, and close the InfoWindow manually.
+
+Use one hook instance for each InfoWindow you want to manage. The hook creates the native InfoWindow on mount and destroys it on unmount.
+
+## Show On A Marker
+
+```tsx
+import { useRef } from 'react';
+import {
+  NaverMapMarkerOverlay,
+  NaverMapView,
+  type NaverMapMarkerOverlayRef,
+  useInfoWindow,
+} from '@mj-studio/react-native-naver-map';
+
+function MarkerInfoWindowMap() {
+  const markerRef = useRef<NaverMapMarkerOverlayRef>(null);
+  const infoWindow = useInfoWindow({
+    text: 'Seoul Station',
+    anchor: { x: 0.5, y: 1 },
+    offset: { x: 0, y: -8 },
+    alpha: 0.9,
+  });
+
+  return (
+    <NaverMapView style={{ flex: 1 }}>
+      <NaverMapMarkerOverlay
+        ref={markerRef}
+        latitude={37.5547}
+        longitude={126.9707}
+        onTap={() => {
+          infoWindow.showOnMarker({ markerRef, alignType: 'Right' });
+        }}
+      />
+    </NaverMapView>
+  );
+}
+```
+
+## Show On A Map Coordinate
+
+```tsx
+import { useRef } from 'react';
+import {
+  NaverMapView,
+  type NaverMapViewRef,
+  useInfoWindow,
+} from '@mj-studio/react-native-naver-map';
+
+function MapInfoWindow() {
+  const mapRef = useRef<NaverMapViewRef>(null);
+  const infoWindow = useInfoWindow({
+    text: 'Hangang Bridge',
+  });
+
+  return (
+    <NaverMapView
+      ref={mapRef}
+      style={{ flex: 1 }}
+      onTapMap={() => {
+        infoWindow.showOnMap({
+          mapRef,
+          position: { latitude: 37.5219, longitude: 126.9918 },
+        });
+      }}
+    />
+  );
+}
+```
+
+## Close And Readiness
+
+`showOnMarker` and `showOnMap` return `false` when the target ref is not ready. Use the return value when UI state should only change after the native command is actually sent.
+
+```tsx
+const didShow = infoWindow.showOnMarker({ markerRef });
+if (!didShow) return;
+
+infoWindow.close();
+```
+
+## API
+
+`InfoWindowContent`
+
+<AutoTypeTable path="../src/hooks/useInfoWindow.ts" name="InfoWindowContent" />
+
+Returned controls:
+
+| Method | Description |
+| --- | --- |
+| `showOnMap({ mapRef, position })` | Opens the InfoWindow at a map coordinate. Returns `false` when `mapRef.current` is not ready. |
+| `showOnMarker({ markerRef, alignType })` | Opens the InfoWindow on a marker. `alignType` uses the existing `Align` values such as `'Right'`. Returns `false` when `markerRef.current` is not ready. |
+| `close()` | Closes the InfoWindow. |

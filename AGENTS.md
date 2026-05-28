@@ -39,6 +39,38 @@ Generated outputs are build artifacts, not source: `lib/**`, `docs/.next/**`, `d
 - Public API changes should stay visible from `src/index.tsx`.
 - Example secrets stay local and must not be committed.
 
+## Working Guidelines
+
+Agents should work in this repository by making assumptions visible, choosing the simplest correct implementation, keeping edits narrow, and validating the result with observable checks.
+
+### Before Editing
+
+- State assumptions before implementation when they affect scope, behavior, risk, or data handling.
+- If a request has multiple meaningful interpretations, ask a narrow question instead of choosing silently.
+- If a simpler approach satisfies the request, prefer it and explain the tradeoff when needed.
+- Stop and ask when a missing decision can change the final result or create irreversible work.
+
+### Implementation Scope
+
+- Write the minimum code needed for the requested behavior.
+- Do not add features, abstractions, configurability, fallback paths, or impossible-case error handling that was not requested.
+- Touch only files and lines required for the task.
+- Match the local style and ownership boundaries of the touched source area.
+- Do not refactor unrelated code, reformat adjacent sections, or delete unrelated dead code.
+
+### Change Hygiene
+
+- Remove only imports, variables, functions, or temporary artifacts made unused by the current change.
+- If an attempted change is wrong or unnecessary, remove its artifacts before taking another approach.
+- Every changed line should trace directly to the user's request or the verification required for that request.
+
+### Verification
+
+- Define observable success criteria before multi-step work.
+- For multi-step tasks, use a short plan that includes the verification check for each meaningful step.
+- Prefer repo-native validation commands and checks that cover the changed surface.
+- Continue until the criteria are met, validation cannot reasonably continue, or a blocker requires the user's decision.
+
 ## Runtime And Architecture
 
 - Start runtime tracing at `src/index.tsx`, then follow wrapper components in `src/component/`, spec contracts in `src/spec/`, and matching native managers or views under `ios/` and `android/`.
@@ -49,8 +81,9 @@ Generated outputs are build artifacts, not source: `lib/**`, `docs/.next/**`, `d
 - Default validation: `pnpm run t`.
 - `pnpm run t` runs Lefthook `check`: Biome for staged JS/TS files, Objective-C lint, Kotlin lint, package typecheck, example typecheck, Expo plugin build, and Bob package build.
 - Docs checks are opt-in because `lefthook.yml` currently comments out docs build and docs typecheck. Use `pnpm build:docs` for docs changes.
-- Contract changes: run `pnpm codegen`, then `pnpm run t`.
-- Native runtime confidence comes from `example/` plus `pnpm ci:ios`, `pnpm ci:android`, `pnpm turbo:ios`, or `pnpm turbo:android` when the changed surface needs it.
+- Contract changes: run `pnpm codegen`, inspect generated native selectors or abstract methods, then run `pnpm run t`.
+- Native module, Fabric command, or native runtime changes need platform builds for the touched surfaces; use `pnpm ci:ios`/`pnpm ci:android` or the matching Turbo commands.
+- Runtime confidence comes from `example/` smoke checks when wrapper behavior or screen-visible behavior changes.
 - Read `.agents/knowledge/workflows.md` for command coverage, release flow, secret requirements, and validation blind spots.
 
 ## Design System
@@ -66,6 +99,7 @@ Generated outputs are build artifacts, not source: `lib/**`, `docs/.next/**`, `d
 - `.agents/knowledge/design.md`: docs and example UI conventions.
 - `.agents/knowledge/source-surface.md`: `src/`, wrapper, public API, and spec guidance.
 - `.agents/knowledge/native-platforms.md`: iOS and Android implementation patterns.
+- `.agents/knowledge/rn-native-module.md`: React Native TurboModule, Fabric, codegen, thread, and native SDK object guidance.
 - `.agents/knowledge/supporting-packages.md`: `example/`, `docs/`, `expo-config-plugin/`, and `script/`.
 - `.agents/knowledge/patterns.md`: reusable implementation patterns for specs, commands, JSDoc, colors, native lifecycle, events, and image loading.
 

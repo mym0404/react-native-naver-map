@@ -1,5 +1,3 @@
-import { NaverMapUtil } from './util/NaverMapUtil';
-
 export {
   NaverMapArrowheadPathOverlay,
   type NaverMapArrowheadPathOverlayProps,
@@ -16,6 +14,7 @@ export {
   type CaptionType,
   NaverMapMarkerOverlay,
   type NaverMapMarkerOverlayProps,
+  type NaverMapMarkerOverlayRef,
   type SubCaptionType,
 } from './component/NaverMapMarkerOverlay';
 export {
@@ -39,8 +38,8 @@ export {
   type NaverMapViewProps,
   type NaverMapViewRef,
 } from './component/NaverMapView';
-
-export * from './spec/RNCNaverMapViewNativeComponent';
+// Hooks
+export { type InfoWindowContent, useInfoWindow } from './hooks/useInfoWindow';
 export * from './types/Align';
 export * from './types/BaseOverlayProps';
 export * from './types/Camera';
@@ -60,5 +59,3 @@ export * from './types/MultiPathPart';
 export * from './types/Point';
 export * from './types/Rect';
 export * from './types/Region';
-
-export { NaverMapUtil };

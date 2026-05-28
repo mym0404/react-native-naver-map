@@ -1,4 +1,9 @@
-import { codegenNativeComponent, type ViewProps } from 'react-native';
+import {
+  codegenNativeCommands,
+  codegenNativeComponent,
+  type HostComponent,
+  type ViewProps,
+} from 'react-native';
 import type {
   DirectEventHandler,
   Double,
@@ -77,4 +82,17 @@ interface Props extends BaseOverlay, ViewProps {
   subCaption?: Readonly<NativeSubCaptionProp>;
 }
 
+type ComponentType = HostComponent<Props>;
+
+interface NativeCommands {
+  showInfoWindow: (
+    ref: React.ElementRef<ComponentType>,
+    infoWindowId: string,
+    alignType: Int32
+  ) => void;
+}
+
 export default codegenNativeComponent<Props>('RNCNaverMapMarker');
+export const Commands: NativeCommands = codegenNativeCommands<NativeCommands>({
+  supportedCommands: ['showInfoWindow'],
+});

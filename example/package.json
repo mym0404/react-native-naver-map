@@ -29,7 +29,6 @@
     "@react-native/typescript-config": "catalog:",
     "@types/react": "catalog:",
     "@types/react-test-renderer": "catalog:",
-    "react-test-renderer": "catalog:",
     "typescript": "catalog:"
   },
   "engines": {

@@ -154,6 +154,10 @@ class RNCNaverMapView(
     map?.also(callback) ?: run { getMapAsync(callback) }
   }
 
+  fun withExistingMap(callback: (map: NaverMap) -> Unit) {
+    map?.also(callback)
+  }
+
   fun addOverlay(
     child: View,
     index: Int,

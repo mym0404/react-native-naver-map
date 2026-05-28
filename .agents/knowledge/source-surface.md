@@ -11,7 +11,6 @@
 - `src/spec/`: React Native codegen specs
 - `src/types/`: public domain types
 - `src/internal/`: internal helpers, constants, assertions
-- `src/util/`: shared utilities
 
 ## Where To Look
 
@@ -19,7 +18,7 @@
 - `src/component/`: React wrapper components
 - `src/spec/`: React Native codegen specs
 - `src/types/`: public domain types
-- `src/internal/`, `src/util/`: shared helpers and utilities
+- `src/internal/`: shared helpers and utilities
 - `src/spec/NativeRNCNaverMapUtil.ts`: TurboModule spec surface
 
 ## Working Rules
@@ -46,13 +45,20 @@
 - Maintain naming parity with native classes and managers.
 - Keep `codegenNativeCommands()` signatures aligned with the wrapper methods and native command handlers.
 - `NativeRNCNaverMapUtil.ts` uses `TurboModuleRegistry.getEnforcing()` for the native utility contract.
-- `src/util/NaverMapUtil.ts` is currently a placeholder surface; if utility APIs become active again, keep the util wrapper, spec, and native implementation synchronized.
+- Raw TurboModule specs stay internal unless a public wrapper explicitly exposes a supported API.
 - Public APIs should keep JSDoc metadata useful, especially `@param`, `@returns`, `@example`, `@default`, `@internal`, and `@platform` when relevant.
+- Public TypeScript APIs should expose only caller-facing concepts that users reasonably need to name: components, hooks, props, refs, event payloads, reusable input/content data, and shared domain types.
+- Keep native ids, TurboModule specs, native command objects, generated component specs, and implementation-only controller shapes behind wrappers unless they are already part of the supported public contract.
+- Prefer inferred return object shapes for hooks and factory-like helpers. Do not add exported `*Return` or `*Controller` types unless callers need to store, pass, or implement that type independently of the function.
+- If a caller can name a return shape with `ReturnType<typeof api>`, avoid adding a separate exported return alias.
+- Use object parameters when a method has multiple same-primitive values or the meaning would be ambiguous. Single, self-explanatory values can stay positional.
 
 ## Anti-Patterns
 
 - Changing wrapper props without matching spec and native updates
 - Exporting unstable internals from `src/index.tsx`
+- Exporting one-off parameter or return aliases that only mirror a single function implementation
+- Leaking native ids, generated commands, TurboModule instances, or raw spec types through user-facing wrappers
 - Introducing `any` or type suppression to hide contract mismatches
 - Embedding platform-specific branching in wrappers when the spec and native layers should own the behavior
 - Repeating ad-hoc magic values across overlay components instead of reusing shared helpers or constants
@@ -73,4 +79,5 @@
 
 - Repository invariants: `architecture.md`
 - Native implementation details: `native-platforms.md`
+- React Native New Architecture module and Fabric guidance: `rn-native-module.md`
 - Implementation patterns and examples: `patterns.md`

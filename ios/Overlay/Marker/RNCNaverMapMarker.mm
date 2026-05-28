@@ -6,6 +6,7 @@
 //
 
 #import "RNCNaverMapMarker.h"
+#import "RNCNaverMapUtil.h"
 #ifdef RCT_NEW_ARCH_ENABLED
 using namespace facebook::react;
 @interface RNCNaverMapMarker () <RCTRNCNaverMapMarkerViewProtocol>
@@ -55,6 +56,8 @@ using namespace facebook::react;
 }
 
 - (void)dealloc {
+  [RNCNaverMapUtil closeInfoWindowsForMarker:_inner];
+
   if (_imageCanceller) {
     _imageCanceller();
     _imageCanceller = nil;
@@ -237,6 +240,22 @@ Class<RCTComponentViewProtocol> RNCNaverMapMarkerCls(void) {
 
 + (ComponentDescriptorProvider)componentDescriptorProvider {
   return concreteComponentDescriptorProvider<RNCNaverMapMarkerComponentDescriptor>();
+}
+
+- (void)handleCommand:(const NSString*)commandName args:(const NSArray*)args {
+  RCTRNCNaverMapMarkerHandleCommand(self, commandName, args);
+}
+
+- (void)showInfoWindow:(NSString*)infoWindowId alignType:(NSInteger)alignType {
+  NMFInfoWindow* infoWindow = [RNCNaverMapUtil getInfoWindow:infoWindowId];
+
+  if (infoWindow) {
+    if (isValidNumber((double)alignType)) {
+      [infoWindow openWithMarker:_inner alignType:nmap::createAlign((int)alignType)];
+    } else {
+      [infoWindow openWithMarker:_inner];
+    }
+  }
 }
 
 @end

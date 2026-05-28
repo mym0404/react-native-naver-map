@@ -1,4 +1,5 @@
 #import "RNCNaverMapView.h"
+#import "RNCNaverMapUtil.h"
 
 using namespace facebook::react;
 
@@ -44,6 +45,8 @@ using namespace facebook::react;
 }
 
 - (void)dealloc {
+  [RNCNaverMapUtil closeInfoWindowsForMapView:self.map];
+
   for (const auto& [key, clusterer] : _clustererRecord) {
     clusterer.mapView = nil;
 
@@ -73,6 +76,7 @@ using namespace facebook::react;
 #pragma clang diagnostic pop
 
 - (void)prepareForRecycle {
+  [RNCNaverMapUtil closeInfoWindowsForMapView:self.map];
   [_view prepareForRecycle];
   [super prepareForRecycle];
 }
@@ -412,6 +416,25 @@ using namespace facebook::react;
     self.map.positionMode = NMFMyPositionCompass;
   } else {
     self.map.positionMode = NMFMyPositionDisabled;
+  }
+}
+
+- (void)showInfoWindow:(NSString*)infoWindowId
+              latitude:(double)latitude
+             longitude:(double)longitude {
+  NMFInfoWindow* infoWindow = [RNCNaverMapUtil getInfoWindow:infoWindowId];
+
+  if (infoWindow) {
+    infoWindow.position = NMGLatLngMake(latitude, longitude);
+    [infoWindow openWithMapView:self.map];
+  }
+}
+
+- (void)hideInfoWindow:(NSString*)infoWindowId {
+  NMFInfoWindow* infoWindow = [RNCNaverMapUtil getInfoWindow:infoWindowId];
+
+  if (infoWindow) {
+    [infoWindow close];
   }
 }
 

@@ -6,6 +6,8 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapMarkerManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
+import com.mjstudio.reactnativenavermap.module.RNCNaverMapInfoWindowRegistry
+import com.mjstudio.reactnativenavermap.util.getAlign
 import com.mjstudio.reactnativenavermap.util.getLatLng
 import com.mjstudio.reactnativenavermap.util.getPoint
 import com.mjstudio.reactnativenavermap.util.isValidNumber
@@ -14,12 +16,15 @@ import com.mjstudio.reactnativenavermap.util.registerDirectEvent
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Marker.SIZE_AUTO
 
-class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>() {
+class RNCNaverMapMarkerManager(
+  private val infoWindowRegistry: RNCNaverMapInfoWindowRegistry,
+) : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>() {
   override fun getName(): String = NAME
 
   override fun createViewInstance(context: ThemedReactContext): RNCNaverMapMarker = RNCNaverMapMarker(context)
 
   override fun onDropViewInstance(view: RNCNaverMapMarker) {
+    infoWindowRegistry.closeForMarker(view.overlay)
     view.onDropViewInstance()
     super.onDropViewInstance(view)
   }
@@ -236,6 +241,22 @@ class RNCNaverMapMarkerManager : RNCNaverMapMarkerManagerSpec<RNCNaverMapMarker>
     value: ReadableMap?,
   ) {
     view?.updateSubCaption(value)
+  }
+
+  override fun showInfoWindow(
+    view: RNCNaverMapMarker?,
+    infoWindowId: String?,
+    alignType: Int,
+  ) = view.withOverlay { marker ->
+    if (infoWindowId == null) return@withOverlay
+
+    val infoWindow = infoWindowRegistry.get(infoWindowId) ?: return@withOverlay
+
+    if (isValidNumber(alignType)) {
+      infoWindow.open(marker, getAlign(alignType))
+    } else {
+      infoWindow.open(marker)
+    }
   }
 
   companion object {

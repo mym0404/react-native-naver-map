@@ -21,6 +21,7 @@ import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapScreenToCoordinateEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
+import com.mjstudio.reactnativenavermap.module.RNCNaverMapInfoWindowRegistry
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterDataHolder
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterKey
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterMarkerUpdater
@@ -64,7 +65,9 @@ import java.util.Locale
 import kotlin.math.max
 import kotlin.math.min
 
-class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper>() {
+class RNCNaverMapViewManager(
+  private val infoWindowRegistry: RNCNaverMapInfoWindowRegistry,
+) : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper>() {
   override fun getName(): String = NAME
 
   private var initialMapOptions: NaverMapOptions? = null
@@ -105,6 +108,7 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
     RNCNaverMapViewWrapper(reactContext, initialMapOptions ?: NaverMapOptions())
 
   override fun onDropViewInstance(view: RNCNaverMapViewWrapper) {
+    view.mapView?.withExistingMap { infoWindowRegistry.closeForMap(it) }
     view.doDestroy()
     clustererHolders.forEach { (_, u) -> u.onDetach() }
     clustererHolders.clear()
@@ -844,6 +848,31 @@ class RNCNaverMapViewManager : RNCNaverMapViewManagerSpec<RNCNaverMapViewWrapper
 
       map.locationTrackingMode = trackingMode
     }
+  }
+
+  override fun showInfoWindow(
+    view: RNCNaverMapViewWrapper?,
+    infoWindowId: String?,
+    latitude: Double,
+    longitude: Double,
+  ) = view.withMap { map ->
+    if (infoWindowId == null) return@withMap
+
+    val infoWindow = infoWindowRegistry.get(infoWindowId) ?: return@withMap
+
+    infoWindow.position = LatLng(latitude, longitude)
+    infoWindow.open(map)
+  }
+
+  override fun hideInfoWindow(
+    view: RNCNaverMapViewWrapper?,
+    infoWindowId: String?,
+  ) = view.withMap { map ->
+    if (infoWindowId == null) return@withMap
+
+    val infoWindow = infoWindowRegistry.get(infoWindowId) ?: return@withMap
+
+    infoWindow.close()
   }
 
   companion object {

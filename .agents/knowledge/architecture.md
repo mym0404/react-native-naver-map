@@ -68,4 +68,5 @@ Treat generated or build output as disposable artifacts. Edit source, then rebui
 - Validation, build, and release flow: `workflows.md`
 - Source surface guidance: `source-surface.md`
 - Native implementation guidance: `native-platforms.md`
+- React Native New Architecture module and Fabric guidance: `rn-native-module.md`
 - Supporting packages and docs site details: `supporting-packages.md`

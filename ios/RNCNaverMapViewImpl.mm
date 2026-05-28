@@ -6,6 +6,7 @@
 //
 
 #import "RNCNaverMapViewImpl.h"
+#import "RNCNaverMapUtil.h"
 #import "RNCNaverMapView.h"
 
 @implementation RNCNaverMapViewImpl {
@@ -123,6 +124,7 @@
   // underlying mapview action here.
   if ([subview isKindOfClass:[RNCNaverMapMarker class]]) {
     auto marker = static_cast<RNCNaverMapMarker*>(subview).inner;
+    [RNCNaverMapUtil closeInfoWindowsForMarker:marker];
     marker.mapView = nil;
     marker.touchHandler = nil;
   } else if ([subview isKindOfClass:[RNCNaverMapCircle class]]) {

@@ -20,6 +20,7 @@ import { CitiesScreen } from './screens/CitiesScreen';
 import { ClusteringScreen } from './screens/ClusteringScreen';
 import { CommonScreen } from './screens/CommonScreen';
 import { GroundScreen } from './screens/GroundScreen';
+import { InfoWindowScreen } from './screens/InfoWindowScreen';
 import { LocationOverlayScreen } from './screens/LocationOverlayScreen';
 import { MarkerScreen } from './screens/MarkerScreen';
 import { MultiPathScreen } from './screens/MultiPathScreen';
@@ -31,6 +32,7 @@ const SCREENS = [
   { id: 'common', title: 'Common Settings' },
   { id: 'camera', title: 'Camera Controls' },
   { id: 'marker', title: 'Marker Overlay' },
+  { id: 'infowindow', title: 'Info Window' },
   { id: 'circle', title: 'Circle Overlay' },
   { id: 'ground', title: 'Ground Overlay' },
   { id: 'path', title: 'Path Overlay' },
@@ -87,6 +89,8 @@ export default function App() {
         return <CameraScreen onBack={handleBack} />;
       case 'marker':
         return <MarkerScreen onBack={handleBack} />;
+      case 'infowindow':
+        return <InfoWindowScreen onBack={handleBack} />;
       case 'circle':
         return <CircleScreen onBack={handleBack} />;
       case 'ground':
@@ -130,6 +134,8 @@ export default function App() {
                 <TouchableOpacity
                   key={screen.id}
                   onPress={() => setCurrentScreen(screen.id)}
+                  testID={`example-menu-${screen.id}`}
+                  accessibilityLabel={`example-menu-${screen.id}`}
                   style={{
                     backgroundColor: '#1a1a1a',
                     paddingVertical: 16,
