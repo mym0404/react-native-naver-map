@@ -46,8 +46,8 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
   const [anchorX, setAnchorX] = useState(0.5);
   const [anchorY, setAnchorY] = useState(1);
   const [offsetX, setOffsetX] = useState(0);
-  const [offsetY, setOffsetY] = useState(-8);
-  const [alpha, setAlpha] = useState(0.9);
+  const [offsetY, setOffsetY] = useState(0);
+  const [alpha, setAlpha] = useState(1);
 
   const alignType = alignTypes[alignTypeIndex]!;
 
