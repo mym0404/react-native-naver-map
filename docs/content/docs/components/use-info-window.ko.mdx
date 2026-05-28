@@ -23,8 +23,7 @@ import {
 function MarkerInfoWindowMap() {
   const markerRef = useRef<NaverMapMarkerOverlayRef>(null);
   const infoWindow = useInfoWindow({
-    title: '서울역',
-    subtitle: '마커 위에 열린 정보 창',
+    text: '서울역',
   });
 
   return (
@@ -55,8 +54,7 @@ import {
 function MapInfoWindow() {
   const mapRef = useRef<NaverMapViewRef>(null);
   const infoWindow = useInfoWindow({
-    title: '한강대교',
-    subtitle: '지도 좌표에 열린 정보 창',
+    text: '한강대교',
   });
 
   return (

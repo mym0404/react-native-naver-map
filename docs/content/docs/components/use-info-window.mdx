@@ -23,8 +23,7 @@ import {
 function MarkerInfoWindowMap() {
   const markerRef = useRef<NaverMapMarkerOverlayRef>(null);
   const infoWindow = useInfoWindow({
-    title: 'Seoul Station',
-    subtitle: 'Opened on a marker',
+    text: 'Seoul Station',
   });
 
   return (
@@ -55,8 +54,7 @@ import {
 function MapInfoWindow() {
   const mapRef = useRef<NaverMapViewRef>(null);
   const infoWindow = useInfoWindow({
-    title: 'Hangang Bridge',
-    subtitle: 'Opened at a map coordinate',
+    text: 'Hangang Bridge',
   });
 
   return (

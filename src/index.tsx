@@ -39,7 +39,7 @@ export {
   type NaverMapViewRef,
 } from './component/NaverMapView';
 // Hooks
-export { useInfoWindow } from './hooks/useInfoWindow';
+export { type InfoWindowContent, useInfoWindow } from './hooks/useInfoWindow';
 export * from './types/Align';
 export * from './types/BaseOverlayProps';
 export * from './types/Camera';

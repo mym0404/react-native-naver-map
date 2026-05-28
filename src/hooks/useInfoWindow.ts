@@ -5,6 +5,10 @@ import type { NaverMapViewRef } from '../component/NaverMapView';
 import NaverMapUtil from '../spec/NativeRNCNaverMapUtil';
 import type { Coord } from '../types/Coord';
 
+export type InfoWindowContent = {
+  text: string;
+};
+
 /**
  * Hook for managing InfoWindow instances on Naver Map.
  * Provides methods to show InfoWindow on map or marker.
@@ -28,7 +32,7 @@ import type { Coord } from '../types/Coord';
  * infoWindow.showOnMarker({ markerRef });
  * ```
  */
-export const useInfoWindow = (content: { text: string }) => {
+export const useInfoWindow = (content: InfoWindowContent) => {
   const id = useRef(`info_window_${Date.now()}_${Math.random()}`).current;
 
   useEffect(() => {
