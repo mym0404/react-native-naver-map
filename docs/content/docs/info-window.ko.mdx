@@ -1,11 +1,11 @@
 ---
-title: "useInfoWindow"
-description: "네이버 지도 텍스트 정보 창을 여는 훅"
+title: "Info Window"
+description: "네이버 지도 텍스트 정보 창을 여는 방법"
 ---
 
 ## 개요
 
-`useInfoWindow`는 텍스트 InfoWindow 인스턴스를 만들고 제어합니다. 같은 InfoWindow를 `NaverMapMarkerOverlay` 위에 열거나 지도 좌표에 열 수 있고, hook에 전달한 내용이 바뀌면 표시 텍스트도 갱신할 수 있습니다.
+`useInfoWindow`는 텍스트 InfoWindow 인스턴스를 만들고 제어합니다. 같은 InfoWindow를 `NaverMapMarkerOverlay` 위에 열거나 지도 좌표에 열 수 있고, hook에 전달한 내용이나 배치 옵션이 바뀌면 native InfoWindow도 갱신합니다.
 
 관리할 InfoWindow마다 hook 인스턴스를 하나씩 사용하세요. hook은 mount 시점에 native InfoWindow를 만들고 unmount 시점에 제거합니다.
 
@@ -24,6 +24,9 @@ function MarkerInfoWindowMap() {
   const markerRef = useRef<NaverMapMarkerOverlayRef>(null);
   const infoWindow = useInfoWindow({
     text: '서울역',
+    anchor: { x: 0.5, y: 1 },
+    offset: { x: 0, y: -8 },
+    alpha: 0.9,
   });
 
   return (
@@ -33,7 +36,7 @@ function MarkerInfoWindowMap() {
         latitude={37.5547}
         longitude={126.9707}
         onTap={() => {
-          infoWindow.showOnMarker({ markerRef });
+          infoWindow.showOnMarker({ markerRef, alignType: 'Right' });
         }}
       />
     </NaverMapView>
@@ -94,5 +97,5 @@ infoWindow.close();
 | 메서드 | 설명 |
 | --- | --- |
 | `showOnMap({ mapRef, position })` | 지도 좌표에 InfoWindow를 엽니다. `mapRef.current`가 아직 준비되지 않았으면 `false`를 반환합니다. |
-| `showOnMarker({ markerRef })` | 마커 위에 InfoWindow를 엽니다. `markerRef.current`가 아직 준비되지 않았으면 `false`를 반환합니다. |
+| `showOnMarker({ markerRef, alignType })` | 마커 위에 InfoWindow를 엽니다. `alignType`은 `'Right'` 같은 기존 `Align` 값을 사용합니다. `markerRef.current`가 아직 준비되지 않았으면 `false`를 반환합니다. |
 | `close()` | InfoWindow를 닫습니다. |

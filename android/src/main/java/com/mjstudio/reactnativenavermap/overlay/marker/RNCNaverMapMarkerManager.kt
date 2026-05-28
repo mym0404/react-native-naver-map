@@ -7,6 +7,7 @@ import com.facebook.react.uimanager.annotations.ReactProp
 import com.mjstudio.reactnativenavermap.RNCNaverMapMarkerManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapOverlayTapEvent
 import com.mjstudio.reactnativenavermap.module.RNCNaverMapInfoWindowRegistry
+import com.mjstudio.reactnativenavermap.util.getAlign
 import com.mjstudio.reactnativenavermap.util.getLatLng
 import com.mjstudio.reactnativenavermap.util.getPoint
 import com.mjstudio.reactnativenavermap.util.isValidNumber
@@ -244,12 +245,17 @@ class RNCNaverMapMarkerManager(
   override fun showInfoWindow(
     view: RNCNaverMapMarker?,
     infoWindowId: String?,
+    alignType: Int,
   ) = view.withOverlay { marker ->
     if (infoWindowId == null) return@withOverlay
 
     val infoWindow = infoWindowRegistry.get(infoWindowId) ?: return@withOverlay
 
-    infoWindow.open(marker)
+    if (isValidNumber(alignType)) {
+      infoWindow.open(marker, getAlign(alignType))
+    } else {
+      infoWindow.open(marker)
+    }
   }
 
   companion object {

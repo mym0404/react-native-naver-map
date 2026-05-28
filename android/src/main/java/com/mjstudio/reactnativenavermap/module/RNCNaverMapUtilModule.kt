@@ -57,6 +57,20 @@ class RNCNaverMapUtilModule(
     }
   }
 
+  @ReactMethod
+  override fun setInfoWindowOptions(
+    id: String,
+    anchorX: Double,
+    anchorY: Double,
+    offsetX: Double,
+    offsetY: Double,
+    alpha: Double,
+  ) {
+    runOnUiThreadSync {
+      infoWindowRegistry.setOptions(id, anchorX, anchorY, offsetX, offsetY, alpha)
+    }
+  }
+
   @ReactMethod(isBlockingSynchronousMethod = true)
   override fun isInfoWindowOpen(id: String): Boolean =
     runOnUiThreadSync {

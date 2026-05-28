@@ -3,10 +3,15 @@ import { useEffect, useRef } from 'react';
 import type { NaverMapMarkerOverlayRef } from '../component/NaverMapMarkerOverlay';
 import type { NaverMapViewRef } from '../component/NaverMapView';
 import NaverMapUtil from '../spec/NativeRNCNaverMapUtil';
+import type { Align } from '../types/Align';
 import type { Coord } from '../types/Coord';
+import type { Point } from '../types/Point';
 
 export type InfoWindowContent = {
   text: string;
+  anchor?: Point;
+  offset?: Point;
+  alpha?: number;
 };
 
 /**
@@ -51,6 +56,24 @@ export const useInfoWindow = (content: InfoWindowContent) => {
     NaverMapUtil.setInfoWindowContent(id, content.text);
   }, [content.text, id]);
 
+  useEffect(() => {
+    NaverMapUtil.setInfoWindowOptions(
+      id,
+      content.anchor?.x ?? 0.5,
+      content.anchor?.y ?? 1,
+      content.offset?.x ?? 0,
+      content.offset?.y ?? 0,
+      content.alpha ?? 1
+    );
+  }, [
+    content.anchor?.x,
+    content.anchor?.y,
+    content.offset?.x,
+    content.offset?.y,
+    content.alpha,
+    id,
+  ]);
+
   return {
     showOnMap: ({
       mapRef,
@@ -70,15 +93,17 @@ export const useInfoWindow = (content: InfoWindowContent) => {
 
     showOnMarker: ({
       markerRef,
+      alignType,
     }: {
       markerRef: RefObject<NaverMapMarkerOverlayRef | null>;
+      alignType?: Align;
     }) => {
       if (!markerRef.current) {
         console.warn('useInfoWindow: markerRef.current is null');
         return false;
       }
 
-      markerRef.current.showInfoWindow(id);
+      markerRef.current.showInfoWindow(id, alignType);
       return true;
     },
 

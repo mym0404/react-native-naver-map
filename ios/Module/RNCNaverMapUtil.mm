@@ -96,6 +96,23 @@ RCT_EXPORT_MODULE()
   });
 }
 
+- (void)setInfoWindowOptions:(NSString*)infoWindowId
+                     anchorX:(double)anchorX
+                     anchorY:(double)anchorY
+                     offsetX:(double)offsetX
+                     offsetY:(double)offsetY
+                       alpha:(double)alpha {
+  RNCNaverMapRunOnMainSync(^{
+    NMFInfoWindow* infoWindow = RNCNaverMapInfoWindows()[infoWindowId];
+    if (infoWindow) {
+      infoWindow.anchor = CGPointMake(anchorX, anchorY);
+      infoWindow.offsetX = offsetX;
+      infoWindow.offsetY = offsetY;
+      infoWindow.alpha = alpha;
+    }
+  });
+}
+
 - (NSNumber*)isInfoWindowOpen:(NSString*)infoWindowId {
   __block BOOL isOpen = NO;
   RNCNaverMapRunOnMainSync(^{

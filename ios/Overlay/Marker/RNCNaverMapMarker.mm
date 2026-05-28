@@ -244,11 +244,15 @@ Class<RCTComponentViewProtocol> RNCNaverMapMarkerCls(void) {
   RCTRNCNaverMapMarkerHandleCommand(self, commandName, args);
 }
 
-- (void)showInfoWindow:(NSString*)infoWindowId {
+- (void)showInfoWindow:(NSString*)infoWindowId alignType:(NSInteger)alignType {
   NMFInfoWindow* infoWindow = [RNCNaverMapUtil getInfoWindow:infoWindowId];
 
   if (infoWindow) {
-    [infoWindow openWithMarker:_inner];
+    if (isValidNumber((double)alignType)) {
+      [infoWindow openWithMarker:_inner alignType:nmap::createAlign((int)alignType)];
+    } else {
+      [infoWindow openWithMarker:_inner];
+    }
   }
 }
 

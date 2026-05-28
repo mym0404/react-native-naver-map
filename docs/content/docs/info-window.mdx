@@ -1,11 +1,11 @@
 ---
-title: "useInfoWindow"
-description: "Hook for opening Naver Map text info windows"
+title: "Info Window"
+description: "Guide for opening Naver Map text info windows"
 ---
 
 ## Overview
 
-`useInfoWindow` creates and controls a text InfoWindow instance. It can open the same InfoWindow on a `NaverMapMarkerOverlay` or at a map coordinate, update the text when the hook content changes, and close the InfoWindow manually.
+`useInfoWindow` creates and controls a text InfoWindow instance. It can open the same InfoWindow on a `NaverMapMarkerOverlay` or at a map coordinate, update the text and placement options when the hook content changes, and close the InfoWindow manually.
 
 Use one hook instance for each InfoWindow you want to manage. The hook creates the native InfoWindow on mount and destroys it on unmount.
 
@@ -24,6 +24,9 @@ function MarkerInfoWindowMap() {
   const markerRef = useRef<NaverMapMarkerOverlayRef>(null);
   const infoWindow = useInfoWindow({
     text: 'Seoul Station',
+    anchor: { x: 0.5, y: 1 },
+    offset: { x: 0, y: -8 },
+    alpha: 0.9,
   });
 
   return (
@@ -33,7 +36,7 @@ function MarkerInfoWindowMap() {
         latitude={37.5547}
         longitude={126.9707}
         onTap={() => {
-          infoWindow.showOnMarker({ markerRef });
+          infoWindow.showOnMarker({ markerRef, alignType: 'Right' });
         }}
       />
     </NaverMapView>
@@ -94,5 +97,5 @@ Returned controls:
 | Method | Description |
 | --- | --- |
 | `showOnMap({ mapRef, position })` | Opens the InfoWindow at a map coordinate. Returns `false` when `mapRef.current` is not ready. |
-| `showOnMarker({ markerRef })` | Opens the InfoWindow on a marker. Returns `false` when `markerRef.current` is not ready. |
+| `showOnMarker({ markerRef, alignType })` | Opens the InfoWindow on a marker. `alignType` uses the existing `Align` values such as `'Right'`. Returns `false` when `markerRef.current` is not ready. |
 | `close()` | Closes the InfoWindow. |

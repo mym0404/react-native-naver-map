@@ -322,7 +322,7 @@ export interface NaverMapMarkerOverlayProps
 }
 
 export interface NaverMapMarkerOverlayRef {
-  showInfoWindow: (infoWindowId: string) => void;
+  showInfoWindow: (infoWindowId: string, alignType?: Align) => void;
 }
 
 export const NaverMapMarkerOverlay = forwardRef<
@@ -368,9 +368,15 @@ export const NaverMapMarkerOverlay = forwardRef<
     useImperativeHandle(
       ref,
       () => ({
-        showInfoWindow: (infoWindowId: string) => {
+        showInfoWindow: (infoWindowId: string, alignType?: Align) => {
           if (innerRef.current) {
-            Commands.showInfoWindow(innerRef.current, infoWindowId);
+            Commands.showInfoWindow(
+              innerRef.current,
+              infoWindowId,
+              alignType === undefined
+                ? Const.NULL_NUMBER
+                : getAlignIntValue(alignType)
+            );
           }
         },
       }),

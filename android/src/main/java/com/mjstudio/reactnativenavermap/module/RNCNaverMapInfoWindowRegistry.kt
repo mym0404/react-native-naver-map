@@ -1,6 +1,8 @@
 package com.mjstudio.reactnativenavermap.module
 
+import android.graphics.PointF
 import com.facebook.react.bridge.ReactApplicationContext
+import com.mjstudio.reactnativenavermap.util.px
 import com.naver.maps.map.overlay.InfoWindow
 
 class RNCNaverMapInfoWindowRegistry {
@@ -46,6 +48,22 @@ class RNCNaverMapInfoWindowRegistry {
     if (isOpen(infoWindow)) {
       infoWindow.invalidate()
     }
+  }
+
+  fun setOptions(
+    id: String,
+    anchorX: Double,
+    anchorY: Double,
+    offsetX: Double,
+    offsetY: Double,
+    alpha: Double,
+  ) {
+    val infoWindow = infoWindows[id] ?: return
+
+    infoWindow.anchor = PointF(anchorX.toFloat(), anchorY.toFloat())
+    infoWindow.offsetX = offsetX.px
+    infoWindow.offsetY = offsetY.px
+    infoWindow.alpha = alpha.toFloat()
   }
 
   fun isOpen(id: String): Boolean = infoWindows[id]?.let(::isOpen) ?: false

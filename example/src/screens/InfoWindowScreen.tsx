@@ -32,6 +32,9 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
 
   const markerInfoWindow = useInfoWindow({
     text: `서울역 ${revision}`,
+    anchor: { x: 0.5, y: 1 },
+    offset: { x: 0, y: -8 },
+    alpha: 0.9,
   });
 
   const mapInfoWindow = useInfoWindow({
@@ -39,7 +42,10 @@ export const InfoWindowScreen = ({ onBack }: { onBack: () => void }) => {
   });
 
   const showMarkerInfoWindow = () => {
-    const didShow = markerInfoWindow.showOnMarker({ markerRef });
+    const didShow = markerInfoWindow.showOnMarker({
+      markerRef,
+      alignType: 'Right',
+    });
     if (!didShow) return;
 
     mapInfoWindow.close();

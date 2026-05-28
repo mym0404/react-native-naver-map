@@ -39,11 +39,8 @@ internal fun ReadableMap.getIntOrNull(key: String): Int? {
   return null
 }
 
-internal fun ReadableMap.getAlign(key: String): Align {
-  if (!hasKey(key)) {
-    return Align.Bottom
-  }
-  return when (getInt(key)) {
+internal fun getAlign(value: Int): Align =
+  when (value) {
     0 -> Align.Center
     1 -> Align.Left
     2 -> Align.Right
@@ -54,6 +51,12 @@ internal fun ReadableMap.getAlign(key: String): Align {
     8 -> Align.BottomLeft
     else -> Align.Bottom
   }
+
+internal fun ReadableMap.getAlign(key: String): Align {
+  if (!hasKey(key)) {
+    return Align.Bottom
+  }
+  return getAlign(getInt(key))
 }
 
 internal fun ReadableMap?.getLatLngBoundsOrNull(): LatLngBounds? = getRegion()?.convertToBounds()

@@ -87,7 +87,8 @@ type ComponentType = HostComponent<Props>;
 interface NativeCommands {
   showInfoWindow: (
     ref: React.ElementRef<ComponentType>,
-    infoWindowId: string
+    infoWindowId: string,
+    alignType: Int32
   ) => void;
 }
 
