@@ -17,8 +17,8 @@ const Cameras = {
 
 const Regions = {
   Jeju: {
-    latitude: 33.39530773 + 1,
-    longitude: 126.54656715029 - 1,
+    latitude: Cameras.Jeju.latitude - 0.025,
+    longitude: Cameras.Jeju.longitude - 0.025,
     latitudeDelta: 0.05,
     longitudeDelta: 0.05,
   },
@@ -35,7 +35,7 @@ export const GroundScreen = ({ onBack }: { onBack: () => void }) => {
         }}
       >
         <NaverMapGroundOverlay
-          image={require('../logo180.png')}
+          image={{ assetName: 'thumbnail' }}
           region={Regions.Jeju}
           onTap={() => console.log('Ground overlay tapped')}
         />
