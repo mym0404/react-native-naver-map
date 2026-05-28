@@ -2,6 +2,7 @@ import type { RefObject } from 'react';
 import { useEffect, useRef } from 'react';
 import type { NaverMapMarkerOverlayRef } from '../component/NaverMapMarkerOverlay';
 import type { NaverMapViewRef } from '../component/NaverMapView';
+import { useStableCallback } from '../internal/util/useStableCallback';
 import NaverMapUtil from '../spec/NativeRNCNaverMapUtil';
 import type { Align } from '../types/Align';
 import type { Coord } from '../types/Coord';
@@ -74,8 +75,8 @@ export const useInfoWindow = (content: InfoWindowContent) => {
     id,
   ]);
 
-  return {
-    showOnMap: ({
+  const showOnMap = useStableCallback(
+    ({
       mapRef,
       position,
     }: {
@@ -89,9 +90,11 @@ export const useInfoWindow = (content: InfoWindowContent) => {
 
       mapRef.current.showInfoWindow(id, position);
       return true;
-    },
+    }
+  );
 
-    showOnMarker: ({
+  const showOnMarker = useStableCallback(
+    ({
       markerRef,
       alignType,
     }: {
@@ -105,10 +108,16 @@ export const useInfoWindow = (content: InfoWindowContent) => {
 
       markerRef.current.showInfoWindow(id, alignType);
       return true;
-    },
+    }
+  );
 
-    close: () => {
-      NaverMapUtil.closeInfoWindow(id);
-    },
+  const close = useStableCallback(() => {
+    NaverMapUtil.closeInfoWindow(id);
+  });
+
+  return {
+    showOnMap,
+    showOnMarker,
+    close,
   };
 };
