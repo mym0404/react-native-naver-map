@@ -1,4 +1,4 @@
-import hash from 'object-hash';
+import { hash } from 'ohash';
 
 import React, {
   type ForwardedRef,

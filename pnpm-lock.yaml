@@ -74,9 +74,9 @@ importers:
 
   .:
     dependencies:
-      object-hash:
-        specifier: ^3.0.0
-        version: 3.0.0
+      ohash:
+        specifier: ^2.0.11
+        version: 2.0.11
     devDependencies:
       '@babel/core':
         specifier: 'catalog:'
@@ -99,9 +99,6 @@ importers:
       '@types/fs-extra':
         specifier: ^11
         version: 11.0.4
-      '@types/object-hash':
-        specifier: ^3
-        version: 3.0.6
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.6
@@ -2417,9 +2414,6 @@ packages:
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
 
-  '@types/object-hash@3.0.6':
-    resolution: {integrity: sha512-fOBV8C1FIu2ELinoILQ+ApxcUKz4ngq+IWUYrxSGjXzzjUALijilampwkMgEtJ+h2njAW3pi853QpzNVCHB73w==}
-
   '@types/parse-path@7.1.0':
     resolution: {integrity: sha512-EULJ8LApcVEPbrfND0cRQqutIOdiIgJ1Mgrhpy755r14xMohPTEpkV/k28SJvuOs9bHRFW8x+KeDAEPiGQPB9Q==}
     deprecated: This is a stub types definition. parse-path provides its own type definitions, so you do not need this installed.
@@ -4699,10 +4693,6 @@ packages:
   ob1@0.84.3:
     resolution: {integrity: sha512-J7554Ef8bzmKaDY365Afq6PF+qtdnY/d5PKUQFrsKlZHV/N3OGZewVrvDrQDyX5V5NJjTpcAKtlrFZcDr+HvpQ==}
     engines: {node: ^20.19.4 || ^22.13.0 || ^24.3.0 || >= 25.0.0}
-
-  object-hash@3.0.0:
-    resolution: {integrity: sha512-RSn9F68PjH9HqtltsSnqYC1XXoWe9Bju5+213R98cNGttag9q9yAOTzdbsqvIa7aNm5WffBZFpWYr2aWrklWAw==}
-    engines: {node: '>= 6'}
 
   object-inspect@1.13.4:
     resolution: {integrity: sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==}
@@ -8359,8 +8349,6 @@ snapshots:
 
   '@types/normalize-package-data@2.4.4': {}
 
-  '@types/object-hash@3.0.6': {}
-
   '@types/parse-path@7.1.0':
     dependencies:
       parse-path: 7.1.0
@@ -11017,8 +11005,6 @@ snapshots:
   ob1@0.84.3:
     dependencies:
       flow-enums-runtime: 0.0.6
-
-  object-hash@3.0.0: {}
 
   object-inspect@1.13.4: {}
 
