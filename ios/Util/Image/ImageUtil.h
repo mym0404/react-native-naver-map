@@ -9,12 +9,33 @@
 #import "RNCNaverMapOverlayImageLoader.h"
 #import <Foundation/Foundation.h>
 #import <NMapsMap/NMapsMap.h>
+#import <mutex>
 #import <string>
 #import <unordered_map>
 
 typedef void (^RNCNaverMapOverlayImageHandler)(NMFOverlayImage* _Nullable);
 
 static std::unordered_map<std::string, NMFOverlayImage*> imageCache;
+
+// `imageCache` is reached from two threads: `getImage` reads it on the main
+// thread while `loadImageWith`'s image-loader completion writes it on the
+// loader's queue. Under ARC `imageCache[k] = v` releases the old value and
+// retains the new one, so markers sharing one asset URI over-release it when
+// their completions land together, and `unordered_map` rehashes on insert
+// while a reader is walking the buckets. Android already serialises this --
+// util/image/OverlayImageCache.kt is backed by a ConcurrentHashMap.
+static std::mutex imageCacheMutex;
+
+static NMFOverlayImage* _Nullable imageCacheGet(const std::string& key) {
+  std::lock_guard<std::mutex> guard(imageCacheMutex);
+  auto it = imageCache.find(key);
+  return it == imageCache.end() ? nil : it->second;
+}
+
+static void imageCachePut(const std::string& key, NMFOverlayImage* _Nonnull image) {
+  std::lock_guard<std::mutex> guard(imageCacheMutex);
+  imageCache[key] = image;
+}
 
 static RNCNaverMapImageCanceller _Nullable loadImageWith(
     std::string uri, std::string cacheKey, RNCNaverMapOverlayImageHandler _Nonnull callback) {
@@ -31,7 +52,7 @@ static RNCNaverMapImageCanceller _Nullable loadImageWith(
         NMFOverlayImage* overlayImage = [NMFOverlayImage overlayImageWithImage:image
                                                                reuseIdentifier:getNsStr(cacheKey)];
         callback(overlayImage);
-        imageCache[cacheKey] = overlayImage;
+        imageCachePut(cacheKey, overlayImage);
       });
 }
 
@@ -79,13 +100,12 @@ static RNCNaverMapImageCanceller _Nullable getImage(
   if (rnAssetUri.size() || httpUri.size()) {
     std::string uri = rnAssetUri.size() ? rnAssetUri : httpUri;
     std::string key = reuseIdentifier.size() ? reuseIdentifier : uri;
-    if (imageCache.find(key) != imageCache.end()) {
-      callback(imageCache[key]);
+    if (NMFOverlayImage* cached = imageCacheGet(key)) {
+      callback(cached);
       return ^{
       };
-    } else {
-      return loadImageWith(uri, key, callback);
     }
+    return loadImageWith(uri, key, callback);
   }
 
   if (assetName.size()) {
