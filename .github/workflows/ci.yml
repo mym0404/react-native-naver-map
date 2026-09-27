@@ -98,6 +98,8 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
 
       - name: Display ANDROID_HOME
         run: echo $ANDROID_HOME
