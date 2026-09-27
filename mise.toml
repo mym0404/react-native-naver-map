@@ -1,0 +1,6 @@
+[tools]
+clang-format = "21.1.8"
+java = "zulu-17"
+ktlint = "1.8.0"
+node = "22.15.0"
+pnpm = "10.15.1"

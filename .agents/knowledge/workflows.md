@@ -41,6 +41,7 @@ Use this flow when `src/spec/` changes or when a JS/native contract changes:
 
 ## CI And Cached Native Builds
 
+- The shared CI setup uses `jdx/mise-action` to install the Node.js, pnpm, Java, ktlint, and clang-format versions in `mise.toml` before installing dependencies.
 - Cached native CI builds: `pnpm turbo:ios`, `pnpm turbo:android`
 - Direct native CI builds: `pnpm ci:ios`, `pnpm ci:android`
 - Turbo commands use single-package mode with dedicated cache directories under `.turbo/ios` and `.turbo/android`.

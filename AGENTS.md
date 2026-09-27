@@ -23,6 +23,7 @@ React Native Naver Map monorepo for `@mj-studio/react-native-naver-map`, a Fabri
 ├── expo-config-plugin/          # Expo config plugin source; build output is generated
 ├── script/                      # codegen, native lint/format, release helpers
 ├── .agents/knowledge/           # evergreen repo-local agent knowledge
+├── mise.toml                    # CLI tool versions for local work and CI
 ├── package.json                 # root scripts, package exports, Bob and codegen config
 ├── pnpm-workspace.yaml          # workspace packages, catalog versions, hoisting rules
 ├── lefthook.yml                 # default validation and formatting command wiring

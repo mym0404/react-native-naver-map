@@ -23,6 +23,8 @@ This repository publishes `@mj-studio/react-native-naver-map`, a Fabric-only Rea
 
 ## SDK And Tooling Baseline
 
+- `mise.toml` selects Node.js `22.15.0`, pnpm `10.15.1`, Zulu JDK 17, ktlint `1.8.0`, and clang-format `21.1.8` for local work and CI.
+- The root `packageManager` field repeats the pnpm version because Turborepo `2.5.6` requires it to resolve workspaces; mise installs and selects pnpm.
 - The workspace uses `pnpm` workspaces with a shared catalog in `pnpm-workspace.yaml`.
 - The workspace catalog currently pins React Native `0.85.1` and React `19.2.3`.
 - The root publishable package consumes those catalog versions through `devDependencies` for local build, typecheck, codegen, and example-linked development.

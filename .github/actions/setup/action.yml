@@ -1,16 +1,11 @@
 name: Setup
-description: Setup Node.js and install dependencies
+description: Setup toolchain and install dependencies
 
 runs:
   using: composite
   steps:
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version-file: .nvmrc
-    - name: Enable corepack
-      run: corepack enable
-      shell: bash
+    - name: Setup toolchain
+      uses: jdx/mise-action@v4
 
     - name: Cache dependencies
       id: pnpm-cache
