@@ -175,5 +175,6 @@
   },
   "dependencies": {
     "ohash": "^2.0.11"
-  }
+  },
+  "packageManager": "pnpm@10.15.1"
 }
