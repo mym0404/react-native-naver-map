@@ -4,7 +4,9 @@ name = "NaverMap"
 
 [setup]
 script = '''
-cd $CODEX_WORKTREE_PATH
-pnpm install && pnpm pod
-
+set -eu
+cd "$CODEX_WORKTREE_PATH"
+mise trust
+mise install
+mise exec -- pnpm install
 '''

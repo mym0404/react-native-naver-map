@@ -17,11 +17,6 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - uses: actions/setup-java@v4
-        with:
-          distribution: "zulu"
-          java-version: "17"
-
       #      - name: Cache Gradle
       #        uses: actions/cache@v4
       #        with:
@@ -31,17 +26,6 @@ jobs:
       #          key: ${{ runner.os }}-gradle-${{ hashFiles('example/android/gradle/wrapper/gradle-wrapper.properties') }}-lint
       #          restore-keys: |
       #            ${{ runner.os }}-gradle-${{matrix.arch}}-lint-
-
-      - name: Install Ktlint
-        run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/1.8.0/ktlint && chmod a+x ktlint && sudo mv ktlint /usr/local/bin/
-
-      - name: Install clang-format 21.1.8
-        run: |
-          python3 -m pip install --user clang-format==21.1.8
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-
-      - name: Verify clang-format version
-        run: clang-format --version
 
       - name: Check
         run: pnpm run t
@@ -112,14 +96,10 @@ jobs:
             echo "turbo_cache_hit=1" >> $GITHUB_ENV
           fi
 
-      - name: Install JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: "zulu"
-          java-version: "17"
-
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
 
       - name: Display ANDROID_HOME
         run: echo $ANDROID_HOME
