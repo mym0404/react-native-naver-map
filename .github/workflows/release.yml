@@ -10,6 +10,9 @@ on:
 permissions:
   contents: read
 
+env:
+  PRERELEASE_TAG: beta
+
 concurrency:
   group: release-${{ github.ref_name }}
   cancel-in-progress: false
@@ -52,6 +55,18 @@ jobs:
       - name: Install dependencies
         if: steps.current.outputs.matches == 'true'
         run: pnpm install --frozen-lockfile
+
+      - name: Verify prerelease state
+        if: steps.current.outputs.matches == 'true'
+        env:
+          RELEASE_BRANCH: ${{ github.ref_name }}
+        run: |
+          prerelease_state=.changeset/pre.json
+          if [[ "${RELEASE_BRANCH}" == "next" ]]; then
+            jq -e --arg tag "${PRERELEASE_TAG}" '.mode == "pre" and .tag == $tag' "${prerelease_state}"
+          elif [[ -f "${prerelease_state}" ]]; then
+            jq -e --arg tag "${PRERELEASE_TAG}" '.mode == "exit" and .tag == $tag' "${prerelease_state}"
+          fi
 
       - name: Select release mode
         if: steps.current.outputs.matches == 'true'
@@ -167,11 +182,12 @@ jobs:
         env:
           RELEASE_BRANCH: ${{ github.ref_name }}
         run: |
+          prerelease_state=.changeset/pre.json
           if [[ "${RELEASE_BRANCH}" == "next" ]]; then
-            jq -e '.mode == "pre" and .tag == "beta"' .changeset/pre.json
-            jq -e '.version | test("^[0-9]+\\.[0-9]+\\.[0-9]+-beta\\.[0-9]+$")' package.json
+            jq -e --arg tag "${PRERELEASE_TAG}" '.mode == "pre" and .tag == $tag' "${prerelease_state}"
+            jq -e --arg tag "${PRERELEASE_TAG}" '.version | test("^[0-9]+\\.[0-9]+\\.[0-9]+-" + $tag + "\\.[0-9]+$")' package.json
           else
-            test ! -f .changeset/pre.json
+            test ! -f "${prerelease_state}"
             jq -e '.version | test("^[0-9]+\\.[0-9]+\\.[0-9]+$")' package.json
           fi
 
@@ -197,7 +213,7 @@ jobs:
             echo "Release ${version} already exists."
             exit 0
           fi
-          if [[ "${version}" == *-beta.* ]]; then
+          if [[ "${version}" == *"-${PRERELEASE_TAG}."* ]]; then
             release_flags=(--prerelease --latest=false)
           else
             release_flags=(--latest)
