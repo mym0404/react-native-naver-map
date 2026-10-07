@@ -1,4 +1,0 @@
----
----
-
-Configure Changesets release automation.
