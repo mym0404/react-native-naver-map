@@ -148,3 +148,58 @@ When you're sending a pull request:
 - Review the documentation to make sure it looks good.
 - Follow the pull request template when opening a pull request.
 - For pull requests that change the API or implementation, discuss with maintainers first by opening an issue.
+
+## Releases
+
+Use Changesets to record publishable changes:
+
+```sh
+pnpm changeset
+```
+
+Select `@mj-studio/react-native-naver-map` and choose `patch` for compatible fixes,
+`minor` for compatible features, or `major` for breaking changes. Commit the
+generated Markdown file with the change. Changes that do not need an npm release
+can use `pnpm changeset --empty`. The private example app and docs site are not
+versioned or published; the Expo config plugin ships inside the library package.
+
+### Release branches
+
+The workflow supports the same branch roles as `react-native-kakao`:
+
+| Branch | Version | npm tag |
+| --- | --- | --- |
+| `main` in prerelease mode | `x.y.z-next.N` | `next` |
+| `main` without prerelease state | Stable version | `latest` |
+| `v2` | Stable `2.x.y` | `latest` |
+| `v3` | Stable `3.x.y` | `latest` |
+
+Before starting a new major prerelease on `main`, preserve the previous stable
+line on its maintenance branch. Enter prerelease mode with
+`pnpm changeset pre enter next`, then add the changeset for the new major version.
+To release the stable version, run `pnpm changeset pre exit` and commit the state
+change. The version PR consumes that state and removes `pre.json`. Backports to a
+maintenance branch must stay compatible with its major version.
+
+### Automated publishing
+
+1. Merge changesets into a supported release branch. The Release workflow creates
+   or updates a version PR with `pnpm release:version`.
+2. Review the generated version, `CHANGELOG.md`, and lockfile, then merge the
+   version PR. The workflow does not merge it automatically.
+3. The Release workflow runs the repository checks and full build, publishes the
+   package, then creates a version tag and GitHub release at that commit.
+
+Native platform builds run in the separate CI workflow. Release jobs ignore runs
+whose commit is no longer the current branch head. Tags use the bare package
+version, such as `2.9.1`, matching the podspec. `next` versions create GitHub
+prereleases; stable versions become the latest release. If npm succeeds but the
+GitHub release is missing, manually run Release on the same branch to recover it.
+
+The repository `GH_TOKEN` secret must be a GitHub token with repository write and
+pull-request permissions so generated version PRs trigger CI. Configure
+[npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/) for
+`@mj-studio/react-native-naver-map` with GitHub user `mym0404`, repository
+`react-native-naver-map`, workflow filename `release.yml`, no environment name, and
+direct `npm publish` permission. No npm token secret is required. The publish job
+installs a compatible npm CLI before pnpm publishes.
