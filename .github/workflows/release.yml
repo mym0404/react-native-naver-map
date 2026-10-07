@@ -204,7 +204,7 @@ jobs:
       - name: Create version tag and GitHub release
         if: steps.current.outputs.matches == 'true' && steps.publish.outcome == 'success'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GH_REPO: ${{ github.repository }}
           RELEASE_SHA: ${{ github.sha }}
         run: |
