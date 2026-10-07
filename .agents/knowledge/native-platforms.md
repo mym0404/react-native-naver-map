@@ -36,6 +36,9 @@
 ### Conventions
 
 - Keep manager implementations aligned with generated spec interfaces.
+- Call React Native shadow-node getters explicitly so the same source compiles against Java and Kotlin framework interfaces.
+- Apply `kotlin-android` only if the Android plugin has not already registered the `kotlin` extension; detect available Kotlin support instead of branching on plugin versions.
+- Register `src/newarch` as a Kotlin source directory and codegen output as a Java source directory; built-in Kotlin does not compile Kotlin files added only to Java source sets.
 - Native modules must inherit the generated codegen spec class and implement module APIs with `override`; helper methods used by managers should stay separate from the JS-facing spec surface.
 - Use shared event utilities for event dispatch.
 - Register direct events through the shared helper path instead of open-coding event maps.

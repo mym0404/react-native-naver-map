@@ -19,7 +19,9 @@ def isNewArchitectureEnabled() {
 }
 
 apply plugin: "com.android.library"
-apply plugin: "kotlin-android"
+if (project.extensions.findByName("kotlin") == null) {
+  apply plugin: "kotlin-android"
+}
 
 if (isNewArchitectureEnabled()) {
   apply plugin: "com.facebook.react"
@@ -83,9 +85,9 @@ android {
 
   sourceSets {
     main {
-      java.srcDirs += ["src/newarch",
-                       // This is needed to build Kotlin project with NewArch enabled
-                       "${project.buildDir}/generated/source/codegen/java"]
+      kotlin.srcDir "src/newarch"
+      // This is needed to build Kotlin project with NewArch enabled
+      java.srcDir "${project.buildDir}/generated/source/codegen/java"
     }
   }
 }
