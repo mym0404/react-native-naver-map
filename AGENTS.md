@@ -89,6 +89,7 @@ Agents should work in this repository by making assumptions visible, choosing th
 - Docs checks are opt-in because `lefthook.yml` currently comments out docs build and docs typecheck. Use `pnpm build:docs` for docs changes.
 - Contract changes: run `pnpm codegen`, inspect generated native selectors or abstract methods, then run `pnpm run t`.
 - Native module, Fabric command, or native runtime changes need platform builds for the touched surfaces; use `pnpm ci:ios`/`pnpm ci:android` or the matching Turbo commands.
+- Android build compatibility changes also need compilation against the affected React Native versions and the workspace baseline; see `.agents/knowledge/native-platforms.md`.
 - Runtime confidence comes from `example/` smoke checks when wrapper behavior or screen-visible behavior changes.
 - Read `.agents/knowledge/workflows.md` for command coverage, release flow, secret requirements, and validation blind spots.
 

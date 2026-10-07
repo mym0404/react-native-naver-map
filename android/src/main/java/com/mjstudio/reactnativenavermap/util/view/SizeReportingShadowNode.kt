@@ -10,9 +10,9 @@ class SizeReportingShadowNode : LayoutShadowNode() {
     super.onCollectExtraUpdates(uiViewOperationQueue)
 
     val data = HashMap<String, Float>()
-    data["width"] = layoutWidth
-    data["height"] = layoutHeight
+    data["width"] = getLayoutWidth()
+    data["height"] = getLayoutHeight()
 
-    uiViewOperationQueue.enqueueUpdateExtraData(reactTag, data)
+    uiViewOperationQueue.enqueueUpdateExtraData(getReactTag(), data)
   }
 }
