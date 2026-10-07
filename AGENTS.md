@@ -41,7 +41,7 @@ Generated outputs are build artifacts, not source: `lib/**`, `docs/.next/**`, `d
 - Keep cross-platform behavior aligned unless a change is explicitly platform-scoped.
 - Public API changes should stay visible from `src/index.tsx`.
 - Example secrets stay local and must not be committed.
-- Releases use Changesets; add a changeset for publishable changes and keep branch versions consistent with the release policy in `CONTRIBUTING.md`.
+- Releases use Changesets: `main` publishes stable versions and `next` publishes the next version in `beta` prerelease mode. Add a changeset for publishable changes; see `CONTRIBUTING.md` for the release flow.
 
 ## Working Guidelines
 

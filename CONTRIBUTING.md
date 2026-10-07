@@ -165,21 +165,21 @@ versioned or published; the Expo config plugin ships inside the library package.
 
 ### Release branches
 
-The workflow supports the same branch roles as `react-native-kakao`:
-
 | Branch | Version | npm tag |
 | --- | --- | --- |
-| `main` in prerelease mode | `x.y.z-next.N` | `next` |
-| `main` without prerelease state | Stable version | `latest` |
-| `v2` | Stable `2.x.y` | `latest` |
-| `v3` | Stable `3.x.y` | `latest` |
+| `main` | Stable version of the current major | `latest` |
+| `next` | Next version as `x.y.z-beta.N` | `beta` |
 
-Before starting a new major prerelease on `main`, preserve the previous stable
-line on its maintenance branch. Enter prerelease mode with
-`pnpm changeset pre enter next`, then add the changeset for the new major version.
-To release the stable version, run `pnpm changeset pre exit` and commit the state
-change. The version PR consumes that state and removes `pre.json`. Backports to a
-maintenance branch must stay compatible with its major version.
+Start `next` from the current stable `main`, run `pnpm changeset pre enter beta`,
+and commit the prerelease state with changesets for the next version. For example,
+a patch changeset after stable `2.9.0` produces `2.9.1-beta.0`.
+
+To promote the tested version to stable, create a promotion branch from `next`,
+run `pnpm changeset pre exit`, and open a PR to `main`. After it is merged, the automatic
+version PR removes `pre.json` and produces the stable version. For the next beta
+cycle, sync `next` with the released `main` and enter `beta` prerelease mode again.
+`main` must have no prerelease state when publishing; `next` must remain in `beta`
+prerelease mode when publishing.
 
 ### Automated publishing
 
@@ -192,7 +192,7 @@ maintenance branch must stay compatible with its major version.
 
 Native platform builds run in the separate CI workflow. Release jobs ignore runs
 whose commit is no longer the current branch head. Tags use the bare package
-version, such as `2.9.1`, matching the podspec. `next` versions create GitHub
+version, such as `2.9.1`, matching the podspec. `beta` versions create GitHub
 prereleases; stable versions become the latest release. If npm succeeds but the
 GitHub release is missing, manually run Release on the same branch to recover it.
 

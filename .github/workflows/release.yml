@@ -5,8 +5,7 @@ on:
   push:
     branches:
       - main
-      - v2
-      - v3
+      - next
 
 permissions:
   contents: read
@@ -17,7 +16,7 @@ concurrency:
 
 jobs:
   select-mode:
-    if: github.ref_name == 'main' || github.ref_name == 'v2' || github.ref_name == 'v3'
+    if: github.ref_name == 'main' || github.ref_name == 'next'
     runs-on: ubuntu-latest
     outputs:
       mode: ${{ steps.select.outputs.mode }}
@@ -168,14 +167,12 @@ jobs:
         env:
           RELEASE_BRANCH: ${{ github.ref_name }}
         run: |
-          if [[ "${RELEASE_BRANCH}" == "main" && -f .changeset/pre.json ]]; then
-            jq -e '.mode == "pre" and .tag == "next"' .changeset/pre.json
-            jq -e '.version | test("^[0-9]+\\.[0-9]+\\.[0-9]+-next\\.[0-9]+$")' package.json
-          elif [[ "${RELEASE_BRANCH}" == "main" ]]; then
-            jq -e '.version | test("^[0-9]+\\.[0-9]+\\.[0-9]+$")' package.json
+          if [[ "${RELEASE_BRANCH}" == "next" ]]; then
+            jq -e '.mode == "pre" and .tag == "beta"' .changeset/pre.json
+            jq -e '.version | test("^[0-9]+\\.[0-9]+\\.[0-9]+-beta\\.[0-9]+$")' package.json
           else
             test ! -f .changeset/pre.json
-            jq -e --arg major "${RELEASE_BRANCH#v}" '.version | test("^" + $major + "\\.[0-9]+\\.[0-9]+$")' package.json
+            jq -e '.version | test("^[0-9]+\\.[0-9]+\\.[0-9]+$")' package.json
           fi
 
       - name: Publish packages
@@ -200,7 +197,7 @@ jobs:
             echo "Release ${version} already exists."
             exit 0
           fi
-          if [[ "${version}" == *-next.* ]]; then
+          if [[ "${version}" == *-beta.* ]]; then
             release_flags=(--prerelease --latest=false)
           else
             release_flags=(--latest)

@@ -65,13 +65,14 @@ Use this flow when `src/spec/` changes or when a JS/native contract changes:
 ## Release Flow
 
 - `.changeset/config.json` configures Changesets for the single public root package; private example and docs packages are not versioned or tagged. Formatting is disabled because this repository does not use Prettier.
-- `.github/workflows/release.yml` runs on pushes to `main`, `v2`, and `v3`, or manual dispatch from those branches. Each job verifies that its commit still matches the current branch head before taking release actions.
+- `.github/workflows/release.yml` runs on pushes to `main` and `next`, or manual dispatch from those branches. CI also checks both branches and PRs targeting them. Each release job verifies that its commit still matches the current branch head before taking release actions.
 - Pending changesets create or update a version PR using `pnpm release:version`. The PR updates the package version, changelog, and lockfile; it is not merged automatically.
 - After the version PR is merged, `pnpm release` runs `pnpm run t`, builds the package and docs, then publishes unpublished versions with Changesets. CI platform builds run separately.
-- `main` supports `next` prereleases while `.changeset/pre.json` is in `pre` mode, and stable releases without prerelease state. Maintenance branches `v2` and `v3` publish stable versions matching their major number.
+- `main` publishes stable versions of the current major without prerelease state, using npm tag `latest`. `next` starts from the current stable version and publishes the next version with npm tag `beta`; `.changeset/pre.json` must have mode `pre` and tag `beta`. A patch changeset after `2.9.0` produces `2.9.1-beta.0`.
+- To promote a tested beta, create a promotion branch from `next`, run `pnpm changeset pre exit`, and open a PR to `main`. After merging, the automatic version PR removes prerelease state and produces the stable version. Sync `next` with the released `main` and re-enter `beta` mode for the next cycle.
 - The version PR uses the repository `GH_TOKEN` secret so its pushes trigger CI. The token needs repository write and pull-request permissions.
 - Publishing uses npm Trusted Publishing with `id-token: write`. Configure the npm package for GitHub user `mym0404`, repository `react-native-naver-map`, workflow `release.yml`, no environment, and direct publish permission. The publish job installs npm `11.15.0` because pnpm 10 delegates publishing to npm and the configured Node.js version bundles an older npm CLI.
-- Changesets package tags and automatic GitHub releases are disabled. After npm publishing succeeds, the workflow creates one bare version tag (for example, `2.9.1`) and GitHub release at the release commit. `next` releases are prereleases and do not become the latest GitHub release.
+- Changesets package tags and automatic GitHub releases are disabled. After npm publishing succeeds, the workflow creates one bare version tag (for example, `2.9.1`) and GitHub release at the release commit. `beta` releases are prereleases and do not become the latest GitHub release.
 - Manual dispatch also runs the publish path when all npm versions already exist, so a missing GitHub release can be recovered without republishing the package.
 
 ## Commit And PR Conventions
