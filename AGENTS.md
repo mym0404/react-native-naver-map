@@ -21,7 +21,9 @@ React Native Naver Map monorepo for `@mj-studio/react-native-naver-map`, a Fabri
 ├── example/                     # React Native CLI app for manual runtime checks
 ├── docs/                        # Next.js + Fumadocs documentation site
 ├── expo-config-plugin/          # Expo config plugin source; build output is generated
-├── script/                      # codegen, native lint/format, release helpers
+├── script/                      # codegen and native lint/format helpers
+├── .changeset/                  # version intentions and Changesets configuration
+├── .github/workflows/release.yml # version PRs, npm publishing, GitHub releases
 ├── .agents/knowledge/           # evergreen repo-local agent knowledge
 ├── mise.toml                    # CLI tool versions for local work and CI
 ├── package.json                 # root scripts, package exports, Bob and codegen config
@@ -39,6 +41,8 @@ Generated outputs are build artifacts, not source: `lib/**`, `docs/.next/**`, `d
 - Keep cross-platform behavior aligned unless a change is explicitly platform-scoped.
 - Public API changes should stay visible from `src/index.tsx`.
 - Example secrets stay local and must not be committed.
+- Releases use Changesets: `main` publishes stable versions and `next` publishes the next version in `beta` prerelease mode. Add a changeset for publishable changes; see `CONTRIBUTING.md` for the release flow.
+- npm publishing uses OIDC; version PRs, tags, and GitHub releases use the repository `GH_TOKEN` with workflow-file write permission.
 
 ## Working Guidelines
 
@@ -80,6 +84,7 @@ Agents should work in this repository by making assumptions visible, choosing th
 ## Verification Commands
 
 - Default validation: `pnpm run t`.
+- Release configuration changes also require `pnpm changeset status`, version generation in a temporary checkout, and workflow validation before publishing.
 - `pnpm run t` runs Lefthook `check`: Biome for staged JS/TS files, Objective-C lint, Kotlin lint, package typecheck, example typecheck, Expo plugin build, and Bob package build.
 - Docs checks are opt-in because `lefthook.yml` currently comments out docs build and docs typecheck. Use `pnpm build:docs` for docs changes.
 - Contract changes: run `pnpm codegen`, inspect generated native selectors or abstract methods, then run `pnpm run t`.

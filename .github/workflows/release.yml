@@ -1,0 +1,222 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - next
+
+permissions:
+  contents: read
+
+env:
+  PRERELEASE_TAG: beta
+
+concurrency:
+  group: release-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  select-mode:
+    if: github.ref_name == 'main' || github.ref_name == 'next'
+    runs-on: ubuntu-latest
+    outputs:
+      mode: ${{ steps.select.outputs.mode }}
+    steps:
+      - name: Checkout release commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Verify current branch head
+        id: current
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+          RELEASE_BRANCH: ${{ github.ref_name }}
+        run: |
+          branch_head=$(git ls-remote --exit-code origin "refs/heads/${RELEASE_BRANCH}" | cut -f1)
+          if [[ "${branch_head}" == "${EXPECTED_SHA}" ]]; then
+            echo "matches=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "Ignoring stale release run for ${EXPECTED_SHA}; ${RELEASE_BRANCH} is now ${branch_head}."
+            echo "matches=false" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Setup Node and pnpm
+        if: steps.current.outputs.matches == 'true'
+        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+        with:
+          version: 2026.7.7
+          install_args: node pnpm
+          cache: true
+
+      - name: Install dependencies
+        if: steps.current.outputs.matches == 'true'
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify prerelease state
+        if: steps.current.outputs.matches == 'true'
+        env:
+          RELEASE_BRANCH: ${{ github.ref_name }}
+        run: |
+          prerelease_state=.changeset/pre.json
+          if [[ "${RELEASE_BRANCH}" == "next" ]]; then
+            jq -e --arg tag "${PRERELEASE_TAG}" '.mode == "pre" and .tag == $tag' "${prerelease_state}"
+          elif [[ -f "${prerelease_state}" ]]; then
+            jq -e --arg tag "${PRERELEASE_TAG}" '.mode == "exit" and .tag == $tag' "${prerelease_state}"
+          fi
+
+      - name: Select release mode
+        if: steps.current.outputs.matches == 'true'
+        id: select
+        uses: changesets/action/select-mode@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+
+  version:
+    needs: select-mode
+    if: needs.select-mode.outputs.mode == 'version'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout release commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Verify current branch head
+        id: current
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+          RELEASE_BRANCH: ${{ github.ref_name }}
+        run: |
+          branch_head=$(git ls-remote --exit-code origin "refs/heads/${RELEASE_BRANCH}" | cut -f1)
+          if [[ "${branch_head}" == "${EXPECTED_SHA}" ]]; then
+            echo "matches=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "Ignoring stale release run for ${EXPECTED_SHA}; ${RELEASE_BRANCH} is now ${branch_head}."
+            echo "matches=false" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Setup Node and pnpm
+        if: steps.current.outputs.matches == 'true'
+        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+        with:
+          version: 2026.7.7
+          install_args: node pnpm
+          cache: true
+
+      - name: Install dependencies
+        if: steps.current.outputs.matches == 'true'
+        run: pnpm install --frozen-lockfile
+
+      - name: Create or update version pull request
+        if: steps.current.outputs.matches == 'true'
+        uses: changesets/action/version@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        with:
+          github-token: ${{ secrets.GH_TOKEN }}
+          script: pnpm release:version
+          commit-message: 'chore: version packages'
+          pr-title: 'chore: version packages'
+          pr-base-branch: ${{ github.ref_name }}
+
+  publish:
+    needs: select-mode
+    if: >-
+      needs.select-mode.outputs.mode == 'publish' ||
+      (github.event_name == 'workflow_dispatch' && needs.select-mode.outputs.mode == 'none')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - name: Checkout release commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Verify current branch head
+        id: current
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+          RELEASE_BRANCH: ${{ github.ref_name }}
+        run: |
+          branch_head=$(git ls-remote --exit-code origin "refs/heads/${RELEASE_BRANCH}" | cut -f1)
+          if [[ "${branch_head}" == "${EXPECTED_SHA}" ]]; then
+            echo "matches=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "Ignoring stale release run for ${EXPECTED_SHA}; ${RELEASE_BRANCH} is now ${branch_head}."
+            echo "matches=false" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Setup Node and pnpm
+        if: steps.current.outputs.matches == 'true'
+        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+        with:
+          version: 2026.7.7
+          install_args: node pnpm
+          cache: true
+
+      - name: Install dependencies
+        if: steps.current.outputs.matches == 'true'
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup validation tools
+        if: steps.current.outputs.matches == 'true'
+        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+        with:
+          version: 2026.7.7
+          install_args: java ktlint clang-format
+          cache: true
+
+      - name: Setup npm trusted publishing
+        if: steps.current.outputs.matches == 'true'
+        run: npm install --global npm@11.15.0
+
+      - name: Verify release branch
+        if: steps.current.outputs.matches == 'true'
+        env:
+          RELEASE_BRANCH: ${{ github.ref_name }}
+        run: |
+          prerelease_state=.changeset/pre.json
+          if [[ "${RELEASE_BRANCH}" == "next" ]]; then
+            jq -e --arg tag "${PRERELEASE_TAG}" '.mode == "pre" and .tag == $tag' "${prerelease_state}"
+            jq -e --arg tag "${PRERELEASE_TAG}" '.version | test("^[0-9]+\\.[0-9]+\\.[0-9]+-" + $tag + "\\.[0-9]+$")' package.json
+          else
+            test ! -f "${prerelease_state}"
+            jq -e '.version | test("^[0-9]+\\.[0-9]+\\.[0-9]+$")' package.json
+          fi
+
+      - name: Publish packages
+        id: publish
+        if: steps.current.outputs.matches == 'true'
+        uses: changesets/action/publish@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        with:
+          github-token: ${{ github.token }}
+          script: pnpm release
+          create-github-releases: false
+          push-git-tags: false
+
+      - name: Create version tag and GitHub release
+        if: steps.current.outputs.matches == 'true' && steps.publish.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          version=$(jq -r '.version' package.json)
+          if gh release view "${version}" > /dev/null 2>&1; then
+            echo "Release ${version} already exists."
+            exit 0
+          fi
+          if [[ "${version}" == *"-${PRERELEASE_TAG}."* ]]; then
+            release_flags=(--prerelease --latest=false)
+          else
+            release_flags=(--latest)
+          fi
+          gh release create "${version}" --target "${RELEASE_SHA}" \
+            --title "${version}" --generate-notes "${release_flags[@]}"
