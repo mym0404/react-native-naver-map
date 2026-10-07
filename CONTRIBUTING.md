@@ -196,8 +196,10 @@ version, such as `2.9.1`, matching the podspec. `beta` versions create GitHub
 prereleases; stable versions become the latest release. If npm succeeds but the
 GitHub release is missing, manually run Release on the same branch to recover it.
 
-The repository `GH_TOKEN` secret must be a GitHub token with repository write and
-pull-request permissions so generated version PRs trigger CI. Configure
+The repository `GH_TOKEN` secret must be a GitHub token with repository,
+pull-request, and workflow-file write permissions. Version PRs use it to trigger
+CI, and version tags and GitHub releases use it because a non-default release
+branch can contain workflow changes that the default Actions token cannot tag. Configure
 [npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/) for
 `@mj-studio/react-native-naver-map` with GitHub user `mym0404`, repository
 `react-native-naver-map`, workflow filename `release.yml`, no environment name, and

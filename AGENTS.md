@@ -42,6 +42,7 @@ Generated outputs are build artifacts, not source: `lib/**`, `docs/.next/**`, `d
 - Public API changes should stay visible from `src/index.tsx`.
 - Example secrets stay local and must not be committed.
 - Releases use Changesets: `main` publishes stable versions and `next` publishes the next version in `beta` prerelease mode. Add a changeset for publishable changes; see `CONTRIBUTING.md` for the release flow.
+- npm publishing uses OIDC; version PRs, tags, and GitHub releases use the repository `GH_TOKEN` with workflow-file write permission.
 
 ## Working Guidelines
 
