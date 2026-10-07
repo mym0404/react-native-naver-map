@@ -32,7 +32,9 @@
     "lint": "pnpm run t",
     "t": "pnpm lefthook run check",
     "format": "pnpm lefthook run format",
-    "release": "./script/release.sh",
+    "changeset": "changeset",
+    "release:version": "pnpm changeset version && pnpm install --lockfile-only",
+    "release": "pnpm run t && pnpm build && pnpm changeset publish --no-git-tag",
     "codegen:android": "zx ./script/codegen.mjs android",
     "codegen:ios": "zx ./script/codegen.mjs ios",
     "codegen": "zx ./script/codegen.mjs",
@@ -70,15 +72,16 @@
   },
   "homepage": "https://github.com/mym0404/react-native-naver-map#readme",
   "publishConfig": {
+    "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
     "@babel/core": "catalog:",
     "@babel/runtime": "catalog:",
     "@biomejs/biome": "catalog:",
+    "@changesets/cli": "3.0.3",
     "@commitlint/config-conventional": "17.0.2",
     "@expo/config-plugins": "10.0.3",
-    "@release-it/conventional-changelog": "^10.0.1",
     "@types/fs-extra": "^11",
     "@types/react": "catalog:",
     "commitlint": "17.0.2",
@@ -87,7 +90,6 @@
     "react": "catalog:",
     "react-native": "catalog:",
     "react-native-builder-bob": "^0.40.15",
-    "release-it": "19.0.3",
     "turbo": "^2.5.6",
     "typescript": "catalog:",
     "zx": "^8.8.1"
@@ -118,18 +120,6 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
-  },
-  "release-it": {
-    "git": {
-      "commitMessage": "chore: release ${version} [skip ci]",
-      "tagName": "v${version}"
-    },
-    "npm": {
-      "publish": true
-    },
-    "github": {
-      "release": false
-    }
   },
   "react-native-builder-bob": {
     "source": "src",

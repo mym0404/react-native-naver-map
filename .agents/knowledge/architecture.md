@@ -13,7 +13,9 @@ This repository publishes `@mj-studio/react-native-naver-map`, a Fabric-only Rea
 - `example/`: manual runtime verification app
 - `docs/`: Next.js + Fumadocs site
 - `expo-config-plugin/`: Expo config plugin source compiled into `build/`
-- `script/`: codegen, formatting, lint, and release helpers
+- `script/`: codegen, formatting, and lint helpers
+- `.changeset/`: release intentions, prerelease state when enabled, and Changesets configuration
+- `.github/workflows/release.yml`: version PR and publish automation
 
 ## Component Model
 
@@ -55,8 +57,8 @@ Treat generated or build output as disposable artifacts. Edit source, then rebui
 ## Repo-Specific Constraints
 
 - Root Biome checks exclude `docs/**`; the docs site uses its own package and config.
-- The workspace packages are `example/` and `docs/`.
-- The repository root still acts as the main library package even though only `example/` and `docs/` are listed as workspace packages.
+- The workspace packages are the repository root (`.`), `example/`, and `docs/`.
+- The repository root is explicitly listed in `pnpm-workspace.yaml` so Changesets discovers the publishable library. The example and docs packages are private and are excluded from versioning and publishing.
 - `pnpm-workspace.yaml` uses `nodeLinker: hoisted` with public hoists for `react-native`, `@react-native/codegen`, and `@react-native/gradle-plugin`, so native example tooling resolves React Native from the hoisted root `node_modules`.
 - The `example/` app imports `@mj-studio/react-native-naver-map` directly in source, but does not declare it in `example/package.json`.
 - That local library wiring is deliberate: Metro resolves the package from the repository root through `example/metro.config.js`, and native autolinking resolves it through `example/react-native.config.js`.

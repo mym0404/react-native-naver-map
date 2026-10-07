@@ -65,12 +65,12 @@
 
 ## Repo Scripts
 
-`script/` contains repo automation for codegen, native lint and format, and release flow.
+`script/` contains repo automation for codegen and native lint and format. Release automation lives in `.github/workflows/release.yml`, with version intentions and configuration in `.changeset/`.
 
 - `script/codegen.mjs`: codegen orchestration
 - `script/clang-lint.sh`, `script/clang-format.sh`: iOS and Objective-C lint and format
 - `script/ktlint-lint.sh`, `script/ktlint-format.sh`: Kotlin lint and format
-- `script/release.sh`: release orchestration
+- `.github/workflows/release.yml`: version PRs, npm trusted publishing, and GitHub releases
 
 ## Guardrails
 
