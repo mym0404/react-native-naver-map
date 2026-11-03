@@ -20,6 +20,7 @@ import com.mjstudio.reactnativenavermap.event.NaverMapCustomStyleLoadedEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapScreenToCoordinateEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapSymbolTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
 import com.mjstudio.reactnativenavermap.module.RNCNaverMapInfoWindowRegistry
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterDataHolder
@@ -124,6 +125,7 @@ class RNCNaverMapViewManager(
       registerDirectEvent(this, NaverMapCameraChangeEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCameraIdleEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapTapEvent.EVENT_NAME)
+      registerDirectEvent(this, NaverMapSymbolTapEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapScreenToCoordinateEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCoordinateToScreenEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapClusterLeafTapEvent.EVENT_NAME)
@@ -174,6 +176,14 @@ class RNCNaverMapViewManager(
   }
 
   // region PROPS
+
+  @ReactProp(name = "isSymbolTapEnabled", defaultBoolean = false)
+  override fun setIsSymbolTapEnabled(
+    view: RNCNaverMapViewWrapper?,
+    value: Boolean,
+  ) = view.withMapView {
+    it.isSymbolTapEnabled = value
+  }
 
   @ReactProp(name = "mapType")
   override fun setMapType(

@@ -574,6 +574,16 @@ export interface NaverMapViewProps extends ViewProps {
   onTapMap?: (params: Coord & { x: number; y: number }) => void;
 
   /**
+   * 심벌을 탭했을 때 발생합니다. Android only for now (iOS is not implemented yet).
+   * `isSymbolTapEnabled`는 이 콜백이 전달되면 내부에서 활성화됩니다.
+   */
+  onTapSymbol?: (params: {
+    caption: string;
+    latitude: number;
+    longitude: number;
+  }) => void;
+
+  /**
    * 클러스터 Leaf 마커를 클릭했을 때 발생하는 이벤트입니다.
    *
    * @event
@@ -732,6 +742,7 @@ export const NaverMapView = forwardRef(
       onCameraChanged: onCameraChangedProp,
       onCameraIdle: onCameraIdleProp,
       onTapMap: onTapMapProp,
+      onTapSymbol: onTapSymbolProp,
       onInitialized,
       onOptionChanged: onOptionChangedProp,
       customStyleId,
@@ -929,6 +940,18 @@ export const NaverMapView = forwardRef(
           x,
           y,
         });
+      }
+    );
+
+    const onTapSymbol = useStableCallback(
+      ({
+        nativeEvent: { caption, latitude, longitude },
+      }: NativeSyntheticEvent<{
+        caption: string;
+        latitude: number;
+        longitude: number;
+      }>) => {
+        onTapSymbolProp?.({ caption, latitude, longitude });
       }
     );
 
@@ -1195,6 +1218,8 @@ export const NaverMapView = forwardRef(
         onCameraChanged={onCameraChangedProp ? onCameraChanged : undefined}
         onCameraIdle={onCameraIdleProp ? onCameraIdle : undefined}
         onTapMap={onTapMapProp ? onTapMap : undefined}
+        isSymbolTapEnabled={!!onTapSymbolProp}
+        onTapSymbol={onTapSymbolProp ? onTapSymbol : undefined}
         onOptionChanged={
           onOptionChangedProp
             ? ({ nativeEvent: { locationTrackingMode } }) =>
