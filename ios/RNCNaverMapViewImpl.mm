@@ -378,6 +378,18 @@
   });
 }
 
+- (BOOL)mapView:(NMFMapView*)mapView didTapSymbol:(NMFSymbol*)symbol {
+  if (!_isSymbolTapEnabled || !_rncParent.emitter)
+    return NO;
+
+  _rncParent.emitter->onTapSymbol({
+      .caption = std::string(symbol.caption.UTF8String),
+      .latitude = symbol.position.lat,
+      .longitude = symbol.position.lng,
+  });
+  return YES;
+}
+
 - (void)mapView:(NMFMapView*)mapView
     cameraWillChangeByReason:(NSInteger)reason
                     animated:(BOOL)animated {
