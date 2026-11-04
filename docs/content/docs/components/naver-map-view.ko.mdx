@@ -78,6 +78,21 @@ function MapWithControls() {
 }
 ```
 
+### 지도 심벌 탭 처리
+
+`onTapSymbol`을 사용하면 지도에 표시된 장소와 같은 심벌의 탭을 처리할 수 있습니다. Android와 iOS에서 콜백으로 심벌의 이름인 `caption`과 `latitude`, `longitude`를 받습니다.
+
+```tsx
+<NaverMapView
+  style={{ flex: 1 }}
+  onTapSymbol={({ caption, latitude, longitude }) => {
+    console.log('Symbol tapped:', caption, latitude, longitude);
+  }}
+/>
+```
+
+`onTapSymbol`을 설정하면 심벌 탭을 처리하고 `onTapMap`은 호출하지 않습니다. 설정하지 않으면 탭이 지도에 전달되어 `onTapMap`이 설정된 경우 호출됩니다. 직접 추가한 마커 오버레이의 탭은 해당 오버레이의 `onTap`으로 처리합니다.
+
 ### With Markers
 
 ```tsx
