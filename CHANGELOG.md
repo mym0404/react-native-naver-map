@@ -1,5 +1,11 @@
 # @mj-studio/react-native-naver-map
 
+## 2.10.0
+
+### Minor Changes
+
+- c25a775: Add the `onTapSymbol` event for map symbols on Android and iOS.
+
 ## 2.9.1
 
 ### Patch Changes
