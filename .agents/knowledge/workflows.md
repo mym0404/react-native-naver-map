@@ -60,6 +60,7 @@ Use this flow when `src/spec/` changes or when a JS/native contract changes:
 - Realistic example verification needs local Naver credentials:
   - Android: `example/android/app/src/main/res/values/secret.xml`
   - iOS: `example/ios/Secret.xcconfig`
+- Root `.worktreeinclude` lists `.env` and both example credential files so Codex copies existing ignored files from the source checkout into new local managed worktrees. Secret values remain ignored by Git.
 - Local verification should not assume CI-provided dummy secret files exist.
 
 ## Release Flow
