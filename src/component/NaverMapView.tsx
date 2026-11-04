@@ -574,14 +574,12 @@ export interface NaverMapViewProps extends ViewProps {
   onTapMap?: (params: Coord & { x: number; y: number }) => void;
 
   /**
-   * 심벌을 탭했을 때 발생합니다. Android only for now (iOS is not implemented yet).
-   * `isSymbolTapEnabled`는 이 콜백이 전달되면 내부에서 활성화됩니다.
+   * 심벌을 탭했을 때 발생합니다.
+   *
+   * @see {@link Coord}
+   * @event
    */
-  onTapSymbol?: (params: {
-    caption: string;
-    latitude: number;
-    longitude: number;
-  }) => void;
+  onTapSymbol?: (params: Coord & { caption: string }) => void;
 
   /**
    * 클러스터 Leaf 마커를 클릭했을 때 발생하는 이벤트입니다.
@@ -946,11 +944,7 @@ export const NaverMapView = forwardRef(
     const onTapSymbol = useStableCallback(
       ({
         nativeEvent: { caption, latitude, longitude },
-      }: NativeSyntheticEvent<{
-        caption: string;
-        latitude: number;
-        longitude: number;
-      }>) => {
+      }: NativeSyntheticEvent<Coord & { caption: string }>) => {
         onTapSymbolProp?.({ caption, latitude, longitude });
       }
     );

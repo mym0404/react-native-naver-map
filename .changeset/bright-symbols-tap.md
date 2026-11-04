@@ -2,4 +2,4 @@
 "@mj-studio/react-native-naver-map": minor
 ---
 
-Android only `onTapSymbol` event for map symbols.
+Add the `onTapSymbol` event for map symbols on Android and iOS.

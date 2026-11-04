@@ -183,6 +183,8 @@ using namespace facebook::react;
     [self.map setRotateGestureEnabled:next.isRotateGesturesEnabled];
   if (prev.isStopGesturesEnabled != next.isStopGesturesEnabled)
     [self.map setStopGestureEnabled:next.isStopGesturesEnabled];
+  if (prev.isSymbolTapEnabled != next.isSymbolTapEnabled)
+    _view.isSymbolTapEnabled = next.isSymbolTapEnabled;
 
   if (prev.animationDuration != next.animationDuration)
     _view.animationDuration = next.animationDuration;
