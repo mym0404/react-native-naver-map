@@ -41,7 +41,7 @@ Generated outputs are build artifacts, not source: `lib/**`, `docs/.next/**`, `d
 - Keep cross-platform behavior aligned unless a change is explicitly platform-scoped.
 - Public API changes should stay visible from `src/index.tsx`.
 - Example secrets stay local and must not be committed. `.worktreeinclude` lists ignored secret files to copy into new local Codex-managed worktrees; see `.agents/knowledge/workflows.md`.
-- Releases use Changesets: `main` publishes stable versions and `next` publishes the next version in `beta` prerelease mode. Add a changeset for publishable changes; see `CONTRIBUTING.md` for the release flow.
+- Releases use Changesets: `main` publishes stable versions and `next` publishes the next version in `beta` prerelease mode. Add a changeset for publishable changes. Empty changesets do not block publishing an already-versioned release. See `CONTRIBUTING.md` for the release flow.
 - npm publishing uses OIDC; version PRs, tags, and GitHub releases use the repository `GH_TOKEN` with workflow-file write permission.
 
 ## Working Guidelines
