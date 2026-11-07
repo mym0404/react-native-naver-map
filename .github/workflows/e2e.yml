@@ -1,0 +1,90 @@
+name: E2E
+
+on:
+  pull_request:
+    branches: [main, next]
+  push:
+    branches: [main, next]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NAVER_MAP_CLIENT_ID: ${{ vars.NAVER_MAP_CLIENT_ID }}
+  E2E_TELEMETRY_DISABLED: '1'
+
+jobs:
+  ios:
+    runs-on: macos-15
+    timeout-minutes: 60
+    env:
+      E2E_IOS_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-18-5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.4.app
+      - uses: ./.github/actions/setup
+      - uses: actions/cache@v4
+        with:
+          path: |
+            example/ios/Pods
+            ~/.agent-device/apple-runner/derived
+          key: e2e-ios-${{ runner.arch }}-${{ hashFiles('pnpm-lock.yaml', 'example/ios/Podfile.lock') }}
+      - name: Build, install, and test
+        run: pnpm e2e:ios
+      - name: Upload results and logs
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-ios
+          path: |
+            .e2e/results/ios
+            .e2e/logs/ios
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 7
+
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - uses: android-actions/setup-android@v3
+      - uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: e2e-android-${{ hashFiles('pnpm-lock.yaml', 'example/android/gradle/wrapper/gradle-wrapper.properties') }}
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Boot emulator, build, install, and test
+        uses: reactivecircus/android-emulator-runner@v2
+        env:
+          E2E_DEVICE: emulator-5554
+        with:
+          api-level: 36
+          target: google_apis
+          arch: x86_64
+          profile: pixel_7
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          disable-animations: true
+          script: pnpm e2e:android
+      - name: Upload results and logs
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-android
+          path: |
+            .e2e/results/android
+            .e2e/logs/android
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 7

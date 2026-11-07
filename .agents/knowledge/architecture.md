@@ -11,6 +11,7 @@ This repository publishes `@mj-studio/react-native-naver-map`, a Fabric-only Rea
 - `ios/`: Objective-C++ Fabric implementation, overlays, native module utilities
 - `android/`: Kotlin managers and views plus generated New Architecture interfaces
 - `example/`: manual runtime verification app
+- `e2e/`: deterministic native smoke tests using `e2e` and `@e2e-dev/mobile`
 - `docs/`: Next.js + Fumadocs site
 - `expo-config-plugin/`: Expo config plugin source compiled into `build/`
 - `script/`: codegen, formatting, and lint helpers
@@ -25,7 +26,7 @@ This repository publishes `@mj-studio/react-native-naver-map`, a Fabric-only Rea
 
 ## SDK And Tooling Baseline
 
-- `mise.toml` selects Node.js `22.15.0`, pnpm `10.15.1`, Zulu JDK 17, ktlint `1.8.0`, and clang-format `21.1.8` for local work and CI.
+- `mise.toml` selects Node.js `22.22.3`, pnpm `10.15.1`, Zulu JDK 17, ccache `4.14`, ktlint `1.8.0`, and clang-format `21.1.8` for local work and CI. Pinning ccache keeps React Native's CMake auto-detection from selecting an unconfigured version-manager shim.
 - The root `packageManager` field repeats the pnpm version because Turborepo `2.5.6` requires it to resolve workspaces; mise installs and selects pnpm.
 - The workspace uses `pnpm` workspaces with a shared catalog in `pnpm-workspace.yaml`.
 - The workspace catalog currently pins React Native `0.85.1` and React `19.2.3`.
@@ -62,6 +63,7 @@ Treat generated or build output as disposable artifacts. Edit source, then rebui
 - `pnpm-workspace.yaml` uses `nodeLinker: hoisted` with public hoists for `react-native`, `@react-native/codegen`, and `@react-native/gradle-plugin`, so native example tooling resolves React Native from the hoisted root `node_modules`.
 - The `example/` app imports `@mj-studio/react-native-naver-map` directly in source, but does not declare it in `example/package.json`.
 - That local library wiring is deliberate: Metro resolves the package from the repository root through `example/metro.config.js`, and native autolinking resolves it through `example/react-native.config.js`.
+- Metro watches the workspace and hoisted root dependencies, not a potentially absent `example/node_modules`. Android Release builds explicitly resolve the hoisted `hermes-compiler` executable because the Gradle plugin otherwise searches relative to the example app root.
 - Third-party React Native packages used by `example/` should be discovered from the hoisted root install through normal autolinking. Do not pin them to `example/node_modules` in `example/react-native.config.js`.
 - `app.plugin.js` loads the compiled Expo plugin from `expo-config-plugin/build`.
 - Example secrets stay local and should not be committed.

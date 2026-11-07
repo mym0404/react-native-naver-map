@@ -19,6 +19,7 @@ React Native Naver Map monorepo for `@mj-studio/react-native-naver-map`, a Fabri
 ├── ios/                         # Fabric iOS implementation and native utilities
 ├── android/                     # Fabric Android managers, views, overlays, utilities
 ├── example/                     # React Native CLI app for manual runtime checks
+├── e2e/                         # shared iOS and Android smoke tests
 ├── docs/                        # Next.js + Fumadocs documentation site
 ├── expo-config-plugin/          # Expo config plugin source; build output is generated
 ├── script/                      # codegen and native lint/format helpers
@@ -84,8 +85,9 @@ Agents should work in this repository by making assumptions visible, choosing th
 ## Verification Commands
 
 - Default validation: `pnpm run t`.
+- Mobile E2E: `pnpm e2e:ios` / `pnpm e2e:android` build and test the example in Release with a valid `NAVER_MAP_CLIENT_ID`; see `.agents/knowledge/workflows.md`.
 - Release configuration changes also require `pnpm changeset status`, version generation in a temporary checkout, and workflow validation before publishing.
-- `pnpm run t` runs Lefthook `check`: Biome for staged JS/TS files, Objective-C lint, Kotlin lint, package typecheck, example typecheck, Expo plugin build, and Bob package build.
+- `pnpm run t` runs Lefthook `check`: Biome for staged JS/TS files, Objective-C lint, Kotlin lint, package/example/E2E typechecks, Expo plugin build, and Bob package build.
 - Docs checks are opt-in because `lefthook.yml` currently comments out docs build and docs typecheck. Use `pnpm build:docs` for docs changes.
 - Contract changes: run `pnpm codegen`, inspect generated native selectors or abstract methods, then run `pnpm run t`.
 - Native module, Fabric command, or native runtime changes need platform builds for the touched surfaces; use `pnpm ci:ios`/`pnpm ci:android` or the matching Turbo commands.

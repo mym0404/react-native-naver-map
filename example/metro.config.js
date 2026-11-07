@@ -7,7 +7,6 @@ const modules = Object.keys(rootPackageJson.peerDependencies ?? {});
 
 const defaultConfig = getDefaultConfig(__dirname);
 
-const projectNodeModules = path.resolve(__dirname, 'node_modules');
 const rootNodeModules = path.resolve(root, 'node_modules');
 
 /**
@@ -17,14 +16,13 @@ const rootNodeModules = path.resolve(root, 'node_modules');
  * @type {import('metro-config').MetroConfig}
  */
 const config = {
-  watchFolders: [root, projectNodeModules, rootNodeModules],
+  watchFolders: [root, rootNodeModules],
 
   // Keep peer dependencies resolved from the hoisted workspace root.
   resolver: {
     sourceExts: [...new Set([...defaultConfig.resolver?.sourceExts, 'json'])],
     nodeModulesPaths: [
       ...defaultConfig.resolver?.nodeModulesPaths,
-      projectNodeModules,
       rootNodeModules,
     ],
 

@@ -1,6 +1,7 @@
 [tools]
+ccache = "4.14"
 clang-format = "21.1.8"
 java = "zulu-17"
 ktlint = "1.8.0"
-node = "22.15.0"
+node = "22.22.3"
 pnpm = "10.15.1"

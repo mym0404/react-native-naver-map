@@ -53,7 +53,10 @@
     "ios": "cd example && pnpm ios",
     "android": "cd example && pnpm android",
     "dev": "cd example && pnpm start",
-    "docs:dev": "cd docs && pnpm dev"
+    "docs:dev": "cd docs && pnpm dev",
+    "e2e:ios": "node script/e2e.mjs ios",
+    "e2e:android": "node script/e2e.mjs android",
+    "typecheck:e2e": "tsc -p e2e/tsconfig.json"
   },
   "keywords": [
     "react-native",
@@ -81,10 +84,12 @@
     "@biomejs/biome": "catalog:",
     "@changesets/cli": "3.0.3",
     "@commitlint/config-conventional": "17.0.2",
+    "@e2e-dev/mobile": "0.12.6",
     "@expo/config-plugins": "10.0.3",
     "@types/fs-extra": "^11",
     "@types/react": "catalog:",
     "commitlint": "17.0.2",
+    "e2e": "0.23.0",
     "fs-extra": "^11.3.1",
     "lefthook": "^1.12.3",
     "react": "catalog:",

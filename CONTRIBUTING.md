@@ -55,6 +55,65 @@ To start the packager:
 cd example && pnpm run start
 ```
 
+### Mobile E2E
+
+The shared smoke suite uses [e2e](https://github.com/tester-army/e2e) and its
+`agent-device` mobile engine. It runs without an AI model or model API key.
+It checks map initialization, navigation back to the menu, and native camera
+coordinates after an imperative move. It does not assert that map tiles have
+finished loading or compare screenshots.
+
+Install the mise toolchain and dependencies once:
+
+```sh
+mise install
+mise exec -- pnpm install --frozen-lockfile
+cp .env.example .env
+```
+
+Set `NAVER_MAP_CLIENT_ID` in `.env` to a valid **example-app** Naver Maps client ID.
+Register `happy.mjstudio.rnnmap.example` for both Android and iOS in the Naver
+Cloud console. Use only the client ID embedded in the app, never a client secret.
+An exported `NAVER_MAP_CLIENT_ID` takes precedence over `.env`.
+
+With mise activated in your shell, run either platform with one command:
+
+```sh
+pnpm e2e:ios
+pnpm e2e:android
+```
+
+Without shell activation, prefix the command with `mise exec --`.
+
+- iOS requires macOS, Xcode, CocoaPods, and an installed iOS simulator runtime.
+  The runner installs pods, builds a Release simulator app, creates a dedicated
+  iPhone 16 simulator on the newest installed iOS runtime, and deletes it after
+  the run. Set `E2E_IOS_RUNTIME` to a runtime identifier to choose another version.
+- Android requires the SDK, command-line tools under `cmdline-tools/latest`,
+  the emulator, accepted SDK licenses, and `ANDROID_HOME` (on macOS the standard
+  `~/Library/Android/sdk` path is also detected). The runner installs the API 36
+  Google APIs image, creates a dedicated AVD, builds a Release APK, and stops the
+  emulator after the run. The AVD remains available for the next run.
+- `E2E_DEVICE` selects an already prepared simulator UDID or emulator serial.
+  The runner installs the example on that device and does not shut it down.
+  Use a dedicated test device because tests relaunch the app and grant location
+  permission.
+- Both Release builds include JavaScript; Metro is not needed.
+- Results and JUnit reports are under `.e2e/results/<platform>`. Build and device
+  logs are under `.e2e/logs/<platform>`. Failed tests retain screenshot and trace
+  evidence. Generated results and builds are ignored by Git.
+
+The `E2E` GitHub Actions workflow runs both platforms on PRs and pushes targeting
+`main` or `next`, and supports manual runs. Add the repository **Variable**
+`NAVER_MAP_CLIENT_ID` under **Settings → Secrets and variables → Actions → Variables**.
+The workflow reads `${{ vars.NAVER_MAP_CLIENT_ID }}` and passes it to the same local
+commands. This is a public example-app client ID, so fork PRs do not need secrets.
+A missing ID fails the run; the suite never substitutes a dummy key or silently
+skips tests. Reports and logs are uploaded as platform-specific artifacts for
+seven days, including when tests fail.
+
+Run `pnpm typecheck:e2e` to check test/config types without building the app.
+
 ### Android
 
 To run the example app on Android:

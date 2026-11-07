@@ -82,6 +82,7 @@ lib/
 example/android/app/src/main/res/values/secret.xml
 example/ios/Secret.xcconfig
 .env
+.e2e/
 
 example/.watchman-*
 *.bak
