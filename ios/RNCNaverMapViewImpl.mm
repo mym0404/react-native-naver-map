@@ -378,6 +378,17 @@
   });
 }
 
+- (void)mapView:(NMFMapView*)mapView didLongTapMap:(NMGLatLng*)latlng point:(CGPoint)point {
+  if (!_rncParent.emitter)
+    return;
+  _rncParent.emitter->onLongTapMap({
+      .latitude = latlng.lat,
+      .longitude = latlng.lng,
+      .x = point.x,
+      .y = point.y,
+  });
+}
+
 - (BOOL)mapView:(NMFMapView*)mapView didTapSymbol:(NMFSymbol*)symbol {
   if (!_isSymbolTapEnabled || !_rncParent.emitter)
     return NO;

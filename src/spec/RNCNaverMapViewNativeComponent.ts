@@ -194,6 +194,14 @@ interface Props extends ViewProps {
       y: Double;
     }>
   >;
+  onLongTapMap?: DirectEventHandler<
+    Readonly<{
+      latitude: Double;
+      longitude: Double;
+      x: Double;
+      y: Double;
+    }>
+  >;
   onTapSymbol?: DirectEventHandler<
     Readonly<{ caption: string; latitude: Double; longitude: Double }>
   >;

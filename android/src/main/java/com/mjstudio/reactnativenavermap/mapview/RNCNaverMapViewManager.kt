@@ -19,6 +19,7 @@ import com.mjstudio.reactnativenavermap.event.NaverMapCoordinateToScreenEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapCustomStyleLoadFailedEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapCustomStyleLoadedEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapLongTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapScreenToCoordinateEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapSymbolTapEvent
@@ -126,6 +127,7 @@ class RNCNaverMapViewManager(
       registerDirectEvent(this, NaverMapCameraChangeEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCameraIdleEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapTapEvent.EVENT_NAME)
+      registerDirectEvent(this, NaverMapLongTapEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapSymbolTapEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapScreenToCoordinateEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCoordinateToScreenEvent.EVENT_NAME)

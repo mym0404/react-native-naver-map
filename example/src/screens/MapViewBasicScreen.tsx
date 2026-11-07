@@ -19,6 +19,8 @@ export const MapViewBasicScreen = ({ onBack }: { onBack: () => void }) => {
   const mapRef = useRef<NaverMapViewRef>(null);
   const [isInitialized, setIsInitialized] = useState(false);
   const [camera, setCamera] = useState(waiting);
+  const [mapSize, setMapSize] = useState({ width: 0, height: 0 });
+  const [longTap, setLongTap] = useState(waiting);
   const [projection, setProjection] = useState(waiting);
 
   return (
@@ -28,6 +30,13 @@ export const MapViewBasicScreen = ({ onBack }: { onBack: () => void }) => {
         mapRef={mapRef}
         mapProps={{
           initialCamera,
+          testID: 'map-view-basic-map',
+          onLayout: ({ nativeEvent: { layout } }) =>
+            setMapSize({ width: layout.width, height: layout.height }),
+          onLongTapMap: ({ latitude, longitude, x, y }) =>
+            setLongTap(
+              `${latitude},${longitude},${x},${y},${mapSize.width},${mapSize.height}`
+            ),
           onInitialized: () => setIsInitialized(true),
           onCameraIdle: ({ latitude, longitude }) =>
             setCamera(`${latitude.toFixed(4)},${longitude.toFixed(4)}`),
@@ -39,6 +48,13 @@ export const MapViewBasicScreen = ({ onBack }: { onBack: () => void }) => {
             </Text>
             <Text testID="map-view-basic-camera" style={{ color: '#fff' }}>
               {camera}
+            </Text>
+            <Text
+              testID="map-view-basic-long-tap"
+              numberOfLines={1}
+              style={{ color: '#fff', width: '100%', height: 20 }}
+            >
+              {longTap}
             </Text>
             <Text
               testID="map-view-basic-projection"

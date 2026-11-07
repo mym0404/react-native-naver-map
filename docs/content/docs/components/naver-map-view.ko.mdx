@@ -93,6 +93,19 @@ function MapWithControls() {
 
 `onTapSymbol`을 설정하면 심벌 탭을 처리하고 `onTapMap`은 호출하지 않습니다. 설정하지 않으면 탭이 지도에 전달되어 `onTapMap`이 설정된 경우 호출됩니다. 직접 추가한 마커 오버레이의 탭은 해당 오버레이의 `onTap`으로 처리합니다.
 
+### 지도 롱탭 처리
+
+`onLongTapMap`을 사용하면 지도를 길게 누른 이벤트를 처리할 수 있습니다. 콜백으로 누른 위치의 `latitude`, `longitude`와 지도 뷰 기준 `x`, `y`를 받습니다. 화면 좌표는 Android에서 DP, iOS에서 PT 단위이므로 `screenToCoordinate`에 그대로 전달할 수 있습니다.
+
+```tsx
+<NaverMapView
+  style={{ flex: 1 }}
+  onLongTapMap={({ latitude, longitude, x, y }) => {
+    console.log('Map long-pressed:', latitude, longitude, x, y);
+  }}
+/>
+```
+
 ### With Markers
 
 ```tsx

@@ -574,6 +574,15 @@ export interface NaverMapViewProps extends ViewProps {
   onTapMap?: (params: Coord & { x: number; y: number }) => void;
 
   /**
+   * Called when the map is long-pressed.
+   * `x` and `y` are local map coordinates in DP on Android and PT on iOS and can be passed directly to `screenToCoordinate`.
+   *
+   * @see {@link Coord}
+   * @event
+   */
+  onLongTapMap?: (params: Coord & { x: number; y: number }) => void;
+
+  /**
    * 심벌을 탭했을 때 발생합니다.
    *
    * @see {@link Coord}
@@ -740,6 +749,7 @@ export const NaverMapView = forwardRef(
       onCameraChanged: onCameraChangedProp,
       onCameraIdle: onCameraIdleProp,
       onTapMap: onTapMapProp,
+      onLongTapMap: onLongTapMapProp,
       onTapSymbol: onTapSymbolProp,
       onInitialized,
       onOptionChanged: onOptionChangedProp,
@@ -933,6 +943,19 @@ export const NaverMapView = forwardRef(
         nativeEvent: { longitude, latitude, x, y },
       }: NativeSyntheticEvent<Coord & { x: number; y: number }>) => {
         onTapMapProp?.({
+          longitude,
+          latitude,
+          x,
+          y,
+        });
+      }
+    );
+
+    const onLongTapMap = useStableCallback(
+      ({
+        nativeEvent: { longitude, latitude, x, y },
+      }: NativeSyntheticEvent<Coord & { x: number; y: number }>) => {
+        onLongTapMapProp?.({
           longitude,
           latitude,
           x,
@@ -1212,6 +1235,7 @@ export const NaverMapView = forwardRef(
         onCameraChanged={onCameraChangedProp ? onCameraChanged : undefined}
         onCameraIdle={onCameraIdleProp ? onCameraIdle : undefined}
         onTapMap={onTapMapProp ? onTapMap : undefined}
+        onLongTapMap={onLongTapMapProp ? onLongTapMap : undefined}
         isSymbolTapEnabled={!!onTapSymbolProp}
         onTapSymbol={onTapSymbolProp ? onTapSymbol : undefined}
         onOptionChanged={
