@@ -227,8 +227,12 @@ using namespace facebook::react;
   if (prev.clusters.key != next.clusters.key) {
     [self clearClusterers];
 
+    int clusterIndex = 0;
     for (const auto& clusterer : next.clusters.clusters) {
-      [self addClusterer:clusterer isLeafTapCallbackExist:next.clusters.isLeafTapCallbackExist];
+      [self addClusterer:clusterer
+                              index:clusterIndex++
+          isClusterTapCallbackExist:next.clusters.isClusterTapCallbackExist
+             isLeafTapCallbackExist:next.clusters.isLeafTapCallbackExist];
     }
   }
 
@@ -262,7 +266,9 @@ using namespace facebook::react;
   [super updateProps:props oldProps:oldProps];
 }
 - (void)addClusterer:(const RNCNaverMapViewClustersClustersStruct)dict
-    isLeafTapCallbackExist:(BOOL)isLeafTapCallbackExist {
+                        index:(int)clusterIndex
+    isClusterTapCallbackExist:(BOOL)isClusterTapCallbackExist
+       isLeafTapCallbackExist:(BOOL)isLeafTapCallbackExist {
 
   std::string clustererKey = dict.key;
   //  double screenDistance = clamp([dict[@"screenDistance"] doubleValue], 1, 69);
@@ -272,7 +278,7 @@ using namespace facebook::react;
 
   auto& markers = dict.markers;
 
-  NSMutableDictionary<RNCNaverMapClusterKey*, NSNull*>* markerDict = [NSMutableDictionary new];
+  NSMutableDictionary<RNCNaverMapClusterKey*, NSObject*>* markerDict = [NSMutableDictionary new];
 
   std::vector<std::string> markerIdentifiers;
 
@@ -298,22 +304,41 @@ using namespace facebook::react;
                           width:marker.width
                          height:marker.height
                 onTapLeafMarker:onTapLeafMarker];
-    markerDict[markerKey] = [NSNull null];
+    markerDict[markerKey] = isClusterTapCallbackExist ? @[ markerKey.identifier ] : [NSNull null];
   }
 
   _clustererMarkerIdentifiers[clustererKey] = markerIdentifiers;
 
-  NMCBuilder* builder = [[NMCBuilder alloc] init];
+  NMCComplexBuilder* builder = [[NMCComplexBuilder alloc] init];
   // todo screenDistance not works. idk why
   //  builder.screenDistance = screenDistance;
-  builder.minZoom = minZoom;
-  builder.maxZoom = maxZoom;
-  builder.animate = animate;
+  builder.minClusteringZoom = minZoom;
+  builder.maxClusteringZoom = maxZoom;
+  builder.animationDuration = animate ? NMC_DEFAULT_ANIMATION_DURATION : 0;
+
+  OnTapClusterMarker _Nullable onTapClusterMarker;
+  if (isClusterTapCallbackExist) {
+    builder.tagMergeStrategy = [[RNCNaverMapClusterTagMergeStrategy alloc] init];
+    __weak __typeof__(self) weakSelf = self;
+    onTapClusterMarker = ^(NSArray<NSString*>* markerIdentifiers) {
+      __strong __typeof__(self) strongSelf = weakSelf;
+      if (!strongSelf || ![strongSelf emitter])
+        return;
+
+      std::vector<std::string> identifiers;
+      identifiers.reserve(markerIdentifiers.count);
+      for (NSString* identifier in markerIdentifiers)
+        identifiers.emplace_back(identifier.UTF8String);
+      [strongSelf emitter]->onTapCluster(
+          {.clusterIndex = clusterIndex, .markerIdentifiers = identifiers});
+    };
+  }
 
   RNCNaverMapClusterMarkerUpdater* clusterMarkerUpdater =
       [[RNCNaverMapClusterMarkerUpdater alloc] initWith:dict.width
                                                  height:dict.height
-                                                caption:dict.caption];
+                                                caption:dict.caption
+                                     onTapClusterMarker:onTapClusterMarker];
   RNCNaverMapLeafMarkerUpdater* leafMarkerUpdater =
       [[RNCNaverMapLeafMarkerUpdater alloc] init:&_clusterMarkerImageRequestCancelers];
   builder.clusterMarkerUpdater = clusterMarkerUpdater;

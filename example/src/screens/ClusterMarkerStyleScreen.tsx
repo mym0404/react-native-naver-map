@@ -1,5 +1,6 @@
 import {
   type ClusterMarkerCaption,
+  type ClusterMarkerTapParams,
   type MapImageProp,
   type NaverMapViewRef,
 } from '@mj-studio/react-native-naver-map';
@@ -17,11 +18,13 @@ type Mode = 'initial' | 'updated' | 'count' | 'hidden';
 const camera = { latitude: 37.5665, longitude: 126.978, zoom: 14 };
 const waiting = 'waiting';
 const textColor = '#fff';
-const markers = ['first', 'second', 'third'].map((identifier) => ({
-  identifier,
-  latitude: camera.latitude,
-  longitude: camera.longitude,
-}));
+const markers = ['first', 'second', 'third', 'fourth', 'fifth'].map(
+  (identifier, index) => ({
+    identifier,
+    latitude: camera.latitude + (index < 3 ? 0 : 0.00675),
+    longitude: camera.longitude,
+  })
+);
 const images: Record<'initial' | 'updated', MapImageProp> = {
   initial: require('../assets/cluster-magenta.png'),
   updated: require('../assets/cluster-cyan.png'),
@@ -41,6 +44,8 @@ export const ClusterMarkerStyleScreen = ({
   const [capture, setCapture] = useState<Capture>();
   const [decoded, setDecoded] = useState(waiting);
   const [error, setError] = useState('');
+  const [tap, setTap] = useState<ClusterMarkerTapParams>();
+  const [zoom, setZoom] = useState<number | undefined>(camera.zoom);
   const clusters = useMemo(() => {
     const isInitial = mode === 'initial';
     const caption: ClusterMarkerCaption = {
@@ -93,7 +98,10 @@ export const ClusterMarkerStyleScreen = ({
         <ScreenLayout
           mapRef={mapRef}
           mapProps={{
+            testID: 'cluster-marker-style-map',
             initialCamera: camera,
+            onTapCluster: setTap,
+            onCameraIdle: ({ zoom }) => setZoom(zoom),
             mapType: 'None',
             clusters,
             onLayout: ({ nativeEvent: { layout } }) =>
@@ -104,7 +112,7 @@ export const ClusterMarkerStyleScreen = ({
             },
           }}
           controls={
-            <View style={{ width: '100%', height: 180, gap: 4 }}>
+            <View style={{ width: '100%', height: 216, gap: 4 }}>
               <Text testID="cluster-marker-style-ready" style={styles.status}>
                 {isLoaded && isRendered && mapSize.width > 0
                   ? 'ready'
@@ -128,6 +136,16 @@ export const ClusterMarkerStyleScreen = ({
               <Text testID="cluster-marker-style-error" style={styles.status}>
                 {error}
               </Text>
+              <Text
+                testID="cluster-tap-result"
+                numberOfLines={1}
+                style={styles.status}
+              >
+                {tap ? JSON.stringify(tap) : waiting}
+              </Text>
+              <Text testID="cluster-tap-zoom" style={styles.status}>
+                {zoom ?? waiting}
+              </Text>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
                 <Btn
                   title="Update cluster style"
@@ -142,6 +160,12 @@ export const ClusterMarkerStyleScreen = ({
                   onPress={() => changeMode('hidden')}
                 />
                 <Btn title="Capture map image" onPress={captureMap} />
+                {capture && (
+                  <Btn
+                    title="Close map image"
+                    onPress={() => setCapture(undefined)}
+                  />
+                )}
               </View>
             </View>
           }

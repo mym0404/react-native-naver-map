@@ -54,6 +54,7 @@ export * from './types/CameraMoveBaseParams';
 export * from './types/CapType';
 export type { ClusterMarkerCaption } from './types/ClusterMarkerCaption';
 export * from './types/ClusterMarkerProp';
+export type { ClusterMarkerTapParams } from './types/ClusterMarkerTapParams';
 export * from './types/Coord';
 export * from './types/JoinType';
 export * from './types/LocationTrackingMode';
