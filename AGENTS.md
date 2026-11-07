@@ -85,7 +85,7 @@ Agents should work in this repository by making assumptions visible, choosing th
 ## Verification Commands
 
 - Default validation: `pnpm run t`.
-- Mobile E2E: `pnpm e2e:ios` / `pnpm e2e:android` build and test the example in Release with a valid `NAVER_MAP_CLIENT_ID`. Suites use `test` from `e2e/fixtures.ts` for SDK-managed installation and permissions. Append a suite path to run only that feature. See `.agents/knowledge/workflows.md` for startup, event, and image checks.
+- Mobile E2E: `pnpm e2e:ios` / `pnpm e2e:android` build and test the example in Release with a valid `NAVER_MAP_CLIENT_ID`. Suites use `test` from `e2e/fixtures.ts` for SDK-managed installation and permissions. Append a suite path to run only that feature. Use `pnpm e2e:auth-failure:ios` / `pnpm e2e:auth-failure:android` for the isolated invalid-credential app; normal runs exclude that test. See `.agents/knowledge/workflows.md` for startup, event, and image checks.
 - Release configuration changes also require `pnpm changeset status`, version generation in a temporary checkout, and workflow validation before publishing.
 - `pnpm run t` runs Lefthook `check`: Biome for staged JS/TS files, Objective-C lint, Kotlin lint, package/example/E2E typechecks, Expo plugin build, and Bob package build.
 - Docs checks are opt-in because `lefthook.yml` currently comments out docs build and docs typecheck. Use `pnpm build:docs` for docs changes.
@@ -106,7 +106,7 @@ Agents should work in this repository by making assumptions visible, choosing th
 - `.agents/knowledge/architecture.md`: repository shape, invariants, SDK/tooling baseline, generated-output boundaries.
 - `.agents/knowledge/workflows.md`: validation, codegen, build, E2E device preparation, runtime checks, release flow.
 - `.agents/knowledge/design.md`: docs and example UI conventions.
-- `.agents/knowledge/source-surface.md`: `src/`, wrapper, public API, and spec guidance.
+- `.agents/knowledge/source-surface.md`: `src/`, wrappers, public API, global authentication subscriptions, and spec guidance.
 - `.agents/knowledge/native-platforms.md`: iOS and Android implementation patterns.
 - `.agents/knowledge/rn-native-module.md`: React Native TurboModule, Fabric, codegen, thread, and native SDK object guidance.
 - `.agents/knowledge/supporting-packages.md`: `example/`, `docs/`, `expo-config-plugin/`, and `script/`.

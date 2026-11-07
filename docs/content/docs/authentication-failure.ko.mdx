@@ -1,0 +1,79 @@
+---
+title: "인증 실패 처리"
+description: "네이버 지도 SDK 전역 인증 실패 구독"
+icon: "ShieldAlert"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+## 인증 실패 처리
+
+`addNaverMapAuthFailureListener`를 사용하면 네이티브 네이버 지도 SDK가 보고한 인증 실패를 받을 수 있습니다. 이 구독은 SDK 전역에 적용되며 첫 지도를 마운트하기 전에 시작해야 합니다.
+
+<Callout type="warning">
+  이미 발생한 실패는 다시 전달하지 않습니다. 리스너를 먼저 등록한 뒤 `NaverMapView`를 렌더링하세요.
+</Callout>
+
+### 지도를 마운트하기 전에 구독하기
+
+`addNaverMapAuthFailureListener`는 네이티브 관찰을 동기적으로 시작합니다. 함수가 반환된 뒤 지도를 렌더링하고, 컴포넌트가 언마운트되면 구독을 해제하세요.
+
+```tsx
+import { useEffect, useState } from 'react';
+import { Text } from 'react-native';
+import {
+  addNaverMapAuthFailureListener,
+  NaverMapView,
+  type NaverMapAuthFailure,
+} from '@mj-studio/react-native-naver-map';
+
+const MapScreen = () => {
+  const [isListening, setIsListening] = useState(false);
+  const [authFailure, setAuthFailure] = useState<NaverMapAuthFailure>();
+
+  useEffect(() => {
+    const subscription = addNaverMapAuthFailureListener(setAuthFailure);
+    setIsListening(true);
+
+    return () => subscription.remove();
+  }, []);
+
+  if (!isListening) return null;
+
+  return (
+    <>
+      <NaverMapView style={{ flex: 1 }} />
+      {authFailure && (
+        <Text>{`지도 인증 실패 (${authFailure.code})`}</Text>
+      )}
+    </>
+  );
+};
+```
+
+`remove()`를 여러 번 호출해도 추가 동작은 일어나지 않습니다. 이 구독은 클라이언트 ID나 다른 인증 설정을 바꾸지 않습니다. 인증 정보는 [설치 가이드](/ko/installation)에 따라 설정하세요.
+
+### 실패 데이터
+
+`NaverMapAuthFailure`는 양쪽 플랫폼의 원본 오류 코드와 플랫폼이 제공한 메시지를 담습니다.
+
+| 필드 | 타입 | 설명 |
+| --- | --- | --- |
+| `code` | `string` | 네이티브 SDK 오류 코드입니다. 대표 값은 `401`, `429`, `800`입니다. |
+| `message` | `string` | 플랫폼이 제공하는 현지화된 실패 메시지입니다. 이 문구를 애플리케이션 로직에서 비교하지 마세요. |
+
+대표 오류 코드의 의미는 다음과 같습니다.
+
+| 코드 | 의미 |
+| --- | --- |
+| `401` | 클라이언트 ID나 클라이언트 유형이 잘못되었거나, 등록한 패키지 이름 또는 번들 식별자가 앱과 일치하지 않습니다. |
+| `429` | Maps 서비스를 활성화하지 않았거나 사용 한도를 초과했습니다. |
+| `800` | 클라이언트 ID를 설정하지 않았습니다. |
+
+기기가 오프라인이라는 이유만으로 SDK가 인증 실패를 보고하지는 않습니다. 네트워크 연결을 기다린 뒤 인증을 다시 시도하므로, 네트워크 연결 여부를 인증 결과로 간주하지 말고 `code`를 사용하세요.
+
+### 전역 구독 동작
+
+인증은 개별 지도가 아닌 네이티브 SDK 프로세스에 속합니다. 실패를 발생시킨 특정 `NaverMapView`는 없으며 활성 상태인 모든 JavaScript 리스너가 실패를 받습니다. SDK가 콜백을 반복하면 재전달 방지나 중복 제거 없이 각 콜백을 전달합니다.
+
+JavaScript 리스너가 하나 이상 활성화된 동안에는 사용자 지정 네이티브 리스너가 SDK의 기본 Android 토스트 또는 iOS 알림을 대체합니다. 호스트 앱이 기존에 등록한 네이티브 리스너나 델리게이트에는 이벤트를 함께 전달하고, 마지막 JavaScript 구독을 해제할 때 호스트 앱이 그 대상을 다시 바꾸지 않았다면 복원합니다. 관찰을 시작한 뒤 호스트 앱이 SDK 리스너나 델리게이트를 교체하면 새 핸들러가 소유권을 가지며, 모든 구독을 해제하고 다시 등록할 때까지 JavaScript는 실패를 받지 못합니다.

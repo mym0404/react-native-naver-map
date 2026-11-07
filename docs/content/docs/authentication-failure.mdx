@@ -1,0 +1,79 @@
+---
+title: "Authentication Failure"
+description: "Subscribe to SDK-wide Naver Map authentication failures"
+icon: "ShieldAlert"
+---
+
+import { Callout } from 'fumadocs-ui/components/callout'
+
+## Authentication Failure
+
+Use `addNaverMapAuthFailureListener` to receive authentication failures reported by the native Naver Map SDK. The subscription is SDK-wide and must start before the first map is mounted.
+
+<Callout type="warning">
+  Past failures are not replayed. Register the listener first, then render `NaverMapView`.
+</Callout>
+
+### Subscribe Before Mounting the Map
+
+`addNaverMapAuthFailureListener` starts native observation synchronously. Render the map after the function returns, and remove the subscription when the component unmounts.
+
+```tsx
+import { useEffect, useState } from 'react';
+import { Text } from 'react-native';
+import {
+  addNaverMapAuthFailureListener,
+  NaverMapView,
+  type NaverMapAuthFailure,
+} from '@mj-studio/react-native-naver-map';
+
+const MapScreen = () => {
+  const [isListening, setIsListening] = useState(false);
+  const [authFailure, setAuthFailure] = useState<NaverMapAuthFailure>();
+
+  useEffect(() => {
+    const subscription = addNaverMapAuthFailureListener(setAuthFailure);
+    setIsListening(true);
+
+    return () => subscription.remove();
+  }, []);
+
+  if (!isListening) return null;
+
+  return (
+    <>
+      <NaverMapView style={{ flex: 1 }} />
+      {authFailure && (
+        <Text>{`Map authentication failed (${authFailure.code})`}</Text>
+      )}
+    </>
+  );
+};
+```
+
+Calling `remove()` more than once has no additional effect. The subscription does not change the client ID or other authentication configuration. Configure credentials through the [installation guides](/installation).
+
+### Failure Payload
+
+`NaverMapAuthFailure` contains the raw cross-platform error code and the platform-provided message:
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `code` | `string` | Native SDK error code. Common values are `401`, `429`, and `800`. |
+| `message` | `string` | Platform-provided, localized failure message. Do not match application logic against this text. |
+
+Common error codes have these meanings:
+
+| Code | Meaning |
+| --- | --- |
+| `401` | The client ID or client type is invalid, or the registered package name or bundle identifier does not match the app. |
+| `429` | The Maps service is not enabled or its quota has been exceeded. |
+| `800` | No client ID is configured. |
+
+The SDK does not report an authentication failure merely because the device is offline. It waits for connectivity and attempts authentication again, so use `code` rather than treating network availability as an authentication result.
+
+### Global Subscription Behavior
+
+Authentication belongs to the native SDK process, not to an individual map. A failure has no originating `NaverMapView`, and every active JavaScript listener receives it. Repeated SDK callbacks are delivered without replay or deduplication.
+
+While at least one JavaScript listener is active, the custom native listener replaces the SDK's default Android toast or iOS alert. A native listener or delegate that was already installed by the host app is forwarded the event and restored after the last JavaScript subscription is removed, as long as the host app has not replaced it again. If the host app replaces the SDK listener or delegate after observation starts, that newer handler takes ownership and JavaScript stops receiving failures until the subscriptions are removed and registered again.

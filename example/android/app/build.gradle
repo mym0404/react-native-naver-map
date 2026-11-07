@@ -100,6 +100,9 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
+            if (findProperty("e2eAuthFailure") != null) {
+                applicationIdSuffix ".authfailure"
+            }
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.debug

@@ -1,13 +1,17 @@
 import { mobile } from '@e2e-dev/mobile';
 import type { E2EConfig } from 'e2e';
 
+const isAuthFailure = process.env.E2E_SCENARIO === 'auth-failure';
+const buildSuffix = isAuthFailure ? '-auth-failure' : '';
 const app = {
-  bundleId: 'happy.mjstudio.rnnmap.example',
+  bundleId: `happy.mjstudio.rnnmap.example${isAuthFailure ? '.authfailure' : ''}`,
   permissions: { location: 'grant' },
 } as const;
 
 export default {
-  tests: ['e2e/**/*.e2e.ts'],
+  tests: isAuthFailure
+    ? ['e2e/auth/auth-failure.e2e.ts']
+    : ['e2e/**/*.e2e.ts', '!e2e/auth/auth-failure.e2e.ts'],
   targets: (['ios', 'android'] as const).map((platform) => ({
     name: platform,
     engine: mobile({
@@ -19,8 +23,8 @@ export default {
       ...app,
       appPath:
         platform === 'ios'
-          ? '.e2e/build/ios/Build/Products/Release-iphonesimulator/example.app'
-          : 'example/android/app/build/outputs/apk/release/app-release.apk',
+          ? `.e2e/build/ios${buildSuffix}/Build/Products/Release-iphonesimulator/example.app`
+          : `.e2e/build/android${buildSuffix}/app-release.apk`,
     },
   })),
   workers: 1,

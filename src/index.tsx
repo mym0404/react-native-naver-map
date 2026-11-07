@@ -1,4 +1,8 @@
 export {
+  addNaverMapAuthFailureListener,
+  type NaverMapAuthFailure,
+} from './auth';
+export {
   NaverMapArrowheadPathOverlay,
   type NaverMapArrowheadPathOverlayProps,
 } from './component/NaverMapArrowheadPathOverlay';
