@@ -104,7 +104,7 @@ Agents should work in this repository by making assumptions visible, choosing th
 ## Knowledge Router
 
 - `.agents/knowledge/architecture.md`: repository shape, invariants, SDK/tooling baseline, generated-output boundaries.
-- `.agents/knowledge/workflows.md`: validation, codegen, build, runtime checks, release flow.
+- `.agents/knowledge/workflows.md`: validation, codegen, build, E2E device preparation, runtime checks, release flow.
 - `.agents/knowledge/design.md`: docs and example UI conventions.
 - `.agents/knowledge/source-surface.md`: `src/`, wrapper, public API, and spec guidance.
 - `.agents/knowledge/native-platforms.md`: iOS and Android implementation patterns.
