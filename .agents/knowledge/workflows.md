@@ -5,6 +5,7 @@
 - Run `pnpm run t` for the default repo-wide check path.
 - `pnpm run t` runs Biome, native lint scripts, TypeScript checks for the package, example app, and E2E suite, builds the Expo plugin, and runs `bob build`.
 - In `lefthook.yml`, the Biome check receives `{staged_files}` for JS/TS globs, while native lint receives `{all_files}`.
+- Biome excludes `.mjs` files. Check E2E runner syntax with `node --check script/e2e.mjs`.
 - `pnpm lint` is an alias for `pnpm run t`.
 - Root checks intentionally skip docs build and docs typecheck because those Lefthook commands are currently commented out. Docs validation is opt-in and package-local.
 
@@ -60,6 +61,7 @@ Use this flow when `src/spec/` changes or when a JS/native contract changes:
 - E2E checks native initialization and camera idle coordinates, not map tile completion. `pnpm typecheck:e2e` is part of `pnpm run t`; results and builds live in ignored `.e2e/`.
 - E2E suites import `test` from `e2e/fixtures.ts`. The SDK boots and connects to the selected device, then the shared fixture installs the configured `app.appPath` before each test. `app.permissions` grants location before launch. The fixture uses the agent-device client for iOS always-location permission and Android runtime permissions, including background location, because the mobile permission API does not expose background location.
 - `script/e2e.mjs` owns native builds, dedicated device creation and cleanup, and the isolated agent-device daemon. Build output streams to the terminal or CI log. SDK reports and retained failure traces live under `.e2e/results/<platform>`.
+- On iOS, the runner completes `simctl list devices -j` after simulator boot and before SDK runner preparation. This warms CoreSimulator discovery outside the SDK's internal 15-second query deadline; command failures still stop the run.
 - If wrapper behavior changes, update docs and example screens in the same change when needed.
 - Android debug runtime checks should load JavaScript from Metro, not from an ad hoc bundled asset in `example/android/app/src/main/assets`.
 - Before launching the Android example outside `pnpm android`, confirm Metro with `curl http://localhost:8081/status`, then run `adb -s <device> reverse tcp:8081 tcp:8081`.

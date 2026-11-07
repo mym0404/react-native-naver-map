@@ -118,6 +118,9 @@ try {
       isOwnedDevice = true;
     }
     await run('xcrun', ['simctl', 'bootstatus', device, '-b']);
+    await run('xcrun', ['simctl', 'list', 'devices', '-j'], {
+      capture: true,
+    });
     await run(pnpm, [
       'exec',
       'agent-device',
