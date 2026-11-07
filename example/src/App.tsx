@@ -18,6 +18,7 @@ import { CameraScreen } from './screens/CameraScreen';
 import { CircleScreen } from './screens/CircleScreen';
 import { CitiesScreen } from './screens/CitiesScreen';
 import { ClusteringScreen } from './screens/ClusteringScreen';
+import { ClusterMarkerStyleScreen } from './screens/ClusterMarkerStyleScreen';
 import { CommonScreen } from './screens/CommonScreen';
 import { GroundScreen } from './screens/GroundScreen';
 import { InfoWindowContentScreen } from './screens/InfoWindowContentScreen';
@@ -39,6 +40,7 @@ const SCREENS = [
   { id: 'map-view-rendering', title: 'Map Rendering' },
   { id: 'map-view-snapshot', title: 'Map Snapshot' },
   { id: 'info-window-content', title: 'Custom Info Window' },
+  { id: 'cluster-marker-style', title: 'Cluster Marker Style' },
   { id: 'common', title: 'Common Settings' },
   { id: 'camera', title: 'Camera Controls' },
   { id: 'marker', title: 'Marker Overlay' },
@@ -103,6 +105,8 @@ export default function App() {
         return <MapViewSnapshotScreen onBack={handleBack} />;
       case 'info-window-content':
         return <InfoWindowContentScreen onBack={handleBack} />;
+      case 'cluster-marker-style':
+        return <ClusterMarkerStyleScreen onBack={handleBack} />;
       case 'common':
         return <CommonScreen onBack={handleBack} />;
       case 'camera':

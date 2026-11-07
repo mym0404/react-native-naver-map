@@ -1,4 +1,5 @@
 #import "RNCNaverMapView.h"
+#import "ImageUtil.h"
 #import "RNCNaverMapUtil.h"
 
 using namespace facebook::react;
@@ -12,6 +13,7 @@ using namespace facebook::react;
 
   std::unordered_map<std::string, NMCClusterer*> _clustererRecord;
   std::unordered_map<std::string, std::vector<std::string>> _clustererMarkerIdentifiers;
+  std::unordered_map<std::string, RNCNaverMapImageCanceller> _clusterImageRequestCancelers;
   std::unordered_map<std::string, RNCNaverMapImageCanceller> _clusterMarkerImageRequestCancelers;
 }
 
@@ -46,21 +48,7 @@ using namespace facebook::react;
 
 - (void)dealloc {
   [RNCNaverMapUtil closeInfoWindowsForMapView:self.map];
-
-  for (const auto& [key, clusterer] : _clustererRecord) {
-    clusterer.mapView = nil;
-
-    for (const std::string& markerIdentifier : _clustererMarkerIdentifiers[key]) {
-      if (_clusterMarkerImageRequestCancelers.find(markerIdentifier) !=
-          _clusterMarkerImageRequestCancelers.end()) {
-        _clusterMarkerImageRequestCancelers[markerIdentifier]();
-        _clusterMarkerImageRequestCancelers.erase(markerIdentifier);
-      }
-    }
-  }
-
-  _clustererMarkerIdentifiers.clear();
-  _clustererRecord.clear();
+  [self clearClusterers];
 }
 
 #pragma clang diagnostic push
@@ -77,6 +65,7 @@ using namespace facebook::react;
 
 - (void)prepareForRecycle {
   [RNCNaverMapUtil closeInfoWindowsForMapView:self.map];
+  [self clearClusterers];
   [_view prepareForRecycle];
   [super prepareForRecycle];
 }
@@ -236,12 +225,7 @@ using namespace facebook::react;
   }
 
   if (prev.clusters.key != next.clusters.key) {
-    for (const auto& [prevKey, _] : _clustererRecord) {
-      [self removeClustererFor:prevKey];
-    }
-    _clustererRecord.clear();
-    _clustererMarkerIdentifiers.clear();
-    _clusterMarkerImageRequestCancelers.clear();
+    [self clearClusterers];
 
     for (const auto& clusterer : next.clusters.clusters) {
       [self addClusterer:clusterer isLeafTapCallbackExist:next.clusters.isLeafTapCallbackExist];
@@ -327,7 +311,9 @@ using namespace facebook::react;
   builder.animate = animate;
 
   RNCNaverMapClusterMarkerUpdater* clusterMarkerUpdater =
-      [[RNCNaverMapClusterMarkerUpdater alloc] initWith:dict.width height:dict.height];
+      [[RNCNaverMapClusterMarkerUpdater alloc] initWith:dict.width
+                                                 height:dict.height
+                                                caption:dict.caption];
   RNCNaverMapLeafMarkerUpdater* leafMarkerUpdater =
       [[RNCNaverMapLeafMarkerUpdater alloc] init:&_clusterMarkerImageRequestCancelers];
   builder.clusterMarkerUpdater = clusterMarkerUpdater;
@@ -338,19 +324,67 @@ using namespace facebook::react;
   [clusterer addAll:markerDict];
 
   _clustererRecord[clustererKey] = clusterer;
-  clusterer.mapView = self.map;
+  if (!dict.hasImage) {
+    clusterer.mapView = self.map;
+    return;
+  }
+
+  __weak __typeof__(self) weakSelf = self;
+  __weak NMCClusterer* weakClusterer = clusterer;
+  __weak RNCNaverMapClusterMarkerUpdater* weakUpdater = clusterMarkerUpdater;
+  _clusterImageRequestCancelers[clustererKey] =
+      nmap::getImage(dict.image, ^(NMFOverlayImage* _Nullable image) {
+        runOnMain(^{
+          __strong __typeof__(self) strongSelf = weakSelf;
+          __strong NMCClusterer* strongClusterer = weakClusterer;
+          __strong RNCNaverMapClusterMarkerUpdater* strongUpdater = weakUpdater;
+          if (!strongSelf || !strongClusterer || !strongUpdater)
+            return;
+
+          auto record = strongSelf->_clustererRecord.find(clustererKey);
+          if (record == strongSelf->_clustererRecord.end() || record->second != strongClusterer)
+            return;
+
+          strongSelf->_clusterImageRequestCancelers.erase(clustererKey);
+          strongUpdater.resolvedImage = image ?: NMF_MARKER_IMAGE_GREEN;
+          strongClusterer.mapView = strongSelf.map;
+        });
+      });
 }
 
 - (void)removeClustererFor:(std::string)key {
-  NMCClusterer* clusterer = _clustererRecord[key];
-  clusterer.mapView = nil;
-
-  for (const auto& markerIdentifier : _clustererMarkerIdentifiers[key]) {
-    if (_clusterMarkerImageRequestCancelers.find(markerIdentifier) !=
-        _clusterMarkerImageRequestCancelers.end()) {
-      _clusterMarkerImageRequestCancelers[markerIdentifier]();
-    }
+  auto clusterImageRequest = _clusterImageRequestCancelers.find(key);
+  if (clusterImageRequest != _clusterImageRequestCancelers.end()) {
+    clusterImageRequest->second();
+    _clusterImageRequestCancelers.erase(clusterImageRequest);
   }
+
+  auto clusterer = _clustererRecord.find(key);
+  if (clusterer != _clustererRecord.end())
+    [clusterer->second setMapView:nil];
+
+  auto markerIdentifiers = _clustererMarkerIdentifiers.find(key);
+  if (markerIdentifiers == _clustererMarkerIdentifiers.end())
+    return;
+
+  for (const auto& markerIdentifier : markerIdentifiers->second) {
+    auto markerImageRequest = _clusterMarkerImageRequestCancelers.find(markerIdentifier);
+    if (markerImageRequest == _clusterMarkerImageRequestCancelers.end())
+      continue;
+
+    markerImageRequest->second();
+    _clusterMarkerImageRequestCancelers.erase(markerImageRequest);
+  }
+}
+
+- (void)clearClusterers {
+  for (const auto& [key, _] : _clustererRecord)
+    [self removeClustererFor:key];
+
+  _clusterImageRequestCancelers.clear();
+  _clusterMarkerImageRequestCancelers.clear();
+  _clustererMarkerIdentifiers.clear();
+  _clustererRecord.clear();
 }
 
 - (void)animateCameraTo:(double)latitude

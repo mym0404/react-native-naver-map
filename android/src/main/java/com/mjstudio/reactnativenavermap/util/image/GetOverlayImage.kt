@@ -16,6 +16,7 @@ import com.facebook.imagepipeline.image.ImageInfo
 import com.facebook.imagepipeline.request.ImageRequestBuilder
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.MarkerIcons
+import java.util.concurrent.atomic.AtomicBoolean
 
 internal fun getOverlayImage(
   imageHolder: DraweeHolder<GenericDraweeHierarchy>,
@@ -72,6 +73,15 @@ internal fun getOverlayImage(
       Fresco
         .getImagePipeline()
         .fetchDecodedImage(imageRequest, context)
+    val isCompleted = AtomicBoolean(false)
+
+    fun complete(image: OverlayImage?) {
+      if (isCompleted.compareAndSet(false, true)) {
+        dataSource.close()
+        callback(image)
+      }
+    }
+
     val controller =
       Fresco
         .newDraweeControllerBuilder()
@@ -88,23 +98,31 @@ internal fun getOverlayImage(
               var overlayImage: OverlayImage? = null
               try {
                 imageReference = dataSource.result
-                if (imageReference != null) {
-                  val image = imageReference.get()
-                  if (image is CloseableStaticBitmap) {
-                    var bitmap: Bitmap? = image.underlyingBitmap
-                    if (bitmap != null) {
-                      bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-                      overlayImage = OverlayImage.fromBitmap(bitmap)
-                      OverlayImageCache.put(key, overlayImage)
-                    }
+                val image = imageReference?.get()
+                if (image is CloseableStaticBitmap) {
+                  var bitmap: Bitmap? = image.underlyingBitmap
+                  if (bitmap != null) {
+                    bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+                    overlayImage = OverlayImage.fromBitmap(bitmap)
+                    OverlayImageCache.put(key, overlayImage)
                   }
                 }
               } finally {
+                CloseableReference.closeSafely(imageReference)
+                complete(overlayImage)
+              }
+            }
+
+            override fun onFailure(
+              id: String,
+              throwable: Throwable,
+            ) {
+              complete(null)
+            }
+
+            override fun onRelease(id: String) {
+              if (isCompleted.compareAndSet(false, true)) {
                 dataSource.close()
-                if (imageReference != null) {
-                  CloseableReference.closeSafely(imageReference)
-                }
-                callback(overlayImage)
               }
             }
           },

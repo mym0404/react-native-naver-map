@@ -356,6 +356,14 @@ The native image pipeline supports these image forms:
 - Cancel pending image work during teardown.
 - Keep image-loading behavior symmetric across iOS and Android where possible.
 
+### Cluster Marker Styles
+
+- `clusters[].image` and `caption` style aggregate markers; `markers[]` remains leaf-marker data. Omitted images preserve SDK density icons. Supplied images whose resolver returns no image, such as unknown symbols or failed URI loads, use the existing green marker fallback.
+- Cluster captions reuse `CaptionType` fields with cluster defaults: member count, Center alignment, white text, transparent halo, size 12, zero requested width and offset, and zoom range 0–21. The native `usesDefaultText` flag distinguishes omitted text from an explicitly empty caption.
+- Include image and caption in the group hash. Build each clusterer detached and resolve its image once before attaching the group, including its leaves, to the map. Keep the SDK default updater first, then assign every owned visual property on each callback because the SDK pools markers without resetting them.
+- Never capture pooled markers in asynchronous image callbacks. Group owners cancel pending work before detaching and accept completion only while the original clusterer remains current. iOS group-image cancellers are separate from leaf-image cancellers; Android group holders release their Fresco holder on detach.
+- Android image failure completes with a nullable image. Controller release closes its decoded data source without invoking a visual update for a canceled request.
+
 ### iOS
 
 - Use `nmap::getImage(...)` from `ios/Util/Image/ImageUtil.h`.
@@ -366,7 +374,7 @@ The native image pipeline supports these image forms:
 Example skeleton:
 
 ```objc
-_imageCanceller = nmap::getImage([self bridge], imageStruct, ^(NMFOverlayImage* image) {
+_imageCanceller = nmap::getImage(imageStruct, ^(NMFOverlayImage* image) {
   dispatch_async(dispatch_get_main_queue(), ^{
     self.inner.iconImage = image;
     self.inner.alpha = 1;

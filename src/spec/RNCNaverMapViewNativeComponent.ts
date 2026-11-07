@@ -49,6 +49,20 @@ type Region = {
 type LogoAlign = 'TopLeft' | 'TopRight' | 'BottomLeft' | 'BottomRight';
 export type NativeClusterProp = {
   key: string;
+  hasImage: boolean;
+  image?: NativeImageProp;
+  caption: Readonly<{
+    usesDefaultText: boolean;
+    text: string;
+    requestedWidth: Double;
+    align: Int32;
+    offset: Double;
+    color: Int32;
+    haloColor: Int32;
+    textSize: Double;
+    minZoom: Double;
+    maxZoom: Double;
+  }>;
   width?: Double;
   height?: Double;
   markers: ClusterMarker[];

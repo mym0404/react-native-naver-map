@@ -17,7 +17,8 @@
 - Feature checks: `example/src/screens/`
 - Automated native E2E tests: `e2e/map-view/basic.e2e.ts` drives the example's `MapViewBasicScreen`; `script/e2e.mjs` builds Release and runs the same suite locally and in `.github/workflows/e2e.yml`.
 - Shared E2E setup lives in `e2e/fixtures.ts`; import its `test` to install the configured app and apply permissions through the SDK before each test.
-- Group E2E suites by feature under `e2e/<feature>/*.e2e.ts`; `e2e.config.ts` discovers all suites for both platforms. The map-view basic suite is the first scenario set.
+- Group E2E suites by feature under `e2e/<feature>/*.e2e.ts`; `e2e.config.ts` discovers all suites for both platforms.
+- Bundled visual fixtures live in `example/src/assets/`; cluster-style checks load solid-color PNGs through the public image API and inspect the resulting native map snapshots.
 - Demo-only UI: `example/src/components/`
 - Android example config lives under `example/android/`
 - iOS example config lives under `example/ios/`

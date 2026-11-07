@@ -98,6 +98,45 @@ const ClusteredMapExample = () => {
 
 ## 고급 클러스터링 설정
 
+### 집계 클러스터 마커 꾸미기
+
+클러스터 그룹의 `image`, `width`, `height`, `caption`을 지정하면 가까운 여러 항목을 대표하는 집계 클러스터 마커를 꾸밀 수 있습니다. 이 속성들은 `markers` 안의 개별 단말(leaf) 마커를 바꾸지 않습니다. 각 단말 마커는 자신의 `image`, `width`, `height`를 그대로 사용합니다.
+
+```tsx
+import {
+  type ClusterMarkerCaption,
+  NaverMapView,
+} from '@mj-studio/react-native-naver-map';
+
+const clusterCaption = {
+  color: '#fde047',
+  haloColor: '#111827',
+  textSize: 16,
+  align: 'Center',
+} satisfies ClusterMarkerCaption;
+
+<NaverMapView
+  style={{ flex: 1 }}
+  clusters={[
+    {
+      image: { symbol: 'red' },
+      width: 64,
+      height: 64,
+      caption: clusterCaption,
+      markers: clusterMarkers,
+    },
+  ]}
+/>
+```
+
+예제는 `caption.text`를 생략했으므로 각 집계 마커에 현재 구성원 수를 표시합니다. `text`에 문자열을 지정하면 그룹의 모든 집계 마커에 같은 고정 텍스트를 표시하고, 빈 문자열을 지정하면 캡션을 숨깁니다. 동적으로 텍스트를 만드는 formatter와 React 콘텐츠는 지원하지 않습니다.
+
+`caption`을 생략하면 SDK가 구성원 수를 가운데에 표시합니다. 기본 스타일은 흰색 텍스트, 투명한 외곽선, 텍스트 크기 `12`, 너비와 간격 `0`, 캡션 줌 범위 `0`~`21`입니다. 부분적인 `caption` 객체에서 생략한 필드에도 같은 기본값을 적용합니다. 캡션 필드는 일반 마커 캡션과 같은 이름과 단위를 사용합니다. 지원하는 필드는 `requestedWidth`, `align`, `offset`, `color`, `haloColor`, `textSize`, `minZoom`, `maxZoom`입니다.
+
+`width`와 `height`는 React Native의 논리적 레이아웃 단위를 사용합니다. `image`를 생략하면 SDK가 구성원 수에 따라 저밀도, 중밀도, 고밀도 클러스터 아이콘을 선택합니다. 알 수 없는 symbol이나 URI 불러오기 실패처럼 이미지 해석 결과가 없으면 녹색 대체 이미지를 사용합니다. asset이나 네트워크 이미지는 클러스터 그룹을 지도에 연결하기 전에 불러오므로, 집계 마커와 단말 마커를 포함한 그룹 전체가 이미지 결과를 기다립니다. 네트워크 연결 없이 그룹을 표시해야 한다면 번들 asset이나 기본 symbol을 사용하세요.
+
+그룹의 이미지, 캡션, 크기를 바꾸면 해당 클러스터 그룹을 새 스타일로 다시 만듭니다. 스타일을 바꿔도 집계 마커를 탭했을 때 클러스터가 펼쳐질 때까지 지도를 확대하는 SDK 기본 동작은 유지됩니다.
+
 ### 다중 클러스터 그룹
 
 서로 다른 설정을 가진 여러 클러스터 그룹을 동시에 사용할 수 있습니다:
@@ -145,6 +184,10 @@ const multiClusters = useMemo(() => [
 ```
 
 ## Props
+
+`ClusterMarkerCaption`
+
+<AutoTypeTable path="../src/types/ClusterMarkerCaption.ts" name="ClusterMarkerCaption" />
 
 `ClusterMarkerProp`
 

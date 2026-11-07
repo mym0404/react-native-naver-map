@@ -98,6 +98,45 @@ const ClusteredMapExample = () => {
 
 ## Advanced Clustering Configuration
 
+### Style Aggregate Cluster Markers
+
+Set `image`, `width`, `height`, and `caption` on a cluster group to style the aggregate markers that represent multiple nearby items. These properties do not change the individual leaf markers in `markers`; each leaf continues to use its own `image`, `width`, and `height`.
+
+```tsx
+import {
+  type ClusterMarkerCaption,
+  NaverMapView,
+} from '@mj-studio/react-native-naver-map';
+
+const clusterCaption = {
+  color: '#fde047',
+  haloColor: '#111827',
+  textSize: 16,
+  align: 'Center',
+} satisfies ClusterMarkerCaption;
+
+<NaverMapView
+  style={{ flex: 1 }}
+  clusters={[
+    {
+      image: { symbol: 'red' },
+      width: 64,
+      height: 64,
+      caption: clusterCaption,
+      markers: clusterMarkers,
+    },
+  ]}
+/>
+```
+
+The example omits `caption.text`, so each aggregate marker displays its current member count. Set `text` to a string to display the same static text on every aggregate marker in the group, or set it to an empty string to hide the caption. Dynamic text formatters and React content are not supported.
+
+When `caption` is omitted, the SDK displays the member count in the center using white text, a transparent halo, text size `12`, requested width and offset `0`, and the full `0` to `21` caption zoom range. An omitted field in a partial `caption` object keeps the same default. Caption fields use the same names and units as marker captions: `requestedWidth`, `align`, `offset`, `color`, `haloColor`, `textSize`, `minZoom`, and `maxZoom`.
+
+`width` and `height` use React Native logical layout units. If `image` is omitted, the SDK selects its low-, medium-, or high-density cluster icon from the member count. When image resolution returns no image, such as for an unknown symbol or a failed URI load, the marker uses the green fallback image. Asset and network images are loaded before the cluster group is attached, so the group's aggregate and leaf markers wait for that image result. Prefer a bundled asset or a built-in symbol when the group must appear without a network dependency.
+
+Changing the group image, caption, or dimensions rebuilds that cluster group with the new style. Styling does not change the SDK's default aggregate-marker tap behavior, which zooms the map until the cluster unfolds.
+
 ### Multiple Cluster Groups
 
 You can use multiple cluster groups with different configurations simultaneously:
@@ -145,6 +184,10 @@ You can handle events when individual markers included in clusters are clicked:
 ```
 
 ## Props
+
+`ClusterMarkerCaption`
+
+<AutoTypeTable path="../src/types/ClusterMarkerCaption.ts" name="ClusterMarkerCaption" />
 
 `ClusterMarkerProp`
 
