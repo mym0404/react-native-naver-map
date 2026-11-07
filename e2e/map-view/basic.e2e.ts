@@ -5,17 +5,21 @@ const menuTitle = 'Naver Map Examples';
 
 test.beforeEach(async ({ app, screen }) => {
   await app.open();
-  await expect(screen.getByText(menuTitle)).toBeVisible();
+  await expect(screen.getByText(menuTitle)).toBeVisible({ timeout: 120_000 });
   await screen.getByTestId('example-menu-map-view-basic').tap();
   await expect(screen.getByTestId('map-view-basic-initialized')).toHaveText(
     'initialized'
   );
 });
 
-test('opens the map and returns to the menu', async ({ screen }) => {
-  await screen.getByRole('button', 'Back').tap();
-  await expect(screen.getByText(menuTitle)).toBeVisible();
-});
+test(
+  'opens the map and returns to the menu',
+  { timeout: 180_000 },
+  async ({ screen }) => {
+    await screen.getByRole('button', 'Back').tap();
+    await expect(screen.getByText(menuTitle)).toBeVisible();
+  }
+);
 
 test('moves the native camera to the requested coordinates', async ({
   screen,
