@@ -13,7 +13,11 @@
 @property(nonatomic, assign) double width;
 // invalid number means undefined in js
 @property(nonatomic, assign) double height;
+@property(nonatomic, strong, nullable) NMFOverlayImage* resolvedImage;
+@property(nonatomic, assign) facebook::react::RNCNaverMapViewClustersClustersCaptionStruct caption;
 
-- (instancetype)initWith:(double)width height:(double)height;
+- (instancetype)initWith:(double)width
+                  height:(double)height
+                 caption:(facebook::react::RNCNaverMapViewClustersClustersCaptionStruct)caption;
 
 @end

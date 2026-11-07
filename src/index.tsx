@@ -52,6 +52,7 @@ export * from './types/CameraAnimationEasing';
 export * from './types/CameraChangeReason';
 export * from './types/CameraMoveBaseParams';
 export * from './types/CapType';
+export type { ClusterMarkerCaption } from './types/ClusterMarkerCaption';
 export * from './types/ClusterMarkerProp';
 export * from './types/Coord';
 export * from './types/JoinType';

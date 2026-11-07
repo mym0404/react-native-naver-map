@@ -29,6 +29,7 @@ import com.mjstudio.reactnativenavermap.event.NaverMapSnapshotReadyEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapSymbolTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
 import com.mjstudio.reactnativenavermap.module.RNCNaverMapInfoWindowRegistry
+import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterCaption
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterDataHolder
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterKey
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterMarkerUpdater
@@ -587,7 +588,10 @@ class RNCNaverMapViewManager(
     val isLeafTapCallbackExist = value.getBoolean("isLeafTapCallbackExist")
 
     value.getArray("clusters")?.toArrayList()?.filterIsInstance<Map<String, Any?>>()?.forEach {
-      val clustererKey = it["key"] as? String
+      val clustererKey = it["key"] as String
+      val hasClusterImage = it["hasImage"] as Boolean
+      val clusterImage = it["image"] as? Map<*, *>
+      val clusterCaption = it["caption"] as Map<*, *>
       val clusterWidth = it["width"] as? Double
       val clusterHeight = it["height"] as? Double
       val screenDistance = it["screenDistance"] as? Double
@@ -595,11 +599,28 @@ class RNCNaverMapViewManager(
       val maxZoom = it["maxZoom"] as? Double
       val animate = it["animate"] as? Boolean
       val markers = (it["markers"] as? ArrayList<*>)?.filterIsInstance<Map<String, *>>() ?: listOf()
+      val clusterDataHolder =
+        RNCNaverMapClusterDataHolder(
+          clusterWidth,
+          clusterHeight,
+          RNCNaverMapClusterCaption(
+            usesDefaultText = clusterCaption["usesDefaultText"] as Boolean,
+            text = clusterCaption["text"] as String,
+            requestedWidth = (clusterCaption["requestedWidth"] as Number).toDouble(),
+            align = (clusterCaption["align"] as Number).toInt(),
+            offset = (clusterCaption["offset"] as Number).toDouble(),
+            color = (clusterCaption["color"] as Number).toInt(),
+            haloColor = (clusterCaption["haloColor"] as Number).toInt(),
+            textSize = (clusterCaption["textSize"] as Number).toDouble(),
+            minZoom = (clusterCaption["minZoom"] as Number).toDouble(),
+            maxZoom = (clusterCaption["maxZoom"] as Number).toDouble(),
+          ),
+        )
 
       val clusterer =
         Clusterer
           .Builder<RNCNaverMapClusterKey>()
-          .clusterMarkerUpdater(RNCNaverMapClusterMarkerUpdater(RNCNaverMapClusterDataHolder(clusterWidth, clusterHeight)))
+          .clusterMarkerUpdater(RNCNaverMapClusterMarkerUpdater(clusterDataHolder))
           .leafMarkerUpdater(RNCNaverMapLeafMarkerUpdater())
           .also { cluster ->
             if (screenDistance != null) {
@@ -654,14 +675,18 @@ class RNCNaverMapViewManager(
         }
 
       clusterer.addAll(keyPairs)
-      clusterer.map = map
-      clustererHolders[clustererKey!!] =
+      val dataHolder =
         RNCNaverMapLeafDataHolder(
           clustererKey,
           clusterer,
           reactAppContext,
           keyPairs.map { pair -> pair.key.holder },
+          clusterDataHolder,
         )
+      clustererHolders[clustererKey] = dataHolder
+      dataHolder.attach(map, hasClusterImage, clusterImage) {
+        clustererHolders[clustererKey] === dataHolder
+      }
     }
   }
 

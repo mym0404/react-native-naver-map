@@ -1,5 +1,6 @@
 package com.mjstudio.reactnativenavermap.overlay.marker.cluster
 
+import com.mjstudio.reactnativenavermap.util.getAlign
 import com.mjstudio.reactnativenavermap.util.px
 import com.naver.maps.map.clustering.ClusterMarkerInfo
 import com.naver.maps.map.clustering.DefaultClusterMarkerUpdater
@@ -14,8 +15,18 @@ internal class RNCNaverMapClusterMarkerUpdater(
     marker: Marker,
   ) {
     super.updateClusterMarker(info, marker)
-    val (width, height) = holder
+    val (width, height, caption) = holder
     marker.width = width?.px ?: SIZE_AUTO
     marker.height = height?.px ?: SIZE_AUTO
+    holder.image?.let { marker.icon = it }
+    marker.captionText = if (caption.usesDefaultText) info.size.toString() else caption.text
+    marker.captionRequestedWidth = caption.requestedWidth.px
+    marker.setCaptionAligns(getAlign(caption.align))
+    marker.captionOffset = caption.offset.px
+    marker.captionColor = caption.color
+    marker.captionHaloColor = caption.haloColor
+    marker.captionTextSize = caption.textSize.toFloat()
+    marker.captionMinZoom = caption.minZoom
+    marker.captionMaxZoom = caption.maxZoom
   }
 }

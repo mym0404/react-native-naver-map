@@ -21,6 +21,7 @@ import {
   cameraEasingToNumber,
   convertJsImagePropToNativeProp,
   createCameraInstance,
+  getAlignIntValue,
 } from '../internal/Util';
 import { Const } from '../internal/util/Const';
 import { useStableCallback } from '../internal/util/useStableCallback';
@@ -35,6 +36,7 @@ import type { Camera } from '../types/Camera';
 import type { CameraAnimationEasing } from '../types/CameraAnimationEasing';
 import type { CameraChangeReason } from '../types/CameraChangeReason';
 import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
+import type { ClusterMarkerCaption } from '../types/ClusterMarkerCaption';
 import type { ClusterMarkerProp } from '../types/ClusterMarkerProp';
 import type { Coord } from '../types/Coord';
 import type { LocationTrackingMode } from '../types/LocationTrackingMode';
@@ -354,6 +356,10 @@ export interface NaverMapViewProps extends ViewProps {
    * 마커 클러스터링 기능을 이용하면 카메라의 줌 레벨에 따라 근접한 마커를 클러스터링해 성능과 시인성을 모두 향상시킬 수 있습니다.
    */
   clusters?: {
+    /** Custom image for this group's aggregate markers. Omit to keep SDK density icons. */
+    image?: MapImageProp;
+    /** Caption text and style for this group's aggregate markers. Omitted text displays the member count. */
+    caption?: ClusterMarkerCaption;
     /**
      * 클러스터 마커의 넓이
      */
@@ -823,6 +829,8 @@ export const NaverMapView = forwardRef(
       const ret: NativeClusterProp[] = [];
       for (const {
         animate = true,
+        caption,
+        image,
         markers,
         // eslint-disable-next-line @typescript-eslint/no-shadow
         minZoom = Const.MIN_ZOOM,
@@ -832,8 +840,24 @@ export const NaverMapView = forwardRef(
         width,
         height,
       } of clusters) {
+        const nativeCaption = {
+          usesDefaultText: caption?.text === undefined,
+          text: caption?.text ?? '',
+          requestedWidth: caption?.requestedWidth ?? 0,
+          align: getAlignIntValue(caption?.align ?? 'Center'),
+          offset: caption?.offset ?? 0,
+          color: processColor(caption?.color ?? 'white') as number,
+          haloColor: processColor(
+            caption?.haloColor ?? 'transparent'
+          ) as number,
+          textSize: caption?.textSize ?? 12,
+          minZoom: caption?.minZoom ?? Const.MIN_ZOOM,
+          maxZoom: caption?.maxZoom ?? Const.MAX_ZOOM,
+        };
         const key = hash([
           animate,
+          caption,
+          image,
           maxZoom,
           minZoom,
           screenDistance,
@@ -845,6 +869,10 @@ export const NaverMapView = forwardRef(
         ret.push({
           key,
           animate,
+          hasImage: image != null,
+          image:
+            image == null ? undefined : convertJsImagePropToNativeProp(image),
+          caption: nativeCaption,
           markers: markers.map((m) => ({
             ...m,
             image: convertJsImagePropToNativeProp(
