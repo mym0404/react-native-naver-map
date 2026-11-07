@@ -46,6 +46,21 @@ function MyMap() {
 
 `onMapLoaded` is called once per native map instance. It is not called again when camera movement or option changes load more data, and adding the handler after the initial load does not replay the event. Its order relative to `onInitialized` is not guaranteed. It also does not report whether the current frame is fully rendered or whether rendering is stable.
 
+### Observing Map Rendering
+
+`onMapRendered` is called after the native SDK renders a map frame. `isFullyRendered` reports whether all data needed for that frame was rendered, while `isRenderingStable` reports whether the SDK needs no additional rendering.
+
+```tsx
+<NaverMapView
+  style={{ flex: 1 }}
+  onMapRendered={({ isFullyRendered, isRenderingStable }) => {
+    console.log({ isFullyRendered, isRenderingStable });
+  }}
+/>
+```
+
+The two values are independent SDK states. Do not assume a relationship or transition order between them, or that either value must become `false`. Unlike the one-time `onMapLoaded` event, `onMapRendered` can run repeatedly and more frequently than camera change events. Avoid heavy work or unconditional state updates in this callback. A handler added later receives future rendered frames only; it does not replay a previous frame or provide a separate status query.
+
 ### With Camera Control
 
 ```tsx

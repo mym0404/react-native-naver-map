@@ -13,6 +13,7 @@ import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapLoadedEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapLongTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapRenderedEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapSymbolTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
 import com.mjstudio.reactnativenavermap.overlay.RNCNaverMapOverlay
@@ -37,7 +38,26 @@ class RNCNaverMapView(
 ) : MapView(reactContext, mapOptions) {
   private var attacherGroup: ViewAttacherGroup? = null
   private var map: NaverMap? = null
+  private val mapRenderedListener =
+    NaverMap.OnMapRenderedListener { isFullyRendered, isRenderingStable ->
+      reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
+        NaverMapRenderedEvent(surfaceId, reactTag, isFullyRendered, isRenderingStable)
+      }
+    }
+
   var isSymbolTapEnabled = false
+  var isMapRenderedEnabled = false
+    set(value) {
+      if (field == value) return
+      field = value
+      map?.let {
+        if (value) {
+          it.addOnMapRenderedListener(mapRenderedListener)
+        } else {
+          it.removeOnMapRenderedListener(mapRenderedListener)
+        }
+      }
+    }
   val overlays = mutableListOf<RNCNaverMapOverlay<*>>()
 
   private val locationOverlayImageRenderer by lazy {
@@ -55,6 +75,9 @@ class RNCNaverMapView(
   init {
     getMapAsync {
       map = it
+      if (isMapRenderedEnabled) {
+        it.addOnMapRenderedListener(mapRenderedListener)
+      }
       reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
         NaverMapInitializeEvent(surfaceId, reactTag)
       }
@@ -221,6 +244,7 @@ class RNCNaverMapView(
   }
 
   override fun onDestroy() {
+    map?.removeOnMapRenderedListener(mapRenderedListener)
     removeAllViews()
     overlays.forEach {
       if (map != null) {

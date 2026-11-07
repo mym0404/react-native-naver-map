@@ -171,6 +171,17 @@
 
 // MARK: - SETTER
 
+- (void)setIsMapRenderedEnabled:(BOOL)isMapRenderedEnabled {
+  if (_isMapRenderedEnabled == isMapRenderedEnabled)
+    return;
+
+  _isMapRenderedEnabled = isMapRenderedEnabled;
+  if (isMapRenderedEnabled)
+    [self.mapView addRenderDelegate:self];
+  else
+    [self.mapView removeRenderDelegate:self];
+}
+
 - (void)setCamera:(NSDictionary*)camera {
   NMFCameraPosition* prev = self.mapView.cameraPosition;
   double latitude = getDoubleOrDefault(camera[@"latitude"], prev.target.lat);
@@ -373,6 +384,16 @@
     return;
 
   _rncParent.emitter->onMapLoaded({});
+}
+
+- (void)mapViewDidFinishRenderingFrame:(NMFMapView*)mapView fully:(BOOL)fully stable:(BOOL)stable {
+  if (!_rncParent.emitter)
+    return;
+
+  _rncParent.emitter->onMapRendered({
+      .isFullyRendered = fully,
+      .isRenderingStable = stable,
+  });
 }
 
 - (void)mapView:(NMFMapView*)mapView didTapMap:(NMGLatLng*)latlng point:(CGPoint)point {

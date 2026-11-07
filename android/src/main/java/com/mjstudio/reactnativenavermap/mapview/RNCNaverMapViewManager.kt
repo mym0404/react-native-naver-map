@@ -22,6 +22,7 @@ import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapLoadedEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapLongTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapRenderedEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapScreenToCoordinateEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapSymbolTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
@@ -125,6 +126,7 @@ class RNCNaverMapViewManager(
     (super.getExportedCustomDirectEventTypeConstants() ?: mutableMapOf()).apply {
       registerDirectEvent(this, NaverMapInitializeEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapLoadedEvent.EVENT_NAME)
+      registerDirectEvent(this, NaverMapRenderedEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapOptionChangeEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCameraChangeEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCameraIdleEvent.EVENT_NAME)
@@ -188,6 +190,14 @@ class RNCNaverMapViewManager(
     value: Boolean,
   ) = view.withMapView {
     it.isSymbolTapEnabled = value
+  }
+
+  @ReactProp(name = "isMapRenderedEnabled", defaultBoolean = false)
+  override fun setIsMapRenderedEnabled(
+    view: RNCNaverMapViewWrapper?,
+    value: Boolean,
+  ) = view.withMapView {
+    it.isMapRenderedEnabled = value
   }
 
   @ReactProp(name = "mapType")

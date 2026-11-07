@@ -144,6 +144,7 @@ interface Props extends ViewProps {
   isUseTextureViewAndroid?: WithDefault<boolean, false>;
   isStopGesturesEnabled?: WithDefault<boolean, true>;
   isSymbolTapEnabled?: WithDefault<boolean, false>;
+  isMapRenderedEnabled?: WithDefault<boolean, false>;
 
   locale?: string;
 
@@ -155,6 +156,12 @@ interface Props extends ViewProps {
 
   onInitialized?: DirectEventHandler<Readonly<{}>>;
   onMapLoaded?: DirectEventHandler<Readonly<{}>>;
+  onMapRendered?: DirectEventHandler<
+    Readonly<{
+      isFullyRendered: boolean;
+      isRenderingStable: boolean;
+    }>
+  >;
   onOptionChanged?: DirectEventHandler<
     Readonly<{
       locationTrackingMode: string;

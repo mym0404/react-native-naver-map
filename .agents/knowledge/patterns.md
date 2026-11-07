@@ -42,6 +42,13 @@ interface Props extends ViewProps {
 export default codegenNativeComponent<Props>('RNCNaverMapMarker');
 ```
 
+### Conditional SDK Event Subscriptions
+
+- The wrapper derives the internal `isMapRenderedEnabled` native prop from whether `onMapRendered` is supplied; callers do not set a separate enable option.
+- High-frequency rendering callbacks subscribe to the SDK only while the handler is present. Repeated prop application must not register duplicate listeners.
+- Android stores one listener identity and the enabled value, applies it when `getMapAsync` completes, and removes the listener when disabled or destroyed. iOS adds or removes the same render delegate when the internal flag changes.
+- Forward the SDK's independent `fully` and `stable` values as `isFullyRendered` and `isRenderingStable`. Do not infer either from camera idle, initial loading, or the other value.
+
 ### Native Commands
 
 - Define imperative APIs with `codegenNativeCommands<NativeCommands>()`.
