@@ -46,6 +46,21 @@ function MyMap() {
 
 `onMapLoaded`는 네이티브 지도 인스턴스당 한 번 호출됩니다. 카메라 이동이나 옵션 변경으로 추가 데이터를 로드할 때는 다시 호출되지 않고, 초기 로딩 후 핸들러를 추가해도 이벤트를 다시 전달하지 않습니다. `onInitialized`와의 호출 순서는 보장하지 않습니다. 현재 프레임이 모두 렌더링됐는지나 렌더링이 안정 상태인지는 알려주지 않습니다.
 
+### 지도 렌더링 관찰
+
+`onMapRendered`는 네이티브 SDK가 지도 프레임을 렌더링한 후 호출됩니다. `isFullyRendered`는 해당 프레임에 필요한 모든 데이터가 렌더링됐는지 알려주고, `isRenderingStable`은 SDK에 추가 렌더링이 필요하지 않은지 알려줍니다.
+
+```tsx
+<NaverMapView
+  style={{ flex: 1 }}
+  onMapRendered={({ isFullyRendered, isRenderingStable }) => {
+    console.log({ isFullyRendered, isRenderingStable });
+  }}
+/>
+```
+
+두 값은 서로 독립적인 SDK 상태입니다. 두 값 사이의 관계나 변경 순서, 특정 값이 반드시 `false`가 된다고 가정하면 안 됩니다. 한 번만 호출되는 `onMapLoaded`와 달리 `onMapRendered`는 반복해서, 카메라 변경 이벤트보다 더 자주 호출될 수 있습니다. 콜백에서 무거운 작업을 실행하거나 조건 없이 상태를 갱신하지 마세요. 나중에 추가한 핸들러는 이후에 렌더링되는 프레임만 받으며, 이전 프레임을 다시 전달하거나 별도의 상태 조회를 제공하지 않습니다.
+
 ### With Camera Control
 
 ```tsx

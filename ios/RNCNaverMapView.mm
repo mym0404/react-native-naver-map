@@ -185,6 +185,8 @@ using namespace facebook::react;
     [self.map setStopGestureEnabled:next.isStopGesturesEnabled];
   if (prev.isSymbolTapEnabled != next.isSymbolTapEnabled)
     _view.isSymbolTapEnabled = next.isSymbolTapEnabled;
+  if (prev.isMapRenderedEnabled != next.isMapRenderedEnabled)
+    _view.isMapRenderedEnabled = next.isMapRenderedEnabled;
 
   if (prev.animationDuration != next.animationDuration)
     _view.animationDuration = next.animationDuration;

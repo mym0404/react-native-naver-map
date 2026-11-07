@@ -526,6 +526,19 @@ export interface NaverMapViewProps extends ViewProps {
    */
   onMapLoaded?: () => void;
   /**
+   * Called after the native SDK renders a map frame.
+   * `isFullyRendered` and `isRenderingStable` are independent states for that frame; their relationship and transition order are not guaranteed.
+   * Unlike `onMapLoaded`, this callback can repeat and neither state is guaranteed to become `false`.
+   * The callback may run more frequently than camera change events, so avoid heavy work in it.
+   * Handlers added later receive future frames only.
+   *
+   * @group Events
+   */
+  onMapRendered?: (params: {
+    isFullyRendered: boolean;
+    isRenderingStable: boolean;
+  }) => void;
+  /**
    * 지도 유형, 디스플레이 옵션 등 지도와 관련된 옵션이 변경되면 이벤트가 발생합니다.
    * 지도의 옵션이 변경되면 콜백 메서드가 호출됩니다.
    *
@@ -760,6 +773,7 @@ export const NaverMapView = forwardRef(
       onTapSymbol: onTapSymbolProp,
       onInitialized,
       onMapLoaded,
+      onMapRendered: onMapRenderedProp,
       onOptionChanged: onOptionChangedProp,
       customStyleId,
       onCustomStyleLoaded: onCustomStyleLoadedProp,
@@ -969,6 +983,17 @@ export const NaverMapView = forwardRef(
           x,
           y,
         });
+      }
+    );
+
+    const onMapRendered = useStableCallback(
+      ({
+        nativeEvent: { isFullyRendered, isRenderingStable },
+      }: NativeSyntheticEvent<{
+        isFullyRendered: boolean;
+        isRenderingStable: boolean;
+      }>) => {
+        onMapRenderedProp?.({ isFullyRendered, isRenderingStable });
       }
     );
 
@@ -1241,6 +1266,8 @@ export const NaverMapView = forwardRef(
         symbolPerspectiveRatio={clamp(symbolPerspectiveRatio, 0, 1)}
         onInitialized={onInitialized}
         onMapLoaded={onMapLoaded}
+        isMapRenderedEnabled={!!onMapRenderedProp}
+        onMapRendered={onMapRenderedProp ? onMapRendered : undefined}
         onCameraChanged={onCameraChangedProp ? onCameraChanged : undefined}
         onCameraIdle={onCameraIdleProp ? onCameraIdle : undefined}
         onTapMap={onTapMapProp ? onTapMap : undefined}

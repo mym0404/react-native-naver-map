@@ -32,11 +32,13 @@ using namespace facebook::react;
 
 @class RNCNaverMapView;
 
-@interface RNCNaverMapViewImpl : NMFNaverMapView <NMFMapViewTouchDelegate, NMFMapViewCameraDelegate,
-                                                  NMFMapViewOptionDelegate, NMFMapViewLoadDelegate>
+@interface RNCNaverMapViewImpl
+    : NMFNaverMapView <NMFMapViewTouchDelegate, NMFMapViewCameraDelegate, NMFMapViewOptionDelegate,
+                       NMFMapViewLoadDelegate, NMFMapViewRenderDelegate>
 
 @property(nonatomic, weak) RNCNaverMapView* rncParent;
 @property(nonatomic) BOOL isSymbolTapEnabled;
+@property(nonatomic) BOOL isMapRenderedEnabled;
 @property(nonatomic, copy) NSDictionary* camera;
 @property(nonatomic, copy) NSDictionary* initialCamera;
 @property(nonatomic, copy) NMGLatLngBounds* region;
