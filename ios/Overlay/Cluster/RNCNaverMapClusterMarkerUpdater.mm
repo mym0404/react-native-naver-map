@@ -9,15 +9,30 @@
 #import "MacroUtil.h"
 #import "RNCNaverMapClusterKey.h"
 
+@implementation RNCNaverMapClusterTagMergeStrategy
+
+- (NSObject*)mergeTag:(NMCCluster*)cluster {
+  NSMutableArray<NSString*>* markerIdentifiers = [NSMutableArray arrayWithCapacity:cluster.size];
+  for (NMCNode* node in cluster.children) {
+    if ([node.tag isKindOfClass:[NSArray class]])
+      [markerIdentifiers addObjectsFromArray:(NSArray<NSString*>*)node.tag];
+  }
+  return [markerIdentifiers copy];
+}
+
+@end
+
 @implementation RNCNaverMapClusterMarkerUpdater
 
 - (instancetype)initWith:(double)width
                   height:(double)height
-                 caption:(facebook::react::RNCNaverMapViewClustersClustersCaptionStruct)caption {
+                 caption:(facebook::react::RNCNaverMapViewClustersClustersCaptionStruct)caption
+      onTapClusterMarker:(OnTapClusterMarker _Nullable)onTapClusterMarker {
   if (self = [super init]) {
     _width = width;
     _height = height;
     _caption = caption;
+    _onTapClusterMarker = onTapClusterMarker;
   }
   return self;
 }
@@ -43,6 +58,17 @@
   marker.captionTextSize = _caption.textSize;
   marker.captionMinZoom = _caption.minZoom;
   marker.captionMaxZoom = _caption.maxZoom;
+
+  NMFOverlayTouchHandler defaultTouchHandler = marker.touchHandler;
+  if (!_onTapClusterMarker || !defaultTouchHandler || ![info.tag isKindOfClass:[NSArray class]])
+    return;
+
+  NSArray<NSString*>* markerIdentifiers = [(NSArray<NSString*>*)info.tag copy];
+  OnTapClusterMarker onTapClusterMarker = _onTapClusterMarker;
+  marker.touchHandler = ^BOOL(NMFOverlay* overlay) {
+    onTapClusterMarker(markerIdentifiers);
+    return defaultTouchHandler(overlay);
+  };
 }
 #pragma clang diagnostic pop
 

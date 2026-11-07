@@ -15,6 +15,7 @@ import com.mjstudio.reactnativenavermap.RNCNaverMapViewManagerSpec
 import com.mjstudio.reactnativenavermap.event.NaverMapCameraChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapCameraIdleEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapClusterLeafTapEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapClusterTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapCoordinateToScreenEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapCustomStyleLoadFailedEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapCustomStyleLoadedEvent
@@ -33,6 +34,8 @@ import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapCluste
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterDataHolder
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterKey
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterMarkerUpdater
+import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterTag
+import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapClusterTagMergeStrategy
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapLeafDataHolder
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapLeafMarkerHolder
 import com.mjstudio.reactnativenavermap.overlay.marker.cluster.RNCNaverMapLeafMarkerUpdater
@@ -69,6 +72,7 @@ import com.naver.maps.map.NaverMap.MapType.Satellite
 import com.naver.maps.map.NaverMap.MapType.Terrain
 import com.naver.maps.map.NaverMapOptions
 import com.naver.maps.map.clustering.Clusterer
+import com.naver.maps.map.clustering.DefaultThresholdStrategy
 import java.util.Locale
 import kotlin.math.max
 import kotlin.math.min
@@ -138,6 +142,7 @@ class RNCNaverMapViewManager(
       registerDirectEvent(this, NaverMapSymbolTapEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapScreenToCoordinateEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCoordinateToScreenEvent.EVENT_NAME)
+      registerDirectEvent(this, NaverMapClusterTapEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapClusterLeafTapEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCustomStyleLoadedEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCustomStyleLoadFailedEvent.EVENT_NAME)
@@ -586,8 +591,9 @@ class RNCNaverMapViewManager(
     clustererHolders.clear()
 
     val isLeafTapCallbackExist = value.getBoolean("isLeafTapCallbackExist")
+    val isClusterTapCallbackExist = value.getBoolean("isClusterTapCallbackExist")
 
-    value.getArray("clusters")?.toArrayList()?.filterIsInstance<Map<String, Any?>>()?.forEach {
+    value.getArray("clusters")?.toArrayList()?.filterIsInstance<Map<String, Any?>>()?.forEachIndexed { clusterIndex, it ->
       val clustererKey = it["key"] as String
       val hasClusterImage = it["hasImage"] as Boolean
       val clusterImage = it["image"] as? Map<*, *>
@@ -616,26 +622,47 @@ class RNCNaverMapViewManager(
             maxZoom = (clusterCaption["maxZoom"] as Number).toDouble(),
           ),
         )
+      val onTapCluster: ((List<String>) -> Unit)? =
+        if (isClusterTapCallbackExist) {
+          { markerIdentifiers ->
+            view?.let { wrapper ->
+              wrapper.reactContext.emitEvent(wrapper.id) { surfaceId, reactTag ->
+                NaverMapClusterTapEvent(
+                  surfaceId,
+                  reactTag,
+                  clusterIndex,
+                  markerIdentifiers,
+                )
+              }
+            }
+          }
+        } else {
+          null
+        }
 
-      val clusterer =
+      val clustererBuilder =
         Clusterer
-          .Builder<RNCNaverMapClusterKey>()
-          .clusterMarkerUpdater(RNCNaverMapClusterMarkerUpdater(clusterDataHolder))
+          .ComplexBuilder<RNCNaverMapClusterKey>()
+          .clusterMarkerUpdater(RNCNaverMapClusterMarkerUpdater(clusterDataHolder, onTapCluster))
           .leafMarkerUpdater(RNCNaverMapLeafMarkerUpdater())
           .also { cluster ->
+            if (isClusterTapCallbackExist) {
+              cluster.tagMergeStrategy(RNCNaverMapClusterTagMergeStrategy())
+            }
             if (screenDistance != null) {
-              cluster.screenDistance(screenDistance)
+              cluster.thresholdStrategy(DefaultThresholdStrategy(screenDistance))
+              cluster.maxScreenDistance(screenDistance)
             }
             if (minZoom != null) {
-              cluster.minZoom(max(minZoom.toInt(), 1))
+              cluster.minClusteringZoom(max(minZoom.toInt(), 1))
             }
             if (maxZoom != null) {
-              cluster.maxZoom(min(maxZoom.toInt(), 20))
+              cluster.maxClusteringZoom(min(maxZoom.toInt(), 20))
             }
             if (animate != null) {
-              cluster.animate(animate)
+              cluster.animationDuration(if (animate) Clusterer.DEFAULT_ANIMATION_DURATION_MILLIS else 0)
             }
-          }.build()
+          }
 
       val keyPairs =
         markers.associate { marker ->
@@ -671,9 +698,15 @@ class RNCNaverMapViewManager(
                   null
                 },
             ),
-          ) to null
+          ) to
+            if (isClusterTapCallbackExist) {
+              RNCNaverMapClusterTag(listOf(identifier))
+            } else {
+              null
+            }
         }
 
+      val clusterer = clustererBuilder.build()
       clusterer.addAll(keyPairs)
       val dataHolder =
         RNCNaverMapLeafDataHolder(

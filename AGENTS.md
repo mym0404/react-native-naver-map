@@ -110,7 +110,7 @@ Agents should work in this repository by making assumptions visible, choosing th
 - `.agents/knowledge/native-platforms.md`: iOS and Android implementation patterns.
 - `.agents/knowledge/rn-native-module.md`: React Native TurboModule, Fabric, codegen, thread, and native SDK object guidance.
 - `.agents/knowledge/supporting-packages.md`: `example/`, `docs/`, `expo-config-plugin/`, and `script/`.
-- `.agents/knowledge/patterns.md`: reusable implementation patterns for specs, commands, JSDoc, colors, native lifecycle, events, conditional SDK subscriptions, custom info-window hosts, cluster marker styles, and image loading.
+- `.agents/knowledge/patterns.md`: reusable implementation patterns for specs, commands, JSDoc, colors, native lifecycle, events, conditional SDK subscriptions, custom info-window hosts, cluster marker styles and taps, and image loading.
 
 ## Knowledge System
 

@@ -338,6 +338,13 @@ class RNCNaverMapPackage : BaseReactPackage() {
 }
 ```
 
+## Cluster Marker Taps
+
+- `onTapCluster` returns the current `clusters` array index and identifiers of the tapped aggregate's actual descendants. Identifiers are unique within a group; their event order is unspecified. Callers can look up their original marker data with the group index and identifiers.
+- Native leaf tags carry immutable identifier lists only while subscribed. SDK tag-merge strategies concatenate child tags on the clustering worker thread. Never infer membership from every group marker or JS distance calculations, and never retain mutable SDK tree nodes in UI handlers.
+- Use the complex cluster builder with settings equivalent to the simple builder. Keep listener-presence flags in the outer cluster hash so attaching or removing callbacks rebuilds the native handlers and tags.
+- Each pooled-marker update calls the default updater first, captures its default click handler, and wraps it to emit the event before delegating and returning its result. Preserve the SDK's zoom-to-unfold behavior.
+
 ## Native Image Handling
 
 ### Supported Image Shapes

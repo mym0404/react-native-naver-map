@@ -1,5 +1,4 @@
 import { hash } from 'ohash';
-
 import React, {
   type ForwardedRef,
   forwardRef,
@@ -38,6 +37,7 @@ import type { CameraChangeReason } from '../types/CameraChangeReason';
 import type { CameraMoveBaseParams } from '../types/CameraMoveBaseParams';
 import type { ClusterMarkerCaption } from '../types/ClusterMarkerCaption';
 import type { ClusterMarkerProp } from '../types/ClusterMarkerProp';
+import type { ClusterMarkerTapParams } from '../types/ClusterMarkerTapParams';
 import type { Coord } from '../types/Coord';
 import type { LocationTrackingMode } from '../types/LocationTrackingMode';
 import type { LogoAlign } from '../types/LogoAlign';
@@ -622,6 +622,14 @@ export interface NaverMapViewProps extends ViewProps {
    * @event
    */
   onTapClusterLeaf?: (params: { markerIdentifier: string }) => void;
+
+  /**
+   * Called when an aggregate cluster marker is tapped. The SDK's default zoom-to-unfold behavior is preserved.
+   * Members come from the native cluster tree. Use `clusterIndex` and each identifier to look up your input data.
+   *
+   * @event
+   */
+  onTapCluster?: (params: ClusterMarkerTapParams) => void;
 }
 
 type SnapshotResult = {
@@ -813,6 +821,7 @@ export const NaverMapView = forwardRef(
       fpsLimit = 0,
       locationOverlay,
       onTapClusterLeaf,
+      onTapCluster,
 
       ...rest
     }: NaverMapViewProps,
@@ -821,9 +830,15 @@ export const NaverMapView = forwardRef(
     const innerRef = useRef<any>(null);
 
     const isLeafTapCallbackExist: boolean = !!onTapClusterLeaf;
+    const isClusterTapCallbackExist = !!onTapCluster;
     const _clusters = useMemo<NativeClustersProp>(() => {
       if (!clusters || clusters.length === 0) {
-        return { key: '', clusters: [], isLeafTapCallbackExist };
+        return {
+          key: '',
+          clusters: [],
+          isLeafTapCallbackExist,
+          isClusterTapCallbackExist,
+        };
       }
       let propKey = '';
       const ret: NativeClusterProp[] = [];
@@ -890,11 +905,12 @@ export const NaverMapView = forwardRef(
       }
 
       return {
-        key: hash(propKey),
+        key: hash([propKey, isLeafTapCallbackExist, isClusterTapCallbackExist]),
         clusters: ret,
         isLeafTapCallbackExist,
+        isClusterTapCallbackExist,
       };
-    }, [clusters, isLeafTapCallbackExist]);
+    }, [clusters, isLeafTapCallbackExist, isClusterTapCallbackExist]);
 
     const _locationOverlay: NativeLocationOverlayProp | undefined =
       useMemo(() => {
@@ -1421,6 +1437,12 @@ export const NaverMapView = forwardRef(
           onCustomStyleLoadFailedProp ? onCustomStyleLoadFailed : undefined
         }
         locationOverlay={_locationOverlay}
+        onTapCluster={
+          onTapCluster
+            ? ({ nativeEvent: { clusterIndex, markerIdentifiers } }) =>
+                onTapCluster({ clusterIndex, markerIdentifiers })
+            : undefined
+        }
         onTapClusterLeaf={
           onTapClusterLeaf
             ? ({ nativeEvent: { markerIdentifier } }) =>

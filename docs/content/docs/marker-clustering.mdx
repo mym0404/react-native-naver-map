@@ -168,6 +168,33 @@ const multiClusters = useMemo(() => [
 
 ## Cluster Event Handling
 
+### Aggregate Cluster Click Events
+
+Use `onTapCluster` to receive the markers that the native SDK placed in the tapped aggregate cluster. `clusterIndex` is the index of the group in the current `clusters` array, and `markerIdentifiers` contains the identifiers of that cluster's descendant markers.
+
+```tsx
+import type { ClusterMarkerTapParams } from '@mj-studio/react-native-naver-map';
+
+const handleTapCluster = ({
+  clusterIndex,
+  markerIdentifiers,
+}: ClusterMarkerTapParams) => {
+  const markerIdentifierSet = new Set(markerIdentifiers);
+  const tappedMarkers = clusters[clusterIndex].markers.filter(({ identifier }) =>
+    markerIdentifierSet.has(identifier),
+  );
+
+  showClusterItems(tappedMarkers);
+};
+
+<NaverMapView
+  clusters={clusters}
+  onTapCluster={handleTapCluster}
+/>
+```
+
+Keep marker identifiers unique within each cluster group so they can be used to look up the original marker data. The order of `markerIdentifiers` is unspecified. The SDK's default tap behavior still zooms the map until the cluster unfolds. The callback reports the membership captured at the tap; it does not cancel or delay the zoom.
+
 ### Individual Marker Click Events
 
 You can handle events when individual markers included in clusters are clicked:

@@ -9,12 +9,14 @@ import com.naver.maps.map.overlay.Marker.SIZE_AUTO
 
 internal class RNCNaverMapClusterMarkerUpdater(
   private val holder: RNCNaverMapClusterDataHolder,
+  private val onTap: ((List<String>) -> Unit)?,
 ) : DefaultClusterMarkerUpdater() {
   override fun updateClusterMarker(
     info: ClusterMarkerInfo,
     marker: Marker,
   ) {
     super.updateClusterMarker(info, marker)
+    val defaultOnClickListener = marker.onClickListener
     val (width, height, caption) = holder
     marker.width = width?.px ?: SIZE_AUTO
     marker.height = height?.px ?: SIZE_AUTO
@@ -28,5 +30,13 @@ internal class RNCNaverMapClusterMarkerUpdater(
     marker.captionTextSize = caption.textSize.toFloat()
     marker.captionMinZoom = caption.minZoom
     marker.captionMaxZoom = caption.maxZoom
+
+    if (onTap != null) {
+      val markerIdentifiers = (info.tag as RNCNaverMapClusterTag).markerIdentifiers
+      marker.setOnClickListener { overlay ->
+        onTap.invoke(markerIdentifiers)
+        defaultOnClickListener?.onClick(overlay) ?: false
+      }
+    }
   }
 }

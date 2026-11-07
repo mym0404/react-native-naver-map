@@ -168,6 +168,33 @@ const multiClusters = useMemo(() => [
 
 ## 클러스터 이벤트 처리
 
+### 집계 클러스터 마커 탭 이벤트
+
+`onTapCluster`를 사용하면 네이티브 SDK가 탭한 집계 클러스터에 포함한 마커를 받을 수 있습니다. `clusterIndex`는 현재 `clusters` 배열에서 해당 그룹의 인덱스이고, `markerIdentifiers`는 해당 클러스터에 속한 모든 하위 마커의 식별자입니다.
+
+```tsx
+import type { ClusterMarkerTapParams } from '@mj-studio/react-native-naver-map';
+
+const handleTapCluster = ({
+  clusterIndex,
+  markerIdentifiers,
+}: ClusterMarkerTapParams) => {
+  const markerIdentifierSet = new Set(markerIdentifiers);
+  const tappedMarkers = clusters[clusterIndex].markers.filter(({ identifier }) =>
+    markerIdentifierSet.has(identifier),
+  );
+
+  showClusterItems(tappedMarkers);
+};
+
+<NaverMapView
+  clusters={clusters}
+  onTapCluster={handleTapCluster}
+/>
+```
+
+식별자로 원래 마커 데이터를 찾을 수 있도록 각 클러스터 그룹 안에서 마커 식별자를 고유하게 지정하세요. `markerIdentifiers`의 순서는 정해져 있지 않습니다. SDK 기본 동작에 따라 클러스터가 펼쳐질 때까지 지도를 확대합니다. 콜백은 탭한 시점의 구성원을 전달하며, 확대를 취소하거나 지연하지 않습니다.
+
 ### 개별 마커 클릭 이벤트
 
 클러스터에 포함된 개별 마커가 클릭되었을 때의 이벤트를 처리할 수 있습니다:
