@@ -85,7 +85,7 @@ Agents should work in this repository by making assumptions visible, choosing th
 ## Verification Commands
 
 - Default validation: `pnpm run t`.
-- Mobile E2E: `pnpm e2e:ios` / `pnpm e2e:android` build and test the example in Release with a valid `NAVER_MAP_CLIENT_ID`; see `.agents/knowledge/workflows.md`.
+- Mobile E2E: `pnpm e2e:ios` / `pnpm e2e:android` build and test the example in Release with a valid `NAVER_MAP_CLIENT_ID`. Suites use `test` from `e2e/fixtures.ts` for SDK-managed installation and permissions. See `.agents/knowledge/workflows.md`.
 - Release configuration changes also require `pnpm changeset status`, version generation in a temporary checkout, and workflow validation before publishing.
 - `pnpm run t` runs Lefthook `check`: Biome for staged JS/TS files, Objective-C lint, Kotlin lint, package/example/E2E typechecks, Expo plugin build, and Bob package build.
 - Docs checks are opt-in because `lefthook.yml` currently comments out docs build and docs typecheck. Use `pnpm build:docs` for docs changes.

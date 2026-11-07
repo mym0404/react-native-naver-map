@@ -1,9 +1,9 @@
-import { beforeEach, test } from '@e2e-dev/mobile';
 import { expect } from 'e2e';
+import { test } from '../fixtures';
 
 const menuTitle = 'Naver Map Examples';
 
-beforeEach(async ({ app, screen }) => {
+test.beforeEach(async ({ app, screen }) => {
   await app.open();
   await expect(screen.getByText(menuTitle)).toBeVisible();
   await screen.getByTestId('example-menu-map-view-basic').tap();

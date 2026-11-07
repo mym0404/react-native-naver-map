@@ -95,13 +95,13 @@ Without shell activation, prefix the command with `mise exec --`.
   Google APIs image, creates a dedicated AVD, builds a Release APK, and stops the
   emulator after the run. The AVD remains available for the next run.
 - `E2E_DEVICE` selects an already prepared simulator UDID or emulator serial.
-  The runner installs the example on that device and does not shut it down.
+  The SDK installs the example on that device. The runner leaves it running.
   Use a dedicated test device because tests relaunch the app and grant location
   permission.
 - Both Release builds include JavaScript; Metro is not needed.
-- Results and JUnit reports are under `.e2e/results/<platform>`. Build and device
-  logs are under `.e2e/logs/<platform>`. Failed tests retain screenshot and trace
-  evidence. Generated results and builds are ignored by Git.
+- Results and JUnit reports are under `.e2e/results/<platform>`. Failed tests
+  retain screenshot and trace evidence. Build output streams to the terminal or
+  CI log. Generated results and builds are ignored by Git.
 
 The `E2E` GitHub Actions workflow runs both platforms on PRs and pushes targeting
 `main` or `next`, and supports manual runs. Add the repository **Variable**
@@ -109,14 +109,17 @@ The `E2E` GitHub Actions workflow runs both platforms on PRs and pushes targetin
 The workflow reads `${{ vars.NAVER_MAP_CLIENT_ID }}` and passes it to the same local
 commands. This is a public example-app client ID, so fork PRs do not need secrets.
 A missing ID fails the run; the suite never substitutes a dummy key or silently
-skips tests. Reports and logs are uploaded as platform-specific artifacts for
-seven days, including when tests fail.
+skips tests. Reports and failure traces are uploaded as platform-specific
+artifacts for seven days, including when tests fail.
 
 Tests are grouped by feature under `e2e/<feature>/*.e2e.ts`. The initial suite,
 `e2e/map-view/basic.e2e.ts`, uses the example's `MapViewBasicScreen` for basic map
 behavior. Add scenarios to the matching feature directory, or create another
 feature directory. `e2e.config.ts` discovers all `e2e/**/*.e2e.ts` files for both
-platforms.
+platforms. Import `test` from `e2e/fixtures.ts` in new suites so the SDK installs
+the configured build before each test and applies location permissions before
+launch. The shared fixture uses the agent-device client to grant iOS always-location
+permission and Android runtime permissions, including background location.
 
 Run `pnpm typecheck:e2e` to check test/config types without building the app.
 

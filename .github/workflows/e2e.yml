@@ -37,14 +37,12 @@ jobs:
           key: e2e-ios-${{ runner.arch }}-${{ hashFiles('pnpm-lock.yaml', 'example/ios/Podfile.lock') }}
       - name: Build, install, and test
         run: pnpm e2e:ios
-      - name: Upload results and logs
+      - name: Upload results
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: e2e-ios
-          path: |
-            .e2e/results/ios
-            .e2e/logs/ios
+          path: .e2e/results/ios
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 7
@@ -79,14 +77,12 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           disable-animations: true
           script: pnpm e2e:android
-      - name: Upload results and logs
+      - name: Upload results
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: e2e-android
-          path: |
-            .e2e/results/android
-            .e2e/logs/android
+          path: .e2e/results/android
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 7

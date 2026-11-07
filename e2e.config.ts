@@ -15,7 +15,13 @@ export default {
       device: process.env.E2E_DEVICE,
       session: process.env.E2E_SESSION ?? `naver-map-${platform}`,
     }),
-    app,
+    app: {
+      ...app,
+      appPath:
+        platform === 'ios'
+          ? '.e2e/build/ios/Build/Products/Release-iphonesimulator/example.app'
+          : 'example/android/app/build/outputs/apk/release/app-release.apk',
+    },
   })),
   workers: 1,
   retries: 0,

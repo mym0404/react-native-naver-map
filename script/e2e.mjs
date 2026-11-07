@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { createWriteStream, existsSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { mkdir } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import path from 'node:path';
@@ -12,13 +12,6 @@ if (existsSync('.env')) process.loadEnvFile('.env');
 const platform = process.argv[2];
 const clientId = process.env.NAVER_MAP_CLIENT_ID?.trim();
 const output = path.join(root, '.e2e');
-const logDirectory = path.join(
-  output,
-  'logs',
-  platform ?? 'local',
-  `${Date.now()}-${process.pid}`
-);
-const bundleId = 'happy.mjstudio.rnnmap.example';
 const pnpm = 'pnpm';
 const androidSdk =
   process.env.ANDROID_HOME ??
@@ -40,7 +33,6 @@ let child;
 let device;
 let isOwnedDevice = false;
 let isInterrupted = false;
-let commandIndex = 0;
 
 for (const signal of ['SIGINT', 'SIGTERM']) {
   process.on(signal, () => {
@@ -63,10 +55,8 @@ try {
       'iOS E2E requires macOS with Xcode and an installed iOS simulator runtime.'
     );
   }
-  await mkdir(logDirectory, { recursive: true });
 
   if (platform === 'ios') {
-    await run('xcodebuild', ['-version']);
     await run('pod', ['install'], { cwd: path.join(root, 'example/ios') });
     const build = path.join(output, 'build/ios');
     await run('xcodebuild', [
@@ -123,30 +113,6 @@ try {
       ).trim();
       isOwnedDevice = true;
     }
-    await run(pnpm, [
-      'exec',
-      'agent-device',
-      'boot',
-      '--platform',
-      'ios',
-      '--udid',
-      device,
-    ]);
-    await run('xcrun', ['simctl', 'bootstatus', device, '-b']);
-    await run('xcrun', [
-      'simctl',
-      'install',
-      device,
-      path.join(build, 'Build/Products/Release-iphonesimulator/example.app'),
-    ]);
-    await run('xcrun', [
-      'simctl',
-      'privacy',
-      device,
-      'grant',
-      'location-always',
-      bundleId,
-    ]);
   } else {
     if (!existsSync(adb))
       throw new Error('Install the Android SDK and set ANDROID_HOME.');
@@ -159,11 +125,11 @@ try {
       const arch = process.arch === 'arm64' ? 'arm64-v8a' : 'x86_64';
       const image = `system-images;android-36;google_apis;${arch}`;
       const avd = `naver_map_e2e_${arch.replaceAll('-', '_')}`;
-      await run(path.join(tools, 'sdkmanager'), [image], { env });
+      await run(path.join(tools, 'sdkmanager'), [image]);
       const avds = await run(
         path.join(androidSdk, 'emulator/emulator'),
         ['-list-avds'],
-        { capture: true, env }
+        { capture: true }
       );
       if (!avds.split('\n').includes(avd)) {
         await run(
@@ -178,38 +144,28 @@ try {
             '--device',
             'pixel_7',
           ],
-          { input: 'no\n', env }
+          { input: 'no\n' }
         );
       }
-      await run(
-        pnpm,
-        [
-          'exec',
-          'agent-device',
-          'boot',
-          '--platform',
-          'android',
-          '--device',
-          avd,
-          '--headless',
-        ],
-        { env }
+      const booted = JSON.parse(
+        await run(
+          pnpm,
+          [
+            'exec',
+            'agent-device',
+            'boot',
+            '--platform',
+            'android',
+            '--device',
+            avd,
+            '--headless',
+            '--json',
+          ],
+          { capture: true }
+        )
       );
-      const devices = await run(adb, ['devices'], { capture: true });
-      for (const line of devices
-        .split('\n')
-        .filter((line) => /^emulator-\d+\s+device$/.test(line.trim()))) {
-        const serial = line.split('\t')[0];
-        const name = await run(adb, ['-s', serial, 'emu', 'avd', 'name'], {
-          capture: true,
-        });
-        if (name.split('\n')[0]?.trim() === avd) {
-          device = serial;
-          isOwnedDevice = true;
-          break;
-        }
-      }
-      if (!device) throw new Error(`Cannot find the booted ${avd} emulator.`);
+      device = booted.data.id;
+      isOwnedDevice = true;
     }
     const abi = (
       await run(adb, ['-s', device, 'shell', 'getprop', 'ro.product.cpu.abi'], {
@@ -224,24 +180,12 @@ try {
         `-PreactNativeArchitectures=${abi}`,
         `-PnaverMapClientId=${clientId}`,
       ],
-      { cwd: path.join(root, 'example/android'), env }
+      { cwd: path.join(root, 'example/android') }
     );
-    await run(adb, [
-      '-s',
-      device,
-      'install',
-      '-r',
-      '-g',
-      'example/android/app/build/outputs/apk/release/app-release.apk',
-    ]);
   }
 
   env.E2E_DEVICE = device;
-  await run(pnpm, ['exec', 'e2e', 'doctor', '--target', platform], { env });
-  await run(pnpm, ['exec', 'e2e', 'run', '--target', platform], {
-    env,
-    stream: true,
-  });
+  await run(pnpm, ['exec', 'e2e', 'run', '--target', platform]);
 } catch (error) {
   console.error(error.message);
   process.exitCode = isInterrupted ? 130 : 1;
@@ -255,84 +199,41 @@ try {
       '--clean',
     ]).catch((error) => console.error(error.message));
   }
-  if (device) {
+  if (device && isOwnedDevice) {
     if (platform === 'ios') {
-      await run('xcrun', [
-        'simctl',
-        'spawn',
-        device,
-        'log',
-        'show',
-        '--last',
-        '5m',
-        '--predicate',
-        'process == "example"',
-      ]).catch((error) => console.error(error.message));
-      if (isOwnedDevice) {
-        await run('xcrun', ['simctl', 'shutdown', device]).catch((error) =>
-          console.error(error.message)
-        );
-        await run('xcrun', ['simctl', 'delete', device]).catch((error) =>
-          console.error(error.message)
-        );
-      }
+      await run('xcrun', ['simctl', 'shutdown', device]).catch((error) =>
+        console.error(error.message)
+      );
+      await run('xcrun', ['simctl', 'delete', device]).catch((error) =>
+        console.error(error.message)
+      );
     } else {
-      const pid = await run(adb, ['-s', device, 'shell', 'pidof', bundleId], {
-        capture: true,
-      }).catch(() => '');
-      if (pid.trim())
-        await run(adb, [
-          '-s',
-          device,
-          'logcat',
-          '-d',
-          `--pid=${pid.trim()}`,
-        ]).catch((error) => console.error(error.message));
-      if (isOwnedDevice)
-        await run(adb, ['-s', device, 'emu', 'kill']).catch((error) =>
-          console.error(error.message)
-        );
+      await run(adb, ['-s', device, 'emu', 'kill']).catch((error) =>
+        console.error(error.message)
+      );
     }
   }
   if (isInterrupted) process.exitCode = 130;
 }
 
 async function run(executable, args, options = {}) {
-  const label = path.basename(executable);
-  const logPath = path.join(logDirectory, `${++commandIndex}-${label}.log`);
-  console.log(`[e2e:${platform}] ${label} → ${path.relative(root, logPath)}`);
-  const log = createWriteStream(logPath);
-  let stdout = '';
-  try {
-    return await new Promise((resolve, reject) => {
-      child = spawn(executable, args, {
-        cwd: options.cwd ?? root,
-        env: options.env ?? env,
-        stdio: ['pipe', 'pipe', 'pipe'],
-        detached: true,
-      });
-      child.stdout.on('data', (chunk) => {
-        log.write(chunk);
-        if (options.capture) stdout += chunk;
-        if (options.stream) process.stdout.write(chunk);
-      });
-      child.stderr.pipe(log, { end: false });
-      if (options.stream)
-        child.stderr.on('data', (chunk) => process.stderr.write(chunk));
-      child.on('error', reject);
-      child.on('close', (code) => {
-        child = undefined;
-        if (code === 0) resolve(stdout);
-        else
-          reject(
-            new Error(
-              `${label} failed (${code}); see ${path.relative(root, logPath)}`
-            )
-          );
-      });
-      child.stdin.end(options.input);
+  return new Promise((resolve, reject) => {
+    let stdout = '';
+    child = spawn(executable, args, {
+      cwd: options.cwd ?? root,
+      env,
+      stdio: ['pipe', options.capture ? 'pipe' : 'inherit', 'inherit'],
+      detached: true,
     });
-  } finally {
-    await new Promise((resolve) => log.end(resolve));
-  }
+    child.stdout?.on('data', (chunk) => {
+      stdout += chunk;
+    });
+    child.on('error', reject);
+    child.on('close', (code) => {
+      child = undefined;
+      if (code === 0) resolve(stdout);
+      else reject(new Error(`${path.basename(executable)} failed (${code})`));
+    });
+    child.stdin.end(options.input);
+  });
 }
