@@ -618,7 +618,25 @@ export interface NaverMapViewProps extends ViewProps {
   onTapClusterLeaf?: (params: { markerIdentifier: string }) => void;
 }
 
+type SnapshotResult = {
+  uri: string;
+  width: number;
+  height: number;
+};
+
 export interface NaverMapViewRef {
+  /**
+   * Saves the current map as a PNG image.
+   *
+   * `showControls` determines whether controls provided by the Naver Map SDK
+   * are included and defaults to `true`. The PNG file is stored in the
+   * operating system-managed app cache, and `width` and `height` use physical
+   * pixels.
+   */
+  takeSnapshot: (options?: {
+    showControls?: boolean;
+  }) => Promise<SnapshotResult>;
+
   /**
    * 카메라를 애니메이션과 함께 이동시킵니다.
    */
@@ -1023,8 +1041,18 @@ export const NaverMapView = forwardRef(
       reject: (e: any) => void;
     }>(undefined);
 
+    const snapshotPromise = useRef<{
+      resolve: (result: SnapshotResult) => void;
+      reject: (error: Error) => void;
+    }>(undefined);
+
     useEffect(() => {
       return () => {
+        const pendingSnapshot = snapshotPromise.current;
+        snapshotPromise.current = undefined;
+        pendingSnapshot?.reject(
+          new Error('The map was unmounted before the snapshot completed.')
+        );
         screenToCoordinatePromise.current?.resolve({
           isValid: false,
           latitude: 0,
@@ -1064,6 +1092,24 @@ export const NaverMapView = forwardRef(
       }
     );
 
+    const onSnapshotReady = useStableCallback(
+      ({ nativeEvent }: NativeSyntheticEvent<SnapshotResult>) => {
+        const pendingSnapshot = snapshotPromise.current;
+        snapshotPromise.current = undefined;
+        pendingSnapshot?.resolve(nativeEvent);
+      }
+    );
+
+    const onSnapshotFailed = useStableCallback(
+      ({
+        nativeEvent: { message },
+      }: NativeSyntheticEvent<{ message: string }>) => {
+        const pendingSnapshot = snapshotPromise.current;
+        snapshotPromise.current = undefined;
+        pendingSnapshot?.reject(new Error(message));
+      }
+    );
+
     const onCustomStyleLoaded = useStableCallback(() => {
       onCustomStyleLoadedProp?.();
     });
@@ -1079,6 +1125,32 @@ export const NaverMapView = forwardRef(
     useImperativeHandle(
       ref,
       () => ({
+        takeSnapshot: ({ showControls = true } = {}) => {
+          if (snapshotPromise.current) {
+            return Promise.reject(
+              new Error('A map snapshot is already in progress.')
+            );
+          }
+
+          const nativeRef = innerRef.current;
+          if (!nativeRef) {
+            return Promise.reject(new Error('The map ref is not set.'));
+          }
+
+          return new Promise<SnapshotResult>((resolve, reject) => {
+            snapshotPromise.current = { resolve, reject };
+            try {
+              Commands.takeSnapshot(nativeRef, showControls);
+            } catch (error) {
+              snapshotPromise.current = undefined;
+              reject(
+                error instanceof Error
+                  ? error
+                  : new Error('Failed to take a map snapshot.')
+              );
+            }
+          });
+        },
         animateCameraTo: ({
           duration,
           easing,
@@ -1310,6 +1382,8 @@ export const NaverMapView = forwardRef(
         clusters={_clusters}
         onScreenToCoordinate={onScreenToCoordinate}
         onCoordinateToScreen={onCoordinateToScreen}
+        onSnapshotReady={onSnapshotReady}
+        onSnapshotFailed={onSnapshotFailed}
         fpsLimit={fpsLimit}
         customStyleId={customStyleId}
         onCustomStyleLoaded={

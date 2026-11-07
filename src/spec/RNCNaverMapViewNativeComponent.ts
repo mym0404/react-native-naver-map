@@ -218,6 +218,11 @@ interface Props extends ViewProps {
   onCustomStyleLoaded?: DirectEventHandler<Readonly<{}>>;
   onCustomStyleLoadFailed?: DirectEventHandler<Readonly<{ message: string }>>;
 
+  onSnapshotReady?: DirectEventHandler<
+    Readonly<{ uri: string; width: Int32; height: Int32 }>
+  >;
+  onSnapshotFailed?: DirectEventHandler<Readonly<{ message: string }>>;
+
   onScreenToCoordinate?: DirectEventHandler<
     Readonly<{
       isValid: boolean;
@@ -237,6 +242,10 @@ interface Props extends ViewProps {
 type ComponentType = HostComponent<Props>;
 
 interface NativeCommands {
+  takeSnapshot: (
+    ref: React.ElementRef<ComponentType>,
+    showControls: boolean
+  ) => void;
   screenToCoordinate: (
     ref: React.ElementRef<ComponentType>,
     x: Double,
@@ -309,6 +318,7 @@ interface NativeCommands {
 export default codegenNativeComponent<Props>('RNCNaverMapView');
 export const Commands: NativeCommands = codegenNativeCommands<NativeCommands>({
   supportedCommands: [
+    'takeSnapshot',
     'screenToCoordinate',
     'coordinateToScreen',
     'animateCameraTo',

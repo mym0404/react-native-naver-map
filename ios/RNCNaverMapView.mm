@@ -442,6 +442,99 @@ using namespace facebook::react;
   }
 }
 
+- (void)takeSnapshot:(BOOL)showControls {
+  __weak __typeof__(self) weakSelf = self;
+  runOnMainSync(^{
+    [_view
+        takeSnapshotWithShowControls:showControls
+                            complete:^(UIImage* _Nonnull image) {
+                              if (!weakSelf)
+                                return;
+
+                              runOnBackground(^{
+                                NSString* failureMessage = nil;
+                                NSURL* fileURL = nil;
+                                int width = 0;
+                                int height = 0;
+
+                                CGImageRef cgImage = image.CGImage;
+                                if (!cgImage) {
+                                  failureMessage = @"Failed to read snapshot pixel dimensions";
+                                } else {
+                                  width = (int)CGImageGetWidth(cgImage);
+                                  height = (int)CGImageGetHeight(cgImage);
+                                }
+
+                                NSData* pngData =
+                                    failureMessage ? nil : UIImagePNGRepresentation(image);
+                                if (!failureMessage && !pngData) {
+                                  failureMessage = @"Failed to encode snapshot as PNG";
+                                }
+
+                                NSError* error = nil;
+                                if (!failureMessage) {
+                                  NSURL* cacheDirectory = [[NSFileManager defaultManager]
+                                        URLForDirectory:NSCachesDirectory
+                                               inDomain:NSUserDomainMask
+                                      appropriateForURL:nil
+                                                 create:YES
+                                                  error:&error];
+                                  if (!cacheDirectory) {
+                                    failureMessage =
+                                        error.localizedDescription
+                                            ? [NSString stringWithFormat:
+                                                            @"Failed to access snapshot cache: %@",
+                                                            error.localizedDescription]
+                                            : @"Failed to access snapshot cache";
+                                  } else {
+                                    NSString* filename = [NSString
+                                        stringWithFormat:@"react-native-naver-map-snapshot-%@.png",
+                                                         NSUUID.UUID.UUIDString];
+                                    fileURL = [cacheDirectory URLByAppendingPathComponent:filename];
+                                  }
+                                }
+
+                                if (!failureMessage && ![pngData writeToURL:fileURL
+                                                                    options:NSDataWritingAtomic
+                                                                      error:&error]) {
+                                  failureMessage =
+                                      error.localizedDescription
+                                          ? [NSString
+                                                stringWithFormat:@"Failed to write snapshot: %@",
+                                                                 error.localizedDescription]
+                                          : @"Failed to write snapshot";
+                                  fileURL = nil;
+                                }
+
+                                runOnMain(^{
+                                  __strong __typeof__(self) strongSelf = weakSelf;
+                                  if (!strongSelf || ![strongSelf emitter]) {
+                                    if (fileURL) {
+                                      runOnBackground(^{
+                                        [[NSFileManager defaultManager] removeItemAtURL:fileURL
+                                                                                  error:nil];
+                                      });
+                                    }
+                                    return;
+                                  }
+
+                                  auto emitter = [strongSelf emitter];
+                                  if (failureMessage) {
+                                    emitter->onSnapshotFailed(
+                                        {.message = std::string(failureMessage.UTF8String)});
+                                    return;
+                                  }
+
+                                  emitter->onSnapshotReady(
+                                      {.uri = std::string(fileURL.absoluteString.UTF8String),
+                                       .width = width,
+                                       .height = height});
+                                });
+                              });
+                            }];
+  });
+}
+
 - (void)screenToCoordinate:(double)x y:(double)y {
   if (!self.emitter)
     return;

@@ -2,9 +2,11 @@ package com.mjstudio.reactnativenavermap.mapview
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.UiThreadUtil
 import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.NaverMapCameraChangeEvent
@@ -14,6 +16,8 @@ import com.mjstudio.reactnativenavermap.event.NaverMapLoadedEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapLongTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapRenderedEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapSnapshotFailedEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapSnapshotReadyEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapSymbolTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
 import com.mjstudio.reactnativenavermap.overlay.RNCNaverMapOverlay
@@ -30,6 +34,11 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.NaverMapOptions
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.util.UUID
+import kotlin.concurrent.thread
 
 @SuppressLint("ViewConstructor")
 class RNCNaverMapView(
@@ -38,6 +47,8 @@ class RNCNaverMapView(
 ) : MapView(reactContext, mapOptions) {
   private var attacherGroup: ViewAttacherGroup? = null
   private var map: NaverMap? = null
+
+  @Volatile private var isDestroyed = false
   private val mapRenderedListener =
     NaverMap.OnMapRenderedListener { isFullyRendered, isRenderingStable ->
       reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
@@ -216,6 +227,65 @@ class RNCNaverMapView(
     map?.also(callback)
   }
 
+  fun takeSnapshot(showControls: Boolean) {
+    withMap { map ->
+      if (isDestroyed) return@withMap
+      map.takeSnapshot(showControls) { bitmap ->
+        if (!isDestroyed) {
+          saveSnapshot(bitmap)
+        }
+      }
+    }
+  }
+
+  private fun saveSnapshot(bitmap: Bitmap) {
+    val width = bitmap.width
+    val height = bitmap.height
+    thread(name = "RNCNaverMapSnapshot") {
+      val directory = File(reactContext.cacheDir, "react-native-naver-map")
+      val file = File(directory, "${UUID.randomUUID()}.png")
+      try {
+        if (!directory.exists() && !directory.mkdirs() && !directory.exists()) {
+          throw IOException(SNAPSHOT_ERROR_MESSAGE)
+        }
+        FileOutputStream(file).use { output ->
+          if (!bitmap.compress(Bitmap.CompressFormat.PNG, 100, output)) {
+            throw IOException(SNAPSHOT_ERROR_MESSAGE)
+          }
+        }
+
+        if (isDestroyed) {
+          file.delete()
+          return@thread
+        }
+        UiThreadUtil.runOnUiThread {
+          if (isDestroyed) {
+            file.delete()
+            return@runOnUiThread
+          }
+          reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
+            NaverMapSnapshotReadyEvent(
+              surfaceId,
+              reactTag,
+              Uri.fromFile(file).toString(),
+              width,
+              height,
+            )
+          }
+        }
+      } catch (_: Exception) {
+        file.delete()
+        if (isDestroyed) return@thread
+        UiThreadUtil.runOnUiThread {
+          if (isDestroyed) return@runOnUiThread
+          reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
+            NaverMapSnapshotFailedEvent(surfaceId, reactTag, SNAPSHOT_ERROR_MESSAGE)
+          }
+        }
+      }
+    }
+  }
+
   fun addOverlay(
     child: View,
     index: Int,
@@ -244,6 +314,7 @@ class RNCNaverMapView(
   }
 
   override fun onDestroy() {
+    isDestroyed = true
     map?.removeOnMapRenderedListener(mapRenderedListener)
     removeAllViews()
     overlays.forEach {
@@ -298,5 +369,9 @@ class RNCNaverMapView(
         )
       }
     }
+  }
+
+  companion object {
+    private const val SNAPSHOT_ERROR_MESSAGE = "Failed to save map snapshot"
   }
 }

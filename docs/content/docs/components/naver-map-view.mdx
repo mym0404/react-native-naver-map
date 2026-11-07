@@ -61,6 +61,46 @@ function MyMap() {
 
 The two values are independent SDK states. Do not assume a relationship or transition order between them, or that either value must become `false`. Unlike the one-time `onMapLoaded` event, `onMapRendered` can run repeatedly and more frequently than camera change events. Avoid heavy work or unconditional state updates in this callback. A handler added later receives future rendered frames only; it does not replay a previous frame or provide a separate status query.
 
+### Taking a Map Snapshot
+
+Call `takeSnapshot` through the map ref to save the current map as a PNG file. The result contains a `file://` URI and the image's physical pixel dimensions.
+
+```tsx
+import { useRef } from 'react';
+import { Button } from 'react-native';
+import {
+  NaverMapView,
+  type NaverMapViewRef,
+} from '@mj-studio/react-native-naver-map';
+
+function MapSnapshot() {
+  const mapRef = useRef<NaverMapViewRef>(null);
+
+  const takeSnapshot = async () => {
+    const result = await mapRef.current?.takeSnapshot({
+      showControls: false,
+    });
+
+    if (result) {
+      console.log(result.uri, result.width, result.height);
+    }
+  };
+
+  return (
+    <>
+      <NaverMapView ref={mapRef} style={{ flex: 1 }} />
+      <Button title="Take snapshot" onPress={takeSnapshot} />
+    </>
+  );
+}
+```
+
+`showControls` defaults to `true`. It includes controls provided by the native Naver Map SDK, such as the zoom controls. React Native views placed outside the map are not included.
+
+The PNG file is stored in the app cache managed by the operating system. Copy it to persistent storage if it must remain available. Only one snapshot can run for each map instance at a time; another call rejects until the current call finishes. For a snapshot with all current map data rendered, wait until `onMapRendered` reports both `isFullyRendered` and `isRenderingStable` as `true` before calling it.
+
+PNG encoding or file-write errors reject the promise. Unmounting the map also rejects an in-progress snapshot.
+
 ### With Camera Control
 
 ```tsx

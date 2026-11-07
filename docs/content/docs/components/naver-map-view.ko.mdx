@@ -61,6 +61,46 @@ function MyMap() {
 
 두 값은 서로 독립적인 SDK 상태입니다. 두 값 사이의 관계나 변경 순서, 특정 값이 반드시 `false`가 된다고 가정하면 안 됩니다. 한 번만 호출되는 `onMapLoaded`와 달리 `onMapRendered`는 반복해서, 카메라 변경 이벤트보다 더 자주 호출될 수 있습니다. 콜백에서 무거운 작업을 실행하거나 조건 없이 상태를 갱신하지 마세요. 나중에 추가한 핸들러는 이후에 렌더링되는 프레임만 받으며, 이전 프레임을 다시 전달하거나 별도의 상태 조회를 제공하지 않습니다.
 
+### 지도 스냅숏 저장
+
+지도 ref의 `takeSnapshot`을 호출하면 현재 지도를 PNG 파일로 저장합니다. 반환값에는 `file://` URI와 이미지의 물리 픽셀 크기가 들어 있습니다.
+
+```tsx
+import { useRef } from 'react';
+import { Button } from 'react-native';
+import {
+  NaverMapView,
+  type NaverMapViewRef,
+} from '@mj-studio/react-native-naver-map';
+
+function MapSnapshot() {
+  const mapRef = useRef<NaverMapViewRef>(null);
+
+  const takeSnapshot = async () => {
+    const result = await mapRef.current?.takeSnapshot({
+      showControls: false,
+    });
+
+    if (result) {
+      console.log(result.uri, result.width, result.height);
+    }
+  };
+
+  return (
+    <>
+      <NaverMapView ref={mapRef} style={{ flex: 1 }} />
+      <Button title="스냅숏 저장" onPress={takeSnapshot} />
+    </>
+  );
+}
+```
+
+`showControls`의 기본값은 `true`입니다. 줌 컨트롤처럼 네이버 지도 네이티브 SDK가 제공하는 컨트롤을 이미지에 포함합니다. 지도 밖에 배치한 React Native 뷰는 포함하지 않습니다.
+
+PNG 파일은 운영체제가 관리하는 앱 캐시에 저장됩니다. 파일을 계속 보관해야 한다면 영구 저장소로 복사하세요. 지도 인스턴스마다 한 번에 하나의 스냅숏만 만들 수 있으며, 작업이 끝나기 전에 다시 호출하면 Promise가 거부됩니다. 현재 지도 데이터를 모두 렌더링한 이미지를 얻으려면 `onMapRendered`가 `isFullyRendered`와 `isRenderingStable`을 모두 `true`로 전달한 뒤 호출하세요.
+
+PNG 인코딩이나 파일 저장이 실패하면 Promise가 거부됩니다. 캡처 도중 지도 컴포넌트가 언마운트되어도 진행 중인 Promise가 거부됩니다.
+
 ### With Camera Control
 
 ```tsx

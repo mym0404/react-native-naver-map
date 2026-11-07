@@ -102,6 +102,9 @@ importers:
       '@types/fs-extra':
         specifier: ^11
         version: 11.0.4
+      '@types/pngjs':
+        specifier: 6.0.5
+        version: 6.0.5
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.6
@@ -117,6 +120,9 @@ importers:
       lefthook:
         specifier: ^1.12.3
         version: 1.12.3
+      pngjs:
+        specifier: 7.0.0
+        version: 7.0.0
       react:
         specifier: 'catalog:'
         version: 19.2.3
@@ -2547,6 +2553,9 @@ packages:
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
+
+  '@types/pngjs@6.0.5':
+    resolution: {integrity: sha512-0k5eKfrA83JOZPppLtS2C7OUtyNAl2wKNxfyYl9Q5g9lPkgBl/9hNyAu6HuEH2J4XmIv2znEpkDd0SaZVxW6iQ==}
 
   '@types/react-dom@19.2.3':
     resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
@@ -8130,6 +8139,10 @@ snapshots:
       undici-types: 7.10.0
 
   '@types/normalize-package-data@2.4.4': {}
+
+  '@types/pngjs@6.0.5':
+    dependencies:
+      '@types/node': 24.3.1
 
   '@types/react-dom@19.2.3(@types/react@19.2.6)':
     dependencies:
