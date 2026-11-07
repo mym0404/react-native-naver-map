@@ -37,12 +37,29 @@ jobs:
           key: e2e-ios-${{ runner.arch }}-${{ hashFiles('pnpm-lock.yaml', 'example/ios/Podfile.lock') }}
       - name: Build, install, and test
         run: pnpm e2e:ios
+      - name: Collect runner diagnostics
+        if: ${{ failure() }}
+        run: |
+          node --input-type=module <<'JS'
+          import { cpSync, existsSync, mkdirSync } from 'node:fs';
+          import { tmpdir } from 'node:os';
+          import path from 'node:path';
+          const source = path.join(tmpdir(), 'agent-device/apple-runner/logs');
+          if (existsSync(source)) {
+            mkdirSync('.e2e/diagnostics/ios', { recursive: true });
+            cpSync(source, '.e2e/diagnostics/ios/runner', { recursive: true });
+          }
+          JS
       - name: Upload results
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: e2e-ios
-          path: .e2e/results/ios
+          path: |
+            .e2e/results/ios
+            .e2e/diagnostics/ios
+            .e2e/device-state/ios-*/daemon.log
+            .e2e/device-state/ios-*/sessions/**/*.ndjson
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 7

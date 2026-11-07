@@ -114,6 +114,21 @@ try {
       isOwnedDevice = true;
     }
     await run('xcrun', ['simctl', 'bootstatus', device, '-b']);
+    await run(pnpm, [
+      'exec',
+      'agent-device',
+      'prepare',
+      'ios-runner',
+      '--platform',
+      'ios',
+      '--udid',
+      device,
+      '--session',
+      `${env.E2E_SESSION}-0`,
+      '--timeout',
+      '600000',
+      '--debug',
+    ]);
   } else {
     if (!existsSync(adb))
       throw new Error('Install the Android SDK and set ANDROID_HOME.');
