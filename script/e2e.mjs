@@ -113,6 +113,7 @@ try {
       ).trim();
       isOwnedDevice = true;
     }
+    await run('xcrun', ['simctl', 'bootstatus', device, '-b']);
   } else {
     if (!existsSync(adb))
       throw new Error('Install the Android SDK and set ANDROID_HOME.');
