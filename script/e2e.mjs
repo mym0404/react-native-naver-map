@@ -131,6 +131,8 @@ try {
       'ios',
       '--udid',
       device,
+      '--timeout',
+      '600000',
     ]);
     await run('xcrun', ['simctl', 'bootstatus', device, '-b']);
     await run('xcrun', [
