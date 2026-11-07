@@ -143,6 +143,7 @@ interface Props extends ViewProps {
   isRotateGesturesEnabled?: WithDefault<boolean, true>;
   isUseTextureViewAndroid?: WithDefault<boolean, false>;
   isStopGesturesEnabled?: WithDefault<boolean, true>;
+  isSymbolTapEnabled?: WithDefault<boolean, false>;
 
   locale?: string;
 
@@ -192,6 +193,9 @@ interface Props extends ViewProps {
       x: Double;
       y: Double;
     }>
+  >;
+  onTapSymbol?: DirectEventHandler<
+    Readonly<{ caption: string; latitude: Double; longitude: Double }>
   >;
   onTapClusterLeaf?: DirectEventHandler<Readonly<{ markerIdentifier: string }>>;
 

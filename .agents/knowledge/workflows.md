@@ -64,12 +64,14 @@ Use this flow when `src/spec/` changes or when a JS/native contract changes:
 - If Android still shows `Unable to load script` or falls back to `loadJSBundleFromAssets`, check `adb -s <device> reverse --list` and clear emulator HTTP proxy settings that redirect Metro status checks away from `localhost:8081`.
 - This follows the React Native Android device workflow documented at `https://reactnative.dev/docs/running-on-device`.
 - Realistic example verification needs a valid `NAVER_MAP_CLIENT_ID` registered for the example bundle/package ID. Android builds without one use `dummy` for compilation; E2E rejects that value before building. Local E2E must not rely on CI dummy secret files.
+- Root `.worktreeinclude` lists `.env` and both example credential files so Codex copies existing ignored files from the source checkout into new local managed worktrees. Secret values remain ignored by Git.
 
 ## Release Flow
 
 - `.changeset/config.json` configures Changesets for the single public root package; private example and docs packages are not versioned or tagged. Formatting is disabled because this repository does not use Prettier.
 - `.github/workflows/release.yml` runs on pushes to `main` and `next`, or manual dispatch from those branches. CI also checks both branches and PRs targeting them. Each release job verifies that its commit still matches the current branch head before taking release actions.
-- Pending changesets create or update a version PR using `pnpm release:version`. The PR updates the package version, changelog, and lockfile; it is not merged automatically.
+- Changesets that request version bumps create or update a version PR using `pnpm release:version`. The PR updates the package version, changelog, and lockfile; it is not merged automatically.
+- On release branch pushes, if Changesets selects no action, the workflow also checks for unpublished versions so empty changesets cannot block publishing.
 - After the version PR is merged, `pnpm release` runs `pnpm run t`, builds the package and docs, then publishes unpublished versions with Changesets. CI platform builds run separately.
 - `main` publishes stable versions of the current major without prerelease state, using npm tag `latest`. `next` starts from the current stable version and publishes the next version with npm tag `beta`; `.changeset/pre.json` must have mode `pre` and tag `beta`. A patch changeset after `2.9.0` produces `2.9.1-beta.0`.
 - To promote a tested beta, create a promotion branch from `next`, run `pnpm changeset pre exit`, and open a PR to `main`. After merging, the automatic version PR removes prerelease state and produces the stable version. Sync `next` with the released `main` and re-enter `beta` mode for the next cycle.

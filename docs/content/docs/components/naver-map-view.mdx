@@ -78,6 +78,21 @@ function MapWithControls() {
 }
 ```
 
+### Handling Map Symbol Taps
+
+Use `onTapSymbol` to handle taps on map symbols, such as places shown by the map. The callback receives the symbol's `caption`, `latitude`, and `longitude` on Android and iOS.
+
+```tsx
+<NaverMapView
+  style={{ flex: 1 }}
+  onTapSymbol={({ caption, latitude, longitude }) => {
+    console.log('Symbol tapped:', caption, latitude, longitude);
+  }}
+/>
+```
+
+When `onTapSymbol` is set, a symbol tap is consumed and does not call `onTapMap`. Without it, the tap is passed to `onTapMap` if that callback is set. For marker overlays you add yourself, use the overlay's `onTap` callback instead.
+
 ### With Markers
 
 ```tsx

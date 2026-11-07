@@ -10,6 +10,7 @@ import com.mjstudio.reactnativenavermap.event.NaverMapCameraChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapCameraIdleEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapSymbolTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
 import com.mjstudio.reactnativenavermap.overlay.RNCNaverMapOverlay
 import com.mjstudio.reactnativenavermap.overlay.marker.RNCNaverMapMarker
@@ -33,6 +34,7 @@ class RNCNaverMapView(
 ) : MapView(reactContext, mapOptions) {
   private var attacherGroup: ViewAttacherGroup? = null
   private var map: NaverMap? = null
+  var isSymbolTapEnabled = false
   val overlays = mutableListOf<RNCNaverMapOverlay<*>>()
 
   private val locationOverlayImageRenderer by lazy {
@@ -123,6 +125,19 @@ class RNCNaverMapView(
             pointF.y.toDouble(),
           )
         }
+      }
+      it.setOnSymbolClickListener { symbol ->
+        if (!isSymbolTapEnabled) return@setOnSymbolClickListener false
+        reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
+          NaverMapSymbolTapEvent(
+            surfaceId,
+            reactTag,
+            symbol.caption,
+            symbol.position.latitude,
+            symbol.position.longitude,
+          )
+        }
+        true
       }
     }
 
