@@ -519,6 +519,13 @@ export interface NaverMapViewProps extends ViewProps {
    */
   onInitialized?: () => void;
   /**
+   * Called once when the native map instance has loaded its initial map data and first displayed it.
+   * This event is not replayed when the handler is added after loading.
+   *
+   * @group Events
+   */
+  onMapLoaded?: () => void;
+  /**
    * 지도 유형, 디스플레이 옵션 등 지도와 관련된 옵션이 변경되면 이벤트가 발생합니다.
    * 지도의 옵션이 변경되면 콜백 메서드가 호출됩니다.
    *
@@ -752,6 +759,7 @@ export const NaverMapView = forwardRef(
       onLongTapMap: onLongTapMapProp,
       onTapSymbol: onTapSymbolProp,
       onInitialized,
+      onMapLoaded,
       onOptionChanged: onOptionChangedProp,
       customStyleId,
       onCustomStyleLoaded: onCustomStyleLoadedProp,
@@ -1232,6 +1240,7 @@ export const NaverMapView = forwardRef(
         symbolScale={clamp(symbolScale, 0, 2)}
         symbolPerspectiveRatio={clamp(symbolPerspectiveRatio, 0, 1)}
         onInitialized={onInitialized}
+        onMapLoaded={onMapLoaded}
         onCameraChanged={onCameraChangedProp ? onCameraChanged : undefined}
         onCameraIdle={onCameraIdleProp ? onCameraIdle : undefined}
         onTapMap={onTapMapProp ? onTapMap : undefined}

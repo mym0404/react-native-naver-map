@@ -39,6 +39,7 @@
     [self.mapView addCameraDelegate:self];
     [self.mapView setTouchDelegate:self];
     [self.mapView addOptionDelegate:self];
+    [self.mapView addLoadDelegate:self];
 
     // run after _eventEmitter available(new arch), direct event block set(old arch)
     runOnMainAfter(0.1, ^{
@@ -365,6 +366,13 @@
       .regionLatitudeDelta = bounds.northEastLat - bounds.southWestLat,
       .regionLongitudeDelta = bounds.northEastLng - bounds.southWestLng,
   });
+}
+
+- (void)mapViewDidFinishLoadingMap:(NMFMapView*)mapView {
+  if (!_rncParent.emitter)
+    return;
+
+  _rncParent.emitter->onMapLoaded({});
 }
 
 - (void)mapView:(NMFMapView*)mapView didTapMap:(NMGLatLng*)latlng point:(CGPoint)point {

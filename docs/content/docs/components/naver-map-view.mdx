@@ -32,6 +32,20 @@ function MyMap() {
 }
 ```
 
+### Map Initialization and Initial Data Loading
+
+`onInitialized` reports that the native map object is ready. `onMapLoaded` reports that the same native map instance has loaded its initial map data and displayed it for the first time.
+
+```tsx
+<NaverMapView
+  style={{ flex: 1 }}
+  onInitialized={() => console.log('Map initialized')}
+  onMapLoaded={() => console.log('Initial map data loaded')}
+/>
+```
+
+`onMapLoaded` is called once per native map instance. It is not called again when camera movement or option changes load more data, and adding the handler after the initial load does not replay the event. Its order relative to `onInitialized` is not guaranteed. It also does not report whether the current frame is fully rendered or whether rendering is stable.
+
 ### With Camera Control
 
 ```tsx

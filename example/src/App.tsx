@@ -23,6 +23,7 @@ import { GroundScreen } from './screens/GroundScreen';
 import { InfoWindowScreen } from './screens/InfoWindowScreen';
 import { LocationOverlayScreen } from './screens/LocationOverlayScreen';
 import { MapViewBasicScreen } from './screens/MapViewBasicScreen';
+import { MapViewLoadingScreen } from './screens/MapViewLoadingScreen';
 import { MarkerScreen } from './screens/MarkerScreen';
 import { MultiPathScreen } from './screens/MultiPathScreen';
 import { PathScreen } from './screens/PathScreen';
@@ -31,6 +32,7 @@ import { PolylineScreen } from './screens/PolylineScreen';
 
 const SCREENS = [
   { id: 'map-view-basic', title: 'Map View Basics' },
+  { id: 'map-view-loading', title: 'Map Loading' },
   { id: 'common', title: 'Common Settings' },
   { id: 'camera', title: 'Camera Controls' },
   { id: 'marker', title: 'Marker Overlay' },
@@ -87,6 +89,8 @@ export default function App() {
     switch (currentScreen) {
       case 'map-view-basic':
         return <MapViewBasicScreen onBack={handleBack} />;
+      case 'map-view-loading':
+        return <MapViewLoadingScreen onBack={handleBack} />;
       case 'common':
         return <CommonScreen onBack={handleBack} />;
       case 'camera':

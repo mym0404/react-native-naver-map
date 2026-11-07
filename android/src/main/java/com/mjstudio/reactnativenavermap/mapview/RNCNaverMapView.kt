@@ -10,6 +10,7 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.NaverMapCameraChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapCameraIdleEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapLoadedEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapLongTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapSymbolTapEvent
@@ -56,6 +57,11 @@ class RNCNaverMapView(
       map = it
       reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
         NaverMapInitializeEvent(surfaceId, reactTag)
+      }
+      it.addOnLoadListener {
+        reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
+          NaverMapLoadedEvent(surfaceId, reactTag)
+        }
       }
 
       it.addOnOptionChangeListener {
