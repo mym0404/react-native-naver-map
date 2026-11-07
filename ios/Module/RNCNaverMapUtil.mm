@@ -31,9 +31,100 @@ static BOOL RNCNaverMapInfoWindowIsOpen(NMFInfoWindow* infoWindow) {
   return infoWindow.marker != nil || infoWindow.mapView != nil;
 }
 
+#ifdef RCT_NEW_ARCH_ENABLED
+@interface RNCNaverMapUtil ()
+
+- (void)emitAuthFailure:(NSError*)error;
+
+@end
+
+@interface RNCNaverMapAuthCoordinator : NSObject <NMFAuthManagerDelegate>
+
+@property(atomic, weak, nullable) id<NMFAuthManagerDelegate> previousDelegate;
+@property(nonatomic, strong) NSHashTable<RNCNaverMapUtil*>* subscribers;
+
+- (void)uninstallIfUnused;
+
+@end
+
+static RNCNaverMapAuthCoordinator* activeAuthCoordinator;
+
+@implementation RNCNaverMapAuthCoordinator
+
+- (instancetype)init {
+  if (self = [super init]) {
+    _subscribers = [NSHashTable weakObjectsHashTable];
+  }
+  return self;
+}
+
+- (void)uninstallIfUnused {
+  // Weak slots can remain after release; allObjects counts only live modules.
+  if (activeAuthCoordinator != self || self.subscribers.allObjects.count > 0)
+    return;
+
+  NMFAuthManager* authManager = [NMFAuthManager shared];
+  if (authManager.delegate == self)
+    authManager.delegate = self.previousDelegate;
+  activeAuthCoordinator = nil;
+}
+
+- (void)authorized:(NMFAuthState)state error:(NSError*)error {
+  id<NMFAuthManagerDelegate> previousDelegate = self.previousDelegate;
+  [previousDelegate authorized:state error:error];
+
+  if (state != NMFAuthStateUnauthorized || !error)
+    return;
+
+  runOnMainSync(^{
+    [self uninstallIfUnused];
+    if (activeAuthCoordinator != self)
+      return;
+
+    for (RNCNaverMapUtil* subscriber in self.subscribers)
+      [subscriber emitAuthFailure:error];
+  });
+}
+
+@end
+#endif
+
 @implementation RNCNaverMapUtil
 
 RCT_EXPORT_MODULE()
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (NSNumber*)startObservingAuthFailures {
+  runOnMainSync(^{
+    [activeAuthCoordinator uninstallIfUnused];
+    NMFAuthManager* authManager = [NMFAuthManager shared];
+    if (!activeAuthCoordinator) {
+      activeAuthCoordinator = [RNCNaverMapAuthCoordinator new];
+      activeAuthCoordinator.previousDelegate = authManager.delegate;
+      authManager.delegate = activeAuthCoordinator;
+    }
+
+    [activeAuthCoordinator.subscribers addObject:self];
+  });
+  return @YES;
+}
+
+- (NSNumber*)stopObservingAuthFailures {
+  runOnMainSync(^{
+    RNCNaverMapAuthCoordinator* coordinator = activeAuthCoordinator;
+    [coordinator.subscribers removeObject:self];
+    [coordinator uninstallIfUnused];
+  });
+  return @YES;
+}
+
+- (void)emitAuthFailure:(NSError*)error {
+  [self emitOnAuthFailed:@{
+    @"code" : [NSString stringWithFormat:@"%ld", (long)error.code],
+    @"message" : error.localizedDescription ?: @"",
+  }];
+}
+#endif
 
 - (void)createInfoWindow:(NSString*)infoWindowId {
   runOnMainSync(^{
@@ -115,6 +206,9 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)invalidate {
+#ifdef RCT_NEW_ARCH_ENABLED
+  [self stopObservingAuthFailures];
+#endif
   runOnMainSync(^{
     for (NMFInfoWindow* infoWindow in RNCNaverMapInfoWindows().allValues) {
       [infoWindow close];

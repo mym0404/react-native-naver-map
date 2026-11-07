@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { mkdir } from 'node:fs/promises';
+import { copyFile, mkdir } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -10,9 +10,16 @@ process.chdir(root);
 if (existsSync('.env')) process.loadEnvFile('.env');
 
 const platform = process.argv[2];
-const testArgs = process.argv.slice(3);
-const clientId = process.env.NAVER_MAP_CLIENT_ID?.trim();
+const runnerArgs = process.argv.slice(3);
+const authFailureFlag = '--auth-failure';
+const isAuthFailure = runnerArgs.includes(authFailureFlag);
+const testArgs = runnerArgs.filter((arg) => arg !== authFailureFlag);
+const scenario = isAuthFailure ? 'auth-failure' : undefined;
+const clientId = isAuthFailure
+  ? 'invalidnavermapkey00'
+  : process.env.NAVER_MAP_CLIENT_ID?.trim();
 const output = path.join(root, '.e2e');
+const platformOutput = scenario ? `${platform}-${scenario}` : platform;
 const pnpm = 'pnpm';
 const androidSdk =
   process.env.ANDROID_HOME ??
@@ -21,13 +28,14 @@ const androidSdk =
 const adb = path.join(androidSdk, 'platform-tools/adb');
 const env = {
   ...process.env,
-  E2E_PLATFORM: platform,
-  E2E_SESSION: `naver-map-${platform}-${process.pid}`,
+  E2E_PLATFORM: platformOutput,
+  E2E_SCENARIO: scenario,
+  E2E_SESSION: `naver-map-${platformOutput}-${process.pid}`,
   E2E_TELEMETRY_DISABLED: '1',
   AGENT_DEVICE_STATE_DIR: path.join(
     output,
     'device-state',
-    `${platform}-${process.pid}`
+    `${platformOutput}-${process.pid}`
   ),
 };
 let child;
@@ -49,7 +57,7 @@ try {
   if (testArgs.some((arg) => arg === '--target' || arg.startsWith('--target='))) {
     throw new Error('Select the platform with pnpm e2e:ios or pnpm e2e:android, without --target.');
   }
-  if (!clientId || clientId === 'dummy') {
+  if (!isAuthFailure && (!clientId || clientId === 'dummy')) {
     throw new Error(
       'Set NAVER_MAP_CLIENT_ID in .env or the environment to a valid example-app client ID.'
     );
@@ -62,7 +70,7 @@ try {
 
   if (platform === 'ios') {
     await run('pod', ['install'], { cwd: path.join(root, 'example/ios') });
-    const build = path.join(output, 'build/ios');
+    const build = path.join(output, `build/${platformOutput}`);
     await run('xcodebuild', [
       '-workspace',
       'example/ios/example.xcworkspace',
@@ -80,6 +88,9 @@ try {
       'IPHONEOS_DEPLOYMENT_TARGET=15.1',
       `ARCHS=${process.arch === 'arm64' ? 'arm64' : 'x86_64'}`,
       `NAVER_MAP_CLIENT_ID=${clientId}`,
+      ...(isAuthFailure
+        ? ['PRODUCT_BUNDLE_IDENTIFIER=happy.mjstudio.rnnmap.example.authfailure']
+        : []),
     ]);
     device = process.env.E2E_DEVICE;
     if (!device) {
@@ -108,7 +119,7 @@ try {
           [
             'simctl',
             'create',
-            `naver-map-e2e-${process.pid}`,
+            `naver-map-e2e-${platformOutput}-${process.pid}`,
             'com.apple.CoreSimulator.SimDeviceType.iPhone-16',
             runtime,
           ],
@@ -201,8 +212,18 @@ try {
         '--no-daemon',
         `-PreactNativeArchitectures=${abi}`,
         `-PnaverMapClientId=${clientId}`,
+        ...(isAuthFailure ? ['-Pe2eAuthFailure=true'] : []),
       ],
       { cwd: path.join(root, 'example/android') }
+    );
+    const androidBuild = path.join(output, `build/${platformOutput}`);
+    await mkdir(androidBuild, { recursive: true });
+    await copyFile(
+      path.join(
+        root,
+        'example/android/app/build/outputs/apk/release/app-release.apk'
+      ),
+      path.join(androidBuild, 'app-release.apk')
     );
   }
 

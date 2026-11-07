@@ -13,6 +13,7 @@
     "location-overlay",
     "camera-control",
     "custom-style",
+    "authentication-failure",
     "optimization",
     "---More---",
     "[NotepadText][Changelog](https://github.com/mym0404/react-native-naver-map/releases)",

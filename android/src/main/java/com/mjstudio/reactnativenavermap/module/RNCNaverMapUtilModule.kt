@@ -1,5 +1,6 @@
 package com.mjstudio.reactnativenavermap.module
 
+import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.UiThreadUtil
@@ -21,9 +22,50 @@ class RNCNaverMapUtilModule(
 
   override fun invalidate() {
     runOnUiThreadSync {
+      stopObservingAuthFailuresOnUiThread()
       infoWindowRegistry.clear()
     }
     super.invalidate()
+  }
+
+  private var isObservingAuthFailures = false
+
+  @ReactMethod(isBlockingSynchronousMethod = true)
+  override fun startObservingAuthFailures(): Boolean =
+    runOnUiThreadSync {
+      if (!isObservingAuthFailures) {
+        RNCNaverMapAuthFailureCoordinator.add(reactApplicationContext, this)
+        isObservingAuthFailures = true
+      }
+      true
+    }
+
+  @ReactMethod(isBlockingSynchronousMethod = true)
+  override fun stopObservingAuthFailures(): Boolean =
+    runOnUiThreadSync {
+      stopObservingAuthFailuresOnUiThread()
+      true
+    }
+
+  internal fun emitAuthFailure(
+    code: String,
+    message: String,
+  ) {
+    if (!isObservingAuthFailures) return
+
+    emitOnAuthFailed(
+      Arguments.createMap().apply {
+        putString("code", code)
+        putString("message", message)
+      },
+    )
+  }
+
+  private fun stopObservingAuthFailuresOnUiThread() {
+    if (!isObservingAuthFailures) return
+
+    isObservingAuthFailures = false
+    RNCNaverMapAuthFailureCoordinator.remove(this)
   }
 
   @ReactMethod

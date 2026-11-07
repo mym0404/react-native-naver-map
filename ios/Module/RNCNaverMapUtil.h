@@ -10,7 +10,7 @@
 #ifdef RCT_NEW_ARCH_ENABLED
 #import "RNCNaverMapSpec.h"
 
-@interface RNCNaverMapUtil : NSObject <NativeRNCNaverMapUtilSpec>
+@interface RNCNaverMapUtil : NativeRNCNaverMapUtilSpecBase <NativeRNCNaverMapUtilSpec>
 #else
 #import <React/RCTBridgeModule.h>
 

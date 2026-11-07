@@ -2,11 +2,12 @@
 
 ## Scope
 
-`src/` owns the public TypeScript surface and the JS-to-native contract for Fabric components.
+`src/` owns the public TypeScript surface and the JS-to-native contracts for Fabric components and TurboModules.
 
 ## Structure
 
 - `src/index.tsx`: public export boundary
+- `src/auth.ts`: SDK-wide authentication failure subscriptions
 - `src/component/`: wrapper components
 - `src/spec/`: React Native codegen specs
 - `src/types/`: public domain types
@@ -45,6 +46,7 @@
 - Maintain naming parity with native classes and managers.
 - Keep `codegenNativeCommands()` signatures aligned with the wrapper methods and native command handlers.
 - `NativeRNCNaverMapUtil.ts` uses `TurboModuleRegistry.getEnforcing()` for the native utility contract.
+- Authentication failures use `addNaverMapAuthFailureListener` from `src/auth.ts`, not a map-view prop: the SDK authentication hook is process-global. The wrapper attaches the codegen event listener before synchronous native observation, shares one native observation across its JS listeners, and returns an idempotent `remove`. Register before the first map; no failure history is replayed.
 - Raw TurboModule specs stay internal unless a public wrapper explicitly exposes a supported API.
 - Public APIs should keep JSDoc metadata useful, especially `@param`, `@returns`, `@example`, `@default`, `@internal`, and `@platform` when relevant.
 - Public TypeScript APIs should expose only caller-facing concepts that users reasonably need to name: components, hooks, props, refs, event payloads, reusable input/content data, and shared domain types.

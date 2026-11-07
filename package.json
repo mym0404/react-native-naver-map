@@ -56,6 +56,8 @@
     "docs:dev": "cd docs && pnpm dev",
     "e2e:ios": "node script/e2e.mjs ios",
     "e2e:android": "node script/e2e.mjs android",
+    "e2e:auth-failure:ios": "node script/e2e.mjs ios --auth-failure",
+    "e2e:auth-failure:android": "node script/e2e.mjs android --auth-failure",
     "typecheck:e2e": "tsc -p e2e/tsconfig.json"
   },
   "keywords": [

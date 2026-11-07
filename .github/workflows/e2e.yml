@@ -36,8 +36,13 @@ jobs:
           key: e2e-ios-${{ runner.arch }}-${{ hashFiles('pnpm-lock.yaml', 'example/ios/Podfile.lock') }}
       - name: Build, install, and test
         run: pnpm e2e:ios
+      - name: Build, install, and test authentication failure
+        id: auth
+        run: pnpm e2e:auth-failure:ios
       - name: Collect runner diagnostics
         if: ${{ failure() }}
+        env:
+          E2E_DIAGNOSTIC_PLATFORM: ${{ steps.auth.outcome == 'failure' && 'ios-auth-failure' || 'ios' }}
         run: |
           node --input-type=module <<'JS'
           import { cpSync, existsSync, mkdirSync } from 'node:fs';
@@ -45,8 +50,9 @@ jobs:
           import path from 'node:path';
           const source = path.join(tmpdir(), 'agent-device/apple-runner/logs');
           if (existsSync(source)) {
-            mkdirSync('.e2e/diagnostics/ios', { recursive: true });
-            cpSync(source, '.e2e/diagnostics/ios/runner', { recursive: true });
+            const destination = path.join('.e2e/diagnostics', process.env.E2E_DIAGNOSTIC_PLATFORM);
+            mkdirSync(destination, { recursive: true });
+            cpSync(source, path.join(destination, 'runner'), { recursive: true });
           }
           JS
       - name: Upload results
@@ -56,7 +62,9 @@ jobs:
           name: e2e-ios
           path: |
             .e2e/results/ios
+            .e2e/results/ios-auth-failure
             .e2e/diagnostics/ios
+            .e2e/diagnostics/ios-auth-failure
             .e2e/device-state/ios-*/daemon.log
             .e2e/device-state/ios-*/sessions/**/*.ndjson
           include-hidden-files: true
@@ -103,13 +111,19 @@ jobs:
           profile: pixel_7
           emulator-options: -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           disable-animations: true
-          script: pnpm e2e:android
+          script: |
+            pnpm e2e:android
+            pnpm e2e:auth-failure:android
       - name: Upload results
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: e2e-android
-          path: .e2e/results/android
+          path: |
+            .e2e/results/android
+            .e2e/results/android-auth-failure
+            .e2e/device-state/android-*/daemon.log
+            .e2e/device-state/android-*/sessions/**/*.ndjson
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 7

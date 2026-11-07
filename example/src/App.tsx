@@ -14,6 +14,7 @@ import {
 } from 'react-native-permissions';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowheadPathScreen } from './screens/ArrowheadPathScreen';
+import { AuthFailureScreen } from './screens/AuthFailureScreen';
 import { CameraScreen } from './screens/CameraScreen';
 import { CircleScreen } from './screens/CircleScreen';
 import { CitiesScreen } from './screens/CitiesScreen';
@@ -41,6 +42,7 @@ const SCREENS = [
   { id: 'map-view-snapshot', title: 'Map Snapshot' },
   { id: 'info-window-content', title: 'Custom Info Window' },
   { id: 'cluster-marker-style', title: 'Cluster Marker Style' },
+  { id: 'auth-failure', title: 'Authentication' },
   { id: 'common', title: 'Common Settings' },
   { id: 'camera', title: 'Camera Controls' },
   { id: 'marker', title: 'Marker Overlay' },
@@ -107,6 +109,8 @@ export default function App() {
         return <InfoWindowContentScreen onBack={handleBack} />;
       case 'cluster-marker-style':
         return <ClusterMarkerStyleScreen onBack={handleBack} />;
+      case 'auth-failure':
+        return <AuthFailureScreen onBack={handleBack} />;
       case 'common':
         return <CommonScreen onBack={handleBack} />;
       case 'camera':

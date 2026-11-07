@@ -9,6 +9,8 @@
 - Keep native command names aligned with the TypeScript spec.
 - Read `rn-native-module.md` before changing TurboModule, Fabric component, command, or event contracts.
 - Review cross-platform parity before treating behavior as platform-specific.
+- Authentication observation uses the native utility TurboModule and a process-wide coordinator with weak module subscribers. Install the SDK hook only during explicit observation, preserve and forward the previous host callback, and restore it after the last subscriber only if the SDK still points to the coordinator. Preserve later host replacements. Never change credentials or flush SDK caches for an event subscription.
+- Android auth failures arrive on the UI thread. iOS forwards every auth state to the previous weak delegate on the received thread and emits only unauthorized results with an error on main. Both expose native codes as strings and diagnostic messages through the codegen event. Synchronous start/stop form a barrier before map creation; invalidation removes the module from observation.
 - Prefer existing event and manager patterns over one-off command or emission paths.
 - Edit source implementations, not generated interfaces or build output.
 - Existing module or image-loading bridge interop should stay tightly scoped to its current native responsibilities. Do not treat that as permission to reintroduce Bridge-era UI fallback behavior.

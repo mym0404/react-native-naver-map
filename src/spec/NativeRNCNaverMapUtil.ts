@@ -1,7 +1,15 @@
 import { type TurboModule, TurboModuleRegistry } from 'react-native';
-import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
+import type {
+  Double,
+  EventEmitter,
+} from 'react-native/Libraries/Types/CodegenTypes';
 
 export interface Spec extends TurboModule {
+  readonly onAuthFailed: EventEmitter<
+    Readonly<{ code: string; message: string }>
+  >;
+  startObservingAuthFailures(): boolean;
+  stopObservingAuthFailures(): boolean;
   createInfoWindow(id: string): void;
   destroyInfoWindow(id: string): void;
   closeInfoWindow(id: string): void;
