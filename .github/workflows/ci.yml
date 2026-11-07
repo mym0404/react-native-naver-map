@@ -5,9 +5,6 @@ on:
       - main
       - next
   pull_request:
-    branches:
-      - main
-      - next
 
 jobs:
   check:
