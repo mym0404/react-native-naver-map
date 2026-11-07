@@ -128,6 +128,29 @@ RCT_EXPORT_MODULE()
   return RNCNaverMapInfoWindows()[infoWindowId];
 }
 
++ (void)registerInfoWindow:(NMFInfoWindow*)infoWindow withIdentifier:(NSString*)infoWindowId {
+  runOnMainSync(^{
+    NMFInfoWindow* registeredInfoWindow = RNCNaverMapInfoWindows()[infoWindowId];
+    if (registeredInfoWindow == infoWindow)
+      return;
+
+    [registeredInfoWindow close];
+    RNCNaverMapInfoWindows()[infoWindowId] = infoWindow;
+    [RNCNaverMapInfoWindowContents() removeObjectForKey:infoWindowId];
+  });
+}
+
++ (void)unregisterInfoWindow:(NMFInfoWindow*)infoWindow withIdentifier:(NSString*)infoWindowId {
+  runOnMainSync(^{
+    if (RNCNaverMapInfoWindows()[infoWindowId] != infoWindow)
+      return;
+
+    [infoWindow close];
+    [RNCNaverMapInfoWindows() removeObjectForKey:infoWindowId];
+    [RNCNaverMapInfoWindowContents() removeObjectForKey:infoWindowId];
+  });
+}
+
 + (void)closeInfoWindowsForMapView:(NMFMapView*)mapView {
   if (!mapView) {
     return;

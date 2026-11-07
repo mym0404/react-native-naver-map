@@ -49,6 +49,14 @@ export default codegenNativeComponent<Props>('RNCNaverMapMarker');
 - Android stores one listener identity and the enabled value, applies it when `getMapAsync` completes, and removes the listener when disabled or destroyed. iOS adds or removes the same render delegate when the internal flag changes.
 - Forward the SDK's independent `fully` and `stable` values as `isFullyRendered` and `isRenderingStable`. Do not infer either from camera idle, initial loading, or the other value.
 
+### Custom Info-Window Hosts
+
+- `NaverMapInfoWindow` is a direct map child whose single, explicitly sized React view supplies the complete custom visual. `useInfoWindow` retains the SDK default text bubble. Both reuse `src/internal/useInfoWindowControls.ts` and the same package-owned native registry without exposing ids.
+- Android uses `InfoWindow.Adapter` to draw the already laid-out React child into a bitmap and the existing offscreen attacher to keep it attached. SDK `ViewAdapter` calls `measure(0, 0)`, which React views reject; do not use it for React content. iOS uses `NMFOverlayImageDataSource.viewWithOverlay:` returning a `UIView`, with a weak owner proxy to avoid retaining the Fabric host through the registry.
+- Custom content is a bitmap, not an interactive React subtree on the map. Wrapper-driven child commits request a deferred, coalesced SDK redraw. Descendant-local state or asynchronous image changes need the public ref's `invalidate()` after the content commits.
+- The native command is named `invalidateContent`; iOS `invalidate` belongs to Fabric teardown. Native unmount closes and unregisters the owned window and detaches its content source. Parent removal during a reorder must not permanently destroy a still-mounted component.
+- Native lookup rejects unmeasured content before an SDK open can snapshot a zero-size view. A control method's boolean only reports whether a command was sent, matching the existing text hook.
+
 ### Native Commands
 
 - Define imperative APIs with `codegenNativeCommands<NativeCommands>()`.

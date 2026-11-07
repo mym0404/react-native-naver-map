@@ -181,7 +181,6 @@ try {
             'android',
             '--device',
             avd,
-            '--headless',
             '--json',
           ],
           { capture: true }

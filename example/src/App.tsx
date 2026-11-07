@@ -20,6 +20,7 @@ import { CitiesScreen } from './screens/CitiesScreen';
 import { ClusteringScreen } from './screens/ClusteringScreen';
 import { CommonScreen } from './screens/CommonScreen';
 import { GroundScreen } from './screens/GroundScreen';
+import { InfoWindowContentScreen } from './screens/InfoWindowContentScreen';
 import { InfoWindowScreen } from './screens/InfoWindowScreen';
 import { LocationOverlayScreen } from './screens/LocationOverlayScreen';
 import { MapViewBasicScreen } from './screens/MapViewBasicScreen';
@@ -37,6 +38,7 @@ const SCREENS = [
   { id: 'map-view-loading', title: 'Map Loading' },
   { id: 'map-view-rendering', title: 'Map Rendering' },
   { id: 'map-view-snapshot', title: 'Map Snapshot' },
+  { id: 'info-window-content', title: 'Custom Info Window' },
   { id: 'common', title: 'Common Settings' },
   { id: 'camera', title: 'Camera Controls' },
   { id: 'marker', title: 'Marker Overlay' },
@@ -99,6 +101,8 @@ export default function App() {
         return <MapViewRenderingScreen onBack={handleBack} />;
       case 'map-view-snapshot':
         return <MapViewSnapshotScreen onBack={handleBack} />;
+      case 'info-window-content':
+        return <InfoWindowContentScreen onBack={handleBack} />;
       case 'common':
         return <CommonScreen onBack={handleBack} />;
       case 'camera':
