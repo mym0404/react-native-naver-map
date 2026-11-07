@@ -86,7 +86,7 @@ jobs:
       - name: Start emulator display
         run: |
           sudo apt-get update
-          sudo apt-get install -y x11-utils
+          sudo apt-get install -y x11-utils libpulse0
           Xvfb "$DISPLAY" -screen 0 1280x1024x24 > "$RUNNER_TEMP/emulator-display.log" 2>&1 &
           timeout 10s bash -c 'until xdpyinfo -display "$DISPLAY" > /dev/null 2>&1; do sleep 0.1; done' || {
             cat "$RUNNER_TEMP/emulator-display.log"
