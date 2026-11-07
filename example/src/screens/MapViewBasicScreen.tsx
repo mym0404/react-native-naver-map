@@ -10,14 +10,14 @@ const initialCamera = { latitude: 37.5665, longitude: 126.978, zoom: 14 };
 const destination = { latitude: 37.49804, longitude: 127.02758 };
 const waiting = 'waiting';
 
-export const SmokeScreen = ({ onBack }: { onBack: () => void }) => {
+export const MapViewBasicScreen = ({ onBack }: { onBack: () => void }) => {
   const mapRef = useRef<NaverMapViewRef>(null);
   const [isInitialized, setIsInitialized] = useState(false);
   const [camera, setCamera] = useState(waiting);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
-      <Header title="Map Smoke Test" onBack={onBack} />
+      <Header title="Map View Basics" onBack={onBack} />
       <ScreenLayout
         mapRef={mapRef}
         mapProps={{
@@ -28,10 +28,10 @@ export const SmokeScreen = ({ onBack }: { onBack: () => void }) => {
         }}
         controls={
           <>
-            <Text testID="smoke-initialized" style={{ color: '#fff' }}>
+            <Text testID="map-view-basic-initialized" style={{ color: '#fff' }}>
               {isInitialized ? 'initialized' : waiting}
             </Text>
-            <Text testID="smoke-camera" style={{ color: '#fff' }}>
+            <Text testID="map-view-basic-camera" style={{ color: '#fff' }}>
               {camera}
             </Text>
             <Btn

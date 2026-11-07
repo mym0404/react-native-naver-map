@@ -22,15 +22,15 @@ import { CommonScreen } from './screens/CommonScreen';
 import { GroundScreen } from './screens/GroundScreen';
 import { InfoWindowScreen } from './screens/InfoWindowScreen';
 import { LocationOverlayScreen } from './screens/LocationOverlayScreen';
+import { MapViewBasicScreen } from './screens/MapViewBasicScreen';
 import { MarkerScreen } from './screens/MarkerScreen';
 import { MultiPathScreen } from './screens/MultiPathScreen';
 import { PathScreen } from './screens/PathScreen';
 import { PolygonScreen } from './screens/PolygonScreen';
 import { PolylineScreen } from './screens/PolylineScreen';
-import { SmokeScreen } from './screens/SmokeScreen';
 
 const SCREENS = [
-  { id: 'smoke', title: 'Map Smoke Test' },
+  { id: 'map-view-basic', title: 'Map View Basics' },
   { id: 'common', title: 'Common Settings' },
   { id: 'camera', title: 'Camera Controls' },
   { id: 'marker', title: 'Marker Overlay' },
@@ -85,8 +85,8 @@ export default function App() {
 
   const renderScreen = () => {
     switch (currentScreen) {
-      case 'smoke':
-        return <SmokeScreen onBack={handleBack} />;
+      case 'map-view-basic':
+        return <MapViewBasicScreen onBack={handleBack} />;
       case 'common':
         return <CommonScreen onBack={handleBack} />;
       case 'camera':

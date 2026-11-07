@@ -57,11 +57,11 @@ cd example && pnpm run start
 
 ### Mobile E2E
 
-The shared smoke suite uses [e2e](https://github.com/tester-army/e2e) and its
+The shared E2E suite uses [e2e](https://github.com/tester-army/e2e) and its
 `agent-device` mobile engine. It runs without an AI model or model API key.
-It checks map initialization, navigation back to the menu, and native camera
-coordinates after an imperative move. It does not assert that map tiles have
-finished loading or compare screenshots.
+The map-view basic tests check map initialization, navigation back to the menu,
+and native camera coordinates after an imperative move. These tests do not assert
+that map tiles have finished loading or compare screenshots.
 
 Install the mise toolchain and dependencies once:
 
@@ -111,6 +111,12 @@ commands. This is a public example-app client ID, so fork PRs do not need secret
 A missing ID fails the run; the suite never substitutes a dummy key or silently
 skips tests. Reports and logs are uploaded as platform-specific artifacts for
 seven days, including when tests fail.
+
+Tests are grouped by feature under `e2e/<feature>/*.e2e.ts`. The initial suite,
+`e2e/map-view/basic.e2e.ts`, uses the example's `MapViewBasicScreen` for basic map
+behavior. Add scenarios to the matching feature directory, or create another
+feature directory. `e2e.config.ts` discovers all `e2e/**/*.e2e.ts` files for both
+platforms.
 
 Run `pnpm typecheck:e2e` to check test/config types without building the app.
 

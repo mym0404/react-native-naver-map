@@ -11,7 +11,7 @@ This repository publishes `@mj-studio/react-native-naver-map`, a Fabric-only Rea
 - `ios/`: Objective-C++ Fabric implementation, overlays, native module utilities
 - `android/`: Kotlin managers and views plus generated New Architecture interfaces
 - `example/`: manual runtime verification app
-- `e2e/`: deterministic native smoke tests using `e2e` and `@e2e-dev/mobile`
+- `e2e/`: deterministic native E2E tests using `e2e` and `@e2e-dev/mobile`
 - `docs/`: Next.js + Fumadocs site
 - `expo-config-plugin/`: Expo config plugin source compiled into `build/`
 - `script/`: codegen, formatting, and lint helpers

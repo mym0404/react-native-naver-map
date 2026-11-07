@@ -19,7 +19,7 @@ React Native Naver Map monorepo for `@mj-studio/react-native-naver-map`, a Fabri
 ├── ios/                         # Fabric iOS implementation and native utilities
 ├── android/                     # Fabric Android managers, views, overlays, utilities
 ├── example/                     # React Native CLI app for manual runtime checks
-├── e2e/                         # shared iOS and Android smoke tests
+├── e2e/                         # shared iOS and Android E2E tests
 ├── docs/                        # Next.js + Fumadocs documentation site
 ├── expo-config-plugin/          # Expo config plugin source; build output is generated
 ├── script/                      # codegen and native lint/format helpers
@@ -92,7 +92,7 @@ Agents should work in this repository by making assumptions visible, choosing th
 - Contract changes: run `pnpm codegen`, inspect generated native selectors or abstract methods, then run `pnpm run t`.
 - Native module, Fabric command, or native runtime changes need platform builds for the touched surfaces; use `pnpm ci:ios`/`pnpm ci:android` or the matching Turbo commands.
 - Android build compatibility changes also need compilation against the affected React Native versions and the workspace baseline; see `.agents/knowledge/native-platforms.md`.
-- Runtime confidence comes from `example/` smoke checks when wrapper behavior or screen-visible behavior changes.
+- Runtime confidence comes from `example/` runtime checks when wrapper behavior or screen-visible behavior changes.
 - Read `.agents/knowledge/workflows.md` for command coverage, release flow, secret requirements, and validation blind spots.
 
 ## Design System

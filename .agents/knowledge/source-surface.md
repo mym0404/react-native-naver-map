@@ -73,7 +73,7 @@
 
 - Source-only edits: `pnpm run t`
 - Spec edits: `pnpm codegen` then `pnpm run t`
-- Wrapper behavior edits: smoke-check the relevant screen in `example/src/screens/`
+- Wrapper behavior edits: verify the relevant screen in `example/src/screens/`
 
 ## Related Documents
 
