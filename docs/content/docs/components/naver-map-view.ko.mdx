@@ -32,6 +32,20 @@ function MyMap() {
 }
 ```
 
+### 지도 초기화와 초기 데이터 로딩
+
+`onInitialized`는 네이티브 지도 객체가 준비된 시점을 알려줍니다. `onMapLoaded`는 같은 네이티브 지도 인스턴스가 초기 지도 데이터를 로드하고 처음 표시한 시점을 알려줍니다.
+
+```tsx
+<NaverMapView
+  style={{ flex: 1 }}
+  onInitialized={() => console.log('Map initialized')}
+  onMapLoaded={() => console.log('Initial map data loaded')}
+/>
+```
+
+`onMapLoaded`는 네이티브 지도 인스턴스당 한 번 호출됩니다. 카메라 이동이나 옵션 변경으로 추가 데이터를 로드할 때는 다시 호출되지 않고, 초기 로딩 후 핸들러를 추가해도 이벤트를 다시 전달하지 않습니다. `onInitialized`와의 호출 순서는 보장하지 않습니다. 현재 프레임이 모두 렌더링됐는지나 렌더링이 안정 상태인지는 알려주지 않습니다.
+
 ### With Camera Control
 
 ```tsx

@@ -154,6 +154,7 @@ interface Props extends ViewProps {
   customStyleId?: string;
 
   onInitialized?: DirectEventHandler<Readonly<{}>>;
+  onMapLoaded?: DirectEventHandler<Readonly<{}>>;
   onOptionChanged?: DirectEventHandler<
     Readonly<{
       locationTrackingMode: string;

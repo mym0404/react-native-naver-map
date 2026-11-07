@@ -19,6 +19,7 @@ import com.mjstudio.reactnativenavermap.event.NaverMapCoordinateToScreenEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapCustomStyleLoadFailedEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapCustomStyleLoadedEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapLoadedEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapLongTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapScreenToCoordinateEvent
@@ -123,6 +124,7 @@ class RNCNaverMapViewManager(
   override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> =
     (super.getExportedCustomDirectEventTypeConstants() ?: mutableMapOf()).apply {
       registerDirectEvent(this, NaverMapInitializeEvent.EVENT_NAME)
+      registerDirectEvent(this, NaverMapLoadedEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapOptionChangeEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCameraChangeEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCameraIdleEvent.EVENT_NAME)
