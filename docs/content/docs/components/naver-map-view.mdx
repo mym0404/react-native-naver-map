@@ -93,6 +93,19 @@ Use `onTapSymbol` to handle taps on map symbols, such as places shown by the map
 
 When `onTapSymbol` is set, a symbol tap is consumed and does not call `onTapMap`. Without it, the tap is passed to `onTapMap` if that callback is set. For marker overlays you add yourself, use the overlay's `onTap` callback instead.
 
+### Handling Map Long Presses
+
+Use `onLongTapMap` to handle a long press on the map. The callback receives the pressed location as `latitude` and `longitude`, plus `x` and `y` relative to the map view. The screen coordinates use DP on Android and PT on iOS, so you can pass them directly to `screenToCoordinate`.
+
+```tsx
+<NaverMapView
+  style={{ flex: 1 }}
+  onLongTapMap={({ latitude, longitude, x, y }) => {
+    console.log('Map long-pressed:', latitude, longitude, x, y);
+  }}
+/>
+```
+
 ### With Markers
 
 ```tsx

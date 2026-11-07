@@ -5,10 +5,12 @@ import android.graphics.Bitmap
 import android.view.View
 import android.view.ViewGroup
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.ThemedReactContext
 import com.mjstudio.reactnativenavermap.event.NaverMapCameraChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapCameraIdleEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapInitializeEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapLongTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapSymbolTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
@@ -123,6 +125,18 @@ class RNCNaverMapView(
             latLng.longitude,
             pointF.x.toDouble(),
             pointF.y.toDouble(),
+          )
+        }
+      }
+      it.setOnMapLongClickListener { pointF, latLng ->
+        reactContext.emitEvent(reactTag) { surfaceId, reactTag ->
+          NaverMapLongTapEvent(
+            surfaceId,
+            reactTag,
+            latLng.latitude,
+            latLng.longitude,
+            PixelUtil.toDIPFromPixel(pointF.x).toDouble(),
+            PixelUtil.toDIPFromPixel(pointF.y).toDouble(),
           )
         }
       }
