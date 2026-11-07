@@ -33,10 +33,17 @@ export const MapViewBasicScreen = ({ onBack }: { onBack: () => void }) => {
           testID: 'map-view-basic-map',
           onLayout: ({ nativeEvent: { layout } }) =>
             setMapSize({ width: layout.width, height: layout.height }),
-          onLongTapMap: ({ latitude, longitude, x, y }) =>
+          onLongTapMap: async ({ latitude, longitude, x, y }) => {
+            const map = mapRef.current;
+            if (!map) return;
+            const projected = await map.screenToCoordinate({
+              screenX: x,
+              screenY: y,
+            });
             setLongTap(
-              `${latitude},${longitude},${x},${y},${mapSize.width},${mapSize.height}`
-            ),
+              `${latitude},${longitude},${x},${y},${mapSize.width},${mapSize.height},${projected.isValid},${projected.latitude},${projected.longitude}`
+            );
+          },
           onInitialized: () => setIsInitialized(true),
           onCameraIdle: ({ latitude, longitude }) =>
             setCamera(`${latitude.toFixed(4)},${longitude.toFixed(4)}`),
