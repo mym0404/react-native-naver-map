@@ -44,7 +44,7 @@ Use this flow when `src/spec/` changes or when a JS/native contract changes:
 ## CI And Cached Native Builds
 
 - The shared CI setup uses `jdx/mise-action` to install the Node.js, pnpm, Java, ccache, ktlint, and clang-format versions in `mise.toml` before installing dependencies.
-- `.github/workflows/e2e.yml` runs deterministic iOS/Android E2E tests on PRs and pushes to `main`/`next`, plus manual dispatch. It reads the public repository Variable `NAVER_MAP_CLIENT_ID` and uploads platform reports and failure traces.
+- `.github/workflows/e2e.yml` runs deterministic iOS/Android E2E tests on all PRs, including stacked PRs, and pushes to `main`/`next`, plus manual dispatch. It reads the public repository Variable `NAVER_MAP_CLIENT_ID` and uploads platform reports and failure traces.
 - Cached native CI builds: `pnpm turbo:ios`, `pnpm turbo:android`
 - Direct native CI builds: `pnpm ci:ios`, `pnpm ci:android`
 - Turbo commands use single-package mode with dedicated cache directories under `.turbo/ios` and `.turbo/android`.
@@ -54,6 +54,7 @@ Use this flow when `src/spec/` changes or when a JS/native contract changes:
 
 - Use `example/` for manual behavior checks after API, wrapper, or native changes.
 - `pnpm e2e:ios` and `pnpm e2e:android` build a Release example, prepare a dedicated device, install, and run all `e2e/**/*.e2e.ts` suites through `e2e.config.ts`. Suites are grouped by feature, starting with `e2e/map-view/basic.e2e.ts`. The runner is `script/e2e.mjs`; Metro is not used for E2E.
+- Both platform commands forward additional arguments except `--target` to `e2e run`, so a suite path selects one feature locally. CI runs the complete suite. CI and E2E accept PRs targeting feature branches as well as release branches.
 - E2E requires a valid example-app `NAVER_MAP_CLIENT_ID` in the environment or root `.env` (copy `.env.example`). Missing/dummy IDs fail preflight. Android builds read the environment variable; iOS E2E passes it as an Xcode build setting.
 - `E2E_DEVICE` pins a prepared simulator UDID/emulator serial; the runner preserves that device. Without it, iOS creates/deletes a dedicated simulator and Android creates/reuses a dedicated API 36 AVD and stops its emulator. `E2E_IOS_RUNTIME` overrides local newest-runtime selection; CI pins iOS 18.5 with Xcode 16.4.
 - E2E checks native initialization and camera idle coordinates, not map tile completion. `pnpm typecheck:e2e` is part of `pnpm run t`; results and builds live in ignored `.e2e/`.
@@ -70,7 +71,7 @@ Use this flow when `src/spec/` changes or when a JS/native contract changes:
 ## Release Flow
 
 - `.changeset/config.json` configures Changesets for the single public root package; private example and docs packages are not versioned or tagged. Formatting is disabled because this repository does not use Prettier.
-- `.github/workflows/release.yml` runs on pushes to `main` and `next`, or manual dispatch from those branches. CI also checks both branches and PRs targeting them. Each release job verifies that its commit still matches the current branch head before taking release actions.
+- `.github/workflows/release.yml` runs on pushes to `main` and `next`, or manual dispatch from those branches. CI checks pushes to both branches and PRs targeting any branch. Each release job verifies that its commit still matches the current branch head before taking release actions.
 - Changesets that request version bumps create or update a version PR using `pnpm release:version`. The PR updates the package version, changelog, and lockfile; it is not merged automatically.
 - On release branch pushes, if Changesets selects no action, the workflow also checks for unpublished versions so empty changesets cannot block publishing.
 - After the version PR is merged, `pnpm release` runs `pnpm run t`, builds the package and docs, then publishes unpublished versions with Changesets. CI platform builds run separately.

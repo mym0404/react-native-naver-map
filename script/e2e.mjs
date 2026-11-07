@@ -10,6 +10,7 @@ process.chdir(root);
 if (existsSync('.env')) process.loadEnvFile('.env');
 
 const platform = process.argv[2];
+const testArgs = process.argv.slice(3);
 const clientId = process.env.NAVER_MAP_CLIENT_ID?.trim();
 const output = path.join(root, '.e2e');
 const pnpm = 'pnpm';
@@ -44,6 +45,9 @@ for (const signal of ['SIGINT', 'SIGTERM']) {
 try {
   if (platform !== 'ios' && platform !== 'android') {
     throw new Error('Usage: pnpm e2e:ios | pnpm e2e:android');
+  }
+  if (testArgs.some((arg) => arg === '--target' || arg.startsWith('--target='))) {
+    throw new Error('Select the platform with pnpm e2e:ios or pnpm e2e:android, without --target.');
   }
   if (!clientId || clientId === 'dummy') {
     throw new Error(
@@ -201,7 +205,7 @@ try {
   }
 
   env.E2E_DEVICE = device;
-  await run(pnpm, ['exec', 'e2e', 'run', '--target', platform]);
+  await run(pnpm, ['exec', 'e2e', 'run', '--target', platform, ...testArgs]);
 } catch (error) {
   console.error(error.message);
   process.exitCode = isInterrupted ? 130 : 1;

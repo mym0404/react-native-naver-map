@@ -103,8 +103,8 @@ Without shell activation, prefix the command with `mise exec --`.
   retain screenshot and trace evidence. Build output streams to the terminal or
   CI log. Generated results and builds are ignored by Git.
 
-The `E2E` GitHub Actions workflow runs both platforms on PRs and pushes targeting
-`main` or `next`, and supports manual runs. Add the repository **Variable**
+The `E2E` GitHub Actions workflow runs both platforms on all PRs, including
+stacked PRs, and pushes to `main` or `next`. It also supports manual runs. Add the repository **Variable**
 `NAVER_MAP_CLIENT_ID` under **Settings → Secrets and variables → Actions → Variables**.
 The workflow reads `${{ vars.NAVER_MAP_CLIENT_ID }}` and passes it to the same local
 commands. This is a public example-app client ID, so fork PRs do not need secrets.
@@ -120,6 +120,14 @@ platforms. Import `test` from `e2e/fixtures.ts` in new suites so the SDK install
 the configured build before each test and applies location permissions before
 launch. The shared fixture uses the agent-device client to grant iOS always-location
 permission and Android runtime permissions, including background location.
+
+To run one feature suite locally, pass its path to either platform command.
+The command fixes the platform, so additional `--target` options are rejected.
+
+```sh
+pnpm e2e:ios e2e/map-view/basic.e2e.ts
+pnpm e2e:android e2e/map-view/basic.e2e.ts
+```
 
 Run `pnpm typecheck:e2e` to check test/config types without building the app.
 
