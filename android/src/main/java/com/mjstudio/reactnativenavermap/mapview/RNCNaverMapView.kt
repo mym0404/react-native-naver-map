@@ -21,6 +21,7 @@ import com.mjstudio.reactnativenavermap.event.NaverMapSnapshotReadyEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapSymbolTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
 import com.mjstudio.reactnativenavermap.overlay.RNCNaverMapOverlay
+import com.mjstudio.reactnativenavermap.overlay.infowindow.RNCNaverMapInfoWindow
 import com.mjstudio.reactnativenavermap.overlay.marker.RNCNaverMapMarker
 import com.mjstudio.reactnativenavermap.util.emitEvent
 import com.mjstudio.reactnativenavermap.util.image.RNCNaverMapTaggedImageRenderer
@@ -292,14 +293,11 @@ class RNCNaverMapView(
   ) = withMap { map ->
     when (child) {
       is RNCNaverMapMarker -> {
-        child.addToMap(map)
-        overlays.add(index, child)
-        val visibility: Int = child.visibility
-        child.visibility = INVISIBLE
-        (child.parent as? ViewGroup)?.removeView(child)
-        // Add to the parent group
-        attacherGroup!!.addView(child)
-        child.visibility = visibility
+        attachOverlayView(child, index, map)
+      }
+
+      is RNCNaverMapInfoWindow -> {
+        attachOverlayView(child, index, map)
       }
 
       is RNCNaverMapOverlay<*> -> {
@@ -332,8 +330,11 @@ class RNCNaverMapView(
     withMap { map ->
       when (val child = overlays.removeAt(index)) {
         is RNCNaverMapMarker -> {
-          child.removeFromMap(map)
-          attacherGroup?.removeView(child)
+          detachOverlayView(child, map)
+        }
+
+        is RNCNaverMapInfoWindow -> {
+          detachOverlayView(child, map)
         }
 
         else -> {
@@ -341,6 +342,28 @@ class RNCNaverMapView(
         }
       }
     }
+
+  private fun attachOverlayView(
+    child: RNCNaverMapOverlay<*>,
+    index: Int,
+    map: NaverMap,
+  ) {
+    child.addToMap(map)
+    overlays.add(index, child)
+    val visibility = child.visibility
+    child.visibility = INVISIBLE
+    (child.parent as? ViewGroup)?.removeView(child)
+    attacherGroup!!.addView(child)
+    child.visibility = visibility
+  }
+
+  private fun detachOverlayView(
+    child: RNCNaverMapOverlay<*>,
+    map: NaverMap,
+  ) {
+    child.removeFromMap(map)
+    attacherGroup?.removeView(child)
+  }
 
   fun setupLocationSource() {
     reactContext.currentActivity?.also { activity ->

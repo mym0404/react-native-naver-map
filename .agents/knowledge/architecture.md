@@ -22,6 +22,7 @@ This repository publishes `@mj-studio/react-native-naver-map`, a Fabric-only Rea
 
 - `NaverMapView` is the main map component.
 - Overlay components cover marker, circle, polygon, polyline, path, multi-path, arrowhead path, and ground overlays.
+- `NaverMapInfoWindow` owns a custom React-view content host and opens through refs; it shares the native InfoWindow registry with the text-only `useInfoWindow` hook.
 - Components render through Fabric-native views rather than a Bridge-era wrapper layer.
 
 ## SDK And Tooling Baseline

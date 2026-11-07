@@ -109,6 +109,8 @@
       marker.overlayImage = NMF_MARKER_IMAGE_GREEN;
     }
     marker.mapView = self.mapView;
+  } else if ([subview isKindOfClass:[RNCNaverMapInfoWindow class]]) {
+    // The Fabric host owns the info window and stays detached from the visible view hierarchy.
   } else {
     NSArray<id<RCTComponent>>* childSubviews = [subview reactSubviews];
     for (int i = 0; i < childSubviews.count; i++) {
@@ -154,6 +156,8 @@
     auto marker = static_cast<RNCNaverMapGround*>(subview).inner;
     marker.mapView = nil;
     marker.touchHandler = nil;
+  } else if ([subview isKindOfClass:[RNCNaverMapInfoWindow class]]) {
+    // The Fabric host tears down the info window through its component lifecycle.
   } else {
     NSArray<id<RCTComponent>>* childSubviews = [subview reactSubviews];
     for (int i = 0; i < childSubviews.count; i++) {

@@ -1,15 +1,76 @@
 ---
 title: "Info Window"
-description: "Guide for opening Naver Map text info windows"
+description: "Guide for opening text and custom React content info windows"
 ---
 
 ## Overview
 
-`useInfoWindow` creates and controls a text InfoWindow instance. It can open the same InfoWindow on a `NaverMapMarkerOverlay` or at a map coordinate, update the text and placement options when the hook content changes, and close the InfoWindow manually.
+Use `useInfoWindow` for a text InfoWindow with the SDK's default speech bubble. Use `NaverMapInfoWindow` when the entire InfoWindow should be rendered from a custom React view. Both APIs can open the same InfoWindow on a `NaverMapMarkerOverlay` or at a map coordinate and close it manually.
 
-Use one hook instance for each InfoWindow you want to manage. The hook creates the native InfoWindow on mount and destroys it on unmount.
+Use one hook or component instance for each InfoWindow you want to manage. Each instance owns its native InfoWindow for its mounted lifetime.
 
-## Show On A Marker
+## Show Custom React Content
+
+Mount `NaverMapInfoWindow` directly under `NaverMapView`. It accepts exactly one React view child. Give that child explicit, non-zero dimensions. The component preserves the child's native view automatically.
+
+The child owns the entire visual, including its background or speech-bubble shape. The view is rasterized into an overlay image for the NAVER Map SDK, so controls such as `Button` and `TextInput` inside it are not live interactive controls.
+
+```tsx
+import { useRef, useState } from 'react';
+import { Button, Text, View } from 'react-native';
+import {
+  NaverMapInfoWindow,
+  type NaverMapInfoWindowRef,
+  NaverMapMarkerOverlay,
+  type NaverMapMarkerOverlayRef,
+  NaverMapView,
+} from '@mj-studio/react-native-naver-map';
+
+function CustomInfoWindowMap() {
+  const markerRef = useRef<NaverMapMarkerOverlayRef>(null);
+  const infoWindowRef = useRef<NaverMapInfoWindowRef>(null);
+  const [revision, setRevision] = useState(1);
+
+  return (
+    <View style={{ flex: 1 }}>
+      <NaverMapView style={{ flex: 1 }}>
+        <NaverMapMarkerOverlay
+          ref={markerRef}
+          latitude={37.5547}
+          longitude={126.9707}
+          onTap={() => {
+            infoWindowRef.current?.showOnMarker({ markerRef });
+          }}
+        />
+        <NaverMapInfoWindow ref={infoWindowRef}>
+          <View
+            style={{
+              width: 140,
+              height: 56,
+              borderRadius: 8,
+              backgroundColor: '#1d4ed8',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Text style={{ color: 'white' }}>Revision {revision}</Text>
+          </View>
+        </NaverMapInfoWindow>
+      </NaverMapView>
+      <Button
+        title="Update content"
+        onPress={() => setRevision((value) => value + 1)}
+      />
+    </View>
+  );
+}
+```
+
+Changes passed from the parent, such as `revision` in the example, automatically redraw an open InfoWindow after the React commit. If child-local state changes or an asynchronous image finishes loading without changing the child element passed by the parent, call `infoWindowRef.current?.invalidate()` after that commit. `invalidate()` redraws the current content; it does not open the InfoWindow.
+
+## Show Text On A Marker
+
+`useInfoWindow` creates the SDK's default text InfoWindow. It updates the text and placement options when the hook content changes.
 
 ```tsx
 import { useRef } from 'react';
@@ -44,7 +105,7 @@ function MarkerInfoWindowMap() {
 }
 ```
 
-## Show On A Map Coordinate
+## Show Text At A Map Coordinate
 
 ```tsx
 import { useRef } from 'react';
@@ -77,7 +138,7 @@ function MapInfoWindow() {
 
 ## Close And Readiness
 
-`showOnMarker` and `showOnMap` return `false` when the target ref is not ready. Use the return value when UI state should only change after the native command is actually sent.
+The hook and component ref expose the same `showOnMarker`, `showOnMap`, and `close` controls. The show methods return `false` when the target ref is not ready. Use the return value when UI state should only change after the native command is actually sent.
 
 ```tsx
 const didShow = infoWindow.showOnMarker({ markerRef });
@@ -88,11 +149,24 @@ infoWindow.close();
 
 ## API
 
+`NaverMapInfoWindowProps`
+
+<AutoTypeTable path="../src/component/NaverMapInfoWindow.tsx" name="NaverMapInfoWindowProps" />
+
+`NaverMapInfoWindowRef`
+
+| Method | Description |
+| --- | --- |
+| `showOnMap({ mapRef, position })` | Opens the InfoWindow at a map coordinate. Returns `false` when `mapRef.current` is not ready. |
+| `showOnMarker({ markerRef, alignType })` | Opens the InfoWindow on a marker. Returns `false` when `markerRef.current` is not ready. |
+| `close()` | Closes the InfoWindow. |
+| `invalidate()` | Redraws the current custom React content. |
+
 `InfoWindowContent`
 
 <AutoTypeTable path="../src/hooks/useInfoWindow.ts" name="InfoWindowContent" />
 
-Returned controls:
+Returned hook controls:
 
 | Method | Description |
 | --- | --- |

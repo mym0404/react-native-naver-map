@@ -1,11 +1,6 @@
-import type { RefObject } from 'react';
 import { useEffect, useRef } from 'react';
-import type { NaverMapMarkerOverlayRef } from '../component/NaverMapMarkerOverlay';
-import type { NaverMapViewRef } from '../component/NaverMapView';
-import { useStableCallback } from '../internal/util/useStableCallback';
+import { useInfoWindowControls } from '../internal/useInfoWindowControls';
 import NaverMapUtil from '../spec/NativeRNCNaverMapUtil';
-import type { Align } from '../types/Align';
-import type { Coord } from '../types/Coord';
 import type { Point } from '../types/Point';
 
 export type InfoWindowContent = {
@@ -75,49 +70,5 @@ export const useInfoWindow = (content: InfoWindowContent) => {
     id,
   ]);
 
-  const showOnMap = useStableCallback(
-    ({
-      mapRef,
-      position,
-    }: {
-      mapRef: RefObject<NaverMapViewRef | null>;
-      position: Coord;
-    }) => {
-      if (!mapRef.current) {
-        console.warn('useInfoWindow: mapRef.current is null');
-        return false;
-      }
-
-      mapRef.current.showInfoWindow(id, position);
-      return true;
-    }
-  );
-
-  const showOnMarker = useStableCallback(
-    ({
-      markerRef,
-      alignType,
-    }: {
-      markerRef: RefObject<NaverMapMarkerOverlayRef | null>;
-      alignType?: Align;
-    }) => {
-      if (!markerRef.current) {
-        console.warn('useInfoWindow: markerRef.current is null');
-        return false;
-      }
-
-      markerRef.current.showInfoWindow(id, alignType);
-      return true;
-    }
-  );
-
-  const close = useStableCallback(() => {
-    NaverMapUtil.closeInfoWindow(id);
-  });
-
-  return {
-    showOnMap,
-    showOnMarker,
-    close,
-  };
+  return useInfoWindowControls({ id, callerName: 'useInfoWindow' });
 };

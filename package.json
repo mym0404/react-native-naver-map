@@ -159,6 +159,7 @@
     "ios": {
       "componentProvider": {
         "RNCNaverMapView": "RNCNaverMapView",
+        "RNCNaverMapInfoWindow": "RNCNaverMapInfoWindow",
         "RNCNaverMapArrowheadPath": "RNCNaverMapArrowheadPath",
         "RNCNaverMapCircle": "RNCNaverMapCircle",
         "RNCNaverMapGround": "RNCNaverMapGround",

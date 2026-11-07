@@ -18,6 +18,8 @@
 #endif
 
 + (NMFInfoWindow*)getInfoWindow:(NSString*)infoWindowId;
++ (void)registerInfoWindow:(NMFInfoWindow*)infoWindow withIdentifier:(NSString*)infoWindowId;
++ (void)unregisterInfoWindow:(NMFInfoWindow*)infoWindow withIdentifier:(NSString*)infoWindowId;
 + (void)closeInfoWindowsForMapView:(NMFMapView*)mapView;
 + (void)closeInfoWindowsForMarker:(NMFMarker*)marker;
 

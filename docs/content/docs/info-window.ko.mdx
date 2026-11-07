@@ -1,15 +1,76 @@
 ---
 title: "Info Window"
-description: "네이버 지도 텍스트 정보 창을 여는 방법"
+description: "텍스트와 커스텀 React 콘텐츠 정보 창을 여는 방법"
 ---
 
 ## 개요
 
-`useInfoWindow`는 텍스트 InfoWindow 인스턴스를 만들고 제어합니다. 같은 InfoWindow를 `NaverMapMarkerOverlay` 위에 열거나 지도 좌표에 열 수 있고, hook에 전달한 내용이나 배치 옵션이 바뀌면 native InfoWindow도 갱신합니다.
+SDK 기본 말풍선에 텍스트를 표시하려면 `useInfoWindow`를 사용합니다. 전체 InfoWindow를 커스텀 React 뷰로 만들려면 `NaverMapInfoWindow`를 사용합니다. 두 API 모두 같은 InfoWindow를 `NaverMapMarkerOverlay` 위나 지도 좌표에 열고 직접 닫을 수 있습니다.
 
-관리할 InfoWindow마다 hook 인스턴스를 하나씩 사용하세요. hook은 mount 시점에 native InfoWindow를 만들고 unmount 시점에 제거합니다.
+관리할 InfoWindow마다 hook 또는 컴포넌트 인스턴스를 하나씩 사용하세요. 각 인스턴스는 mount된 동안 하나의 native InfoWindow를 소유합니다.
 
-## 마커 위에 열기
+## 커스텀 React 콘텐츠 표시하기
+
+`NaverMapInfoWindow`를 `NaverMapView` 바로 아래에 mount하세요. React 뷰 자식 하나만 전달할 수 있습니다. 자식에는 0보다 큰 너비와 높이를 명시해야 합니다. 컴포넌트가 자식의 네이티브 뷰를 자동으로 유지합니다.
+
+자식 뷰가 배경이나 말풍선 모양을 포함한 전체 화면을 그립니다. 이 뷰는 네이버 지도 SDK에 표시할 오버레이 이미지로 변환됩니다. 따라서 자식 안의 `Button`이나 `TextInput`은 개별적으로 상호작용할 수 있는 실제 컨트롤로 동작하지 않습니다.
+
+```tsx
+import { useRef, useState } from 'react';
+import { Button, Text, View } from 'react-native';
+import {
+  NaverMapInfoWindow,
+  type NaverMapInfoWindowRef,
+  NaverMapMarkerOverlay,
+  type NaverMapMarkerOverlayRef,
+  NaverMapView,
+} from '@mj-studio/react-native-naver-map';
+
+function CustomInfoWindowMap() {
+  const markerRef = useRef<NaverMapMarkerOverlayRef>(null);
+  const infoWindowRef = useRef<NaverMapInfoWindowRef>(null);
+  const [revision, setRevision] = useState(1);
+
+  return (
+    <View style={{ flex: 1 }}>
+      <NaverMapView style={{ flex: 1 }}>
+        <NaverMapMarkerOverlay
+          ref={markerRef}
+          latitude={37.5547}
+          longitude={126.9707}
+          onTap={() => {
+            infoWindowRef.current?.showOnMarker({ markerRef });
+          }}
+        />
+        <NaverMapInfoWindow ref={infoWindowRef}>
+          <View
+            style={{
+              width: 140,
+              height: 56,
+              borderRadius: 8,
+              backgroundColor: '#1d4ed8',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Text style={{ color: 'white' }}>내용 버전 {revision}</Text>
+          </View>
+        </NaverMapInfoWindow>
+      </NaverMapView>
+      <Button
+        title="내용 갱신"
+        onPress={() => setRevision((value) => value + 1)}
+      />
+    </View>
+  );
+}
+```
+
+예제의 `revision`처럼 부모가 전달한 값이 바뀌면 React commit이 끝난 뒤 열린 InfoWindow를 자동으로 다시 그립니다. 자식 내부 상태가 바뀌거나 비동기 이미지가 로드됐지만 부모가 전달한 자식 엘리먼트는 바뀌지 않았다면, 해당 commit이 끝난 뒤 `infoWindowRef.current?.invalidate()`를 호출하세요. `invalidate()`는 현재 콘텐츠를 다시 그릴 뿐 InfoWindow를 열지는 않습니다.
+
+## 마커 위에 텍스트 표시하기
+
+`useInfoWindow`는 SDK의 기본 텍스트 InfoWindow를 만듭니다. hook에 전달한 텍스트나 배치 옵션이 바뀌면 native InfoWindow도 갱신합니다.
 
 ```tsx
 import { useRef } from 'react';
@@ -44,7 +105,7 @@ function MarkerInfoWindowMap() {
 }
 ```
 
-## 지도 좌표에 열기
+## 지도 좌표에 텍스트 표시하기
 
 ```tsx
 import { useRef } from 'react';
@@ -77,7 +138,7 @@ function MapInfoWindow() {
 
 ## 닫기와 준비 상태
 
-`showOnMarker`와 `showOnMap`은 대상 ref가 아직 준비되지 않았을 때 `false`를 반환합니다. native command가 실제로 전달된 뒤에만 UI 상태를 바꿔야 한다면 반환값을 확인하세요.
+hook과 컴포넌트 ref는 같은 `showOnMarker`, `showOnMap`, `close` 제어 메서드를 제공합니다. 두 show 메서드는 대상 ref가 아직 준비되지 않았을 때 `false`를 반환합니다. native command가 실제로 전달된 뒤에만 UI 상태를 바꿔야 한다면 반환값을 확인하세요.
 
 ```tsx
 const didShow = infoWindow.showOnMarker({ markerRef });
@@ -88,11 +149,24 @@ infoWindow.close();
 
 ## API
 
+`NaverMapInfoWindowProps`
+
+<AutoTypeTable path="../src/component/NaverMapInfoWindow.tsx" name="NaverMapInfoWindowProps" />
+
+`NaverMapInfoWindowRef`
+
+| 메서드 | 설명 |
+| --- | --- |
+| `showOnMap({ mapRef, position })` | 지도 좌표에 InfoWindow를 엽니다. `mapRef.current`가 아직 준비되지 않았으면 `false`를 반환합니다. |
+| `showOnMarker({ markerRef, alignType })` | 마커 위에 InfoWindow를 엽니다. `markerRef.current`가 아직 준비되지 않았으면 `false`를 반환합니다. |
+| `close()` | InfoWindow를 닫습니다. |
+| `invalidate()` | 현재 커스텀 React 콘텐츠를 다시 그립니다. |
+
 `InfoWindowContent`
 
 <AutoTypeTable path="../src/hooks/useInfoWindow.ts" name="InfoWindowContent" />
 
-반환 객체:
+hook 반환 객체:
 
 | 메서드 | 설명 |
 | --- | --- |

@@ -66,6 +66,8 @@ jobs:
   android:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      DISPLAY: ':99'
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
@@ -81,6 +83,15 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
+      - name: Start emulator display
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y x11-utils
+          Xvfb "$DISPLAY" -screen 0 1280x1024x24 > "$RUNNER_TEMP/emulator-display.log" 2>&1 &
+          timeout 10s bash -c 'until xdpyinfo -display "$DISPLAY" > /dev/null 2>&1; do sleep 0.1; done' || {
+            cat "$RUNNER_TEMP/emulator-display.log"
+            exit 1
+          }
       - name: Boot emulator, build, install, and test
         uses: reactivecircus/android-emulator-runner@v2
         env:
@@ -90,7 +101,7 @@ jobs:
           target: google_apis
           arch: x86_64
           profile: pixel_7
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          emulator-options: -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           disable-animations: true
           script: pnpm e2e:android
       - name: Upload results

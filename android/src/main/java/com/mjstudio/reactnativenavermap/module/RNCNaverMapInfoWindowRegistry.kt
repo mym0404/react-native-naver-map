@@ -10,6 +10,7 @@ import com.naver.maps.map.overlay.Marker
 class RNCNaverMapInfoWindowRegistry {
   private val infoWindows = mutableMapOf<String, InfoWindow>()
   private val infoWindowContents = mutableMapOf<String, String>()
+  private val customContentReadiness = mutableMapOf<String, () -> Boolean>()
 
   fun create(
     id: String,
@@ -33,6 +34,7 @@ class RNCNaverMapInfoWindowRegistry {
       infoWindow.close()
       infoWindows.remove(id)
       infoWindowContents.remove(id)
+      customContentReadiness.remove(id)
     }
   }
 
@@ -82,12 +84,35 @@ class RNCNaverMapInfoWindowRegistry {
 
   fun isOpen(id: String): Boolean = infoWindows[id]?.let(::isOpen) ?: false
 
-  fun get(id: String): InfoWindow? = infoWindows[id]
+  fun get(id: String): InfoWindow? = infoWindows[id]?.takeIf { customContentReadiness[id]?.invoke() != false }
+
+  fun registerCustom(
+    id: String,
+    infoWindow: InfoWindow,
+    isContentReady: () -> Boolean,
+  ) {
+    infoWindows[id]?.takeIf { it !== infoWindow }?.close()
+    infoWindows[id] = infoWindow
+    customContentReadiness[id] = isContentReady
+  }
+
+  fun unregisterCustom(
+    id: String,
+    infoWindow: InfoWindow,
+  ) {
+    if (infoWindows[id] !== infoWindow) return
+
+    infoWindow.close()
+    infoWindows.remove(id)
+    infoWindowContents.remove(id)
+    customContentReadiness.remove(id)
+  }
 
   fun clear() {
     infoWindows.values.forEach { it.close() }
     infoWindows.clear()
     infoWindowContents.clear()
+    customContentReadiness.clear()
   }
 
   private fun isOpen(infoWindow: InfoWindow): Boolean = infoWindow.map != null || infoWindow.marker != null
