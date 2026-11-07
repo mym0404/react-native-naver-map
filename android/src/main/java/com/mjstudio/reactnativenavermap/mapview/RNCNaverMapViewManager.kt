@@ -6,6 +6,7 @@ import android.view.View
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.LayoutShadowNode
+import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.ReactStylesDiffMap
 import com.facebook.react.uimanager.StateWrapper
 import com.facebook.react.uimanager.ThemedReactContext
@@ -721,7 +722,10 @@ class RNCNaverMapViewManager(
     y: Double,
   ) = view.withMap { map ->
     view?.let { wrapper ->
-      val coord = map.projection.fromScreenLocation(PointF(x.toFloat(), y.toFloat()))
+      val coord =
+        map.projection.fromScreenLocation(
+          PointF(PixelUtil.toPixelFromDIP(x), PixelUtil.toPixelFromDIP(y)),
+        )
       wrapper.reactContext.emitEvent(wrapper.id) { surfaceId, reactTag ->
         NaverMapScreenToCoordinateEvent(
           surfaceId,
