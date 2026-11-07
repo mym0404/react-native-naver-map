@@ -33,5 +33,5 @@ This repository has two user-visible UI surfaces: the `docs/` site and the `exam
 ## Validation
 
 - Docs changes: run `pnpm build:docs` when the docs site, MDX rendering, navigation metadata, or docs-only components change.
-- Example UI or wrapper behavior changes: run `pnpm run t` and smoke-check the relevant `example/src/screens/` path when runtime behavior is affected.
+- Example UI or wrapper behavior changes: run `pnpm run t` and verify the relevant `example/src/screens/` path when runtime behavior is affected.
 - Markdown-only repository knowledge edits do not need browser validation.

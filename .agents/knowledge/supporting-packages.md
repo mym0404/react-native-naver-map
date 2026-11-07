@@ -15,9 +15,13 @@
 - This is intentional in the current repo shape: `example/metro.config.js` maps the JS package name to the repository root, and `example/react-native.config.js` maps the native package root for autolinking.
 - Keep `example/react-native.config.js` focused on the local library package. Third-party app dependencies such as `react-native-permissions` and `@react-native-community/slider` should resolve from the hoisted root install through normal React Native discovery, not hardcoded `example/node_modules` paths.
 - Feature checks: `example/src/screens/`
+- Automated native E2E tests: `e2e/map-view/basic.e2e.ts` drives the example's `MapViewBasicScreen`; `script/e2e.mjs` builds Release and runs the same suite locally and in `.github/workflows/e2e.yml`.
+- Shared E2E setup lives in `e2e/fixtures.ts`; import its `test` to install the configured app and apply permissions through the SDK before each test.
+- Group E2E suites by feature under `e2e/<feature>/*.e2e.ts`; `e2e.config.ts` discovers all suites for both platforms. The map-view basic suite is the first scenario set.
 - Demo-only UI: `example/src/components/`
 - Android example config lives under `example/android/`
 - iOS example config lives under `example/ios/`
+- iOS starts its React Native window in `SceneDelegate` in `AppDelegate.swift`; `Info.plist` declares a single window scene so the example launches with current iOS SDKs.
 - Prefer root wrapper commands such as `pnpm dev`, `pnpm ios`, and `pnpm android`.
 - For Android manual checks that install or open an existing debug APK, keep Metro running through `pnpm dev`, map the device port with `adb -s <device> reverse tcp:8081 tcp:8081`, and verify the APK does not depend on a manually generated `index.android.bundle`.
 - If the emulator has a global HTTP proxy, React Native's Metro status request can be routed to that proxy and incorrectly fall back to asset loading; clear the proxy before treating `Unable to load script` as a bundling problem.
@@ -25,6 +29,7 @@
 - Treat map API keys and secret config files as local-only values.
 - Example behavior is a verification aid, not a compatibility guarantee by itself.
 - Keep example setup expectations aligned with `CONTRIBUTING.md`.
+- Example map authentication comes from `NAVER_MAP_CLIENT_ID` (Android manifest placeholder/iOS build setting). E2E reads it from the environment or root `.env`; do not commit credential values.
 
 ## Docs Site
 

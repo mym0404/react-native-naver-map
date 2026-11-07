@@ -14,7 +14,7 @@ This repository is Fabric-only. Treat `src/spec/` as the source of truth and gen
    - iOS generated selectors and protocols under `example/ios/build/generated/ios/ReactCodegen/`.
    - Android generated abstract classes and interfaces under generated Gradle output and repo-local `android/src/newarch/` wrappers.
 4. Implement native code to match generated names, arity, nullability, and return types exactly.
-5. Build both platforms and smoke-check the example screen that uses the contract.
+5. Build both platforms and verify the example screen that uses the contract.
 
 Do not implement a JS-facing API first in native and then force TypeScript to match it. The spec defines the contract.
 
@@ -89,7 +89,7 @@ Do not implement a JS-facing API first in native and then force TypeScript to ma
 - `pnpm ci:android`
 - `pnpm run t`
 - Reinstall the example app after native changes.
-- Smoke-check the exact screen that exercises the changed module or Fabric command.
+- Verify the exact screen that exercises the changed module or Fabric command.
 - For runtime failures, check device logs before changing types or adding JS fallbacks.
 
 ## Anti-Patterns

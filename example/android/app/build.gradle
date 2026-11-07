@@ -14,6 +14,7 @@ react {
     reactNativeDir = file("../../../node_modules/react-native")
     //   The folder where the react-native Codegen package is. Default is ../../node_modules/@react-native/codegen
     codegenDir = file("../../../node_modules/@react-native/codegen")
+    hermesCommand = file("../../../node_modules/hermes-compiler/hermesc/%OS-BIN%/hermesc").absolutePath
     //   The cli.js file which is the React Native CLI entrypoint. Default is ../../node_modules/react-native/cli.js
     cliFile = file("../../../node_modules/react-native/cli.js")
 
@@ -80,6 +81,7 @@ android {
     namespace "happy.mjstudio.rnnmap.example"
     defaultConfig {
         applicationId "happy.mjstudio.rnnmap.example"
+        manifestPlaceholders = [naverMapClientId: findProperty("naverMapClientId") ?: System.getenv("NAVER_MAP_CLIENT_ID") ?: "dummy"]
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

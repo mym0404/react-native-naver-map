@@ -23,6 +23,8 @@ export const Header = ({
     >
       <TouchableOpacity
         onPress={onBack}
+        accessibilityRole="button"
+        accessibilityLabel="Back"
         style={{
           padding: 4,
         }}

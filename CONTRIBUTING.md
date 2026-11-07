@@ -55,6 +55,74 @@ To start the packager:
 cd example && pnpm run start
 ```
 
+### Mobile E2E
+
+The shared E2E suite uses [e2e](https://github.com/tester-army/e2e) and its
+`agent-device` mobile engine. It runs without an AI model or model API key.
+The map-view basic tests check map initialization, navigation back to the menu,
+and native camera coordinates after an imperative move. These tests do not assert
+that map tiles have finished loading or compare screenshots.
+
+Install the mise toolchain and dependencies once:
+
+```sh
+mise install
+mise exec -- pnpm install --frozen-lockfile
+cp .env.example .env
+```
+
+Set `NAVER_MAP_CLIENT_ID` in `.env` to a valid **example-app** Naver Maps client ID.
+Register `happy.mjstudio.rnnmap.example` for both Android and iOS in the Naver
+Cloud console. Use only the client ID embedded in the app, never a client secret.
+An exported `NAVER_MAP_CLIENT_ID` takes precedence over `.env`.
+
+With mise activated in your shell, run either platform with one command:
+
+```sh
+pnpm e2e:ios
+pnpm e2e:android
+```
+
+Without shell activation, prefix the command with `mise exec --`.
+
+- iOS requires macOS, Xcode, CocoaPods, and an installed iOS simulator runtime.
+  The runner installs pods, builds a Release simulator app, creates a dedicated
+  iPhone 16 simulator on the newest installed iOS runtime, and deletes it after
+  the run. Set `E2E_IOS_RUNTIME` to a runtime identifier to choose another version.
+- Android requires the SDK, command-line tools under `cmdline-tools/latest`,
+  the emulator, accepted SDK licenses, and `ANDROID_HOME` (on macOS the standard
+  `~/Library/Android/sdk` path is also detected). The runner installs the API 36
+  Google APIs image, creates a dedicated AVD, builds a Release APK, and stops the
+  emulator after the run. The AVD remains available for the next run.
+- `E2E_DEVICE` selects an already prepared simulator UDID or emulator serial.
+  The SDK installs the example on that device. The runner leaves it running.
+  Use a dedicated test device because tests relaunch the app and grant location
+  permission.
+- Both Release builds include JavaScript; Metro is not needed.
+- Results and JUnit reports are under `.e2e/results/<platform>`. Failed tests
+  retain screenshot and trace evidence. Build output streams to the terminal or
+  CI log. Generated results and builds are ignored by Git.
+
+The `E2E` GitHub Actions workflow runs both platforms on PRs and pushes targeting
+`main` or `next`, and supports manual runs. Add the repository **Variable**
+`NAVER_MAP_CLIENT_ID` under **Settings → Secrets and variables → Actions → Variables**.
+The workflow reads `${{ vars.NAVER_MAP_CLIENT_ID }}` and passes it to the same local
+commands. This is a public example-app client ID, so fork PRs do not need secrets.
+A missing ID fails the run; the suite never substitutes a dummy key or silently
+skips tests. Reports and failure traces are uploaded as platform-specific
+artifacts for seven days, including when tests fail.
+
+Tests are grouped by feature under `e2e/<feature>/*.e2e.ts`. The initial suite,
+`e2e/map-view/basic.e2e.ts`, uses the example's `MapViewBasicScreen` for basic map
+behavior. Add scenarios to the matching feature directory, or create another
+feature directory. `e2e.config.ts` discovers all `e2e/**/*.e2e.ts` files for both
+platforms. Import `test` from `e2e/fixtures.ts` in new suites so the SDK installs
+the configured build before each test and applies location permissions before
+launch. The shared fixture uses the agent-device client to grant iOS always-location
+permission and Android runtime permissions, including background location.
+
+Run `pnpm typecheck:e2e` to check test/config types without building the app.
+
 ### Android
 
 To run the example app on Android:

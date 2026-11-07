@@ -39,6 +39,8 @@
     "verbatimModuleSyntax": true
   },
   "exclude": [
+    "e2e",
+    "e2e.config.ts",
     "expo-config-plugin",
     "docs",
     "app.plugin.js",

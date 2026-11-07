@@ -3,7 +3,7 @@
 ## Default Validation
 
 - Run `pnpm run t` for the default repo-wide check path.
-- `pnpm run t` runs Biome, native lint scripts, TypeScript checks for the package and example app, builds the Expo plugin, and runs `bob build`.
+- `pnpm run t` runs Biome, native lint scripts, TypeScript checks for the package, example app, and E2E suite, builds the Expo plugin, and runs `bob build`.
 - In `lefthook.yml`, the Biome check receives `{staged_files}` for JS/TS globs, while native lint receives `{all_files}`.
 - `pnpm lint` is an alias for `pnpm run t`.
 - Root checks intentionally skip docs build and docs typecheck because those Lefthook commands are currently commented out. Docs validation is opt-in and package-local.
@@ -43,7 +43,8 @@ Use this flow when `src/spec/` changes or when a JS/native contract changes:
 
 ## CI And Cached Native Builds
 
-- The shared CI setup uses `jdx/mise-action` to install the Node.js, pnpm, Java, ktlint, and clang-format versions in `mise.toml` before installing dependencies.
+- The shared CI setup uses `jdx/mise-action` to install the Node.js, pnpm, Java, ccache, ktlint, and clang-format versions in `mise.toml` before installing dependencies.
+- `.github/workflows/e2e.yml` runs deterministic iOS/Android E2E tests on PRs and pushes to `main`/`next`, plus manual dispatch. It reads the public repository Variable `NAVER_MAP_CLIENT_ID` and uploads platform reports and failure traces.
 - Cached native CI builds: `pnpm turbo:ios`, `pnpm turbo:android`
 - Direct native CI builds: `pnpm ci:ios`, `pnpm ci:android`
 - Turbo commands use single-package mode with dedicated cache directories under `.turbo/ios` and `.turbo/android`.
@@ -52,16 +53,19 @@ Use this flow when `src/spec/` changes or when a JS/native contract changes:
 ## Runtime Verification
 
 - Use `example/` for manual behavior checks after API, wrapper, or native changes.
+- `pnpm e2e:ios` and `pnpm e2e:android` build a Release example, prepare a dedicated device, install, and run all `e2e/**/*.e2e.ts` suites through `e2e.config.ts`. Suites are grouped by feature, starting with `e2e/map-view/basic.e2e.ts`. The runner is `script/e2e.mjs`; Metro is not used for E2E.
+- E2E requires a valid example-app `NAVER_MAP_CLIENT_ID` in the environment or root `.env` (copy `.env.example`). Missing/dummy IDs fail preflight. Android builds read the environment variable; iOS E2E passes it as an Xcode build setting.
+- `E2E_DEVICE` pins a prepared simulator UDID/emulator serial; the runner preserves that device. Without it, iOS creates/deletes a dedicated simulator and Android creates/reuses a dedicated API 36 AVD and stops its emulator. `E2E_IOS_RUNTIME` overrides local newest-runtime selection; CI pins iOS 18.5 with Xcode 16.4.
+- E2E checks native initialization and camera idle coordinates, not map tile completion. `pnpm typecheck:e2e` is part of `pnpm run t`; results and builds live in ignored `.e2e/`.
+- E2E suites import `test` from `e2e/fixtures.ts`. The SDK boots and connects to the selected device, then the shared fixture installs the configured `app.appPath` before each test. `app.permissions` grants location before launch. The fixture uses the agent-device client for iOS always-location permission and Android runtime permissions, including background location, because the mobile permission API does not expose background location.
+- `script/e2e.mjs` owns native builds, dedicated device creation and cleanup, and the isolated agent-device daemon. Build output streams to the terminal or CI log. SDK reports and retained failure traces live under `.e2e/results/<platform>`.
 - If wrapper behavior changes, update docs and example screens in the same change when needed.
 - Android debug runtime checks should load JavaScript from Metro, not from an ad hoc bundled asset in `example/android/app/src/main/assets`.
 - Before launching the Android example outside `pnpm android`, confirm Metro with `curl http://localhost:8081/status`, then run `adb -s <device> reverse tcp:8081 tcp:8081`.
 - If Android still shows `Unable to load script` or falls back to `loadJSBundleFromAssets`, check `adb -s <device> reverse --list` and clear emulator HTTP proxy settings that redirect Metro status checks away from `localhost:8081`.
 - This follows the React Native Android device workflow documented at `https://reactnative.dev/docs/running-on-device`.
-- Realistic example verification needs local Naver credentials:
-  - Android: `example/android/app/src/main/res/values/secret.xml`
-  - iOS: `example/ios/Secret.xcconfig`
+- Realistic example verification needs a valid `NAVER_MAP_CLIENT_ID` registered for the example bundle/package ID. Android builds without one use `dummy` for compilation; E2E rejects that value before building. Local E2E must not rely on CI dummy secret files.
 - Root `.worktreeinclude` lists `.env` and both example credential files so Codex copies existing ignored files from the source checkout into new local managed worktrees. Secret values remain ignored by Git.
-- Local verification should not assume CI-provided dummy secret files exist.
 
 ## Release Flow
 
