@@ -24,6 +24,8 @@ import com.mjstudio.reactnativenavermap.event.NaverMapLongTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapOptionChangeEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapRenderedEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapScreenToCoordinateEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapSnapshotFailedEvent
+import com.mjstudio.reactnativenavermap.event.NaverMapSnapshotReadyEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapSymbolTapEvent
 import com.mjstudio.reactnativenavermap.event.NaverMapTapEvent
 import com.mjstudio.reactnativenavermap.module.RNCNaverMapInfoWindowRegistry
@@ -138,6 +140,8 @@ class RNCNaverMapViewManager(
       registerDirectEvent(this, NaverMapClusterLeafTapEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCustomStyleLoadedEvent.EVENT_NAME)
       registerDirectEvent(this, NaverMapCustomStyleLoadFailedEvent.EVENT_NAME)
+      registerDirectEvent(this, NaverMapSnapshotReadyEvent.EVENT_NAME)
+      registerDirectEvent(this, NaverMapSnapshotFailedEvent.EVENT_NAME)
     }
 
   private fun RNCNaverMapViewWrapper?.withMapView(callback: (mapView: RNCNaverMapView) -> Unit) {
@@ -730,6 +734,13 @@ class RNCNaverMapViewManager(
   // endregion
 
   // region COMMANDS
+  override fun takeSnapshot(
+    view: RNCNaverMapViewWrapper?,
+    showControls: Boolean,
+  ) = view.withMapView {
+    it.takeSnapshot(showControls)
+  }
+
   override fun screenToCoordinate(
     view: RNCNaverMapViewWrapper?,
     x: Double,
